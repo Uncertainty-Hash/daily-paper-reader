@@ -1,0 +1,575 @@
+Title: TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems
+
+URL Source: https://arxiv.org/pdf/2605.26563v1
+
+Published Time: Wed, 27 May 2026 00:42:18 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems 
+
+## Minxing Wang 
+
+mxwang@smu.edu.sg Singapore Management University Singapore, Singapore 
+
+## Xiaofei Xie 
+
+xfxie@smu.edu.sg Singapore Management University Singapore, Singapore 
+
+## Yintong Huo 
+
+ythuo@smu.edu.sg Singapore Management University Singapore, Singapore 
+
+Abstract 
+
+Agentic systems have been widely studied to automate software engineering jobs such as bug fixing. As these systems increasingly tackle complex tasks, understanding where and why they fail be-comes essential for iterative refinement and operational reliability. Existing automated failure diagnosis approaches leverage task ex-ecution trajectories , yet their effectiveness degrades substantially as trajectory length and complexity increase. For repository-level coding tasks specifically, trajectories are laden with noise, such as redundant program structure and verbose code context. More-over, these trajectories are very long, while long-context reasoning remains a known weakness of LLMs. To address these two challenges, we propose TrajAudit , the first failure diagnosis framework for repository-level coding trajectories. TrajAudit employs an investigator agent supported by two modules: one filters failure-irrelevant information through pattern matching and keyword detection, and the other generates a preliminary di-agnosis from test failure reports as prior knowledge, helping the agent handle noisy long contexts. The investigator agent can fur-ther invoke tools to retrieve filtered content on demand, ensuring that critical information is preserved while noise is minimized. We also introduce RootSE , a benchmark of 93 real-world agentic failure instances sourced from software maintenance tasks, representing the most complex trajectory diagnosis benchmark to date. Exper-iments on RootSE show that TrajAudit outperforms all existing baselines by over 24.4 percentage points in localization accuracy, while reducing token consumption by at least 18%, demonstrating its practical effectiveness. We hope this work draws community attention to failure management in agentic software engineering and provides a foundational resource for future research. 
+
+CCS Concepts 
+
+• Software and its engineering → Software maintenance tools .
+
+Keywords 
+
+Agentic Systems, Failure Diagnosis, Software Maintenance  
+
+> Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+> Conference acronym ’XX, Woodstock, NY
+> ©2018 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-1-4503-XXXX-X/2018/06 https://doi.org/XXXXXXX.XXXXXXX
+
+ACM Reference Format: 
+
+Minxing Wang, Xiaofei Xie, and Yintong Huo. 2018. TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems. In Proceedings of Make sure to enter the correct conference title from your rights confirmation email (Conference acronym ’XX). ACM, New York, NY, USA, 12 pages. https: //doi.org/XXXXXXX.XXXXXXX 
+
+1 Introduction 
+
+LLM-based agentic systems are autonomous systems powered by large language models (LLMs) that perceive environmental states, perform goal-oriented reasoning, and execute actions in a closed-loop manner [ 3, 14 , 33 ]. Recently, a growing number of LLM-based agents have been developed to automate repository-level software maintenance tasks , like issue resolution and feature development [20, 22, 41, 47, 58]. While these agents succeed in simple tasks such as single-file modifications, they still struggle with complex, multi-file tasks that require long-horizon reasoning and execution [ 13 , 17 , 31 , 53 ]. These failures occur in opaque ways, often as the cumulative con-sequence of a single early mistake, such as a misunderstanding of the task requirements or a flawed implementation plan. Therefore, understanding where and why agents fail is critical for the iter-ative refinement of agentic systems and, ultimately, trustworthy intelligent software engineering [5, 21, 32, 40]. 
+
+Execution trajectory , which records sequential steps of the agent’s reasoning, tool invocations, and environmental observations, pro-vides the key information to monitor the agent’s behavior [ 39 , 56 ]. As shown in Figure 2, each step contains four types of informa-tion: the thinking process, the response, the actions taken, and the resulting observations. These trajectories are commonly used for understanding failures behind agent execution. For example, one pioneering study conducted in-depth manual investigations of inter-step inconsistencies to characterize failure patterns, such as reasoning-action conflicts [ 6 ]. To further automate failure diagno-sis , Zhang et al. [ 57 ] proposed three failure localization methods that feed trajectory content into LLMs all at once, step-by-step, or via binary search to identify the decisive failure step. In addi-tion, inspired by spectrum-based fault localization (SBFL) used in traditional software engineering, Ge et al. [ 15 ] proposed FAMAS, which identifies failure-suspicious steps by comparing multiple trajectories from the same task and flagging the most frequently occurring steps [1, 24, 51]. However, these approaches can only handle simple trajecto-ries with few execution steps, such as the one from web browsing [ 34 , 57 ]. Their diagnostic performance drops below 40% when ap-plied to long-horizon task trajectories (often exceeding 40 steps) in repository-level coding problems. In particular, we identify two distinct challenges as follows, (1) Observational noise. Observations      
+
+> arXiv:2605.26563v1 [cs.SE] 26 May 2026 Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. Agentic
+> Systems
+> …SYSTEM FAILURE
+> …
+> Why does
+> it fail?
+> Aha! Direct pinpoint
+> with reasoning!
+> Reasoning Path
+> “State dependency conflict.”
+> I. Without Diagnosi s
+> II. Automated Failure Diagnosis
+> Our Work
+
+Figure 1: Failure diagnosis in agentic systems. 
+
+refer to the information returned by tools invoked by the agent, often accounting for over 70% of the total trajectory content. How-ever, most observations are not relevant to failure localization, such as redundant program structures and verbose code context, which can interfere with LLM reasoning [ 44 ]. (2) Excessive length. These trajectories often span from 20 to over 100 steps, with each step con-taining on average over 5,000 characters. Existing studies [ 7, 30 , 45 ]show that even state-of-the-art LLMs struggle to maintain reason-ing quality when processing long contexts. Both challenges stem from a fundamental limitation of exist-ing diagnosis methods: they passively consume entire trajectories, treating all steps as equally relevant. Inspired by the action-taking nature of agents [ 42 , 43 ], we propose an agentic approach that 
+
+actively explores and fetches the most relevant fragments from long and noisy trajectories. To this end, we introduce TrajAudit , the first automated frame-work for agent trajectory failure diagnosis, including pinpointing the first step at which the agent takes an action that introduces an error (i.e., earliest decisive error step ) and providing diagnosis justifications. TrajAudit addresses the aforementioned challenges through an agent assisted by two synergistic modules. (1) Prior fail-ure reasoning derives a preliminary diagnosis by prompting an LLM to identify the most suspicious region responsible for the failure based on the failed test code and its corresponding error description. This diagnosis is then incorporated into the localization agent’s context as prior knowledge, directing the model’s focus toward the most probable failure segments, effectively mitigating long-context degradation. (2) Semantic saliency folding selectively compresses tra-jectory observations by retaining only failure-relevant context, such as code patch structures and entries containing failure indicators (e.g., ’fail’, ’exception’). (3) Investigator agent enables dynamic ac-cess to the full trajectory, performing on-demand retrieval of folded content through predefined interactive APIs. This mechanism en-ables a top-down diagnostic approach, allowing the diagnosis to begin with a high-level overview and selectively drill down into details on demand, thereby mitigating observational noise. Furthermore, to evaluate TrajAudit, we introduce RootSE , the first benchmark to evaluate a model’s ability to diagnose agent exe-cution failure in completing software engineering jobs. The dataset consists of 93 complex instances with over 4,500 execution steps, offering a comprehensive testbed for identifying the earliest deci-sive error points. Experimental results on RootSE demonstrate that TrajAudit outperforms the strongest baseline by 24.4 percentage points in localization accuracy, while consuming 18% fewer tokens. In summary, the main contributions of this paper are threefold: 
+
+• Framework. We introduce TrajAudit, the first automated failure diagnosis framework to localize the error step and offer diagnosis justification in agent coding trajectories. 
+
+• Benchmark. We curate RootSE, a novel benchmark comprising 93 complex instances and 4,500 execution steps, to evaluate the model’s ability in diagnosing agent failure. 
+
+• Evaluation. We evaluate existing methods and TrajAudit on RootSE, demonstrating that our approach significantly improves failure localization efficacy while enhancing token efficiency. All data and code are released for future study. 
+
+2 Background 
+
+In this section, we describe the typical workflow of agentic systems and their trajectory structure, followed by a discussion of existing failure diagnosis methods and their limitations. 
+
+2.1 Agent Workflow and Trajectory Structures 
+
+The application of AI agents in software engineering domain has gained significant attention [ 2, 19 ]. A particular focus is on auto-mated software maintenance, where agents are tasked with resolv-ing bugs and feature requests. When completing such tasks, the agentic system typically fol-lows a predefined workflow [ 29 , 48 ]. As an example shown in Figure 2, the agent first inspects the code files mentioned in the bug report, then attempts to reproduce the bug to gather more comprehensive information. Based on the collected information, it analyzes the failure point and applies the necessary code modi-fications. After modification, the agent runs the relevant tests to verify whether the bug has been resolved. If successful, it outputs the final patch; otherwise, it iterates through the preceding steps until the issue is fixed. The entire execution process is recorded as a trajectory, which is a chronological record of the agent’s reasoning and interactions throughout task execution. As shown in Figure 2, each step in a tra-jectory comprises four components: Thought (internal reasoning), 
+
+Action (tool invocation), Observation (environmental feedback), and Response (transitional natural language output) [55]. 
+
+2.2 Failure Localization Methods 
+
+Several methods have been proposed to automate failure localiza-tion in agentic systems. Zhang et al. [ 57 ] propose three LLM-based approaches that feed the trajectory into the LLM in a single pass, sequentially, and via binary search. Ge et al. [ 15 ] propose FAMAS, which localizes failure by replicating the same task multiple times and identifying steps that appear more frequently in failed trajec-tories as suspicious. However, as shown in Figure 3, all methods exhibit a significant performance drop as trajectory length increases, even on the relatively simple tasks in Who&When [ 57 ], suggest-ing that they struggle to handle the long and complex trajectories common in real-world coding tasks. The limitations of these methods stem from two issues. First, all methods require the LLM to process the entire trajectory, ei-ther all at once or in fixed segments, exposing it to substantial observational noise that obscures actual failure signals, including irrelevant API return content and repetitive information already TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems Conference acronym ’XX, June 03–05, 2018, Woodstock, NY LLM Agent Computer                                                     
+
+> [🛠 Ac%on] read_file (" math_u%ls.py ")
+> [🖥 Observa%on] [File Content: return a / b]
+> [💬 Response] I will check the source code of math_u%ls.py .
+> [💡 Thought] Analyze the crash log to locate the bug.
+> [🛠 Ac%on] write_file (" repro.py ")
+> [🖥 Observa%on] [File saved successfully]
+> [💬 Response] I will write a reproduc%on script repro.py .
+> [💡 Thought] Create a script to trigger the reported error.
+> [🛠 Ac%on] edit_file (" math_u%ls.py ")
+> [🖥 Observa%on] [Edi%on successful: if b == 0: ...]
+> [💬 Response] I will modify related codes to fix division logic.
+> [💡 Thought] Add a zero -check condi%on to prevent the crash.
+> [🛠 Ac%on] python repro.py
+> [🖥 Observa%on] [Output: Test Passed]
+> [💬 Response] I will execute the test to verify the solu%on.
+> [💡 Thought] Run the reproduc%on script to confirm the fix.
+> STEP 1
+> Analyze the tas k
+> STEP 2
+> Try to reproduce the
+> problem
+> STEP 3
+> Modify the codes to
+> fix the bug
+> STEP 4
+> Verify whether the
+> bug is fixed
+> STEP 5
+> Output the applicable
+> patch
+> [🛠 Ac%on] apply patch
+> [🖥 Observa%on] [Output: Apply patch successfully]
+> PASS ✅
+> FAIL ❌
+> Terminal
+> Repository
+> Issue #42: Run,me Crash in math_utils.py
+> Background: AZeroDivisionError was reported
+> when performing division operaHons in the producHon
+> environment.
+> Requirements:
+> 1. IdenHfy the logic flaw in math_utils.py .
+> 2. Construct a script to reproduce the crash.
+> 3. Implement a defensive check to handle zero divisors.
+> 4. Verify the fix by running the reproducHon script.
+> Problem Description
+
+Figure 2: The agent workflow and execution trajectory in a coding task. 
+
+Figure 3: Accuracy of baseline methods under varying tra-jectory lengths on the Who&When dataset, where Level 1 to Level 5 correspond to trajectories of 5–17, 19–29, 31–49, 51–91, and 93–130 steps, respectively. 
+
+captured before. Second, even state-of-the-art LLMs suffer from performance degradation on long contexts [ 7 ]. As demonstrated in Figure 3, existing methods exhibit notable performance drops as trajectory length increases. Furthermore, the most widely adopted benchmark, Who&When, does not include long and complex tra-jectories to expose this limitation, leaving the performance gap unexplored. This motivates the need for a more challenging benchmark that represents the difficulty of real-world agentic programming, as well as a failure diagnosis method capable of reasoning failures in such long and complex trajectories. 
+
+3 The RootSE Benchmark 
+
+To facilitate a rigorous evaluation of automated failure diagnosis methods for agentic systems, we introduce RootSE. To the best of our knowledge, RootSE is the first failure diagnosis benchmark on coding trajectories characterized by long-horizon reasoning and execution. It comprises 93 failed execution instances generated by three representative agents tackling diverse, repository-level coding problems. Together, these instances encompass more than 4,500 individual execution steps and approximately 27 million characters, representing a challenging and realistic scenario. 
+
+3.1 Task Description 
+
+Each instance in RootSE comprises four core elements: (1) Task Specification : encompasses all metadata required for task execu-tion and completion verification, including the task description, repository name, base commit, and test code patch; (2) System Configuration : identifies the specific agentic system and the under-lying LLM employed; (3) Failure Context : consists of the complete execution trajectory and the test error messages; and (4) Ground-truth Labels : includes the earliest error step as the failure step, diagnosis justification, and the gold patch for the task. In particular, RootSE asks a diagnosis model to take the task description, failure trajectory, test code, and corresponding error messages as input, and output the failure step, along with its justi-fication. RootSE employs three metrics to evaluate the results: (1) Exact Step-Level Accuracy , which measures the percentage of in-stances where the predicted step matches the ground truth exactly; 
+
+(2) Tolerated Step-Level Accuracy , which represents the propor-tion of predictions that fall within a predefined tolerance window around the ground truth; and (3) Justification Accuracy , which measures the percentage of instances where the predicted diagno-sis justification is semantically equivalent to the ground truth, as checked by LLM-as-a-judge. Note that we do not include agent-level localization accuracy because such coarse-grained identification offers limited practical utility. 
+
+3.2 Data Collection 
+
+3.2.1 Agentic System Selection. We select three representative agen-tic systems as trajectory sources for dataset construction: SWE-agent, OpenHands, and AutoCodeRover. These systems have gar-nered significant traction in both the open-source community and industry. In particular, SWE-agent and OpenHands have each re-ceived over 15,000 GitHub stars, while AutoCodeRover has been acquired by Sonar. We describe them as follows. Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. 
+
+SWE-agent. SWE-agent is the first agent equipped with soft-ware development APIs designed for LLM usability, termed Agent-Computer Interface (ACI) [ 54 ]. By structuring input and output, ACI enables reliable LLM invocations while ensuring that the re-turned content remains interpretable. It has been widely used as a baseline for evaluating agent capabilities on programming tasks. 
+
+OpenHands. OpenHands is an open-source agentic framework that provides a sandboxed runtime environment for safe execution, along with an interactive web-based GUI that allows users to issue follow-up instructions upon task completion, making it particularly user-friendly for iterative development [47]. 
+
+AutoCodeRover. AutoCodeRover is the first agentic system to represent programs as abstract syntax trees, enabling code search at the granularity of classes and methods. This structured repre-sentation allows the system to retrieve sufficient context within a minimal number of steps, leading to efficient task resolution [58]. We restrict trajectory sources to single-agent systems for two reasons. First, RootSE emphasizes failure localization along the logical chain, encompassing both reasoning and action steps. Since research indicates that 37% of multi-agent system (MAS) failures stem from additional inter-agent cooperation breakdowns [ 39 ], including MAS trajectories would introduce confounding factors that fall outside the scope of this benchmark. Second, as each agent within a MAS can be viewed as an independent single-agent system, methods that perform well on RootSE can be generalized to localize logical failures within individual agents in MAS settings. 
+
+3.2.2 Task Selection. To ensure the collected trajectories reflect challenges in real-world agentic coding, we choose software main-tenance as the targeted task and establish the following benchmark selection criteria: (1) tasks are derived from real-world repository-level issues; (2) tasks can be automatically verified through exe-cutable test suites; and (3) tasks contain long-horizon code reason-ing and execution challenges. Based on these criteria, we select SWE-bench and SWE-bench Pro as our target benchmarks. These two benchmarks cover diverse programming languages with a wide range of task complexity, ranging from single-file modifications to multi-file changes. We briefly introduce each benchmark as follows. 
+
+SWE-bench. SWE-bench is the most popular and representative benchmark for repository-level software maintenance problems. It comprises 2,294 problems from real GitHub issues across 12 Python repositories, where the reference solutions average editing 1.7 files and 32.8 lines [23]. 
+
+SWE-bench Pro. SWE-bench Pro features more challenging tasks, requiring cross-file modifications spanning an average of 4.1 files and 107.4 lines of code, reflecting higher task complexity than SWE-bench. Furthermore, SWE-bench Pro encompasses reposito-ries across multiple programming languages, including Python, JavaScript, Go, among others [9]. 
+
+3.2.3 Trajectory Generation. We collected all candidate trajecto-ries either by running the selected agentic systems on the chosen benchmarks, spanning backbone LLMs including Qwen, Gemini, GPT, and Claude, or directly from the publicly available dataset [ 46 ]. These trajectories were then filtered through manual inspection, retaining only those where the failure can be clearly attributed 
+
+Annotation Guideline  
+
+> Earliest Decisive Error Step:
+> The earliest step in a failed trajectory such that, if this step is corrected and all subsequent steps are executed optimally, the overall task would succeed. When annotating, note the following: a) An error can occur at the reasoning level (flawed planning or incorrect inference) or the execution level (correct reasoning but faulty implementation). b) A step is marked as an error only when the agent commits to a flawed direction, not when it explores multiple hypotheses, even if some of them are incorrect.
+> Justification:
+> Provide a clear and concise natural language explanation of why this step is the earliest decisive error step.
+> Example: At Step 3, the agent incorrectly identifies the bug as an off-by-one error in the loop condition. Based on this assumption, the agent modifies the loop boundary, which is not the source of the failure. The actual cause is an uninitialized variable in the same function, and all subsequent steps built on this misdiagnosis ultimately lead to task failure.
+
+Figure 4: RootSE Annotation Guideline. 
+
+to a single decisive step due to system limitations rather than to ambiguous task descriptions or misaligned test code. 
+
+3.3 Annotation 
+
+Following prior work [ 57 ], we adopt the Earliest Decisive Error Step as the failure point definition for RootSE. We outline this problem formulation and our annotation process below. 
+
+3.3.1 Problem Formulation. We consider an agentic system as a stateful system, where at each step the agent executes a single action based on the current state, transitioning the whole system to a new state, until a terminal state is reached [ 20 , 28 , 52 ]. Therefore, a full trajectory 𝜏 can be represented as: 𝜏 = (𝑠 0, 𝑎 0, 𝑠 1, 𝑎 1, . . . , 𝑠 𝑇 ),where 𝑇 denotes the index of the terminal step. In addition, we use 𝑍 (𝜏 ) to represent the outcome of trajectory 𝜏 , where 𝑍 (𝜏 ) = 1
+
+indicates failure and 𝑍 (𝜏 ) = 0 indicates success. Given a failed trajectory 𝜏 where 𝑍 (𝜏 ) = 1, suppose we modify the action at step 𝑡 from 𝑎 𝑡 to ˜𝑎 𝑡 , while keeping all prior steps unchanged and assuming all subsequent steps follow the optimal strategy. This yields a modified trajectory 𝜏 𝑡 . If 𝑍 (𝜏 𝑡 ) = 0, then step 𝑡 is defined as a decisive error step of trajectory 𝜏 . Among all decisive error steps in 𝜏 , the one with the smallest index is termed the earliest decisive error step. 
+
+3.3.2 Annotation Procedure. To ensure annotation quality, the pro-cedure involves three stages and three personnel: two annotators (𝐴 1, 𝐴 2), each with three years of software development experience and prior experience using coding agent products, and one validator (𝑉 0) with extensive experience in developing coding agents, who arbitrates unresolvable disagreements between 𝐴 1 and 𝐴 2.
+
+Stage I : In the first stage, each expert independently develops an annotation guideline based on the definition of the Earliest Decisive Error Step, adapting the criteria to the specific characteristics of SE task trajectories to guide precise failure localization. The three TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems Conference acronym ’XX, June 03–05, 2018, Woodstock, NY START END                  
+
+> lInsufficient Code Explora4on
+> lIncorrect Fault Localiza4on
+> lConfirma4on Bias
+> lOverlooked Task Constraints
+> lTask Intent Misunderstanding
+> lSuperficial Fix
+> lFunc4onality -breaking Fix
+> lRedundant Implementa4on
+> lSeman4c Logic Errors
+> lMissing Defensive Check
+> lOutdated Test Reliance
+> lIgnored Regression Check
+> Environment Interac.on
+> 6.5% (6)
+> lCommand Syntax Errors
+> lCorrupted Execu4on States
+> Problem Analysis
+> 21.5% (20)
+> Explora.on & Localiza.on
+> 18.3% (17 )
+> Strategic Planning
+> 12.9% (12 )
+> Code Implementa.on
+> 29.0% (27 )
+> Verifica.on
+> 11.8% (11 )
+
+Figure 5: Phase-wise Failure Distribution in RootSE. 
+
+guidelines are then consolidated through group discussion to pro-duce a unified final guideline agreed upon by all three experts, as shown in Figure 4. Stage II : In the second stage, 𝐴 1 and 𝐴 2 are each tasked to independently annotate the entire dataset following the unified guideline. Each annotation consists of two core elements: the index of the Earliest Decisive Error Step and a textual justifi-cation explaining how this step causes the system to deviate from the correct solution and ultimately leads to task failure (see Figure 4). Stage III : In the final stage, 𝐴 1 and 𝐴 2 discuss all annotation inconsistencies to reach a consensus. For any unresolvable disagree-ments, 𝑉 0 first independently annotates the disputed cases and then joins the discussion to reach a final consensus. In addition to the basic annotation, the failures are further orga-nized by their distribution across the software maintenance work-flow. The workflow is divided into five phases commonly adopted by agentic systems: problem analysis, exploration and localization, strategic planning, code implementation, and verification. Each failure is assigned to the phase in which it occurs, and within each phase, 𝐴 1 and 𝐴 2 iteratively merge similar failures into groups until no further merging is possible, with each group assigned a concise descriptive name. To evaluate annotation reliability, we measure the inter-rater agreement between 𝐴 1 and 𝐴 2 following Stage II . The Cohen’s Kappa coefficient for Earliest Decisive Error Step identification is 0.78, indicating substantial agreement [ 8 , 27 ]. All remaining discrep-ancies are subsequently resolved in Stage III through the arbitration of 𝑉 0, achieving a final consensus rate of 100%, which ensures the reliability and precision of the resulting annotations. 
+
+3.4 Benchmark Analysis 
+
+We analyze RootSE from two perspectives: the failure diversity, and the complexity of tasks and trajectories, providing deeper insight into the benchmark. 
+
+3.4.1 Failure Diversity Analysis. As shown in Figure 5, RootSE captures diverse failure modes spanning the entire software main-tenance workflow. The middle layer under each phase presents fine-grained failure types identified and consolidated by the annota-tors, such as "Overlooked Task Constraints". Failures are distributed across five phases, with Code Implementation (29.0%) and Problem Analysis (21.5%) accounting for the largest proportions. RootSE also includes failures caused by environment interaction (6.5%), which may occur across all the phases and are often overlooked in existing 
+
+Table 1: Comparison of dataset complexity across multiple dimensions for RootSE and Who&When.               
+
+> Metric Who&When RootSE (Ours) Problem Source Personal Assistant Tasks Software Maintenance Tasks
+> #Task Descriptions 240.47 8,223.51 #Files Modified 1.7 2.9 #Prog. Languages 13#Steps 22.24 50.94 #Char per Step 1,384.11 5,830.71
+
+benchmarks. Overall, the diverse failure modes demonstrate the broad coverage of RootSE as a benchmark for failure reasoning. 
+
+3.4.2 Complexity Analysis. We evaluate RootSE’s complexity along two dimensions: task complexity and trajectory complexity. Table 1 compares statistics between RootSE and Who&When dataset. For task complexity, we use three metrics: the average character count of task descriptions (#Task Descriptions), the average number of modified files (#Files Modified), and the number of programming languages in the dataset (#Prog. Languages). As shown in Table 1, task descriptions in RootSE average 8,223.51 characters, over 32 times longer than the 240.47 characters in Who&When, reflecting substantially higher contextual complexity. In addition, RootSE requires modifying an average of 2.9 files per task compared to 1.7 in Who&When, and covers multiple programming languages, indicating greater diversity and scope. For trajectory complexity, we adopt two metrics: the number of steps per trajectory (#steps) and the average character count per step (#char per step). As shown in Table 1, RootSE trajectories are richer in information, and contain more than twice the average number of steps compared to Who&When. These extended and highly detailed trajectories impose higher requirements on failure localization methods. 
+
+4 TrajAudit Methodology 
+
+Overview. TrajAudit comprises an investigator agent and two sup-porting modules: a prior failure reasoning module and a semantic saliency folding module. To mitigate the long-context degradation, the prior failure reasoning module generates a preliminary diag-nosis based on the test code and error description, directing the agent toward the most probable failure region [ 49 , 50 ]. Meanwhile, the semantic saliency folding module reduces noise by selectively folding failure-irrelevant information in the trajectory. Serving as a central hub, the investigator agent integrates the outputs of both modules and interacts with the semantic saliency folding module Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. Task Description  
+
+> Trajectory
+> Test code
+> Error Description
+> Failure Analysis Task TrajAudit
+> Semantic Saliency Folding
+> Prior Failure Reasoning
+> LLM
+> Initial Diagnostic
+> findings
+> Pattern
+> Matching
+> Keywords
+> Searching
+> Failure Step
+> Justification
+> Folded
+> Trajectory
+> retrieve folded
+> context at step x
+> full context
+> at step x
+> Investigator
+> Agent
+
+Figure 6: The overall workflow of TrajAudit 
+
+by dynamically inspecting folded observations and probing for additional context when the compressed trajectory provides insuf-ficient information [ 43 ]. Through the complementary strengths of targeted information extraction and active context probing, Tra-jAudit locates failures more accurately and efficiently than existing methods. As illustrated in Figure 6, given a failure diagnosis task, the test code and error description are fed into the prior failure reasoning module, which prompts the LLM to generate a preliminary diag-nosis of the failure, including the most suspicious failure phases and the corresponding rationale. This preliminary diagnosis is sub-sequently provided to the investigator agent as prior knowledge. Meanwhile, the trajectory is passed into the semantic saliency fold-ing module, which checks whether observational contexts contain patterns or keywords relevant to failure localization; if not, the observation content is compressed into a single token [Folded] .Given the folded trajectory and the original task description, the investigator agent then determines whether the current context is sufficient for failure localization. If so, it directly outputs the identi-fied failure step along with the corresponding rationale. Otherwise, it iteratively invokes APIs to inspect folded observation content, progressively enriching the context until sufficient information is gathered to produce a final diagnostic conclusion. We detail each component of TrajAudit as follows. 
+
+4.1 Prior Failure Reasoning 
+
+The prior failure reasoning module aims to provide prior knowledge to guide the LLM toward the most relevant areas of the trajectory for diagnosis. This design is inspired by the debugging process of software engineers. Rather than analyzing an entire execution trajectory at once, engineers typically look at the error information (e.g., exception logs) to localize the potential failure region before expanding their scope of investigation. While recent LLMs substan-tially extended context windows, existing research demonstrates that long context reasoning still incurs significant performance degradation [ 59 ]. We therefore adopt the analogous strategy to help the agent maintain focus when encountering long-horizon trajectories. Specifically, this module accepts the results of task execution failure, including test code and error description, along with a pre-defined set of five phases in completing software maintenance tasks (i.e., requirement analysis, planning, code implementation, and fi-nal verification). With this information, the LLM is then prompted to identify the phase most likely responsible for the failed test, 
+
+Algorithm 1 Semantic Saliency Folding                                                         
+
+> Input: Trajectory 𝑇 , length threshold 𝜏
+> Output: Folded trajectory 𝑇 ∗
+> 𝑃 ←complied patch-header pattern ⊲e.g., --- a ,+++ b ,@@ -N,M +P,Q @@
+> 𝐾 ← { "exception", "fail", "error", "traceback", "invalid" . . . }
+> 𝑇 ∗← [ ]
+> for each entry 𝑐 in 𝑇 do
+> 𝑑 ←𝑝𝑎𝑟𝑠𝑒 (𝑐 )
+> 𝑠 ←𝑑 [”𝑜𝑏𝑠𝑒𝑟 𝑣𝑎𝑡𝑖𝑜𝑛 ”];ℓ← | 𝑠 |
+> if 𝑠 not matches 𝑃 AND (ℓ>𝜏 OR 𝑠 not contains 𝑘 ∈𝐾 )then
+> 𝑑 [”𝑜𝑏𝑠𝑒𝑟 𝑣𝑎𝑡𝑖𝑜𝑛 ”] ← "Folded, please invoke API to view the full context"
+> end if
+> append 𝑠𝑒𝑟𝑖𝑎𝑙𝑖𝑧𝑒𝑑 (𝑑 )to 𝑇 ∗
+> end for
+
+along with the corresponding rationale. This preliminary diagnos-tic serves as prior knowledge, directing the LLM’s attention toward the most probable failure region before it processes the full trajec-tory. 
+
+4.2 Semantic Saliency Folding 
+
+Compared to natural language reasoning or web browsing tasks, coding trajectories are much denser and complicated, particularly within the observation steps that document code artifacts and execu-tion states. In RootSE, for example, observation content accounts for over 74.9% of the total trajectory length. While certain observations contain critical failure signals (e.g., error logs or patch outputs), the majority constitute redundant data. For instance, creating a file often returns verbose outputs such as complete directory trees. All such API responses are logged entirely within the observation entries of the trajectory. As these failure-irrelevant observations ac-cumulate over long-horizon tasks, they introduce substantial noise that degrades the reasoning capabilities of diagnostic methods. To mitigate this, we introduce the semantic saliency folding module, which flags potential failure signals through pattern and keyword matching and folds away other irrelevant information. We consider two types of observations as failure-relevant. The first encompasses the generated code patches, as they explicitly capture how the agent modifies the code and thus allow us to identify which exact code changes lead to the test failure. Second, inspired by run-time monitoring for traditional systems [ 12 , 16 , 18 , 26 ], we reserve the observations containing failure-indicative keywords, such as 
+
+traceback and exception .The semantic saliency folding is detailed in Algorithm 1. To be-gin with, we apply pattern matching to identify code patches. The widely adopted patch format in software projects is the code diff [ 36 ], which follows a unified structure: the patch header contains file metadata in the form of --- a and +++ b , representing the orig-inal and modified files respectively, while the hunk header follows the format @@ -N,M +P,Q @@ to indicate the location of modifica-tions within the code file. We encode these fixed structural patterns into regular expressions and applied to identify patches within observations. Afterwards, we predefine a failure indicator dictio-nary covering the frequently occurring failure-indicative keywords, constructed through LLM generation and manual refinement. Any observation containing these keywords is flagged as a signal that the agentic system has likely encountered an anomalous state. Ob-servations that lack both patch data and failure keywords are folded, while those matching either criterion are preserved. The resulting TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems Conference acronym ’XX, June 03–05, 2018, Woodstock, NY 
+
+trajectory, with noise removed, is then passed to the investigator agent for further analysis. 
+
+4.3 Investigator Agent 
+
+The investigator agent serves as a central hub that integrates the processed outputs from the above two modules, and dynamically probes the folded observations on demand to make the final diag-nosis. The investigator agent is prompted [ 4 ] to first assess whether the current context is sufficient for failure localization. If so, it directly outputs the identified failure step index along with the corresponding justification; otherwise, it iteratively invokes local tools to inspect folded observations and progressively expands the available context until a final diagnosis can be produced. To support this process, the agent is equipped with two interactive APIs: one for retrieving the content of a folded observation at a specific step, and one for submitting the final diagnostic result. 
+
+5 Experimental Setup 
+
+We evaluate TrajAudit by answering the following research ques-tions (RQs): 
+
+• RQ1: How effective is TrajAudit? 
+
+• RQ2: How does TrajAudit compare to baselines in token effi-ciency? 
+
+• RQ3: How robust is TrajAudit across different backbone LLMs? 
+
+• RQ4: What is the impact of each component on TrajAudit’s performance? 
+
+5.1 Dataset 
+
+We conduct experiments on RootSE, the dataset proposed in this pa-per (Section 3), comprising 93 instances collected from trajectories of representative agentic systems that failed to resolve real-world software issues. Each instance is annotated with a ground-truth earliest decisive error step and the corresponding diagnosis justifi-cation. The benchmark spans over 4,500 steps in total, providing a challenging and extensive testbed for failure diagnosis methods. 
+
+5.2 Baselines 
+
+Considering the code accessibility of baseline methods, we select one trivial method and three LLM-based failure diagnosis meth-ods proposed by Zhang et al. [ 57 ] as our baselines: (1) Random Failure Attribution : A failure step is selected at random from the trajectory, establishing a chance-level lower bound. (2) All-at-Once : The entire trajectory is fed into the LLM in a single pass, which is prompted to directly identify the failure step responsible for the observed test failure. (3) Step-by-Step : The LLM processes the trajectory sequentially, evaluating at each step whether an error has been introduced given all preceding context. The process termi-nates upon identifying the first erroneous step. (4) Binary Search :The LLM is first prompted to determine whether the failure occurs in the first or second half of the trajectory. This bisection process is applied recursively, narrowing the search scope until the failure step is pinpointed. All baselines were reproduced based on their publicly available implementations. 
+
+5.3 Evaluation Settings 
+
+Inspired by the evaluation protocol of Who&When, we conduct experiments under two settings: with reference and without reference , indicating whether a reference patch for the current task is provided for failure diagnosis. Unlike Who&When, where tasks have deterministic answers expressible in a few keywords, software maintenance tasks support multiple valid solutions, making a single definitive ground truth infeasible. Therefore, we instead provide a reference patch as one representative solution. These two settings evaluate the practicability of failure local-ization methods under different real-world scenarios. In the with-reference setting, which is common in the typical agentic system development cycle when validating systems against well-defined tasks, failure localization methods can be leveraged to debug poten-tial design errors. In the without-reference setting, failure localiza-tion methods operate solely on execution logs to locate potential failures, which can be viewed as a form of self-reflection that con-tributes to the improvement of task-solving capabilities. 
+
+5.4 Metrics 
+
+We evaluate all methods using three metrics introduced in Section 3: 
+
+Exact Step-Level Accuracy , which measures the proportion of predictions that exactly match the ground-truth failure step; Tol-erated Step-Level Accuracy , which considers predictions within a predefined tolerance window as correct; and Justification Ac-curacy , which measures the proportion of instances where the predicted failure justification is semantically consistent with the ground truth. Unless otherwise specified, all results are reported un-der the Exact Step-Level Accuracy metric in the without-reference setting. 
+
+5.5 Implementation Details 
+
+All experiments are conducted on a MacBook Air equipped with an Apple M3 processor and 16GB of unified memory, running ma-cOS Sequoia version 15.5. We employ Claude-Sonnet-4-5-20250929 as the default LLM and invoke the LLM API through the OpenAI interface [ 37 ]. To ensure deterministic outputs and minimize ran-domness, the temperature parameter is set to 0 for the initial attempt and increased to 0.1 for subsequent retries [ 38 ]. Each configuration is evaluated over 3 independent runs, with the average accuracy reported as the final result. 
+
+6 Evaluation Results 6.1 RQ1. How effective is TrajAudit? 
+
+We comprehensively evaluate the effectiveness of TrajAudit against state-of-the-art failure localization baselines across four dimen-sions: exact step-level accuracy, tolerated step-level accuracy, per-formance across varying context lengths, and justification accuracy under different context lengths. 
+
+Exact Step-Level Accuracy. As shown in Table 2, TrajAudit achieves the highest exact step-level accuracy in both settings, outperforming the best-performing baseline All-at-Once by 24.7% (56.6% vs. 31.9%) with reference and by 24.0% (50.9% vs. 26.9%) without reference in absolute terms, demonstrating its superior Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. 
+
+capability in precisely localizing failure steps on software mainte-nance task trajectories. 
+
+Table 2: Exact Step-Level Accuracy of Failure Localization Methods on RootSE. 
+
+Exact Step-Level Accuracy (%) 
+
+Method w/ Reference w/o Reference Random Attribution 5.4 All-at-Once 31.9 26.9 Step-by-Step 23 .3 26 .2
+
+Binary Search 15 .8 16 .5
+
+TrajAudit 56.6 50.9 Tolerated Step-Level Accuracy. In many practical scenarios, pinpointing the exact decisive error step is not necessary; localiz-ing the failure within a narrow range of candidate steps is often sufficient for downstream debugging and correction. As shown in Table 3, TrajAudit consistently achieves the best tolerated step-level accuracy across all tolerance windows, outperforming the best-performing baseline All-at-Once by over 17.3% at all levels in absolute terms ( ±1: 58.4% vs. 40.1%, ±2: 63.8% vs. 47.0%, ±3: 65.2% vs. 48.4%), confirming its superior failure localization capability under relaxed localization criteria. 
+
+Table 3: Step-Level Accuracy under Different Tolerances on RootSE.                 
+
+> Toler. All-at-Once Step-by-Step Binary Search TrajAudit
+> ±140.1 39.8 29.4 58.4
+> ±247.0 43.7 35.5 63.8
+> ±348.4 45.9 39.1 65.2
+
+Performance across varying context lengths. Figure 7 illus-trates the exact step-level accuracy across trajectories of varying lengths. We partition the trajectories in RootSE into five complexity levels based on step count: Level 1 (0–20), Level 2 (21–40), Level 3 (41–60), Level 4 (61–80), and Level 5 ( >80). As trajectory length increases, the performance gap between TrajAudit and the base-lines demonstrates a upward trend, reaching its maximum at Level 5. Notably, the accuracy gap between TrajAudit and Step-by-Step exceeds 70% at this level, demonstrating TrajAudit’s superior capa-bility in handling long-horizon trajectories compared to baselines. 
+
+Figure 7: Exact Step-Level Accuracy across Varying Trajectory Length on RootSE. Justification accuracy under different context lengths. To assess justification quality, we adopt an LLM-as-a-judge approach [ 10 ], using the default LLM in our experimental setup to evaluate whether the predicted failure justification is semantically consis-tent with the ground truth. Since Binary Search does not produce failure justifications, it is excluded from this comparison. As shown in Table 4, TrajAudit demonstrates a clear advantage over base-line methods as trajectory length increases. On shorter trajectories (0–20 steps), TrajAudit performs on par with Step-by-Step, while All-at-Once achieves a higher accuracy, suggesting that the single-pass approach may be more effective when trajectory context is limited. However, TrajAudit achieves consistently higher justifi-cation accuracy on longer trajectories, reaching 81.3% and 75.0% on Level 3 and Level 4, respectively, compared to 68.8% and 54.2% for All-at-Once. Overall, TrajAudit achieves the highest total accu-racy of 71.0%, outperforming All-at-Once (62.4%) and Step-by-Step (40.9%), demonstrating its superior ability to produce accurate fail-ure justifications on complex long-horizon trajectories. 
+
+Table 4: Comparison of Justification Accuracy across Trajec-tory Length Levels. Steps TrajAudit All-at-Once Step-by-Step 
+
+0–20 33.3 53.3 33.3 21–40 72.7 54.6 27.3 41–60 81.3 68.8 50.0 61–80 75.0 54.2 41.7 
+
+>80 81.8 81.8 36.4 
+
+Total 71.0 62.4 40.9 
+
+Answer to RQ1: TrajAudit consistently outperforms baselines in all metrics, with performance advantages becoming more pronounced as trajectory length increases. 
+
+6.2 RQ2. How does TrajAudit compare to baselines in token efficiency? 
+
+We evaluate token efficiency on the subset of instances where all four methods successfully localized the exact failure step, as token consumption on failed instances is less informative and varying context lengths across tasks may otherwise introduce confounding factors. TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems Conference acronym ’XX, June 03–05, 2018, Woodstock, NY 
+
+As shown in Table 5, TrajAudit achieves the lowest token con-sumption in both settings, consuming only 40,246 and 50,722 tokens on average with and without reference respectively. Notably, Step-by-Step incurs the highest token overhead, consuming over 6 × and 12 × more tokens than TrajAudit in the two settings respectively, as it processes the entire preceding context at each step. While All-at-Once is the most competitive baseline in terms of token effi-ciency, TrajAudit still reduces its consumption by 10% and 26% in the two settings. These results demonstrate that TrajAudit achieves superior failure localization accuracy while maintaining the lowest token overhead among all methods. 
+
+Table 5: Token Consumption Comparison of Failure Local-ization Methods on RootSE 
+
+Average Token Consumption 
+
+Method w/ Reference w/o Reference 
+
+All-at-Once 44,440 ( ↑10%) 63,669 ( ↑26%) Step-by-Step 290,802 ( ↑623%) 672,903 ( ↑1227%) Binary Search 106,522 ( ↑165%) 118,142 ( ↑133%) 
+
+TrajAudit 40,246 50,722 Answer to RQ2: TrajAudit achieves the lowest token consumption among all methods while maintaining superior failure localization accuracy, demonstrating its strong token efficiency. 
+
+6.3 RQ3. How robust is TrajAudit across different backbone LLMs? 
+
+To evaluate TrajAudit’s robustness across different LLM backbones, we experimented with three commonly used models: Claude-Sonnet-4-5-20250929, GPT-5.2-2025-12-11, and DeepSeek-R1. As shown in Table 6, TrajAudit maintains competitive step-level accuracy across all three backbones, ranging from 50.5% to 56.6% with reference and from 45.5% to 51.3% without reference. Although localization accuracy varies moderately across models, all results remain within an acceptable range for practical application, demonstrating that TrajAudit is not dependent on a specific LLM backbone. In addition, a consistent pattern is observed in justification consistency, where Claude-Sonnet achieves the highest rates of 72.0% and 71.0% with and without reference respectively, while DeepSeek-R1 yields the lowest. Notably, this ranking aligns with the step-level accuracy results, suggesting that backbone capability influences both local-ization precision and justification quality in a consistent manner. 
+
+Table 6: Performance of TrajAudit across Different Backbone LLMs on RootSE.                  
+
+> Step-Level Acc. Justification Acc. Backbone LLM w/ Ref w/o Ref w/ Ref w/o Ref
+> Claude-Sonnet 56.6 50.9 72.0 71.0
+> GPT-5.2 54.1 51.3 64.5 59.1 DeepSeek-R1 50.5 45.5 58.1 47.3
+
+Answer to RQ3: TrajAudit demonstrates stable step-level accuracy across different backbone LLMs. While justification accuracy varies more, all results remain within an acceptable fluctuation, confirming its robustness. 
+
+6.4 RQ4. What is the impact of each component on TrajAudit’s performance? 
+
+We conduct an ablation study to examine the individual contribu-tion of each component within TrajAudit, namely the Semantic Saliency Folding and Prior Failure Reasoning modules. As shown in Table 7, removing the Prior Failure Reasoning (PFR) module leads to a moderate localization accuracy drop of 3.5% (with reference) and 3.9% (without reference) in absolute terms, indi-cating that the preliminary diagnostic guidance provided by PFR effectively directs the agent’s attention toward the most probable failure region. Removing the Semantic Saliency Folding (SSF) mod-ule results in a more substantial degradation of 11.4% and 8.2%, demonstrating that SSF plays a more critical role by shielding the LLM from observational noise and enabling more focused failure localization reasoning. Overall, both components contribute posi-tively to TrajAudit’s step-level accuracy, with SSF being the more influential of the two. Regarding justification accuracy, removing PFR leads to a drop in justification accuracy under both settings, indicating that the preliminary overall failure view provided by PFR helps TrajAudit generate more accurate failure justifications. Removing SSF results in a drop of 2.2% without reference but a slight increase of 1.1% with reference, suggesting that the folding operation may occasionally compress context useful for justification generation. Nevertheless, given that SSF reduces token consumption by over 20%, this repre-sents a trade-off between justification accuracy and efficiency. 
+
+Table 7: Ablation Study of TrajAudit Components on RootSE.                       
+
+> Exact Step-Level Acc. Justification Acc. SSF PFR w/ Ref w/o Ref w/ Ref w/o Ref
+> ✓✓56.6 50.9 72.0 71.0
+> ✓×53.1 ( ↓3.5%) 47.0 ( ↓3.9%) 70.9 ( ↓1.1%) 67.7 ( ↓3.3%)
+> ×✓45.2 ( ↓11.4%) 42.7 ( ↓8.2%) 73.1 (↑1.1%) 68.8 ( ↓2.2%)
+> SSF: Semantic Saliency Folding; PFR: Prior Failure Reasoning.
+
+Answer to RQ4: Both modules contribute positively to TrajAudit’s performance, with the semantic saliency folding module being the more influential component in step-level accuracy. 
+
+7 Case Study 
+
+To illustrate the workflow of TrajAudit, we present a concrete example where an agentic system fails to resolve a connection timeout bug caused by a port inconsistency between the expected port specified in the test code and the actual port the software attempts to connect to. As shown in Figure 8, TrajAudit operates in three phases. In phase (i), two processes run concurrently. (ia) The prior failure reasoning module feeds the test code and error description into the LLM, which identifies the Exploration and Localization phase as the Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. Task                                                  
+
+> Description
+> Resolve the Connec&onTimeout in the Analy&csService when connec.ng to the local
+> database instance.
+> Trajectory
+> [🛠 Ac.on] cat config/ database.yaml
+> [🖥 Observa.on] host: "127.0.0.1", port: 5431 (Root
+> Cause) , [... 180 lines of irrelevant K8s environment
+> variables and security tokens ...]
+> [💡 Thought] I will examine the service configura.on
+> to iden.fy the database endpoint and port.
+> [🛠 Ac.on] sed -i's/DB_TIMEOUT = 5/DB_TIMEOUT =
+> 30/' src /constants.py
+> [🖥 Observa.on] [... 2,000+ lines of build logs and file
+> system diffs triggered by the auto -forma[er ...]
+> [💡 Thought] Update the .meout constant to allow for
+> slower handshakes.
+> Test
+> code
+> Error
+> Description
+> Failure Analysis Task
+> def test_connec+on ():
+> service = Analy+csService ()
+> # Should connect to PostgreSQL on default port 5432
+> assert service.check_db_status () == "CONNECTED"
+> FAILED tests/ test_db.py :: test_connec+on -Asser+onError : Expected:
+> "CONNECTED", Actual: "TIMEOUT_ERROR" Traceback: ...
+> Connec+onRefusedError : [ Errno 61] Connec+on refused at 127.0.0.1:5431
+> [🛠 Ac.on] pytest tests/ test_db.py
+> [🖥 Observa.on] FAILED. TimeoutError : Failed to
+> reach 127.0.0.1:5431 a^er 5000ms.
+> [💡 Thought] Verify the failure and capture the
+> detailed network traceback.
+> [🛠 Ac.on] read_file src /constants.py
+> [🖥 Observa.on] DB_TIMEOUT = 5
+> [💡 Thought] The connec.on is .ming out. I suspect
+> the default .meout in the client is too short for the
+> local environment. I will increase it to 30 seconds.
+> [🛠 Ac.on] pytest tests/ test_db.py
+> [🖥 Observa.on] FAILED. TimeoutError : S.ll unable
+> to reach 127.0.0.1:5431.
+> [💡 Thought] Re -run the test to confirm the fix.
+> 1
+> 2
+> 3
+> 4
+> 5
+> Prior Failure Reasoning
+> LLM
+> Preliminary Diagnosis
+> The failure is most likely to occur at the
+
+Explora(on & Localiza(on                                                
+
+> phase. Based on the error report and the test code annota.on, the root
+> cause points to a port inconsistency issue. However, the agent did not
+> address this in its patch, sugges.ng that the agent incorrectly iden.fied
+> the failure loca.on during the explora.on phase.
+> [🛠 Ac.on] cat … yaml
+> [🖥 Observa.on] Folded
+> [💡 Thought] I will examine
+> the service … and port.
+> [🛠 Ac.on] sed -i…
+> src /constants.py
+> [🖥 Observa.on] Folded
+> [💡 Thought] Update …
+> handshakes.
+> [🛠 Ac.on] pytest …db.py
+> [🖥 Observa.on] FAILED .
+> TimeoutError :Failed to reach
+> 127.0.0.1:5431 a^er 5000ms.
+> [💡 Thought] Verify the
+> failure … traceback.
+> [🛠 Ac.on] read … py
+> [🖥 Observa.on] Folded
+> [💡 Thought] Connec.on … 30s.
+> [🛠 Ac.on] pytest ... py
+> [🖥 Observa.on] FAILED .
+> TimeoutError : S.ll unable
+> to reach 127.0.0.1:5431.
+> [💡 Thought] Re -run … fix.
+> 1
+> 2
+> 3
+> 4
+> 5
+> Pattern
+> Matching
+> Keywords
+> Searching
+> Semantic Saliency
+> Folding
+> view_observa+on at step 1
+> Folded Trajectory Inves/gator Agent
+> Final Diagnosis
+> The failure step is Step 3. Although the
+> agent collected port informa+on
+> indica+ng a port inconsistency as early
+> as Step 1, it failed to recognize its
+> significance and instead misaaributed
+> the failure to an insufficient +me limit
+> at Step 3.
+> ia
+> ib
+> ii
+> iii
+
+Figure 8: A Worked Example of TrajAudit. 
+
+most suspicious failure region. The diagnosis is based on the obser-vation that the test code explicitly specifies the expected port, yet the generated patch does not address this inconsistency, suggesting that the agent failed to correctly identify the problematic code. (ib) Concurrently, the semantic saliency folding module applies pat-tern matching and keyword filtering to compress observations in trajectories that are less relevant to failure localization. In phase (ii), the investigator agent receives the preliminary di-agnosis and the folded trajectory as input and determines whether additional context is needed for failure localization. Although the current information is sufficient to identify the most probable failure step, the investigator agent determines that it cannot yet conclude whether the agentic system failed to collect the port-related infor-mation entirely or collected it but overlooked its significance. As this distinction is important for providing informative insight for later bug fixing, the investigator agent invokes the API to retrieve the folded observation at Step 1 to investigate whether the agent encountered the port-related information during execution. In phase (iii), with the retrieved observation from Step 1, the investigator agent confirms that the agentic system did collect the port-related information but failed to recognize its significance. Based on this complete context, the investigator agent outputs the final diagnosis, identifying Step 3 as the decisive failure step and providing a justification that the agentic system overlooked the collected port information during the exploration phase. This case demonstrates that through the collaboration of its two modules, TrajAudit accurately localizes the failure step while providing a justified diagnosis that offers valuable insight for users. 
+
+8 Threats to Validity 
+
+Internal threat. The primary internal threat concerns whether 93 instances are sufficient to evaluate failure localization methods. These instances were carefully filtered from over 500 trajectories, excluding failures attributable to external factors such as ambiguous task descriptions. Furthermore, our dataset scale is comparable to existing related benchmarks with an even finer-grained annotation: Who&When [57] contains only 58 instances of real-world agentic systems, and the empirical study by Bouzenia et al. [ 6] includes 120 trajectories, suggesting that our dataset is sufficient for drawing representative findings. 
+
+External threat. The main external threat is the inherent non-determinism of LLMs. Even at temperature 0, LLMs may produce stochastic outputs for identical inputs, potentially introducing vari-ance into performance comparisons. To mitigate this, each experi-ment was repeated three times under identical conditions, and the reported metrics are averaged across all runs. 
+
+9 Related Work 
+
+Benchmarking Agentic Systems for Software Engineering .Several benchmarks have been proposed to evaluate LLMs and agentic systems on software engineering tasks, with a particular focus on software maintenance. SWE-bench [ 23 ] first collected real-world tasks from GitHub issues across 12 popular Python reposi-tories, with SWE-bench Verified subsequently refining the dataset through manual filtering to ensure task clarity and patch correct-ness. SWT-bench [ 35 ] extends the scope to test case generation, while SWE-bench Pro [ 9] introduces significantly more complex tasks requiring on average over 100 lines of code modification across 4.1 files. 
+
+Agentic System Reliability . Apart from the fault localization methods introduced in Section 2, another line of work focuses on improving agent reliability through enhancing the observability of agent execution. AgentOps [ 11 , 25 ] provides real-time execution tracing and key parameter monitoring to support agent debugging and deployment. More closely related to our work, Bouzenia et al. [ 6] analyze statistical properties and reasoning coherence during agent execution to distinguish successful from failed runs. However, their study relies solely on manual failure characterization, leaving automated failure localization unaddressed, a gap that TrajAudit aims to fill. TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems Conference acronym ’XX, June 03–05, 2018, Woodstock, NY 
+
+10 Conclusion 
+
+In this paper, we propose TrajAudit, the first automated failure diagnosis framework specifically designed for agentic system tra-jectories in complex tasks such as software maintenance. TrajAudit employs an investigator agent supported by a semantic saliency folding module that filters failure-irrelevant information and a prior failure reasoning module that provides preliminary diagnostic guid-ance, enabling accurate failure localization on noisy long trajec-tories. To support comprehensive evaluation, we also construct RootSE, the first benchmark dedicated to failure diagnosis on agen-tic programming trajectories. Experimental results demonstrate that TrajAudit consistently outperforms all baselines on RootSE, validating the effectiveness of our approach. 
+
+Data Availability Statement 
+
+We release all implementations of the TrajAudit framework along with the RootSE benchmark at https://github.com/LogAnalysisTech/ TrajAudit. 
+
+References 
+
+[1] Rui Abreu, Peter Zoeteweij, and Arjan JC Van Gemund. 2007. On the accuracy of spectrum-based fault localization. In Testing: Academic and industrial conference practice and research techniques-MUTATION (TAICPART-MUTATION 2007) . IEEE, 89–98. [2] Elena Akik, Marko Vještica, Vladimir Dimitrieski, Slavica Kordić, and Sonja Ristić. 2025. Architecture of Multi-agent System for Automatic Code Template Maintenance. In European Conference on Advances in Databases and Information Systems . Springer, 296–310. [3] Stefano V Albrecht and Peter Stone. 2018. Autonomous agents modelling other agents: A comprehensive survey and open problems. Artificial Intelligence 258 (2018), 66–95. [4] Anonymous. 2026. Reference . doi:10.5281/zenodo.19230090 [5] Amine Barrak. 2025. Traceability and Accountability in Role-Specialized Multi-Agent LLM Pipelines. In 2025 40th IEEE/ACM International Conference on Auto-mated Software Engineering Workshops (ASEW) . IEEE, 315–322. [6] Islem Bouzenia and Michael Pradel. 2025. Understanding Software Engineering Agents: A Study of Thought-Action-Result Trajectories. In 2025 40th IEEE/ACM International Conference on Automated Software Engineering (ASE) . IEEE, 2846– 2857. [7] Subhajit Chaudhury, Payel Das, Sarathkrishna Swaminathan, Georgios Kollias, Elliot Nelson, Khushbu Pahwa, Tejaswini Pedapati, Igor Melnyk, and Matthew Riemer. 2025. EpMAN: Episodic Memory AttentioN for Generalizing to Longer Contexts. In Proceedings of the 63rd Annual Meeting of the Association for Compu-tational Linguistics (Volume 1: Long Papers) . 11696–11708. [8] Jacob Cohen. 1960. A coefficient of agreement for nominal scales. Educational and psychological measurement 20, 1 (1960), 37–46. [9] Xiang Deng, Jeff Da, Edwin Pan, Yannis Yiming He, Charles Ide, Kanak Garg, Niklas Lauffer, Andrew Park, Nitin Pasari, Chetan Rane, et al . 2025. Swe-bench pro: Can ai agents solve long-horizon software engineering tasks? arXiv preprint arXiv:2509.16941 (2025). [10] Darshan Deshpande, Varun Gangal, Hersh Mehta, Jitin Krishnan, Anand Kan-nappan, and Rebecca Qian. 2025. TRAIL: Trace Reasoning and Agentic Issue Localization. arXiv:2505.08638 [cs.AI] https://arxiv.org/abs/2505.08638 [11] Liming Dong, Qinghua Lu, and Liming Zhu. 2024. Agentops: Enabling observ-ability of llm agents. arXiv preprint arXiv:2411.05285 (2024). [12] Min Du, Feifei Li, Guineng Zheng, and Vivek Srikumar. 2017. Deeplog: Anomaly detection and diagnosis from system logs through deep learning. In Proceedings of the 2017 ACM SIGSAC conference on computer and communications security .1285–1298. [13] Will Epperson, Gagan Bansal, Victor C Dibia, Adam Fourney, Jack Gerrits, Erkang Zhu, and Saleema Amershi. 2025. Interactive debugging and steering of multi-agent ai systems. In Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems . 1–15. [14] Stan Franklin and Art Graesser. 1996. Is it an Agent, or just a Program?: A Taxonomy for Autonomous Agents. In International workshop on agent theories, architectures, and languages . Springer, 21–35. [15] Yu Ge, Linna Xie, Zhong Li, Yu Pei, and Tian Zhang. 2025. Who is introducing the failure? automatically attributing failures of multi-agent systems via spectrum analysis. arXiv preprint arXiv:2509.13782 (2025). [16] Haixuan Guo, Shuhan Yuan, and Xintao Wu. 2021. Logbert: Log anomaly detec-tion via bert. In 2021 international joint conference on neural networks (IJCNN) .IEEE, 1–8. [17] Shanshan Han, Qifan Zhang, Weizhao Jin, and Zhaozhuo Xu. 2024. LLM multi-agent systems: Challenges and open problems. arXiv preprint arXiv:2402.03578 
+
+(2024). [18] Shilin He, Jieming Zhu, Pinjia He, and Michael R Lyu. 2016. Experience re-port: System log analysis for anomaly detection. In 2016 IEEE 27th international symposium on software reliability engineering (ISSRE) . IEEE, 207–218. [19] Samuel Holt, Max Ruiz Luyten, and Mihaela van der Schaar. [n. d.]. L2MAC: Large Language Model Automatic Computer for Extensive Code Generation. In 
+
+The Twelfth International Conference on Learning Representations .[20] Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng, Jinlin Wang, Ceyao Zhang, Zili Wang, Steven Ka Shing Yau, Zijuan Lin, et al .2023. MetaGPT: Meta programming for a multi-agent collaborative framework. In The twelfth international conference on learning representations .[21] Xinyi Hou, Yanjie Zhao, Yue Liu, Zhou Yang, Kailong Wang, Li Li, Xiapu Luo, David Lo, John Grundy, and Haoyu Wang. 2024. Large language models for software engineering: A systematic literature review. ACM Transactions on Software Engineering and Methodology 33, 8 (2024), 1–79. [22] Li Hu, Guoqiang Chen, Xiuwei Shang, Shaoyin Cheng, Benlong Wu, LiGangyang LiGangyang, Xu Zhu, Weiming Zhang, and Nenghai Yu. 2025. CompileAgent: Automated real-world repo-level compilation with tool-integrated LLM-based agent system. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) . 2078–2091. [23] Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. 2023. Swe-bench: Can language models resolve real-world github issues? arXiv preprint arXiv:2310.06770 (2023). [24] James A Jones and Mary Jean Harrold. 2005. Empirical evaluation of the taran-tula automatic fault-localization technique. In Proceedings of the 20th IEEE/ACM international Conference on Automated software engineering . 273–282. [25] Satyadhar Joshi. 2025. LLMOps, AgentOps, and MLOps for Generative AI: A Comprehensive Review. (2025). [26] Max Landauer, Sebastian Onder, Florian Skopik, and Markus Wurzenberger. 2023. Deep learning for anomaly detection in log data: A survey. Machine Learning with Applications 12 (2023), 100470. [27] J Richard Landis and Gary G Koch. 1977. The measurement of observer agreement for categorical data. biometrics (1977), 159–174. [28] Guohao Li, Hasan Hammoud, Hani Itani, Dmitrii Khizbullin, and Bernard Ghanem. 2023. Camel: Communicative agents for" mind" exploration of large language model society. Advances in neural information processing systems 36 (2023), 51991–52008. [29] Junwei Liu, Kaixin Wang, Yixuan Chen, Xin Peng, Zhenpeng Chen, Lingming Zhang, and Yiling Lou. 2024. Large language model-based agents for software en-gineering: A survey. ACM Transactions on Software Engineering and Methodology 
+
+(2024). [30] Nelson F Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. 2024. Lost in the middle: How language models use long contexts. Transactions of the association for computational linguistics 12 (2024), 157–173. [31] Tianyang Liu, Canwen Xu, and Julian McAuley. [n. d.]. RepoBench: Benchmark-ing Repository-Level Code Auto-Completion Systems. In The Twelfth Interna-tional Conference on Learning Representations .[32] Ruofan Lu, Yichen Li, and Yintong Huo. 2025. Exploring Autonomous Agents: A Closer Look at Why They Fail When Completing Tasks. In 2025 40th IEEE/ACM International Conference on Automated Software Engineering (ASE) . IEEE, 3856– 3860. [33] Junyu Luo, Weizhi Zhang, Ye Yuan, Yusheng Zhao, Junwei Yang, Yiyang Gu, Bohan Wu, Binqi Chen, Ziyue Qiao, Qingqing Long, et al . 2025. Large language model agent: A survey on methodology, applications and challenges. arXiv preprint arXiv:2503.21460 (2025). [34] Grégoire Mialon, Clémentine Fourrier, Thomas Wolf, Yann LeCun, and Thomas Scialom. 2023. Gaia: a benchmark for general ai assistants. In The Twelfth Inter-national Conference on Learning Representations .[35] Niels Mündler, Mark N Müller, Jingxuan He, and Martin Vechev. 2024. Swt-bench: Testing and validating real-world bug-fixes with code agents. Advances in Neural Information Processing Systems 37 (2024), 81857–81887. [36] Eugene W Myers. 1986. An O (ND) difference algorithm and its variations. 
+
+Algorithmica 1, 1 (1986), 251–266. [37] OpenAI. 2023. OpenAI API . https://openai.com/blog/openai-api [Online; accessed 1 Aug 2023]. [38] Shuyin Ouyang, Jie M Zhang, Mark Harman, and Meng Wang. 2025. An empirical study of the non-determinism of chatgpt in code generation. ACM Transactions on Software Engineering and Methodology 34, 2 (2025), 1–28. [39] Melissa Z Pan, Mert Cemri, Lakshya A Agrawal, Shuyi Yang, Bhavya Chopra, Rishabh Tiwari, Kurt Keutzer, Aditya Parameswaran, Kannan Ramchandran, Dan Klein, et al . 2025. Why do multiagent systems fail?. In ICLR 2025 Workshop on Building Trust in Language Models and Applications .Conference acronym ’XX, June 03–05, 2018, Woodstock, NY Trovato et al. 
+
+[40] Chris Parnin and Alessandro Orso. 2011. Are automated debugging techniques actually helping programmers?. In Proceedings of the 2011 international symposium on software testing and analysis . 199–209. [41] Chen Qian, Wei Liu, Hongzhang Liu, Nuo Chen, Yufan Dang, Jiahao Li, Cheng Yang, Weize Chen, Yusheng Su, Xin Cong, et al . 2024. Chatdev: Communicative agents for software development. In Proceedings of the 62nd annual meeting of the association for computational linguistics (volume 1: Long papers) . 15174–15186. [42] Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang, Bill Qian, et al . 2023. Toolllm: Facilitating large language models to master 16000+ real-world apis. arXiv preprint arXiv:2307.16789 (2023). [43] Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Eric Hambro, Luke Zettlemoyer, Nicola Cancedda, and Thomas Scialom. 2023. Toolformer: Language models can teach themselves to use tools. Advances in neural information processing systems 36 (2023), 68539–68551. [44] Freda Shi, Xinyun Chen, Kanishka Misra, Nathan Scales, David Dohan, Ed H Chi, Nathanael Schärli, and Denny Zhou. 2023. Large language models can be easily distracted by irrelevant context. In International Conference on Machine Learning .PMLR, 31210–31227. [45] Yuan Tian and Tianyi Zhang. 2025. Selective Prompt Anchoring for Code Gener-ation. In International Conference on Machine Learning . PMLR, 59528–59551. [46] Maria Trofimova, Anton Shevtsov, Badertdinov Ibragim, Konstantin Pyaev, Simon Karasik, and Alexander Golubev. 2025. OpenHands Trajectories with Qwen3-Coder-480B-A35B-Instruct. Nebius blog (2025). [47] Xingyao Wang, Boxuan Li, Yufan Song, Frank F Xu, Xiangru Tang, Mingchen Zhuge, Jiayi Pan, Yueqi Song, Bowen Li, Jaskirat Singh, et al . 2024. Openhands: An open platform for ai software developers as generalist agents. arXiv preprint arXiv:2407.16741 (2024). [48] Yanlin Wang, Wanjun Zhong, Yanxian Huang, Ensheng Shi, Min Yang, Jiachi Chen, Hui Li, Yuchi Ma, Qianxiang Wang, and Zibin Zheng. 2025. Agents in soft-ware engineering: Survey, landscape, and vision. Automated Software Engineering 
+
+32, 2 (2025), 70. [49] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny Zhou, et al . 2022. Chain-of-thought prompting elicits reasoning in large language models. Advances in neural information processing systems 35 (2022), 24824–24837. [50] Mark Weiser. 1984. Program slicing. IEEE Transactions on software engineering 4(1984), 352–357. [51] W Eric Wong, Ruizhi Gao, Yihao Li, Rui Abreu, and Franz Wotawa. 2016. A survey on software fault localization. IEEE Transactions on Software Engineering 
+
+42, 8 (2016), 707–740. [52] Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, Erkang Zhu, Li Jiang, Xiaoyun Zhang, Shaokun Zhang, Jiale Liu, et al . 2024. Autogen: Enabling next-gen LLM applications via multi-agent conversations. In First conference on language modeling .[53] Chunqiu Steven Xia, Yuxiang Wei, and Lingming Zhang. 2023. Automated program repair in the era of large pre-trained language models. In 2023 IEEE/ACM 45th International Conference on Software Engineering (ICSE) . IEEE, 1482–1494. [54] John Yang, Carlos E Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik Narasimhan, and Ofir Press. 2024. Swe-agent: Agent-computer interfaces enable automated software engineering. Advances in Neural Information Processing Systems 37 (2024), 50528–50652. [55] Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik R Narasimhan, and Yuan Cao. 2022. React: Synergizing reasoning and acting in language models. In The eleventh international conference on learning representations .[56] Guibin Zhang, Junhao Wang, Junjie Chen, Wangchunshu Zhou, Kun Wang, and Shuicheng Yan. 2025. AgenTracer: Who Is Inducing Failure in the LLM Agentic Systems? arXiv preprint arXiv:2509.03312 (2025). [57] Shaokun Zhang, Ming Yin, Jieyu Zhang, Jiale Liu, Zhiguang Han, Jingyang Zhang, Beibin Li, Chi Wang, Huazheng Wang, Yiran Chen, and Qingyun Wu. 2025. Which Agent Causes Task Failures and When? On Automated Failure Attribution of LLM Multi-Agent Systems. In Forty-second International Conference on Machine Learning . https://openreview.net/forum?id=GazlTYxZss [58] Yuntong Zhang, Haifeng Ruan, Zhiyu Fan, and Abhik Roychoudhury. 2024. Au-tocoderover: Autonomous program improvement. In Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis . 1592–1604. [59] Yang Zhou, Hongyi Liu, Zhuoming Chen, Yuandong Tian, and Beidi Chen. 2025. GSM: How Do your LLMs Behave over Infinitely Increasing Reasoning Complex-ity and Context Length?. In Forty-second International Conference on Machine Learning .
+
+Received 20 February 2007; revised 12 March 2009; accepted 5 June 2009

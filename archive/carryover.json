@@ -1,52 +1,12 @@
 {
-  "generated_at": "2026-05-29T07:35:58.755608+00:00",
-  "updated_date": "20260430-20260529",
+  "generated_at": "2026-05-29T21:15:49.393383+00:00",
+  "updated_date": "20260529",
   "carryover_days": 9,
   "tag_states": {
     "opd": {
-      "updated_date": "20260430-20260529",
+      "updated_date": "20260529",
       "carryover_days": 9,
-      "items": [
-        {
-          "id": "2605.28421v1",
-          "source": "arxiv",
-          "title": "DenoiseRL: Bootstrapping Reasoning Models to Recover from Noisy Prefixes",
-          "abstract": "Reinforcement learning has become a central paradigm for advancing reasoning in large language models, yet most existing methods still depend on stronger teacher models or heavily curated difficult datasets, limiting scalable capability improvement. In this paper, we introduce DenoiseRL, a reinforcement learning framework that substitutes external supervision with recovery-oriented optimization over failures from weak models. Instead of relying on stronger supervision or carefully engineered data, DenoiseRL learns directly from incorrect reasoning traces by converting them into opportunities for improvement, making training more scalable and less dependent on external resources. This yields a richer and more diverse learning signal, improving exploration efficiency from imperfect model behavior. As a result, DenoiseRL improves reasoning performance and overall training efficiency while reducing the need for expensive data curation or stronger teacher models. Empirically, DenoiseRL consistently outperforms strong on-policy RL baselines across competitive mathematical and general reasoning benchmarks and promotes stronger self-corrective behavior as training difficulty increases, highlighting an effective and scalable alternative pathway for improving reasoning in large language models.",
-          "authors": [
-            "Caijun Xu",
-            "Changyi Xiao",
-            "Zhongyuan Peng",
-            "Yixin Cao"
-          ],
-          "primary_category": "cs.AI",
-          "categories": [
-            "cs.AI"
-          ],
-          "published": "2026-05-27T12:52:58+00:00",
-          "link": "https://arxiv.org/pdf/2605.28421v1",
-          "tags": [
-            "keyword:opd",
-            "query:opd"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "denoising RL using failure rollouts for recovery, directly relevant to failure rollouts and error trajectories for process supervision",
-          "llm_evidence_cn": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
-          "llm_evidence": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
-          "canonical_evidence": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
-          "llm_tldr_en": "DenoiseRL substitutes external supervision with recovery-oriented optimization over failures from weak models, learning from incorrect reasoning traces.",
-          "llm_tldr_cn": "现有推理强化学习方法依赖强教师或精心筛选的困难数据，限制了可扩展性。本文提出DenoiseRL，通过恢复导向的优化直接从弱模型的失败轨迹中学习，将错误推理转化为改进机会，无需外部监督，在多种推理任务上实现了可扩展的持续提升。",
-          "llm_tldr": "现有推理强化学习方法依赖强教师或精心筛选的困难数据，限制了可扩展性。本文提出DenoiseRL，通过恢复导向的优化直接从弱模型的失败轨迹中学习，将错误推理转化为改进机会，无需外部监督，在多种推理任务上实现了可扩展的持续提升。",
-          "llm_tags": [
-            "query:opd"
-          ],
-          "matched_query_tag": "query:opd",
-          "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
-          "matched_requirement_id": "req-3",
-          "selection_source": "carryover_cache",
-          "paper_id": "2605.28421v1",
-          "carry_days": 1
-        }
-      ]
+      "items": []
     }
   }
 }
