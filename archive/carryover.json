@@ -1,82 +1,41 @@
 {
-  "generated_at": "2026-05-29T06:41:11.964197+00:00",
-  "updated_date": "20260520-20260529",
+  "generated_at": "2026-05-29T07:35:58.755608+00:00",
+  "updated_date": "20260430-20260529",
   "carryover_days": 9,
   "tag_states": {
     "opd": {
-      "updated_date": "20260520-20260529",
+      "updated_date": "20260430-20260529",
       "carryover_days": 9,
       "items": [
         {
-          "id": "2605.25582v1",
+          "id": "2605.28421v1",
           "source": "arxiv",
-          "title": "Extreme Region Policy Distillation",
-          "abstract": "Reinforcement learning for large language models faces a fundamental trade-off between sample efficiency and asymptotic performance: strictly on-policy methods discard trajectories after a single update, while off-policy reuse introduces distribution mismatch that existing trust-region techniques mitigate primarily by enforcing conservative optimization, often leaving rich training signals underutilized. To investigate this, we perform extensive off-policy updates on fixed data. Our experiments reveal that aggressive multi-step optimization brings rapid initial gains, but excessive updates cause trajectory probabilities to deviate and entropy to collapse, with performance plateauing early. Tightening KL constraints merely lowers the ceiling without resolving the degradation. This motivates Extreme Region Policy Distillation (ERPD), a two-stage framework that decouples sample efficiency from KL efficiency. The first stage performs weakly constrained off-policy optimization on fixed data to maximally extract training signals. The resulting policy provides token-level supervision. In the second stage, we distill these signals into the base policy under trust-region constraints, filtering harmful drift while preserving useful signals. The distilled policy achieves comparable or better performance with substantially smaller KL divergence, indicating that much of the first-stage divergence was spent on unnecessary drift rather than genuine improvement. Crucially, ERPD accommodates both strong and weak teachers: when aggressive optimization yields no stronger policy, even degenerate teachers provide effective supervision via alternative signal construction strategies. We validate ERPD on mathematical reasoning, showing gains for strong base models where on-policy training plateaus, and reliable improvements with weak teachers.",
+          "title": "DenoiseRL: Bootstrapping Reasoning Models to Recover from Noisy Prefixes",
+          "abstract": "Reinforcement learning has become a central paradigm for advancing reasoning in large language models, yet most existing methods still depend on stronger teacher models or heavily curated difficult datasets, limiting scalable capability improvement. In this paper, we introduce DenoiseRL, a reinforcement learning framework that substitutes external supervision with recovery-oriented optimization over failures from weak models. Instead of relying on stronger supervision or carefully engineered data, DenoiseRL learns directly from incorrect reasoning traces by converting them into opportunities for improvement, making training more scalable and less dependent on external resources. This yields a richer and more diverse learning signal, improving exploration efficiency from imperfect model behavior. As a result, DenoiseRL improves reasoning performance and overall training efficiency while reducing the need for expensive data curation or stronger teacher models. Empirically, DenoiseRL consistently outperforms strong on-policy RL baselines across competitive mathematical and general reasoning benchmarks and promotes stronger self-corrective behavior as training difficulty increases, highlighting an effective and scalable alternative pathway for improving reasoning in large language models.",
           "authors": [
-            "Changyu Chen",
-            "Xiting Wang",
-            "Rui Yan"
-          ],
-          "primary_category": "cs.LG",
-          "categories": [
-            "cs.LG",
-            "cs.AI"
-          ],
-          "published": "2026-05-25T08:32:24+00:00",
-          "link": "https://arxiv.org/pdf/2605.25582v1",
-          "tags": [
-            "keyword:opd",
-            "query:opd"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "extreme region policy distillation for LLM reinforcement learning",
-          "llm_evidence_cn": "针对大语言模型强化学习的极端区域策略蒸馏",
-          "llm_evidence": "针对大语言模型强化学习的极端区域策略蒸馏",
-          "canonical_evidence": "针对大语言模型强化学习的极端区域策略蒸馏",
-          "llm_tldr_en": "Analyzes off-policy updates in LLM RL and proposes Extreme Region Policy Distillation to efficiently utilize training signals while avoiding distribution collapse.",
-          "llm_tldr_cn": "大语言模型RL中在线策略样本效率低，离线复用又带来分布偏移。本文深入分析后提出极端区域策略蒸馏，通过专注于高信息量区域实现高效学习。实验表明该方法在保持性能的同时显著提升样本效率。该研究直接服务于LLM RL中的策略蒸馏需求。",
-          "llm_tldr": "大语言模型RL中在线策略样本效率低，离线复用又带来分布偏移。本文深入分析后提出极端区域策略蒸馏，通过专注于高信息量区域实现高效学习。实验表明该方法在保持性能的同时显著提升样本效率。该研究直接服务于LLM RL中的策略蒸馏需求。",
-          "llm_tags": [
-            "query:opd"
-          ],
-          "matched_query_tag": "query:opd",
-          "matched_query_text": "on-policy distillation for large language model reinforcement learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2605.25582v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2605.29253v1",
-          "source": "arxiv",
-          "title": "OpenClawBench: Benchmarking Process-side Anomalies in Real-world Agent Execution Trajectories",
-          "abstract": "Task success can hide process anomalies in real-world agent executions. An agent may pass the final task oracle while still accumulating unresolved ambiguity, unsafe external writes, ignored errors, weakly grounded commitments, or capability-boundary overcommitment. We study this mismatch as the Outcome-Process Gap and introduce OpenClawBench, a large-scale dataset for measuring and supervising process-side anomalies in real agent execution processes. OpenClawBench is built from BFCL-driven OpenClaw sessions produced by 6 source models and contains 31,264 annotated trajectories. It aligns task-oracle outcomes with structured process evidence. FullTax converts the aligned trajectories into structured anomaly supervision: binary labels, supporting evidence, onset/span localization, severity, recoverability, and a 5-class anomaly taxonomy. Using OpenClawBench, we make the Outcome-Process Gap measurable. Among 31,135 oracle-passing executions, 2,904 are still labeled process-anomalous under FullTax. These results show that success-only evaluation misses a concrete class of process-side failures in real agent executions. A LoRA-fine-tuned Gemma 3 12B detector trained on the high-confidence FullTax supervised pool reaches binary F1=0.729 on the cleaner-labels held-out test split. Together, OpenClawBench turns real agent execution logs into auditable and reusable supervision for studying, diagnosing, and operationally monitoring runtime agent reliability.",
-          "authors": [
-            "Yibing Liu",
-            "Yangze Liu",
-            "Xiaolong Yin",
-            "Bin Wang",
-            "Chong Zhang",
-            "Hao Yin",
-            "Zhongyi Han"
+            "Caijun Xu",
+            "Changyi Xiao",
+            "Zhongyuan Peng",
+            "Yixin Cao"
           ],
           "primary_category": "cs.AI",
           "categories": [
             "cs.AI"
           ],
-          "published": "2026-05-28T02:15:52+00:00",
-          "link": "https://arxiv.org/pdf/2605.29253v1",
+          "published": "2026-05-27T12:52:58+00:00",
+          "link": "https://arxiv.org/pdf/2605.28421v1",
           "tags": [
+            "keyword:opd",
             "query:opd"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "benchmark for process supervision in agent execution trajectories",
-          "llm_evidence_cn": "智能体执行轨迹的过程监督基准",
-          "llm_evidence": "智能体执行轨迹的过程监督基准",
-          "canonical_evidence": "智能体执行轨迹的过程监督基准",
-          "llm_tldr_en": "Introduces OpenClawBench, a dataset for benchmarking process-side anomalies in agent trajectories, with structured anomaly supervision.",
-          "llm_tldr_cn": "针对智能体执行中任务成功可能隐藏过程异常的问题，本文提出OpenClawBench数据集。它包含31,264条带注释的轨迹，标记了多种过程异常如未解决歧义、不安全写入等。该数据集支持对结果-过程差距的量化评估，为过程监督提供标准化基准。",
-          "llm_tldr": "针对智能体执行中任务成功可能隐藏过程异常的问题，本文提出OpenClawBench数据集。它包含31,264条带注释的轨迹，标记了多种过程异常如未解决歧义、不安全写入等。该数据集支持对结果-过程差距的量化评估，为过程监督提供标准化基准。",
+          "llm_evidence_en": "denoising RL using failure rollouts for recovery, directly relevant to failure rollouts and error trajectories for process supervision",
+          "llm_evidence_cn": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
+          "llm_evidence": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
+          "canonical_evidence": "利用失败rollout进行恢复的降噪强化学习，直接对应失败rollout和错误轨迹用于过程监督",
+          "llm_tldr_en": "DenoiseRL substitutes external supervision with recovery-oriented optimization over failures from weak models, learning from incorrect reasoning traces.",
+          "llm_tldr_cn": "现有推理强化学习方法依赖强教师或精心筛选的困难数据，限制了可扩展性。本文提出DenoiseRL，通过恢复导向的优化直接从弱模型的失败轨迹中学习，将错误推理转化为改进机会，无需外部监督，在多种推理任务上实现了可扩展的持续提升。",
+          "llm_tldr": "现有推理强化学习方法依赖强教师或精心筛选的困难数据，限制了可扩展性。本文提出DenoiseRL，通过恢复导向的优化直接从弱模型的失败轨迹中学习，将错误推理转化为改进机会，无需外部监督，在多种推理任务上实现了可扩展的持续提升。",
           "llm_tags": [
             "query:opd"
           ],
@@ -84,7 +43,7 @@
           "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
           "matched_requirement_id": "req-3",
           "selection_source": "carryover_cache",
-          "paper_id": "2605.29253v1",
+          "paper_id": "2605.28421v1",
           "carry_days": 1
         }
       ]
