@@ -1,0 +1,1023 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-29T06:41:11.962396+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 22,
+    "deep_cap": 6,
+    "deep_selected": 14,
+    "quick_candidates": 17,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2605.22263v1",
+      "source": "arxiv",
+      "title": "Tailoring Teaching to Aptitude: Direction-Adaptive Self-Distillation for LLM Reasoning",
+      "abstract": "On-policy self-distillation (OPSD) is an emerging LLM post-training paradigm in which the model serves as its own teacher: conditioned on privileged information such as a reference trace or hint, the same policy provides dense token-level supervision on its own rollouts. However, recent studies show that OPSD degrades complex reasoning by suppressing predictive uncertainty, which supports exploration and hypothesis revision. Our token-level analysis shows that this failure arises from applying a uniform direction of teacher supervision across tokens with different uncertainty levels: conformity to the privileged self-teacher suppresses exploration at high entropy, while deviation from the teacher degrades step accuracy at low entropy. Accordingly, we propose \\textbf{Direction-Adaptive Self-Distillation} (\\textbf{DASD}), which reframes privileged self-distillation from uniform teacher imitation into entropy-routed directional supervision: high-entropy tokens are pushed away from the privileged teacher to preserve exploration, while low-entropy tokens are pulled toward the teacher to stabilize step-level execution. Across six mathematical reasoning benchmarks, DASD achieves the best macro Avg@16 over strong RLVR and self-distillation baselines. Pass@$k$, reasoning-health, and generalization analyses show that these average gains come from preserving exploration without sacrificing step-level execution.",
+      "authors": [
+        "Hongbin Zhang",
+        "Chaozheng Wang",
+        "Kehai Chen",
+        "Youcheng Pan",
+        "Yang Xiang",
+        "Jinpeng Wang",
+        "Min Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-21T10:07:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.22263v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "direction-adaptive self-distillation for on-policy distillation in LLM reasoning",
+      "llm_evidence_cn": "面向大语言模型推理的在线策略自蒸馏方向自适应",
+      "llm_evidence": "面向大语言模型推理的在线策略自蒸馏方向自适应",
+      "canonical_evidence": "面向大语言模型推理的在线策略自蒸馏方向自适应",
+      "llm_tldr_en": "This paper identifies uniform teacher supervision as a failure mode in on-policy self-distillation and proposes a direction-adaptive mechanism that adjusts supervision based on token-level uncertainty, preserving exploration while maintaining accuracy.",
+      "llm_tldr_cn": "本文分析在线策略自蒸馏（OPSD）在复杂推理中退化的原因，发现统一的教师监督方向抑制了高不确定性token的探索。作者提出方向自适应自蒸馏，根据每个token的不确定性动态调整监督信号，在保持低熵token精度的同时不压制高熵token的探索，从而提升模型推理能力。该工作揭示并解决了自蒸馏范式中的一个关键缺陷。",
+      "llm_tldr": "本文分析在线策略自蒸馏（OPSD）在复杂推理中退化的原因，发现统一的教师监督方向抑制了高不确定性token的探索。作者提出方向自适应自蒸馏，根据每个token的不确定性动态调整监督信号，在保持低熵token精度的同时不压制高熵token的探索，从而提升模型推理能力。该工作揭示并解决了自蒸馏范式中的一个关键缺陷。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.22731v1",
+      "source": "arxiv",
+      "title": "Post-Training is About States, Not Tokens: A State Distribution View of SFT, RL, and On-Policy Distillation",
+      "abstract": "Large language model post-training methods such as supervised fine-tuning (SFT), reinforcement learning (RL), and distillation are often analyzed through their loss functions: maximum likelihood, policy gradients, forward KL, reverse KL, or related objective-level variants. We study a complementary factor: the state distribution on which supervision is applied. For an autoregressive policy, a state is a prompt plus generated prefix. SFT trains on fixed dataset states, while RL and on-policy distillation (OPD) train on states induced by the current learner. We formalize post-training as state-distribution shaping and run a controlled smallscale study using Qwen3-0.6B-Base on GSM8K, with TruthfulQA and MMLU as retention evaluations. Our results show three phenomena. First, a mild SFT run improves GSM8K with little forgetting, while a stress SFT run causes substantial retention loss. Second, OPD from a degraded SFT teacher surpasses that teacher on GSM8K, TruthfulQA, and MMLU, despite using the teacher as its only supervision source. Third, a lightweight on-policy RL run improves GSM8K while preserving retention. These results support a state-centric view of post-training: the source and locality of training states can be as important as the form of the supervision signal.",
+      "authors": [
+        "Dong Nie"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-21T17:03:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.22731v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "state distribution view of SFT, RL, and on-policy distillation for LLM",
+      "llm_evidence_cn": "针对LLM中SFT、RL和在线策略蒸馏的状态分布视角",
+      "llm_evidence": "针对LLM中SFT、RL和在线策略蒸馏的状态分布视角",
+      "canonical_evidence": "针对LLM中SFT、RL和在线策略蒸馏的状态分布视角",
+      "llm_tldr_en": "Formalizes post-training as state-distribution shaping, showing that RL and OPD train on learner-induced states while SFT uses fixed states.",
+      "llm_tldr_cn": "该文将大语言模型的后训练统一为状态分布塑造问题：SFT训练固定数据集状态，而RL和在线策略蒸馏（OPD）在由当前学习者诱导的状态上训练。通过小型对照实验（Qwen3-0.6B在GSM8K上），揭示了状态分布差异对性能的关键影响，为理解LLM后训练方法提供了新理论视角。",
+      "llm_tldr": "该文将大语言模型的后训练统一为状态分布塑造问题：SFT训练固定数据集状态，而RL和在线策略蒸馏（OPD）在由当前学习者诱导的状态上训练。通过小型对照实验（Qwen3-0.6B在GSM8K上），揭示了状态分布差异对性能的关键影响，为理解LLM后训练方法提供了新理论视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23493v1",
+      "source": "arxiv",
+      "title": "EDGE-OPD: Internalizing Privileged Context with Evidence Guided On-Policy Distillation",
+      "abstract": "On-Policy Distillation (OPD) has gained wide attraction as an LLM post-training paradigm due to its effectiveness in improving capabilities without introducing model distribution drift, and consequently, regression in general tasks. On-Policy Self-Distillation (OPSD) is an efficient use-case of OPD, which is appealing as it requires only a single model as a student and teacher, and it also has the benefit of providing privileged context that is a absent at inference time (e.g. a persona, a private fact, or a worked solution) to the teacher during the training process. The challenge in this approach is that the privileged information can change model behavior more than intended: it can modify reasoning, degrade general capabilities, and affect performance indicators like response length, style, or local token preferences. Consequently, OPSD may train the student on side effects rather than a desired, transferable behavior. In this paper, we study this problem in a rare-token/identity setting and propose EviDence GuidEd On-Policy Distillation (EDGE-OPD), a modification of OPSD with two distinct characteristics: a) it uses guided rollouts to inject privileged-context behavior to the student at sampling time, so that the rare target behavior is actually present in the on-policy data, and b) it applies an evidence mask: the student is updated only at token positions where the privileged context supports the sampled token, rather than on every token in the rollout. We empirically show that OPSD (and its variant RLSD, with and without a verifier) completely fail to learn a target identity, while the integration of guided rollouts allows them to succeed. Additionally, mask-region ablations show that the persona signal is localized to the positive-evidence tail, allows us to draw valuable insights about efficient knowledge transfer and preservation of general purpose capabilities.",
+      "authors": [
+        "Aristotelis Lazaridis",
+        "Dylan Bates",
+        "Aman Sharma",
+        "Brian King",
+        "Vincent Lu",
+        "Jack FitzGerald"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-22T10:55:15+00:00",
+      "link": "https://arxiv.org/pdf/2605.23493v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EDGE-OPD: evidence guided on-policy distillation for LLM",
+      "llm_evidence_cn": "EDGE-OPD：基于证据引导的在线策略蒸馏",
+      "llm_evidence": "EDGE-OPD：基于证据引导的在线策略蒸馏",
+      "canonical_evidence": "EDGE-OPD：基于证据引导的在线策略蒸馏",
+      "llm_tldr_en": "Proposes EDGE-OPD to control privileged context in self-distillation, preventing over-modification of reasoning and general capabilities.",
+      "llm_tldr_cn": "在线策略自蒸馏（OPSD）使用特权上下文（如答案）指导训练，但可能导致模型行为过度改变。本文提出EDGE-OPD，通过证据引导机制约束特权上下文的影响，在保持通用能力的同时提升特定任务性能。实验表明EDGE-OPD有效减轻了回归问题，为LLM的安全蒸馏提供了新思路。",
+      "llm_tldr": "在线策略自蒸馏（OPSD）使用特权上下文（如答案）指导训练，但可能导致模型行为过度改变。本文提出EDGE-OPD，通过证据引导机制约束特权上下文的影响，在保持通用能力的同时提升特定任务性能。实验表明EDGE-OPD有效减轻了回归问题，为LLM的安全蒸馏提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.25507v2",
+      "source": "arxiv",
+      "title": "Credit Assignment with Resets in Language Model Reasoning",
+      "abstract": "Contemporary reinforcement learning with verifiable reward methods post-train language models on multi-step reasoning by assigning a single outcome reward uniformly across all tokens in a trajectory. Such uniform assignment ignores which steps contributed to success or failure. Improving credit assignment can address this limitation by enabling targeted refinement of faulty reasoning steps, rather than updating entire trajectories uniformly. Resets are one such simple mechanism, enabling more precise credit assignment by returning to an intermediate state and resampling counterfactual continuations, so that outcome differences can be attributed to decisions made at that point. We propose two such methods: Random-Reset Policy Optimization (RRPO), where reset states are drawn randomly from reasoning steps, and Self-Reset Policy Optimization (SRPO), where the model self-localizes the erroneous step in an incorrect trajectory and resets there. We analyze these methods within the Conservative Policy Iteration (CPI) framework. Extending CPI with a credit-assignment oracle that targets improvable states yields provable improvements over random resets. Across models and reasoning benchmarks, SRPO consistently outperforms standard GRPO and RRPO by sampling multiple suffix continuations at a self-localized reset and learning from their rewards, using only the model itself with no external supervision.",
+      "authors": [
+        "Ankur Samanta",
+        "Akshayaa Magesh",
+        "Ayush Jain",
+        "Youliang Yu",
+        "Daniel Jiang",
+        "Kavosh Asadi",
+        "Kaveh Hassani",
+        "Paul Sajda",
+        "Jalaj Bhandari",
+        "Yonathan Efroni"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-25T07:11:50+00:00",
+      "link": "https://arxiv.org/pdf/2605.25507v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses resets for failure rollout and credit assignment in LLM reasoning",
+      "llm_evidence_cn": "在LLM推理中使用重置进行失败回滚和信用分配",
+      "llm_evidence": "在LLM推理中使用重置进行失败回滚和信用分配",
+      "canonical_evidence": "在LLM推理中使用重置进行失败回滚和信用分配",
+      "llm_tldr_en": "Introduces resets-based policy optimization (RRPO) that returns to intermediate states and resamples counterfactual continuations to improve credit assignment in LLM reasoning.",
+      "llm_tldr_cn": "LLM推理中现有RLVR对所有Token分配相同奖励，忽略了关键步骤。本文提出基于重置的机制，通过返回到中间状态重新采样反事实轨迹，将结果差异归因于决策点。RRPO方法显著提升了对错误步骤的定向修正能力，在数学推理任务上训练效率更高。为错误轨迹利用和过程监督提供了有效工具。",
+      "llm_tldr": "LLM推理中现有RLVR对所有Token分配相同奖励，忽略了关键步骤。本文提出基于重置的机制，通过返回到中间状态重新采样反事实轨迹，将结果差异归因于决策点。RRPO方法显著提升了对错误步骤的定向修正能力，在数学推理任务上训练效率更高。为错误轨迹利用和过程监督提供了有效工具。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.26844v1",
+      "source": "arxiv",
+      "title": "Not All Disagreement Is Learnable: Token Teachability in On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) trains a student on its own rollouts with token-level teacher supervision. Recent selective OPD methods exploit the non-uniformity of OPD signals by prioritizing high-entropy or high-disagreement tokens. We revisit this principle and ask: which token-level teacher signals are actually learnable? Using a fixed-context diagnostic that measures same-context teacher-student KL reduction, we show that raw KL disagreement is a coarse proxy for learning value. It conflates learnable disagreement, where the teacher assigns corrective mass to the student's top-K candidates, with incompatible disagreement, where the teacher places mass mostly off the student's current support. We formalize this local compatibility as token teachability and show that it better predicts fixed-context improvement than raw KL alone. Motivated by this finding, we propose Teachability-Aware OPD (TA-OPD), a lightweight token-position selection method that applies OPD loss to high-teachability positions without reward models or verifiers. Across Qwen2.5 and Qwen 3 teacher-student settings, TA-OPD often surpasses full-token OPD with only 5% retained tokens and improves over entropy- and divergence-based baselines. Our results reframe selective OPD as selecting learnable teacher signals rather than merely salient tokens.",
+      "authors": [
+        "Yuanyi Wang",
+        "Su Lu",
+        "Yanggan Gu",
+        "Pengkai Wang",
+        "Yifan Yang",
+        "Zhaoyi Yan",
+        "Congkai Xie",
+        "Jianmin Wu",
+        "Hongxia Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-26T10:56:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.26844v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "token teachability in on-policy distillation",
+      "llm_evidence_cn": "在线蒸馏中的token可教性分析",
+      "llm_evidence": "在线蒸馏中的token可教性分析",
+      "canonical_evidence": "在线蒸馏中的token可教性分析",
+      "llm_tldr_en": "Examines which token-level teacher signals in OPD are actually learnable, distinguishing learnable from incompatible disagreement.",
+      "llm_tldr_cn": "本文重新审视在线蒸馏（OPD）中token级教师信号的有效性。通过固定上下文诊断，发现原始KL分歧会混淆可学习分歧与不兼容分歧，并提出局部兼容性度量来识别真正可教的token。该工作为选择性OPD方法提供了理论基础。",
+      "llm_tldr": "本文重新审视在线蒸馏（OPD）中token级教师信号的有效性。通过固定上下文诊断，发现原始KL分歧会混淆可学习分歧与不兼容分歧，并提出局部兼容性度量来识别真正可教的token。该工作为选择性OPD方法提供了理论基础。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.27028v1",
+      "source": "arxiv",
+      "title": "Less is More: Early Stopping Rollout for On-Policy Distillation",
+      "abstract": "On-policy distillation has recently emerged as a promising alternative to standard sequence-level imitation, training a student by scoring its own rollouts with a teacher model. However, we observe ``Off-policy Teacher Decay'' problem in this paradigm: for the later tokens, with student's earlier trajectory as context that is off-policy to the teacher, the teacher's ability to produce a corrective score would decay, and may fall back to token-completion behavior learned in the pre-training stage. We empirically verify this problem, and we propose Early Stopping Rollout (ESR) to fix it: a simple yet effective distillation strategy that simply restricts the rollout generation to the first   response tokens. We show that ESR both surpasses the full rollout OPD performance across model size, family, tasks and training regime, and exhibit much higher GPU efficiency and training stability, especially under cross model family scenarios. We further investigate the mechanism behind this surprising performance and discovered \"Cascading Alignment\" and \"Sub-mode Commitment\" effect of ESR that may explain why it works effectively and even sometimes exceeding the teacher model performance. Besides, we show that this position-based token selection strategy cannot be fully explainable by KL divergence and entropy signals.",
+      "authors": [
+        "Zhou Ziheng",
+        "Jiaqi Li",
+        "Huacong Tang",
+        "Ying Nian Wu",
+        "Demetri Terzopoulos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-26T13:49:37+00:00",
+      "link": "https://arxiv.org/pdf/2605.27028v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy distillation for LLM reinforcement learning",
+      "llm_evidence_cn": "针对大语言模型在线策略蒸馏的论文",
+      "llm_evidence": "针对大语言模型在线策略蒸馏的论文",
+      "canonical_evidence": "针对大语言模型在线策略蒸馏的论文",
+      "llm_tldr_en": "Early Stopping Rollout (ESR) improves on-policy distillation by truncating rollout tokens to avoid off-policy teacher decay.",
+      "llm_tldr_cn": "该论文指出了在线策略蒸馏中教师模型对后期token评分能力下降的off-policy teacher decay问题，提出了Early Stopping Rollout (ESR)方法，仅限制学生生成前k个response token，有效避免教师退化。实验表明ESR在多项基准上超越全序列OPD方法，为在线策略蒸馏提供了简洁而高效的改进策略。",
+      "llm_tldr": "该论文指出了在线策略蒸馏中教师模型对后期token评分能力下降的off-policy teacher decay问题，提出了Early Stopping Rollout (ESR)方法，仅限制学生生成前k个response token，有效避免教师退化。实验表明ESR在多项基准上超越全序列OPD方法，为在线策略蒸馏提供了简洁而高效的改进策略。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.27115v1",
+      "source": "arxiv",
+      "title": "Counteraction-Aware Multi-Teacher On-Policy Distillation for General Capability Recovery with Domain Preservation",
+      "abstract": "Domain specialization can improve LLM behavior in vertical domains, but often weakens the general capabilities inherited from the original model. Recent Multi-Teacher On-Policy Distillation (MOPD) pipelines recover model capabilities by supervising student-generated trajectories with teacher feedback, but typically assume teacher-aligned prompt coverage, requiring prompts to match the teachers' training distributions. This assumption is difficult to satisfy when the general teacher is an open-source model whose post-training data are unknown. Instead of attempting to reconstruct this hidden distribution, we study general capability recovery with readily available proxy general prompts. We identify two failure modes of vanilla MOPD in this incomplete-coverage situation: recovery-preservation counteraction from mixing conflicting recovery and preservation gradients, and weak-signal flattening from uniformly averaging samples with unequal correction demand. We propose Counteraction-Aware Multi-Teacher On-Policy Distillation (CaMOPD), which addresses these issues with decoupled alternating training and gap-based sample selection. CaMOPD gives general recovery dedicated updates, periodically reviews domain prompts for preservation, and selects samples with larger averaged token-level teacher-student log-probability gaps to concentrate correction signals. Across role-play dialogue and medical reasoning QA scenarios, CaMOPD performs best in general recovery over baselines while maintaining domain-specific behavior. Gradient coherence analyses further support the intended effect of CaMOPD in producing more coherent correction signals.",
+      "authors": [
+        "Tianlei Chen",
+        "Jiao Ou",
+        "Ziyuan Liu",
+        "Ruiming Tang",
+        "Jian Liang",
+        "Han Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-26T14:52:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.27115v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-teacher on-policy distillation for domain specialization recovery",
+      "llm_evidence_cn": "多教师在线策略蒸馏用于领域专业化后通用能力恢复",
+      "llm_evidence": "多教师在线策略蒸馏用于领域专业化后通用能力恢复",
+      "canonical_evidence": "多教师在线策略蒸馏用于领域专业化后通用能力恢复",
+      "llm_tldr_en": "Proposes counteraction-aware multi-teacher OPD to recover general capabilities after domain specialization without requiring teacher-aligned prompts.",
+      "llm_tldr_cn": "领域专业化常导致通用能力下降，现有多教师在线策略蒸馏（MOPD）假设提示与教师分布对齐，难以满足。本文提出对抗感知多教师OPD，使用代理通用提示，识别并抵抗教师反馈中的对抗信号，有效恢复通用能力同时保持领域性能。实验表明该方法在多个基准上优于基线。",
+      "llm_tldr": "领域专业化常导致通用能力下降，现有多教师在线策略蒸馏（MOPD）假设提示与教师分布对齐，难以满足。本文提出对抗感知多教师OPD，使用代理通用提示，识别并抵抗教师反馈中的对抗信号，有效恢复通用能力同时保持领域性能。实验表明该方法在多个基准上优于基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.27186v1",
+      "source": "arxiv",
+      "title": "MAIGO: Mitigating Lost-in-Conversation with History-Cleaned On-Policy Self-Distillation",
+      "abstract": "Large language models often solve tasks from a fully specified prompt but degrade when the same requirements unfold over multiple turns, known as the lost-in-conversation (LiC) gap. We trace part of this degradation to self-contamination: intermediate assistant replies enter later context and carry early deviations forward. Motivated by this mechanism, we propose MAIGO, an on-policy self-distillation method that reduces this contamination using history-cleaned references from the model's own policy. For middle turns, MAIGO removes prior assistant replies while preserving the user-visible sharded prefix; for answer turns, it distills from paired full-view references conditioned on the completed user-side dialogue. A reliability weight downweights middle-turn samples that disagree with the clean reference. MAIGO requires no verifier rewards, state labels, or inference-time scaffolding. Under the LiC paired-view protocol with deterministic verifiers, MAIGO improves Qwen2.5-7B-Instruct SHARDED accuracy from 52.8 to 66.1 and the SHARDED/FULL ratio from 66.5% to 84.1%, while keeping FULL accuracy within 2.3 points. These results show that self-contamination is a trainable component of the LiC gap.",
+      "authors": [
+        "Haoyu Zheng",
+        "Yun Zhu",
+        "Shu Yuan",
+        "Shangming Chen",
+        "Qing Wang",
+        "Wenqiao Zhang",
+        "Jun Xiao",
+        "Yueting Zhuang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-26T15:38:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.27186v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation for multi-turn LLM tasks",
+      "llm_evidence_cn": "面向多轮对话的在线自蒸馏方法",
+      "llm_evidence": "面向多轮对话的在线自蒸馏方法",
+      "canonical_evidence": "面向多轮对话的在线自蒸馏方法",
+      "llm_tldr_en": "Proposes MAIGO, an on-policy self-distillation method that reduces self-contamination in multi-turn conversations by using history-cleaned references.",
+      "llm_tldr_cn": "针对大语言模型在多轮对话中出现的“丢失对话”退化现象，本文提出MAIGO在线自蒸馏方法。通过去除中间助手回复中的自污染信息，并利用历史清理后的参考信号进行蒸馏，有效缓解了早期偏差传递问题。实验表明该方法显著提升了多轮任务性能。",
+      "llm_tldr": "针对大语言模型在多轮对话中出现的“丢失对话”退化现象，本文提出MAIGO在线自蒸馏方法。通过去除中间助手回复中的自污染信息，并利用历史清理后的参考信号进行蒸馏，有效缓解了早期偏差传递问题。实验表明该方法显著提升了多轮任务性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.27765v1",
+      "source": "arxiv",
+      "title": "Restoring the Sweet Spot: Pass-Rate Weighted Self-Distillation for LLM Reasoning",
+      "abstract": "Self-Distillation Policy Optimization (SDPO) provides dense token-level credit assignment for reinforcement learning with large language models by leveraging the model's own feedback-conditioned predictions as a self-teacher. Unlike GRPO, however, whose group-relative advantage naturally concentrates learning on a sweet spot of intermediate-difficulty questions, SDPO's KL-based advantage lacks an implicit notion of difficulty awareness.   We analyze this gap through the lens of GRPO's advantage normalization. Extending the learnability framework to normalized rewards, we show that normalization absorbs the variance term $p(1-p)$, equalizing leading-order learnability across questions and leaving $\\sqrt{p(1-p)}$ as the sole residual scaling factor in the per-question gradient. This analysis yields a simple prescription: weight each question's SDPO loss by $[\\hat{p}(1-\\hat{p})]^{1/2}$, resulting in SC-SDPO, a scale-consistent variant of SDPO.   The proposed weights are obtained as a zero-cost byproduct of on-policy rollouts with batch-adaptive normalization, inducing an implicit curriculum that dynamically tracks the model's evolving competence. Experiments on scientific reasoning and tool-use benchmarks demonstrate that SC-SDPO consistently improves over SDPO, yielding gains of +3.2/+4.3 (mean@16/maj@16) on Qwen3-8B and +1.8/+3.0 on OLMo-3-7B, while preserving stable training dynamics throughout optimization.",
+      "authors": [
+        "Zehao Liu",
+        "Yuanpu Cao",
+        "Jinghui Chen",
+        "Vasant G. Honavar"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-26T23:30:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.27765v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-distillation on-policy for LLM reasoning",
+      "llm_evidence_cn": "面向大语言模型推理的在线自蒸馏",
+      "llm_evidence": "面向大语言模型推理的在线自蒸馏",
+      "canonical_evidence": "面向大语言模型推理的在线自蒸馏",
+      "llm_tldr_en": "Proposes pass-rate weighted self-distillation to restore the sweet spot learning focus observed in GRPO, improving token-level credit assignment.",
+      "llm_tldr_cn": "针对自蒸馏策略优化（SDPO）缺乏难度意识导致学习焦点偏移的问题，本文提出通过率加权自蒸馏方法。通过分析GRPO的归一化优势，揭示加权机制能恢复中间难度问题的学习焦点。实验表明该方法在推理任务上取得更优性能，为在线蒸馏策略提供了理论指导。",
+      "llm_tldr": "针对自蒸馏策略优化（SDPO）缺乏难度意识导致学习焦点偏移的问题，本文提出通过率加权自蒸馏方法。通过分析GRPO的归一化优势，揭示加权机制能恢复中间难度问题的学习焦点。实验表明该方法在推理任务上取得更优性能，为在线蒸馏策略提供了理论指导。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28014v1",
+      "source": "arxiv",
+      "title": "ROSD: Reflective On-Policy Self-Distillation for Language Model Reasoning across Domains",
+      "abstract": "On-policy self-distillation (OPSD) improves the reasoning performance of large language models (LLMs) by providing dense token-level supervision for on-policy rollouts. However, existing OPSD methods often yield limited gains on in-domain reasoning and generalize poorly to out-of-domain problems. We identify two key causes: conditioning the self-teacher on a verified solution encourages imitation of training-domain reference trajectories rather than error-specific correction, and applying distillation to the full response can overwrite valid reasoning prefixes and reinforce overfitting.   We propose Reflective On-policy Self-Distillation (ROSD), a framework that turns reference-solution imitation into targeted reasoning correction through reflection-guided, error-localized distillation. For each rollout, ROSD uses a self-reflector to extract a corrective idea and locate the first erroneous span. The corrective idea guides the self-teacher toward targeted supervision, while the localized error span restricts distillation to where correction is needed. This design corrects flawed reasoning while preserving valid prefixes. Experiments on multiple in-domain and out-of-domain reasoning benchmarks show that ROSD yields stronger in-domain reasoning performance overall and substantially better out-of-domain generalization than standard OPSD. Code is available at https://github.com/ZiqiZhao1/ROSD.",
+      "authors": [
+        "Ziqi Zhao",
+        "Xinyu Ma",
+        "Liu Yang",
+        "Yujie Feng",
+        "Daiting Shi",
+        "Jingzhou He",
+        "Xin Xin",
+        "Zhaochun Ren",
+        "Xiao-Ming Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-05-27T06:09:29+00:00",
+      "link": "https://arxiv.org/pdf/2605.28014v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "failure rollouts and error trajectories for reasoning",
+      "llm_evidence_cn": "使用错误轨迹和自反思修正改进推理",
+      "llm_evidence": "使用错误轨迹和自反思修正改进推理",
+      "canonical_evidence": "使用错误轨迹和自反思修正改进推理",
+      "llm_tldr_en": "ROSD uses self-generated error trajectories and targeted correction for cross-domain reasoning improvement via on-policy distillation.",
+      "llm_tldr_cn": "该论文针对在线策略自蒸馏在跨域推理泛化不足的问题，提出Reflective OPSD框架。通过识别现有方法中的模仿参考轨迹和覆盖有效前缀两大缺陷，将策略蒸馏转向针对错误轨迹的修正学习。实验表明ROSD在域内和域外推理任务均取得显著提升，为利用失败展开进行过程监督提供了有效范例。",
+      "llm_tldr": "该论文针对在线策略自蒸馏在跨域推理泛化不足的问题，提出Reflective OPSD框架。通过识别现有方法中的模仿参考轨迹和覆盖有效前缀两大缺陷，将策略蒸馏转向针对错误轨迹的修正学习。实验表明ROSD在域内和域外推理任务均取得显著提升，为利用失败展开进行过程监督提供了有效范例。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28396v1",
+      "source": "arxiv",
+      "title": "ADWIN: Adaptive Windows for Horizon-Aware On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) transfers reasoning behavior by training a student on teacher feedback along student-generated trajectories, but standard full-rollout training ties every update to a costly completion and can over-allocate supervision to late positions with low marginal value for the current student. We revisit this assumption through the useful supervision horizon: student-induced rollouts can drift from teacher-preferred continuations, while aligned prefixes may already preserve the long-horizon OPD update direction. We propose ADWIN, an adaptive-window framework for OPD that treats rollout length as an online admissibility decision, training on short teacher-anchored prefixes while using delayed full-rollout probes to audit prefix--full alignment and adapt the next horizon with staleness control. Across math and code reasoning benchmarks in single-task, multi-task, and strong-to-weak settings, ADWIN improves the accuracy--compute trade-off over full-rollout OPD and prefix-based baselines, reducing end-to-end training cost by up to 4.1 times while achieving comparable or better accuracy.",
+      "authors": [
+        "Kun Liang",
+        "Chenming Tang",
+        "Clive Bai",
+        "Weijie Liu",
+        "Saiyong Yang",
+        "Yunfang Wu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-27T12:33:44+00:00",
+      "link": "https://arxiv.org/pdf/2605.28396v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adaptive windows for horizon-aware on-policy distillation",
+      "llm_evidence_cn": "面向视界感知在线策略蒸馏的自适应窗口",
+      "llm_evidence": "面向视界感知在线策略蒸馏的自适应窗口",
+      "canonical_evidence": "面向视界感知在线策略蒸馏的自适应窗口",
+      "llm_tldr_en": "ADWIN proposes an adaptive-window framework for on-policy distillation that dynamically adjusts rollout length, training on short teacher-anchored prefixes and using full-rollout probes to audit alignment, improving efficiency and effectiveness.",
+      "llm_tldr_cn": "本文针对在线策略蒸馏（OPD）中全轨迹训练成本高且后期监督边际价值低的问题，提出自适应窗口框架ADWIN。该方法将轨迹长度作为在线决策，在教师锚定的短前缀上训练，并定期使用全轨迹探针审计对齐性。实验表明ADWIN在保持蒸馏效果的同时大幅减少计算开销，为OPD的实用部署提供了高效解决方案。",
+      "llm_tldr": "本文针对在线策略蒸馏（OPD）中全轨迹训练成本高且后期监督边际价值低的问题，提出自适应窗口框架ADWIN。该方法将轨迹长度作为在线决策，在教师锚定的短前缀上训练，并定期使用全轨迹探针审计对齐性。实验表明ADWIN在保持蒸馏效果的同时大幅减少计算开销，为OPD的实用部署提供了高效解决方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28791v1",
+      "source": "arxiv",
+      "title": "Skill-Conditioned Gated Self-Distillation for LLM Reasoning",
+      "abstract": "On-policy self-distillation (SD) improves LLM reasoning by using teacher-side privileged information (PI) to turn sparse verifier outcomes into dense token-level supervision. Existing methods usually assume trusted PI, such as reference answers or successful traces. We ask whether PI can instead come from an experience-derived skill bank, where retrieved skills are compact and reusable but may also be irrelevant or misleading. We propose Skill-Conditioned Gated Self-Distillation (SGSD), which formulates skill-based SD as teacher hypothesis validation rather than unconditional imitation. SGSD retrieves skill-mistake pairs, constructs a multi-teacher pool, and lets all skill-conditioned teachers score the same plain-prompt student rollout. The verifier validates each teacher's polarity: supporting a success or suppressing a failure gives positive supervision, while the opposite stance is reversed. A robust gated objective then distills informative teacher-student disagreements while suppressing uncertain or extreme signals. Experiments on multiple mathematical reasoning benchmarks show that SGSD consistently improves over GRPO and remains competitive with answer-conditioned OPSD under a weaker PI assumption. For example, on Qwen3-1.7B, SGSD outperforms GRPO by 6.2% and OPSD by 1.7% on average on AIME24, AIME25, and HMMT25. Our code is available at https://github.com/walawalagoose/SGSD.",
+      "authors": [
+        "Jiazhen Huang",
+        "Xiao Chen",
+        "Xiao Luo",
+        "Yong Dai",
+        "Senkang Hu",
+        "Yuzhi Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-05-27T17:49:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.28791v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation with skill-conditioned gating",
+      "llm_evidence_cn": "基于技能条件的门控在线自蒸馏",
+      "llm_evidence": "基于技能条件的门控在线自蒸馏",
+      "canonical_evidence": "基于技能条件的门控在线自蒸馏",
+      "llm_tldr_en": "Proposes SGSD, which uses a skill bank as privileged information for on-policy self-distillation, validating teacher hypotheses via verification.",
+      "llm_tldr_cn": "针对在线自蒸馏中特权信息依赖标准答案或成功轨迹的问题，本文提出技能条件门控自蒸馏（SGSD）。它从经验技能库中检索技能-错误对，构建多教师池，并通过验证器评估每个教师提供的纠正信号，将自蒸馏转化为教师假设验证。实验表明该方法能有效利用不完美的技能信息提升推理。",
+      "llm_tldr": "针对在线自蒸馏中特权信息依赖标准答案或成功轨迹的问题，本文提出技能条件门控自蒸馏（SGSD）。它从经验技能库中检索技能-错误对，构建多教师池，并通过验证器评估每个教师提供的纠正信号，将自蒸馏转化为教师假设验证。实验表明该方法能有效利用不完美的技能信息提升推理。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.29089v1",
+      "source": "arxiv",
+      "title": "OISD: On-Policy Internal Self-Distillation of Language Models",
+      "abstract": "Recent reinforcement learning (RL) post-training approaches primarily optimize the final output policy using sparse outcome-level rewards, while largely overlooking predictive signals encoded in intermediate representations. In this paper, we introduce a new paradigm called on-policy internal self-distillation and propose the OISD framework, which improves reasoning by transferring on-policy predictive signals from the final layer to intermediate representations. During rollout and Group Relative Policy Optimization (GRPO) optimization, the final layer acts as both the policy and a detached internal teacher for selected intermediate layers, which are guided to align with it through two complementary mechanisms: logit alignment, which transfers high-level reasoning behaviors (how to think), and attention alignment, which enforces consistent attention patterns (where to look) from the final layer to the selected intermediate layer, both without requiring external privileged information. Our OISD, together with GRPO, employs signed advantage-weighted Jensen--Shannon alignment to distill informative intermediate representations while preserving policy consistency under a unified acting policy. Experimental results demonstrate the effectiveness of OISD, with substantial and consistent improvements over strong reasoning RL baselines across four mathematical reasoning tasks. The code will be released at https://github.com/THE-MALT-LAB/OISD",
+      "authors": [
+        "Xinyu Liu",
+        "Darryl Cherian Jacob",
+        "Yang Zhou",
+        "Jindong Wang",
+        "Pan He"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-05-27T20:43:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.29089v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy internal self-distillation with GRPO for LLM reasoning",
+      "llm_evidence_cn": "结合GRPO的在线内部自蒸馏方法提升LLM推理",
+      "llm_evidence": "结合GRPO的在线内部自蒸馏方法提升LLM推理",
+      "canonical_evidence": "结合GRPO的在线内部自蒸馏方法提升LLM推理",
+      "llm_tldr_en": "Introduces OISD, an on-policy internal self-distillation framework that transfers predictive signals from final layer to intermediate layers during GRPO training, improving LLM reasoning via logit and representation alignment.",
+      "llm_tldr_cn": "现有RL后训练主要用稀疏结果奖励优化最终策略，忽视了中间层的预测信号。本文提出OISD，在GRPO rollout过程中，将最终层作为内部教师，通过logit对齐和表示对齐两种机制引导中间层学习。实验证明OISD显著提升推理能力，同时保持训练效率。该工作首次将在线蒸馏与GRPO结合。",
+      "llm_tldr": "现有RL后训练主要用稀疏结果奖励优化最终策略，忽视了中间层的预测信号。本文提出OISD，在GRPO rollout过程中，将最终层作为内部教师，通过logit对齐和表示对齐两种机制引导中间层学习。实验证明OISD显著提升推理能力，同时保持训练效率。该工作首次将在线蒸馏与GRPO结合。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.29343v1",
+      "source": "arxiv",
+      "title": "Draft-OPD: On-Policy Distillation for Speculative Draft Models",
+      "abstract": "Speculative decoding accelerates large language model inference by pairing a target model with a lightweight draft model whose proposed tokens are verified in parallel. A common way to build draft models, like EAGLE3 or DFlash is supervised fine-tuning (SFT) on target-generated trajectories. However, we observe that SFT quickly plateaus: the draft model's acceptance length on test data stops improving. The reason is an offline-to-inference mismatch: In SFT, the drafter learns from fixed target-generated trajectories, whereas during speculative decoding it is evaluated on blocks proposed under its own policy. This motivates on-policy distillation (OPD), where the target model supervises the drafter on draft-induced states. Yet OPD remains difficult for draft models, as they cannot reliably roll out complete sequences independently, whereas target-assisted generation makes the collected sequences follow the target distribution and thus eliminates the on-policy signal. We therefore propose Draft-OPD, which uses target-assisted rollout for stable continuations and replays drafting from the verification-exposed error positions. This allows the drafter to learn from target feedback on both accepted and rejected proposals, focusing training on the draft-induced errors that limit speculative acceptance. Experiments show that Draft-OPD achieves over $5\\times$ lossless acceleration for thinking models across diverse tasks, improving over EAGLE-3 and DFlash by 23\\% and 13\\%.",
+      "authors": [
+        "Haodi Lei",
+        "Yafy Li",
+        "Haoran Zhang",
+        "Shunkai Zhang",
+        "Qianjia Cheng",
+        "Xiaoye Qu",
+        "Ganqu Cui",
+        "Bowen Zhou",
+        "Ning Ding",
+        "Yun Luo",
+        "Yu Cheng"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-28T04:30:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.29343v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy distillation for speculative draft models",
+      "llm_evidence_cn": "面向推测草案模型的在线策略蒸馏",
+      "llm_evidence": "面向推测草案模型的在线策略蒸馏",
+      "canonical_evidence": "面向推测草案模型的在线策略蒸馏",
+      "llm_tldr_en": "Proposes Draft-OPD to address offline-to-inference mismatch in draft model training via on-policy distillation.",
+      "llm_tldr_cn": "推测解码中，草案模型通常使用目标模型生成的轨迹进行监督微调（SFT），导致离线与推理时的分布不匹配。本文提出Draft-OPD，将在线策略蒸馏引入草案模型训练，让目标模型在草案自身生成的状态上进行监督。实验表明Draft-OPD显著提升了草案模型的接受长度，加速了LLM推理。",
+      "llm_tldr": "推测解码中，草案模型通常使用目标模型生成的轨迹进行监督微调（SFT），导致离线与推理时的分布不匹配。本文提出Draft-OPD，将在线策略蒸馏引入草案模型训练，让目标模型在草案自身生成的状态上进行监督。实验表明Draft-OPD显著提升了草案模型的接受长度，加速了LLM推理。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.21606v1",
+      "source": "arxiv",
+      "title": "When Are Teacher Tokens Reliable? Position-Weighted On-Policy Self-Distillation for Reasoning",
+      "abstract": "On-policy self-distillation (OPSD) trains a student on its own rollouts using a privileged teacher, but its standard objective weights all generated tokens equally, implicitly treating the privileged teacher target as equally reliable at every student-visited prefix. Existing entropy-based OPD methods relax this uniformity by modulating token-level supervision with teacher entropy, but high teacher entropy in reasoning has an ambiguous reliability meaning: it can reflect either non-viable uncertainty or benign solution diversity. To identify this phenomenon, we introduce a branch-viability diagnostic. Specifically, we record next-token alternatives from the privileged-answer teacher prompt, force each alternative after the student prompt plus its on-policy spine prefix, and test whether the resulting student-template continuation recovers the correct answer. On Qwen3-4B, we find that an oriented within-sequence position score is the strongest tested predictor of teacher-token reliability, reaching an area-under-ROC-curve (AUROC) of 0.83; local uncertainty scores are at most 0.57. Motivated by this trajectory-level structure, we propose Position-Weighted On-Policy Self-Distillation (PW-OPSD), which applies an increasing position weight while keeping the same student rollout, privileged teacher pass, and clipped forward-KL target as OPSD. In our comprehensive evaluations with different random seeds, the diagnostic-derived PW-OPSD improves AIME 2024 and AIME 2025 Avg@12 by +1.0 and +1.1 points, and a generalization evaluation on two larger-scale models from different families, DeepSeek-R1-Distill-Llama-8B and Olmo-3-7B-Think, also demonstrates consistent aggregate Avg@12 improvements. These results show that teacher-token reliability in reasoning distillation is trajectory-structured and can be utilized without additional teacher computation.",
+      "authors": [
+        "Xiaogeng Liu",
+        "Xinyan Wang",
+        "Yingzi Ma",
+        "Yechao Zhang",
+        "Chaowei Xiao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-20T18:14:03+00:00",
+      "link": "https://arxiv.org/pdf/2605.21606v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "position-weighted on-policy self-distillation for reasoning",
+      "llm_evidence_cn": "面向推理的位置加权在线自蒸馏",
+      "llm_evidence": "面向推理的位置加权在线自蒸馏",
+      "canonical_evidence": "面向推理的位置加权在线自蒸馏",
+      "llm_tldr_en": "Introduces branch-viability diagnostic and position-weighted OPSD to address ambiguous teacher entropy in reasoning.",
+      "llm_tldr_cn": "在线自蒸馏中，教师熵高可能反映不确定性或良性多样性。本文提出分支可行性诊断方法，识别学生生成中的可靠token，并据此进行位置加权蒸馏。实验证明该方法有效提升了推理任务的性能，为蒸馏中的token级监督提供了更精准的方案。",
+      "llm_tldr": "在线自蒸馏中，教师熵高可能反映不确定性或良性多样性。本文提出分支可行性诊断方法，识别学生生成中的可靠token，并据此进行位置加权蒸馏。实验证明该方法有效提升了推理任务的性能，为蒸馏中的token级监督提供了更精准的方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.22156v1",
+      "source": "arxiv",
+      "title": "One-Way Policy Optimization for Self-Evolving LLMs",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has become a promising paradigm for scaling reasoning capabilities of Large Language Models (LLMs). However, the sparsity of binary verifier rewards often leads to low efficiency and optimization instability. To stabilize training, existing methods typically impose token-level constraints relative to a reference policy. We identify that such constraints penalize deviations indiscriminately; this can flip verifier-determined direction when the policy attempts to outperform the reference, thereby suppressing gains. To resolve this, we propose One-Way Policy Optimization (OWPO), a method based on the principle of decoupling optimization direction from update magnitude. In OWPO, the verifier dictates the update direction, while the reference policy serves only to adjust the magnitude. Specifically, OWPO applies asymmetric reweighting: it performs Accelerated Alignment for inferior deviations (where the policy lags behind the reference) and Gain Locking for superior deviations (where the policy surpasses the reference). Furthermore, by incorporating iterative reference updates, OWPO creates a ``Ratchet Effect'' that continuously consolidates gains. Experimental results demonstrate that OWPO outperforms strong baselines, including DAPO, OPD, and MOPD, breaking the bottleneck of fixed priors to enable continuous self-evolution without reliance on external reference models.",
+      "authors": [
+        "Shuo Yang",
+        "Jinda Lu",
+        "Kexin Huang",
+        "Chiyu Ma",
+        "Shaohang Wei",
+        "Yuyang Liu",
+        "Guoyin Wang",
+        "Jingren Zhou",
+        "Li Yuan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-21T08:25:27+00:00",
+      "link": "https://arxiv.org/pdf/2605.22156v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RLVR method for LLM reasoning with one-way policy optimization",
+      "llm_evidence_cn": "面向LLM推理的RLVR方法，采用单向策略优化",
+      "llm_evidence": "面向LLM推理的RLVR方法，采用单向策略优化",
+      "canonical_evidence": "面向LLM推理的RLVR方法，采用单向策略优化",
+      "llm_tldr_en": "Proposes One-Way Policy Optimization (OWPO) for LLM RLVR to avoid indiscriminate penalization of exploration, improving training stability and performance.",
+      "llm_tldr_cn": "现有RLVR方法中二元验证奖励稀疏且参考策略约束会错误抑制有效探索。OWPO通过解耦优化方向与更新幅度，让验证器决定方向而仅约束幅度。实验表明该方法在数学推理任务上显著提升准确率和收敛速度。为在线RL训练提供了更稳定的策略优化方式。",
+      "llm_tldr": "现有RLVR方法中二元验证奖励稀疏且参考策略约束会错误抑制有效探索。OWPO通过解耦优化方向与更新幅度，让验证器决定方向而仅约束幅度。实验表明该方法在数学推理任务上显著提升准确率和收敛速度。为在线RL训练提供了更稳定的策略优化方式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.25381v1",
+      "source": "arxiv",
+      "title": "Not only where, But when: Temporal Scheduling for RLVR",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become a core technique for post-training of Large Language Models (LLMs). While policy optimization is driven by all sampled tokens under a globally broadcast scalar reward, the heterogeneous policy behaviors exhibited along trajectories are largely overlooked without differentiation. Existing works address this by credit allocation, including token-level advantage reweighting, and selective token optimization, however, the allocation criterion are principally stagnant throughout training, limiting resilient policy evolution. In this work, we argue that \\textit{when} learning signals are scheduled can be as important as \\textit{where} they are allocated across tokens, and introduce the temporal dimension that scheduling the credit allocation criteria over the course of RLVR optimization. We find that prioritizing targeted tokens emphasized with specific policy behaviors, and gradually attenuating toward general optimization leads to more stable and efficient learning dynamics. Furthermore, we show that simple trajectory percentiles provide a natural perspective for distinguishing policy behaviors, and works effectively with temporal scheduling. Our analysis reveals that standard optimization substantially sacrifices policy entropy when simultaneously accommodating heterogeneous behaviors, whereas temporal scheduling yields healthier policy evolution dynamics. Experiments across mathematical and general reasoning benchmarks demonstrate consistent improvements, suggesting that temporal scheduling constitutes a promising optimization dimension.",
+      "authors": [
+        "Jinghao Zhang",
+        "Ruilin Li",
+        "Feng Zhao",
+        "Jiaqi Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-25T03:10:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.25381v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "temporal scheduling for RLVR in LLM post-training",
+      "llm_evidence_cn": "LLM后训练中RLVR的时间调度方法",
+      "llm_evidence": "LLM后训练中RLVR的时间调度方法",
+      "canonical_evidence": "LLM后训练中RLVR的时间调度方法",
+      "llm_tldr_en": "Argues that when learning signals are scheduled is as important as where, and introduces temporal scheduling for RLVR to improve policy evolution.",
+      "llm_tldr_cn": "现有RLVR方法只关注Token级优势重权等空间分配，忽略了学习信号的时间调度。本文提出时间维度调度，根据训练阶段动态调整信用分配标准。实验表明该方法能适应策略演化，进一步提升训练效果。为在线RL训练提供了新的调度视角。",
+      "llm_tldr": "现有RLVR方法只关注Token级优势重权等空间分配，忽略了学习信号的时间调度。本文提出时间维度调度，根据训练阶段动态调整信用分配标准。实验表明该方法能适应策略演化，进一步提升训练效果。为在线RL训练提供了新的调度视角。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.21851v1",
+      "source": "arxiv",
+      "title": "OPPO: Bayesian Value Recursion for Token-Level Credit Assignment in LLM Reasoning",
+      "abstract": "Reinforcement learning with verifiable rewards has become the standard recipe for improving LLM reasoning, but the dominant algorithm GRPO assigns a single trajectory-level advantage to every token, diluting the signal at pivotal reasoning steps and injecting noise at uninformative ones. Critic-free alternatives derived from on-policy distillation supply per-token signals through oracle-conditioned likelihood ratios, yet apply each signal in isolation from the trajectory-level evidence accumulated up to that position. We propose Oracle-Prompted Policy Optimization (OPPO), which rests on a single observation: the oracle signal used by prior distillation-style methods for local discrimination is also the natural Bayesian update of the model's belief about eventual success. Accumulating the signal along a trajectory yields, in closed form and at the cost of one extra forward pass, a running estimate of the success probability at every position, together with a token-level advantage that requires no learned value network and no additional rollouts. A first-order analysis factorizes the advantage into the per-token discrimination signal used by distillation methods modulated by a state weight that concentrates credit on genuinely pivotal tokens, with a directional variance-reduction guarantee. The framework admits two estimators differing only in which model scores the evidence: a \\textit{self-oracle} that reuses the student and recovers the on-policy distillation reward as a strict special case, and a \\textit{teacher-oracle} that delegates scoring to a stronger frozen model. On two base LLMs across seven mathematics, science, and code reasoning benchmarks, OPPO improves over GRPO, DAPO, and SDPO by up to $+6.0$ points on AMC'23 and $+5.2$ points on AIME'24, with gains that widen monotonically with response length.",
+      "authors": [
+        "Yu Li",
+        "Rui Miao",
+        "Tian Lan",
+        "Zhengling Qi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-21T00:55:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.21851v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "on-policy distillation derived critic-free token credit assignment",
+      "llm_evidence_cn": "源自在线蒸馏的无评论家token级信用分配",
+      "llm_evidence": "源自在线蒸馏的无评论家token级信用分配",
+      "canonical_evidence": "源自在线蒸馏的无评论家token级信用分配",
+      "llm_tldr_en": "Proposes OPPO, a Bayesian value recursion method for token-level credit assignment in LLM RL, improving upon GRPO and distillation baselines.",
+      "llm_tldr_cn": "针对GRPO轨迹级优势分配稀释关键步骤信号的问题，本文提出Oracle提示策略优化（OPPO）。该方法利用贝叶斯值递归整合局部oracle信号与轨迹级证据，实现更精准的token级信用分配。实验显示OPPO在数学推理上超越GRPO和现有蒸馏方法。",
+      "llm_tldr": "针对GRPO轨迹级优势分配稀释关键步骤信号的问题，本文提出Oracle提示策略优化（OPPO）。该方法利用贝叶斯值递归整合局部oracle信号与轨迹级证据，实现更精准的token级信用分配。实验显示OPPO在数学推理上超越GRPO和现有蒸馏方法。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.22675v1",
+      "source": "arxiv",
+      "title": "Self-Policy Distillation via Capability-Selective Subspace Projection",
+      "abstract": "Self-distillation bootstraps large language models (LLMs) by training on their own generations. However, existing methods either rely on external signals to curate self-generated outputs (e.g., correctness filtering, execution feedback, and reward search), which are costly and unavailable for the best-performing frontier models, or skip curation entirely and train on all raw outputs, an approach that is often domain-specific and hard to generalize. Both also share a deeper weakness that self-generated outputs entangle task-relevant capability with others, such as stylistic patterns, formatting artifacts, and model-specific errors, diluting the signal for the specific capability one aims to improve. In this paper, we propose Self-Policy Distillation (SPD), which achieves generalizable, capability selective without any external signal. Specifically, SPD extracts a low-rank capability subspace from the model's own gradients on correctness-defining tokens, projects key-value (KV) activations into this subspace during self-generation, and fine-tunes on the resulting raw outputs with standard next-token prediction loss. Through extensive experiments across code generation, mathematical reasoning, and multiple-choice QA, we show that SPD achieves up to 13% improvement over state-of-the-art self-distillation methods without external signals and up to 16% improvement over pre-trained baselines. Notably, SPD demonstrates superior generalizability, achieving 15% better performance under out-of-domain generalization settings.",
+      "authors": [
+        "Guangya Hao",
+        "Yitong Shang",
+        "Yunbo Long",
+        "Zhuokai Zhao",
+        "Hanxue Liang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-21T16:18:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.22675v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "self-policy distillation via capability-selective subspace projection for LLMs",
+      "llm_evidence_cn": "通过能力选择性子空间投影实现自策略蒸馏",
+      "llm_evidence": "通过能力选择性子空间投影实现自策略蒸馏",
+      "canonical_evidence": "通过能力选择性子空间投影实现自策略蒸馏",
+      "llm_tldr_en": "Proposes Self-Policy Distillation (SPD) that uses subspace projection to separate task-relevant signals from artifacts in self-generated outputs, improving distillation without external supervision.",
+      "llm_tldr_cn": "针对大语言模型自蒸馏中自生成输出混杂任务无关信号的问题，本文提出自策略蒸馏（SPD），通过能力选择性子空间投影将目标能力从噪声中解耦。SPD无需外部信号即可提取纯净的任务相关信号，在多个推理任务上提升了模型性能。该方法为无监督策略蒸馏提供了新范式。",
+      "llm_tldr": "针对大语言模型自蒸馏中自生成输出混杂任务无关信号的问题，本文提出自策略蒸馏（SPD），通过能力选择性子空间投影将目标能力从噪声中解耦。SPD无需外部信号即可提取纯净的任务相关信号，在多个推理任务上提升了模型性能。该方法为无监督策略蒸馏提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.28303v1",
+      "source": "arxiv",
+      "title": "From Fact Overwriting to Knowledge Evolution: Causal Editing via On-Policy Self-Distillation",
+      "abstract": "While Knowledge Editing (KE) enables efficient updates, its dominant Static Fact Overwriting paradigm treats LLMs as discrete databases, forcibly injecting isolated facts. Fracturing pre-trained logical topologies, this triggers Epistemic Dissonance -- a pathology where un-evolved legacy priors force the model to explicitly negate the injected update. Idealized interventions reveal that this is an inherent structural flaw rather than mere algorithmic noise, with a zero-distortion proxy yielding a catastrophic 95.6% self-refutation rate. Given the causally driven nature of real-world knowledge, grounding updates in explicit causal narratives effectively collapses this conflict rate to just 6.6%, underscoring the imperative for a paradigm shift toward Causal Editing. To internalize this evolution, we propose CODE (Causal On-policy Distillation for Editing). By coupling causal bootstrapping with asymmetric on-policy distillation, CODE engraves causal transition logic directly into parametric memory. Experiments on LLaMA-3.1 and Qwen-2.5 show CODE drastically suppresses self-refutation to 1.8% while securing robust multi-hop accuracy (up to 83.5%), seamlessly transforming discrete fact injection into coherent knowledge evolution. Code is available at https://github.com/CrashBugger/CODE.",
+      "authors": [
+        "Shuaike Li",
+        "Kai Zhang",
+        "Xianquan Wang",
+        "Jiachen Liu",
+        "Shengpeng Mo"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-27T10:59:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.28303v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "on-policy self-distillation for knowledge editing",
+      "llm_evidence_cn": "使用在线策略自蒸馏进行知识编辑",
+      "llm_evidence": "使用在线策略自蒸馏进行知识编辑",
+      "canonical_evidence": "使用在线策略自蒸馏进行知识编辑",
+      "llm_tldr_en": "Applies on-policy self-distillation to causal knowledge editing, reducing epistemic dissonance.",
+      "llm_tldr_cn": "该论文针对知识编辑中的Epistemic Dissonance问题（自反驳率高达95.6%），提出基于因果叙事的在线策略自蒸馏方法。通过将事实更新嵌入因果依赖链，显著降低冲突率至6.6%，展示了在线策略蒸馏在非标准RL场景下的迁移潜力。",
+      "llm_tldr": "该论文针对知识编辑中的Epistemic Dissonance问题（自反驳率高达95.6%），提出基于因果叙事的在线策略自蒸馏方法。通过将事实更新嵌入因果依赖链，显著降低冲突率至6.6%，展示了在线策略蒸馏在非标准RL场景下的迁移潜力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.21924v1",
+      "source": "arxiv",
+      "title": "Visual-Advantage On-Policy Distillation for Vision-Language Models",
+      "abstract": "On-policy knowledge distillation has proven effective for language models, yet its application to vision-language models (VLMs) remains underexplored. We observe that standard on-policy distillation can improve a student's output quality while failing to strengthen its reliance on visual input: on vision-critical tokens, the student's predictions remain largely unchanged whether or not fine-grained visual detail is present, even though the teacher's predictions depend heavily on it.To make this difference observable, we introduce visual advantage (VA), the token-level log-probability difference when the teacher scores a student-generated rollout with versus without access to fine-grained visual detail. VA is concentrated in a small minority of tokens, and these high-VA tokens are the ones that actually carry the visual supervision signal. This motivates a distillation objective that treats them differently from language scaffolding, so their contribution is not diluted by the abundant surrounding language tokens.We propose Visual-Advantage On-Policy Distillation (VA-OPD), which uses VA at two granularities: rollout-level reweighting by trajectory-averaged VA, and token-level KL averaged within high-VA and low-VA groups separately. We train on two math datasets (Geometry3K and ViRL39K) and evaluate on eight benchmarks covering both mathematical reasoning and visual understanding, across three teacher sizes (4B, 8B, and 32B) on the Qwen3-VL family. VA-OPD improves over standard on-policy distillation on every benchmark, with the gain growing monotonically along both the teacher-size and data-scale axes, suggesting that these factors compound consistently.",
+      "authors": [
+        "Ruiqi Liu",
+        "Xiaolei Lv",
+        "Gengsheng Li",
+        "Ximo Zhu",
+        "Zhiheng Wang",
+        "Zhengbo Zhang",
+        "Junkai Chen",
+        "Zhiheng Li",
+        "Bo Li",
+        "Jun Gao",
+        "Shu Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-21T02:48:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.21924v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "on-policy distillation for vision-language models",
+      "llm_evidence_cn": "视觉语言模型的在线策略蒸馏",
+      "llm_evidence": "视觉语言模型的在线策略蒸馏",
+      "canonical_evidence": "视觉语言模型的在线策略蒸馏",
+      "llm_tldr_en": "Proposes Visual-Advantage (VA) to improve on-policy distillation for VLMs by focusing on tokens where teacher relies on fine-grained visual input.",
+      "llm_tldr_cn": "本文提出视觉优势（VA）指标，用于识别教师模型高度依赖细粒度视觉信息的token，从而改进视觉语言模型的在线策略蒸馏。实验表明标准蒸馏未能增强学生模型对视觉输入的依赖，而VA引导的蒸馏能有效提升视觉关键token的准确率，为多模态蒸馏提供了新方向。",
+      "llm_tldr": "本文提出视觉优势（VA）指标，用于识别教师模型高度依赖细粒度视觉信息的token，从而改进视觉语言模型的在线策略蒸馏。实验表明标准蒸馏未能增强学生模型对视觉输入的依赖，而VA引导的蒸馏能有效提升视觉关键token的准确率，为多模态蒸馏提供了新方向。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24426v1",
+      "source": "arxiv",
+      "title": "SEAL: Synergistic Co-Evolution of Agents and Learning Environments",
+      "abstract": "Large Language Model (LLM) agents are increasingly improved through interaction, yet most self-evolution methods adapt either the policy or the learning environment in isolation. We identify this structural gap as \\emph{Agent-Environment Misalignment}: the agent's capability frontier changes during training, while the environment that provides supervision remains static or only weakly coupled to the agent's revealed failures. We propose SEAL, a closed-loop co-evolution framework for interactive tool-use agents. SEAL collects on-policy trajectories under executable verification, diagnoses failed rollouts into turn-level failure labels, and uses these diagnoses as a shared signal for both environment-side adaptation and model-side policy optimization. The environment evolves its training-time learning interface by exposing clearer tool affordance cues, constraint information, and recovery-oriented feedback, while the policy is updated with diagnosis-guided advantage reweighting. Extensive experiments across in-distribution and out-of-distribution multi-turn tool-use evaluations show that SEAL improves low-resource agent learning: with only 400 training samples, it yields +8.25 to +26.25 average-point gains across three backbones and exhibits positive out-of-distribution transfer. These results demonstrate the value of jointly adapting the learner and its training-time learning substrate for robust self-improving LLM agents.",
+      "authors": [
+        "Yihao Hu",
+        "Zhihao Wen",
+        "Xiujin Liu",
+        "Pan Wang",
+        "Xin Zhang",
+        "Wei Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-23T06:41:31+00:00",
+      "link": "https://arxiv.org/pdf/2605.24426v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "diagnoses failed rollouts into turn-level failure labels for process supervision in agent learning",
+      "llm_evidence_cn": "将失败轨迹诊断转换为回合级失败标签，用于智能体学习的过程监督",
+      "llm_evidence": "将失败轨迹诊断转换为回合级失败标签，用于智能体学习的过程监督",
+      "canonical_evidence": "将失败轨迹诊断转换为回合级失败标签，用于智能体学习的过程监督",
+      "llm_tldr_en": "SEAL proposes a closed-loop co-evolution framework that collects on-policy trajectories, diagnoses failed rollouts into turn-level failure labels, and uses them to adapt both the environment and the policy, improving agent learning.",
+      "llm_tldr_cn": "本文提出SEAL闭环协同进化框架，用于交互式工具使用智能体。现有方法孤立地调整策略或环境，而SEAL通过收集在线策略轨迹，将失败诊断转化为回合级失败标签，并同时指导环境调整和策略优化。该方法利用失败轨迹进行过程监督，有效缓解智能体-环境不匹配问题，显著提升智能体学习效率。",
+      "llm_tldr": "本文提出SEAL闭环协同进化框架，用于交互式工具使用智能体。现有方法孤立地调整策略或环境，而SEAL通过收集在线策略轨迹，将失败诊断转化为回合级失败标签，并同时指导环境调整和策略优化。该方法利用失败轨迹进行过程监督，有效缓解智能体-环境不匹配问题，显著提升智能体学习效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.22211v1",
+      "source": "arxiv",
+      "title": "CLORE: Content-Level Optimization for Reasoning Efficiency",
+      "abstract": "Reinforcement learning post-training has improved the reasoning ability of large language models, but often produces unnecessarily long, repetitive, or semantically opaque reasoning traces. Existing efficient reasoning methods mainly regulate response length through explicit budgets or length-aware rewards, leaving intermediate reasoning content weakly supervised. We propose CLORE, a content-level optimization framework that improves reasoning efficiency by editing correct on-policy rollouts. CLORE uses an external augmentation model to delete repetitive segments, illegible or task-irrelevant content, and superfluous reasoning after the solution is established, while preserving the final answer. The resulting augmented--original pairs are optimized with an auxiliary reference-free DPO objective alongside standard policy-gradient training. By restricting augmentation to correct trajectories and performing local deletion, CLORE keeps edited rollouts close to the policy distribution and mitigates off-policy mismatch. Experiments on DeepSeek-R1-Distill-Qwen-7B and Qwen2.5-Math-7B across five mathematical reasoning benchmarks show that CLORE improves the accuracy--efficiency trade-off and remains compatible with GRPO, DAPO, Training Efficient, and ThinkPrune. Content-level analyses further show that CLORE reduces repetitive reasoning, illegible content, and post-answer exploration, supporting content-level supervision as a complementary direction to length-level control.",
+      "authors": [
+        "Yuyang Wu",
+        "Qiyao Xue",
+        "Guanxing Lu",
+        "Weichen Liu",
+        "Zihan Wang",
+        "Manling Li",
+        "Olexandr Isayev"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-21T09:16:27+00:00",
+      "link": "https://arxiv.org/pdf/2605.22211v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "content-level optimization using on-policy rollout editing, directly related to OPD",
+      "llm_evidence_cn": "使用在线策略轨迹编辑进行内容级优化，直接与OPD相关",
+      "llm_evidence": "使用在线策略轨迹编辑进行内容级优化，直接与OPD相关",
+      "canonical_evidence": "使用在线策略轨迹编辑进行内容级优化，直接与OPD相关",
+      "llm_tldr_en": "CLORE improves reasoning efficiency by editing correct on-policy rollouts to remove redundancy, using augmented-original pairs for auxiliary optimization, addressing weak supervision of intermediate content.",
+      "llm_tldr_cn": "本文提出CLORE框架，针对大语言模型推理效率问题，通过在正确在线策略轨迹上编辑冗余、无关内容，并利用增强-原始对进行辅助优化。现有方法仅控制长度，本文内容级优化直接监督中间推理过程，减少不必要的生成，同时保持答案正确性，有效提升推理效率。",
+      "llm_tldr": "本文提出CLORE框架，针对大语言模型推理效率问题，通过在正确在线策略轨迹上编辑冗余、无关内容，并利用增强-原始对进行辅助优化。现有方法仅控制长度，本文内容级优化直接监督中间推理过程，减少不必要的生成，同时保持答案正确性，有效提升推理效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.25338v1",
+      "source": "arxiv",
+      "title": "CausalFlow: Causal Attribution and Counterfactual Repair for LLM Agent Failures",
+      "abstract": "Large language model (LLM) agents frequently fail on multi-step tasks involving reasoning, tool use, and environment interaction. While such failures are typically logged or retried heuristically, they contain structured signals about where execution broke down. We introduce CausalFlow, an interventional framework that converts failed agent traces into minimal counterfactual repairs and reusable supervision. CausalFlow models execution traces as sequential chains of dependent steps and computes Causal Responsibility Scores(CRS) via step-level counterfactual intervention to identify failure-inducing steps. For these steps, we generate minimally edited repairs that flip the final outcome to success, producing validated contrastive pairs of the form (wrong step, corrected step). CausalFlow supports two complementary uses: targeted test-time repair that recovers from failures with minimal behavioral drift, and training-time supervision suitable for offline preference optimization or reward modeling. Across four benchmarks spanning mathematical reasoning, code generation, question answering, and medical browsing, CausalFlow converts failed executions into validated minimal repairs with high minimality and causal-consensus scores, and demonstrates that causal attribution is necessary for reliable improvement across diverse agent tasks, outperforming heuristic refinement in complex retrieval settings while producing more localized repairs throughout. These results demonstrate that interventional analysis over structured execution traces provides a principled and scalable mechanism for transforming agent failures into reliability gains and learning-ready supervision.",
+      "authors": [
+        "Akash Bonagiri",
+        "Devang Borkar",
+        "Gerard Janno Anderias",
+        "Setareh Rafatirad",
+        "Houman Homayoun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-25T01:47:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.25338v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "causal attribution and counterfactual repair for LLM agent failures using failure trajectories",
+      "llm_evidence_cn": "利用失败轨迹进行因果归因与反事实修复",
+      "llm_evidence": "利用失败轨迹进行因果归因与反事实修复",
+      "canonical_evidence": "利用失败轨迹进行因果归因与反事实修复",
+      "llm_tldr_en": "Proposes CausalFlow to convert failed LLM agent traces into minimal counterfactual repairs, computing step-level causal responsibility scores to identify failure-inducing steps and generate contrastive pairs for supervision.",
+      "llm_tldr_cn": "针对LLM智能体在多步任务中的失败，现有方法通常忽视失败轨迹中的结构化信号。本文提出CausalFlow框架，通过因果归因和反事实干预，将失败轨迹转换为最小化修复，生成对比学习对作为可复用的监督信号。实验表明该方法能有效识别关键失败步骤并提升agent性能。这一工作为利用错误轨迹进行过程监督提供了新思路。",
+      "llm_tldr": "针对LLM智能体在多步任务中的失败，现有方法通常忽视失败轨迹中的结构化信号。本文提出CausalFlow框架，通过因果归因和反事实干预，将失败轨迹转换为最小化修复，生成对比学习对作为可复用的监督信号。实验表明该方法能有效识别关键失败步骤并提升agent性能。这一工作为利用错误轨迹进行过程监督提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.24613v1",
+      "source": "arxiv",
+      "title": "Guarded Repair for Harm-Aware Post-hoc Replacement of LLM Mathematical Reasoning",
+      "abstract": "Post-hoc repair of LLM mathematical reasoning introduces an asymmetric risk: fixing an incorrect reasoning trace is useful, but replacing a trace that was already correct can be harmful. We study this problem under a selective replacement setting, where a system must decide whether a repaired candidate is safer than preserving the original cached trace. We present GuardedRepair, a guarded best-of-N repair framework that diagnoses cached reasoning traces, selectively triggers repair, and accepts answer-changing candidates only when deterministic verification guards support replacement. The framework combines lightweight symbolic checks, surface semantic-risk diagnostics, bounded candidate generation, and conservative acceptance policies. On the full GSM8K test set, where the initial reasoner already achieves 95.60% accuracy, GuardedRepair improves final accuracy to 96.89%, fixing 17 of 58 remaining errors without measured broken-correct cases in the main run. On a weak-reasoner ASDiv setting, accuracy improves from 78.40% to 87.60%. Direct regeneration baselines show that this gain is not explained by stronger-model re-solving alone: re-solving all GSM8K examples lowers accuracy to 93.03% and breaks 47 initially correct answers. Additional analyses show that guarded repair substantially improves the fixed/broken tradeoff, while also revealing that replacement risk is reduced rather than eliminated. These results support viewing post-hoc repair as harm-aware selective replacement rather than unconstrained re-solving.",
+      "authors": [
+        "Haizhou Xia"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.SE"
+      ],
+      "published": "2026-05-23T14:51:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.24613v1",
+      "tags": [
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "selective repair of reasoning traces using verification guards, aligns with error trajectory process supervision",
+      "llm_evidence_cn": "选择性地修复推理轨迹，使用验证守卫，与错误轨迹过程监督一致",
+      "llm_evidence": "选择性地修复推理轨迹，使用验证守卫，与错误轨迹过程监督一致",
+      "canonical_evidence": "选择性地修复推理轨迹，使用验证守卫，与错误轨迹过程监督一致",
+      "llm_tldr_en": "GuardedRepair introduces a guarded best-of-N repair framework for LLM mathematical reasoning that diagnoses cached traces and conditionally replaces them, balancing repair benefit against harm of altering correct answers.",
+      "llm_tldr_cn": "本文针对大语言模型数学推理的后验修复提出GuardedRepair框架，通过轻量级符号检查和语义风险评估，在修复正确性与安全性之间取得平衡。该方法诊断缓存推理轨迹，仅当确定性验证支持时才接受修改，有效降低修复引入错误的风险，为推理结果的事后优化提供新范式。",
+      "llm_tldr": "本文针对大语言模型数学推理的后验修复提出GuardedRepair框架，通过轻量级符号检查和语义风险评估，在修复正确性与安全性之间取得平衡。该方法诊断缓存推理轨迹，仅当确定性验证支持时才接受修改，有效降低修复引入错误的风险，为推理结果的事后优化提供新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

@@ -1,6 +1,93 @@
 {
-  "generated_at": "2026-03-06T19:11:18.471356+00:00",
-  "updated_date": "20260306",
+  "generated_at": "2026-05-29T06:41:11.964197+00:00",
+  "updated_date": "20260520-20260529",
   "carryover_days": 9,
-  "items": []
+  "tag_states": {
+    "opd": {
+      "updated_date": "20260520-20260529",
+      "carryover_days": 9,
+      "items": [
+        {
+          "id": "2605.25582v1",
+          "source": "arxiv",
+          "title": "Extreme Region Policy Distillation",
+          "abstract": "Reinforcement learning for large language models faces a fundamental trade-off between sample efficiency and asymptotic performance: strictly on-policy methods discard trajectories after a single update, while off-policy reuse introduces distribution mismatch that existing trust-region techniques mitigate primarily by enforcing conservative optimization, often leaving rich training signals underutilized. To investigate this, we perform extensive off-policy updates on fixed data. Our experiments reveal that aggressive multi-step optimization brings rapid initial gains, but excessive updates cause trajectory probabilities to deviate and entropy to collapse, with performance plateauing early. Tightening KL constraints merely lowers the ceiling without resolving the degradation. This motivates Extreme Region Policy Distillation (ERPD), a two-stage framework that decouples sample efficiency from KL efficiency. The first stage performs weakly constrained off-policy optimization on fixed data to maximally extract training signals. The resulting policy provides token-level supervision. In the second stage, we distill these signals into the base policy under trust-region constraints, filtering harmful drift while preserving useful signals. The distilled policy achieves comparable or better performance with substantially smaller KL divergence, indicating that much of the first-stage divergence was spent on unnecessary drift rather than genuine improvement. Crucially, ERPD accommodates both strong and weak teachers: when aggressive optimization yields no stronger policy, even degenerate teachers provide effective supervision via alternative signal construction strategies. We validate ERPD on mathematical reasoning, showing gains for strong base models where on-policy training plateaus, and reliable improvements with weak teachers.",
+          "authors": [
+            "Changyu Chen",
+            "Xiting Wang",
+            "Rui Yan"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.AI"
+          ],
+          "published": "2026-05-25T08:32:24+00:00",
+          "link": "https://arxiv.org/pdf/2605.25582v1",
+          "tags": [
+            "keyword:opd",
+            "query:opd"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "extreme region policy distillation for LLM reinforcement learning",
+          "llm_evidence_cn": "针对大语言模型强化学习的极端区域策略蒸馏",
+          "llm_evidence": "针对大语言模型强化学习的极端区域策略蒸馏",
+          "canonical_evidence": "针对大语言模型强化学习的极端区域策略蒸馏",
+          "llm_tldr_en": "Analyzes off-policy updates in LLM RL and proposes Extreme Region Policy Distillation to efficiently utilize training signals while avoiding distribution collapse.",
+          "llm_tldr_cn": "大语言模型RL中在线策略样本效率低，离线复用又带来分布偏移。本文深入分析后提出极端区域策略蒸馏，通过专注于高信息量区域实现高效学习。实验表明该方法在保持性能的同时显著提升样本效率。该研究直接服务于LLM RL中的策略蒸馏需求。",
+          "llm_tldr": "大语言模型RL中在线策略样本效率低，离线复用又带来分布偏移。本文深入分析后提出极端区域策略蒸馏，通过专注于高信息量区域实现高效学习。实验表明该方法在保持性能的同时显著提升样本效率。该研究直接服务于LLM RL中的策略蒸馏需求。",
+          "llm_tags": [
+            "query:opd"
+          ],
+          "matched_query_tag": "query:opd",
+          "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2605.25582v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2605.29253v1",
+          "source": "arxiv",
+          "title": "OpenClawBench: Benchmarking Process-side Anomalies in Real-world Agent Execution Trajectories",
+          "abstract": "Task success can hide process anomalies in real-world agent executions. An agent may pass the final task oracle while still accumulating unresolved ambiguity, unsafe external writes, ignored errors, weakly grounded commitments, or capability-boundary overcommitment. We study this mismatch as the Outcome-Process Gap and introduce OpenClawBench, a large-scale dataset for measuring and supervising process-side anomalies in real agent execution processes. OpenClawBench is built from BFCL-driven OpenClaw sessions produced by 6 source models and contains 31,264 annotated trajectories. It aligns task-oracle outcomes with structured process evidence. FullTax converts the aligned trajectories into structured anomaly supervision: binary labels, supporting evidence, onset/span localization, severity, recoverability, and a 5-class anomaly taxonomy. Using OpenClawBench, we make the Outcome-Process Gap measurable. Among 31,135 oracle-passing executions, 2,904 are still labeled process-anomalous under FullTax. These results show that success-only evaluation misses a concrete class of process-side failures in real agent executions. A LoRA-fine-tuned Gemma 3 12B detector trained on the high-confidence FullTax supervised pool reaches binary F1=0.729 on the cleaner-labels held-out test split. Together, OpenClawBench turns real agent execution logs into auditable and reusable supervision for studying, diagnosing, and operationally monitoring runtime agent reliability.",
+          "authors": [
+            "Yibing Liu",
+            "Yangze Liu",
+            "Xiaolong Yin",
+            "Bin Wang",
+            "Chong Zhang",
+            "Hao Yin",
+            "Zhongyi Han"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI"
+          ],
+          "published": "2026-05-28T02:15:52+00:00",
+          "link": "https://arxiv.org/pdf/2605.29253v1",
+          "tags": [
+            "query:opd"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "benchmark for process supervision in agent execution trajectories",
+          "llm_evidence_cn": "智能体执行轨迹的过程监督基准",
+          "llm_evidence": "智能体执行轨迹的过程监督基准",
+          "canonical_evidence": "智能体执行轨迹的过程监督基准",
+          "llm_tldr_en": "Introduces OpenClawBench, a dataset for benchmarking process-side anomalies in agent trajectories, with structured anomaly supervision.",
+          "llm_tldr_cn": "针对智能体执行中任务成功可能隐藏过程异常的问题，本文提出OpenClawBench数据集。它包含31,264条带注释的轨迹，标记了多种过程异常如未解决歧义、不安全写入等。该数据集支持对结果-过程差距的量化评估，为过程监督提供标准化基准。",
+          "llm_tldr": "针对智能体执行中任务成功可能隐藏过程异常的问题，本文提出OpenClawBench数据集。它包含31,264条带注释的轨迹，标记了多种过程异常如未解决歧义、不安全写入等。该数据集支持对结果-过程差距的量化评估，为过程监督提供标准化基准。",
+          "llm_tags": [
+            "query:opd"
+          ],
+          "matched_query_tag": "query:opd",
+          "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2605.29253v1",
+          "carry_days": 1
+        }
+      ]
+    }
+  }
 }
