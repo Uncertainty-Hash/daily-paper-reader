@@ -6,64 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-29
-- 运行时间：2026-05-29 21:25:17 UTC
+- 最新运行日期：2026-05-30
+- 运行时间：2026-05-30 20:53:34 UTC
 - 运行状态：成功
-- 本次总论文数：14
-- 精读区：6
-- 速读区：8
+- 本次总论文数：8
+- 精读区：1
+- 速读区：7
 
 ### 今日简报（AI）
-今日推荐14篇论文，精读聚焦多轮对话蒸馏（10分）与软件工程智能体过程监督（9分）。  
-速读高亮点包括噪声前缀推理恢复与时序RLVR调度，值得深挖落地场景。  
-建议优先精读高分解读，再结合时序调度方法优化实际交互系统。
-- 详情：[/202605/29/README](/202605/29/README)
+今日精选8篇论文，聚焦策略优化与通用推理突破。最值得看精读8分新作《信息瓶颈驱动的树策略优化》，以及速读中《去噪反馈强化学习》与《通用推理器》方法。建议普通读者优先关注去噪反馈与推理优化方向，这两项工作分别提升模型鲁棒性与泛化推理能力。
+- 详情：[/202605/30/README](/202605/30/README)
 
 ### 精读区论文标签
-1. [Same Evidence, Different Answers: Canonical-Context On-Policy Distillation for Multi-Turn Language Models](/202605/29/2605.30251v1-same-evidence-different-answers-canonical-context-on-policy-distillation-for-multi-turn-language-models)  
-   标签：评分：10.0/10、query:opd
-   evidence：面向多轮对话大语言模型的规范上下文在线策略蒸馏
-2. [From Patches to Trajectories: Privileged Process Supervision for Software-Engineering Agents](/202605/29/2605.21996v1-from-patches-to-trajectories-privileged-process-supervision-for-software-engineering-agents)  
-   标签：评分：9.0/10、query:opd
-   evidence：使用教师轨迹进行特权过程监督，用于软件工程代理
-3. [Extreme Region Policy Distillation](/202605/29/2605.25582v1-extreme-region-policy-distillation)  
-   标签：评分：9.0/10、query:opd
-   evidence：针对LLM强化学习中在线与离线策略的权衡，提出极端区域策略蒸馏方法
-4. [GeneralThinker: Domain-General Reasoning through Likelihood-Guided Answer-Conditioned Optimization](/202605/29/2605.27934v1-generalthinker-domain-general-reasoning-through-likelihood-guided-answer-conditioned-optimization)  
-   标签：评分：9.0/10、query:opd
-   evidence：面向推理的在线策略强化学习框架，采用密集奖励和词元级信用分配
-5. [GAPD: Gold-Action Policy Distillation for Agentic Reinforcement Learning in Knowledge Base Question Answering](/202605/29/2605.29584v1-gapd-gold-action-policy-distillation-for-agentic-reinforcement-learning-in-knowledge-base-question-answering)  
-   标签：评分：9.0/10、query:opd
-   evidence：用于知识库问答中在线策略强化学习的金牌动作策略蒸馏
-6. [Credit Assignment with Resets in Language Model Reasoning](/202605/29/2605.25507v1-credit-assignment-with-resets-in-language-model-reasoning)  
+1. [Long Live The Balance: Information Bottleneck Driven Tree-based Policy Optimization](/202605/30/2605.28109v1-long-live-the-balance-information-bottleneck-driven-tree-based-policy-optimization)  
    标签：评分：8.0/10、query:opd
-   evidence：利用重置机制进行LLM推理的步骤级奖励信用分配
+   evidence：基于GRPO的在线强化学习方法，针对推理任务优化探索-利用平衡，与OPD直接相关
 
 ### 速读区论文标签
-1. [DenoiseRL: Bootstrapping Reasoning Models to Recover from Noisy Prefixes](/202605/29/2605.28421v1-denoiserl-bootstrapping-reasoning-models-to-recover-from-noisy-prefixes)  
-   标签：评分：8.0/10、query:opd
-   evidence：从错误推理轨迹中学习，将失败转化为改进信号
-2. [Not only where, But when: Temporal Scheduling for RLVR](/202605/29/2605.25381v1-not-only-where-but-when-temporal-scheduling-for-rlvr)  
+1. [Reinforcement Learning from Denoising Feedback](/202605/30/2605.25638v1-reinforcement-learning-from-denoising-feedback)  
    标签：评分：7.0/10、query:opd
-   evidence：关注RLVR的时间调度，属于复合需求中的关键方法
-3. [TrajAudit: Automated Failure Diagnosis for Agentic Coding Systems](/202605/29/2605.26563v1-trajaudit-automated-failure-diagnosis-for-agentic-coding-systems)  
+   evidence：RLDF利用反馈（包括rollout）进行策略损失估计，契合在线强化学习与反馈利用的需求。
+2. [GeneralThinker: Domain-General Reasoning through Likelihood-Guided Answer-Conditioned Optimization](/202605/30/2605.27934v1-generalthinker-domain-general-reasoning-through-likelihood-guided-answer-conditioned-optimization)  
    标签：评分：7.0/10、query:opd
-   evidence：利用任务执行轨迹进行自动化失败诊断
-4. [BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning](/202605/29/2605.27293v1-basis-batchwise-advantage-estimation-from-single-rollout-information-sharing-for-llm-reasoning)  
-   标签：评分：7.0/10、query:opd
-   evidence：针对LLM强化学习的批量优势估计，单次rollout信息共享
-5. [OpenClawBench: Benchmarking Process-side Anomalies in Real-world Agent Execution Trajectories](/202605/29/2605.29253v1-openclawbench-benchmarking-process-side-anomalies-in-real-world-agent-execution-trajectories)  
-   标签：评分：7.0/10、query:opd
-   evidence：智能体轨迹中的过程侧异常监督
-6. [ZipRL: Adaptive Multi-Turn Context Compression with Hindsight Response Replay](/202605/29/2605.28069v1-ziprl-adaptive-multi-turn-context-compression-with-hindsight-response-replay)  
+   evidence：提出在线策略推理优化框架，使用似然指导的密集奖励和词级信用分配
+3. [Learning to Route Languages for Multilingual Policy Optimization](/202605/30/2605.25360v1-learning-to-route-languages-for-multilingual-policy-optimization)  
    标签：评分：6.0/10、query:opd
-   evidence：基于可验证奖励强化学习的自适应压缩框架，含后见响应回放
-7. [Long Live The Balance: Information Bottleneck Driven Tree-based Policy Optimization](/202605/29/2605.28109v1-long-live-the-balance-information-bottleneck-driven-tree-based-policy-optimization)  
+   evidence：提出在线策略优化框架，通过语言路由增强训练信号多样性
+4. [Not only where, But when: Temporal Scheduling for RLVR](/202605/30/2605.25381v1-not-only-where-but-when-temporal-scheduling-for-rlvr)  
    标签：评分：6.0/10、query:opd
-   evidence：针对大语言模型在线RL（如GRPO）中的探索-利用平衡问题
-8. [Hista and Numca: Estimate State Value Effectively for LLM Reinforcement Learning](/202605/29/2605.29782v1-hista-and-numca-estimate-state-value-effectively-for-llm-reinforcement-learning)  
+   evidence：RLVR训练中的时间调度
+5. [BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning](/202605/30/2605.27293v1-basis-batchwise-advantage-estimation-from-single-rollout-information-sharing-for-llm-reasoning)  
    标签：评分：6.0/10、query:opd
-   evidence：针对LLM强化学习中的状态值估计方法，可增强在线策略中的评论家
+   evidence：用于LLM推理强化学习的批处理优势估计
+6. [ZipRL: Adaptive Multi-Turn Context Compression with Hindsight Response Replay](/202605/30/2605.28069v1-ziprl-adaptive-multi-turn-context-compression-with-hindsight-response-replay)  
+   标签：评分：6.0/10、query:opd
+   evidence：用于自适应上下文压缩的RLVR框架
+7. [EvoRubric: Self-Evolving Rubric-Driven RL for Open-Ended Generation](/202605/30/2605.29847v1-evorubric-self-evolving-rubric-driven-rl-for-open-ended-generation)  
+   标签：评分：6.0/10、query:opd
+   evidence：自进化强化学习框架，无需外部评分标准，可应用于在线训练
 
 
 <div class="dpr-home-promo-card">
