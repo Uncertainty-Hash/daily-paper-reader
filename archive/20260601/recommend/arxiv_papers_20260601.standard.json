@@ -1,0 +1,296 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-01T22:39:48.983812+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2605.30861v1",
+      "source": "arxiv",
+      "title": "Distilling LLM Feedback for Lean Theorem Proving",
+      "abstract": "Post-training for reasoning models typically combines supervised fine-tuning with reinforcement learning from verifiable rewards, most commonly with GRPO. However, this algorithm suffers from sparse rewards, limited exploration, and mode collapse. Building upon recent works on self-distillation, we propose Feedback Distillation, a training method where the model is trained to match, at the token level, its own distribution conditioned on privileged feedback produced by a language model. Feedback Distillation offers token-level supervision and can inject external knowledge. Evaluating our method for Lean4 theorem-proving, we find that Feedback Distillation maintains greater diversity in generated trajectories than GRPO, yielding higher policy entropy and better pass@k scaling. The two methods are complementary: initializing GRPO from a Feedback Distillation checkpoint outperforms either method alone. All in all, our results suggest a promising avenue to improve post-training for complex reasoning.",
+      "authors": [
+        "Gaetan Narozniak",
+        "Gérard Biau",
+        "Rémi Munos",
+        "Ahmad Rammal",
+        "Pierre Marion"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-29T05:35:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.30861v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes Feedback Distillation, a token-level distillation method using LLM feedback, on-policy distillation variant",
+      "llm_evidence_cn": "提出反馈蒸馏，一种使用LLM反馈的令牌级蒸馏方法，属于在线蒸馏变体",
+      "llm_evidence": "提出反馈蒸馏，一种使用LLM反馈的令牌级蒸馏方法，属于在线蒸馏变体",
+      "canonical_evidence": "提出反馈蒸馏，一种使用LLM反馈的令牌级蒸馏方法，属于在线蒸馏变体",
+      "llm_tldr_en": "Feedback Distillation trains LLMs to match token-level distribution conditioned on privileged LLM feedback, addressing sparse rewards and mode collapse in GRPO for theorem proving.",
+      "llm_tldr_cn": "该论文针对GRPO后训练中的稀疏奖励、有限探索和模式坍缩问题，提出反馈蒸馏方法。模型被训练以匹配在特权反馈（由语言模型生成）条件下的令牌级自分布，从而提供密集监督并注入外部知识。在Lean4定理证明任务中，反馈蒸馏生成了比GRPO更多样化的轨迹，策略熵更高且pass@k扩展性更好。该方法可视为一种在线策略蒸馏，为推理模型的强化学习后训练开辟了新方向。",
+      "llm_tldr": "该论文针对GRPO后训练中的稀疏奖励、有限探索和模式坍缩问题，提出反馈蒸馏方法。模型被训练以匹配在特权反馈（由语言模型生成）条件下的令牌级自分布，从而提供密集监督并注入外部知识。在Lean4定理证明任务中，反馈蒸馏生成了比GRPO更多样化的轨迹，策略熵更高且pass@k扩展性更好。该方法可视为一种在线策略蒸馏，为推理模型的强化学习后训练开辟了新方向。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.27293v1",
+      "source": "arxiv",
+      "title": "BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning",
+      "abstract": "Reinforcement learning with verifiable rewards has become a standard recipe for improving the reasoning abilities of large language models. Existing algorithms face a tradeoff between computational efficiency and sample efficiency in value estimation and policy learning. We introduce BASIS, a critic-free post-training algorithm designed to address this tradeoff. At each online training step, BASIS samples only one rollout per prompt, but leverages rich information across prompts in the entire batch to improve value function estimation. Our experiments demonstrate that BASIS reduces MSE in value function estimation by 69% compared to REINFORCE++, a representative single-rollout baseline, and achieves lower MSE with one rollout than group mean estimators with 8 rollouts. This improvement in value estimation translates to better policy optimization: using substantially less training time, BASIS achieves performance close to multi-rollout GRPO-type baselines and often outperforms single-rollout REINFORCE-type baselines.",
+      "authors": [
+        "Shijin Gong",
+        "Erhan Xu",
+        "Kai Ye",
+        "Francesco Quinzan",
+        "Giulia Livieri",
+        "Chengchun Shi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-05-26T17:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.27293v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "batched advantage estimation for on-policy LLM RL",
+      "llm_evidence_cn": "批量优势估计用于在线策略LLM强化学习",
+      "llm_evidence": "批量优势估计用于在线策略LLM强化学习",
+      "canonical_evidence": "批量优势估计用于在线策略LLM强化学习",
+      "llm_tldr_en": "Critic-free RL algorithm that shares information across batch to improve value estimation, achieving 69% MSE reduction over single-rollout baselines.",
+      "llm_tldr_cn": "该论文针对LLM强化学习中计算效率与样本效率的权衡，提出BASIS算法。它在每一步仅采样单个轨迹，但利用批次内跨提示的信息共享来改进价值函数估计。实验表明，相比REINFORCE++，BASIS将价值估计MSE降低69%，且使用更少rollout达到更低MSE。该方法属于在线策略强化学习优化，与用户需求中的RL训练方法相关。",
+      "llm_tldr": "该论文针对LLM强化学习中计算效率与样本效率的权衡，提出BASIS算法。它在每一步仅采样单个轨迹，但利用批次内跨提示的信息共享来改进价值函数估计。实验表明，相比REINFORCE++，BASIS将价值估计MSE降低69%，且使用更少rollout达到更低MSE。该方法属于在线策略强化学习优化，与用户需求中的RL训练方法相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.25360v1",
+      "source": "arxiv",
+      "title": "Learning to Route Languages for Multilingual Policy Optimization",
+      "abstract": "Large language models~(LLMs) are trained on heterogeneous multilingual corpora, yet existing policy optimization methods often implicitly restrict each training question to a single response language or rely on a fixed dominant language for supervision. We propose language-routed policy optimization (LRPO), an online policy optimization framework that treats language as a selectable variable. LRPO elicits multilingual rollouts for each training question and integrates their relative quality into preference-based policy updates, increasing the diversity and informativeness of training signals under the fixed rollout budget. To adaptively determine which languages to explore during reinforcement learning, we introduce a trainable language router formulated as a multi-armed bandit, balancing exploration of underutilized languages with exploitation of more informative ones. Extensive experiments show that LRPO consistently improves multilingual performance, demonstrating that adaptive language routing enables effective cross-lingual knowledge exploitation for training. We release all the resources at https://github.com/Guochry/LRPO.",
+      "authors": [
+        "Geyang Guo",
+        "Hiromi Wakaki",
+        "Yuki Mitsufuji",
+        "Alan Ritter",
+        "Wei Xu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-25T02:28:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.25360v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "online policy optimization with multilingual rollouts",
+      "llm_evidence_cn": "在线策略优化与多语言rollout",
+      "llm_evidence": "在线策略优化与多语言rollout",
+      "canonical_evidence": "在线策略优化与多语言rollout",
+      "llm_tldr_en": "LRPO proposes a language-routed policy optimization framework that treats language as a selectable variable, eliciting multilingual rollouts and integrating their quality into preference-based policy updates, improving training signal diversity under fixed budget.",
+      "llm_tldr_cn": "现有LLM策略优化方法常将训练问题限制在单一语言中。本文提出语言路由策略优化（LRPO）框架，将语言作为可选变量，为每个问题生成多语言rollout，并根据相对质量进行偏好学习更新，在固定rollout预算下增加训练信号的多样性和信息量。实验表明该方法能有效提升多语言场景下的策略性能。",
+      "llm_tldr": "现有LLM策略优化方法常将训练问题限制在单一语言中。本文提出语言路由策略优化（LRPO）框架，将语言作为可选变量，为每个问题生成多语言rollout，并根据相对质量进行偏好学习更新，在固定rollout预算下增加训练信号的多样性和信息量。实验表明该方法能有效提升多语言场景下的策略性能。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.30888v1",
+      "source": "arxiv",
+      "title": "The Flip Side of RLHF: On-Policy Feedback for Reward Model Self-Supervised Improvement",
+      "abstract": "Building strong reward models (RMs) for language model alignment is bottlenecked by the cost and difficulty of acquiring diverse and reliable preference data from human annotation or judge models. It is dramatically worse as the policy evolves beyond the static RM training. Therefore, we propose SAVE (Self-supervised reward model improvement via Value-Anchored On-policy feedback), a framework that grades on-policy responses as feedback by using the value function for on-policy RM training. SAVE naturally converts the reward-graded on-policy responses into supervision with a prompt-specific value head as an adaptive anchor. It computes RM advantages and filters ambiguous samples to update the RM via a contrastive objective. The effectiveness of SAVE for enhancing RM training is strongly validated through rigorous empirical evaluation across six diverse benchmarks. It achieves outperforming results across all datasets while maintaining consistent improvements across three RL algorithms (GRPO, RLOO, GSPO) and different policy backbones.",
+      "authors": [
+        "Xiaobo Wang",
+        "Tong Wu",
+        "Min Tang",
+        "Jiaqi Li",
+        "Qi Liu",
+        "Zilong Zheng"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-29T06:25:16+00:00",
+      "link": "https://arxiv.org/pdf/2605.30888v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "on-policy feedback for reward model self-supervised improvement",
+      "llm_evidence_cn": "基于on-policy反馈的奖励模型自监督改进",
+      "llm_evidence": "基于on-policy反馈的奖励模型自监督改进",
+      "canonical_evidence": "基于on-policy反馈的奖励模型自监督改进",
+      "llm_tldr_en": "SAVE uses on-policy responses graded by a value function to self-supervise reward model training, converting reward-graded responses into contrastive updates with prompt-specific anchors, addressing the distribution shift between static RM and evolving policy.",
+      "llm_tldr_cn": "奖励模型训练受限于静态偏好数据，无法适应策略演化。本文提出SAVE框架，利用价值函数对当前策略的on-policy响应进行评分，并将其转化为对比学习信号来更新奖励模型。通过提示特定价值头作为自适应锚点，SAVE有效缓解分布漂移，实验表明该方法能持续提升奖励模型的对齐质量。",
+      "llm_tldr": "奖励模型训练受限于静态偏好数据，无法适应策略演化。本文提出SAVE框架，利用价值函数对当前策略的on-policy响应进行评分，并将其转化为对比学习信号来更新奖励模型。通过提示特定价值头作为自适应锚点，SAVE有效缓解分布漂移，实验表明该方法能持续提升奖励模型的对齐质量。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.25381v1",
+      "source": "arxiv",
+      "title": "Not only where, But when: Temporal Scheduling for RLVR",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become a core technique for post-training of Large Language Models (LLMs). While policy optimization is driven by all sampled tokens under a globally broadcast scalar reward, the heterogeneous policy behaviors exhibited along trajectories are largely overlooked without differentiation. Existing works address this by credit allocation, including token-level advantage reweighting, and selective token optimization, however, the allocation criterion are principally stagnant throughout training, limiting resilient policy evolution. In this work, we argue that \\textit{when} learning signals are scheduled can be as important as \\textit{where} they are allocated across tokens, and introduce the temporal dimension that scheduling the credit allocation criteria over the course of RLVR optimization. We find that prioritizing targeted tokens emphasized with specific policy behaviors, and gradually attenuating toward general optimization leads to more stable and efficient learning dynamics. Furthermore, we show that simple trajectory percentiles provide a natural perspective for distinguishing policy behaviors, and works effectively with temporal scheduling. Our analysis reveals that standard optimization substantially sacrifices policy entropy when simultaneously accommodating heterogeneous behaviors, whereas temporal scheduling yields healthier policy evolution dynamics. Experiments across mathematical and general reasoning benchmarks demonstrate consistent improvements, suggesting that temporal scheduling constitutes a promising optimization dimension.",
+      "authors": [
+        "Jinghao Zhang",
+        "Ruilin Li",
+        "Feng Zhao",
+        "Jiaqi Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-25T03:10:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.25381v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "temporal scheduling for RLVR, relevant to RL post-training and credit allocation",
+      "llm_evidence_cn": "针对RLVR的时间调度方法，与RL后训练和信用分配相关",
+      "llm_evidence": "针对RLVR的时间调度方法，与RL后训练和信用分配相关",
+      "canonical_evidence": "针对RLVR的时间调度方法，与RL后训练和信用分配相关",
+      "llm_tldr_en": "This work introduces a temporal dimension for scheduling learning signals in RLVR, arguing when to allocate is as important as where, improving policy evolution.",
+      "llm_tldr_cn": "现有RLVR对所有token使用全局广播奖励，忽视了轨迹中策略行为的异质性，且信用分配标准在整个训练中固定不变。本文提出时间调度视角，主张学习信号的时刻安排与位置分配同等重要。通过动态调整不同训练阶段的优化重点，提升了策略演进的灵活性。实验表明该方法在多种RLVR任务上带来了稳定的性能提升。",
+      "llm_tldr": "现有RLVR对所有token使用全局广播奖励，忽视了轨迹中策略行为的异质性，且信用分配标准在整个训练中固定不变。本文提出时间调度视角，主张学习信号的时刻安排与位置分配同等重要。通过动态调整不同训练阶段的优化重点，提升了策略演进的灵活性。实验表明该方法在多种RLVR任务上带来了稳定的性能提升。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.25638v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning from Denoising Feedback",
+      "abstract": "Policy loss estimation remains a fundamental and long-standing challenge in reinforcement learning (RL) for diffusion language models (dLLMs). We introduce Reinforcement Learning from Denoising Feedback (RLDF), a novel training paradigm that leverages feedback obtained from rollout and training processes to facilitate accurate and efficient policy loss estimation. To balance the trade-off between computational efficiency and estimation effectiveness, RLDF optimizes the model toward the clipped clean state $\\hat{x}_0$ from intermediate noisy states $x_t$, combined with weighted timestep sampling over $t$. Extensive experiments demonstrate that RLDF achieves consistent and substantial improvements in both performance and generalizability across two representative dLLM architectures, LLaDA and Dream, on multiple reasoning benchmarks. Our work lays a principled foundation for scalable reinforcement learning in diffusion language models. We build Drift, a training framework for dLLMs, available at https://github.com/ant-research/Drift.",
+      "authors": [
+        "Qi He",
+        "Huan Chen",
+        "Ya Guo",
+        "Huijia Zhu",
+        "Yi R. Fung",
+        "Baojian Zhou"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-05-25T09:39:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.25638v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses rollout feedback for policy loss estimation in diffusion LLMs, related to RL training signal utilization",
+      "llm_evidence_cn": "在扩散语言模型RL中使用rollout反馈进行策略损失估计，与RL训练信号利用相关",
+      "llm_evidence": "在扩散语言模型RL中使用rollout反馈进行策略损失估计，与RL训练信号利用相关",
+      "canonical_evidence": "在扩散语言模型RL中使用rollout反馈进行策略损失估计，与RL训练信号利用相关",
+      "llm_tldr_en": "RLDF leverages denoising feedback from rollouts for accurate policy loss estimation in diffusion language model RL, improving performance and generalizability.",
+      "llm_tldr_cn": "该论文针对扩散语言模型强化学习中策略损失估计困难的问题，提出去噪反馈强化学习（RLDF），利用训练和推理过程中的反馈信号估计策略损失，并采用加权时间步采样平衡效率与效果。实验证明RLDF在多个扩散LLM架构上显著提升了性能与泛化能力，为利用rollout信号优化推理提供了新思路。",
+      "llm_tldr": "该论文针对扩散语言模型强化学习中策略损失估计困难的问题，提出去噪反馈强化学习（RLDF），利用训练和推理过程中的反馈信号估计策略损失，并采用加权时间步采样平衡效率与效果。实验证明RLDF在多个扩散LLM架构上显著提升了性能与泛化能力，为利用rollout信号优化推理提供了新思路。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.28069v1",
+      "source": "arxiv",
+      "title": "ZipRL: Adaptive Multi-Turn Context Compression with Hindsight Response Replay",
+      "abstract": "Adaptive context compression is vital for scaling Large Language Models (LLMs) to complex, multi-turn agent tasks. However, rule-based compression methods may discard task-critical nuances, while Reinforcement Learning (RL) approaches usually struggle to balance information retention and token efficiency under the sparse rewards inherent to long-horizon workflows. To bridge this gap, we propose ZipRL, a novel adaptive compression framework tailored for Reinforcement Learning from Verifiable Rewards (RLVR). ZipRL features a multi-granularity compression mechanism for active, non-uniform information reduction, coupled with Hindsight Response Replay (HRR), a technique designed to densify training signals during RLVR optimization. Theoretically, we prove ZipRL's superior task-relevant utility over uniform methods. Concretely, ZipRL utilizes coarse-to-fine prompts for macro-compression and incorporates HRR into GRPO via generalized advantage reshaping. Multiple models of varying versions and parameter scales validate the effectiveness of our approach. Benchmarks on five agent tasks show ZipRL outperforms state-of-the-art approaches by 27.9% and 34.7% across Qwen3-4B and Qwen3-8B models, while maintaining exceptional token efficiency and robustness under extreme 256-turn extrapolation stress tests.",
+      "authors": [
+        "Zhexin Hu",
+        "Li Wang",
+        "Xiaohan Wang",
+        "Jiajun Chai",
+        "Xiaojun Guo",
+        "Wei Lin",
+        "Guojun Yin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-27T07:26:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.28069v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses RLVR and Hindsight Response Replay to densify training signals, relevant to online RL training methods",
+      "llm_evidence_cn": "使用RLVR和回顾响应重放致密训练信号，与在线强化学习训练方法相关",
+      "llm_evidence": "使用RLVR和回顾响应重放致密训练信号，与在线强化学习训练方法相关",
+      "canonical_evidence": "使用RLVR和回顾响应重放致密训练信号，与在线强化学习训练方法相关",
+      "llm_tldr_en": "ZipRL introduces adaptive context compression via multi-granularity mechanism and Hindsight Response Replay for RLVR, improving token efficiency and signal density in multi-turn agent tasks.",
+      "llm_tldr_cn": "该论文针对多轮智能体任务中自适应上下文压缩问题，提出ZipRL框架，结合多粒度压缩机制和回顾响应重放（HRR）技术，有效致密RLVR训练信号。实验表明该方法在保持信息保留的同时提升令牌效率，为在线RL训练提供了新的致密化手段。",
+      "llm_tldr": "该论文针对多轮智能体任务中自适应上下文压缩问题，提出ZipRL框架，结合多粒度压缩机制和回顾响应重放（HRR）技术，有效致密RLVR训练信号。实验表明该方法在保持信息保留的同时提升令牌效率，为在线RL训练提供了新的致密化手段。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
