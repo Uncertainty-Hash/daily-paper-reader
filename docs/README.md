@@ -6,41 +6,59 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-01
-- 运行时间：2026-06-01 22:41:38 UTC
+- 最新运行日期：2026-06-02
+- 运行时间：2026-06-02 22:18:45 UTC
 - 运行状态：成功
-- 本次总论文数：7
-- 精读区：1
-- 速读区：6
+- 本次总论文数：13
+- 精读区：6
+- 速读区：7
 
 ### 今日简报（AI）
-今日共阅读7篇论文，精读1篇8.0分《Distilling LLM Feedback for Lean Theorem Proving》，速读涉及数学推理与RLHF的3篇高分论文。最值得关注方向：LLM反馈蒸馏在定理证明中的效率提升，以及基于单次轨迹的批次优势估计（BASIS）和奖励模型的自监督在线反馈改进。建议普通读者优先关注“LLM反馈如何改进数学推理”与“RLHF中在线反馈的必要性”两个交叉主题。
-- 详情：[/202606/01/README](/202606/01/README)
+今日精读两篇高分论文，聚焦在线策略蒸馏中的信任区域与近未来引导方法。最值得看的是《Trust Region On-Policy Distillation》（10/10）和《Bridging Reasoning Trajectories in On-Policy Distillation via Near-Future Guidance》（9/10），前者强调信任区域约束，后者引入近未来引导提升推理轨迹。建议优先精读这两篇，并关注速读中《SafeSteer》的安全对齐应用，以拓展蒸馏框架的实用边界。
+- 详情：[/202606/02/README](/202606/02/README)
 
 ### 精读区论文标签
-1. [Distilling LLM Feedback for Lean Theorem Proving](/202606/01/2605.30861v1-distilling-llm-feedback-for-lean-theorem-proving)  
+1. [Trust Region On-Policy Distillation](/202606/02/2606.01249v1-trust-region-on-policy-distillation)  
+   标签：评分：10.0/10、query:opd
+   evidence：信任区域在线策略蒸馏解决分布不匹配导致的不稳定性
+2. [Bridging Reasoning Trajectories in On-Policy Distillation via Near-Future Guidance](/202606/02/2606.00305v1-bridging-reasoning-trajectories-in-on-policy-distillation-via-near-future-guidance)  
+   标签：评分：9.0/10、query:opd
+   evidence：通过近未来引导改进LLM推理的在线策略蒸馏
+3. [Internalize the Temperature: On-Policy Self-Distillation as Policy Reheater for Reinforcement Learning](/202606/02/2606.00755v1-internalize-the-temperature-on-policy-self-distillation-as-policy-reheater-for-reinforcement-learning)  
+   标签：评分：9.0/10、query:opd
+   evidence：在线自蒸馏用于大语言模型强化学习
+4. [OPD+: Rethinking the Advantage Design for On-Policy Distillation](/202606/02/2606.01039v1-opd-rethinking-the-advantage-design-for-on-policy-distillation)  
+   标签：评分：9.0/10、query:opd
+   evidence：重新思考在线策略蒸馏的优势设计
+5. [Weak Critics Make Strong Learners: On-Policy Critique Distillation for Scalable Oversight](/202606/02/2606.00424v1-weak-critics-make-strong-learners-on-policy-critique-distillation-for-scalable-oversight)  
    标签：评分：8.0/10、query:opd
-   evidence：提出反馈蒸馏，一种使用LLM反馈的令牌级蒸馏方法，属于在线蒸馏变体
+   evidence：用于弱评论家强监督的在线评论蒸馏
+6. [Decomposed On-Policy Distillation for Vision-Language Reasoning: Steering Gradients for Visual Grounding](/202606/02/2606.00564v1-decomposed-on-policy-distillation-for-vision-language-reasoning-steering-gradients-for-visual-grounding)  
+   标签：评分：8.0/10、query:opd
+   evidence：面向视觉语言推理的在线策略蒸馏
 
 ### 速读区论文标签
-1. [BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning](/202606/01/2605.27293v1-basis-batchwise-advantage-estimation-from-single-rollout-information-sharing-for-llm-reasoning)  
+1. [SafeSteer: Localized On-Policy Distillation for Efficient Safety Alignment](/202606/02/2606.02530v1-safesteer-localized-on-policy-distillation-for-efficient-safety-alignment)  
+   标签：评分：8.0/10、query:opd
+   evidence：面向安全对齐的在线策略蒸馏
+2. [Not only where, But when: Temporal Scheduling for RLVR](/202606/02/2605.25381v1-not-only-where-but-when-temporal-scheduling-for-rlvr)  
    标签：评分：7.0/10、query:opd
-   evidence：批量优势估计用于在线策略LLM强化学习
-2. [The Flip Side of RLHF: On-Policy Feedback for Reward Model Self-Supervised Improvement](/202606/01/2605.30888v1-the-flip-side-of-rlhf-on-policy-feedback-for-reward-model-self-supervised-improvement)  
-   标签：评分：7.0/10、query:opd
-   evidence：基于on-policy反馈的奖励模型自监督改进
-3. [Learning to Route Languages for Multilingual Policy Optimization](/202606/01/2605.25360v1-learning-to-route-languages-for-multilingual-policy-optimization)  
+   evidence：RLVR的时间调度方法改进令牌级信用分配
+3. [BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning](/202606/02/2605.27293v1-basis-batchwise-advantage-estimation-from-single-rollout-information-sharing-for-llm-reasoning)  
    标签：评分：6.0/10、query:opd
-   evidence：在线策略优化与多语言rollout
-4. [Not only where, But when: Temporal Scheduling for RLVR](/202606/01/2605.25381v1-not-only-where-but-when-temporal-scheduling-for-rlvr)  
+   evidence：批量优势估计用于大语言模型推理强化学习
+4. [Entropy-KL Divergence-based Token Masking: A Novel Approach for Selective Fine-tuning of Large Language Models](/202606/02/2605.29303v1-entropy-kl-divergence-based-token-masking-a-novel-approach-for-selective-fine-tuning-of-large-language-models)  
    标签：评分：6.0/10、query:opd
-   evidence：针对RLVR的时间调度方法，与RL后训练和信用分配相关
-5. [Reinforcement Learning from Denoising Feedback](/202606/01/2605.25638v1-reinforcement-learning-from-denoising-feedback)  
+   evidence：选择性微调改善LLM强化学习探索
+5. [FALAT: Tracing Failures in LLM Agent Trajectories via Dependency-Guided Search](/202606/02/2606.00765v1-falat-tracing-failures-in-llm-agent-trajectories-via-dependency-guided-search)  
    标签：评分：6.0/10、query:opd
-   evidence：在扩散语言模型RL中使用rollout反馈进行策略损失估计，与RL训练信号利用相关
-6. [ZipRL: Adaptive Multi-Turn Context Compression with Hindsight Response Replay](/202606/01/2605.28069v1-ziprl-adaptive-multi-turn-context-compression-with-hindsight-response-replay)  
+   evidence：通过依赖搜索追踪LLM智能体轨迹中的失败
+6. [HMPO: Hybrid Median-length Policy Optimization for Chain-of-Thought Compression](/202606/02/2606.01934v1-hmpo-hybrid-median-length-policy-optimization-for-chain-of-thought-compression)  
    标签：评分：6.0/10、query:opd
-   evidence：使用RLVR和回顾响应重放致密训练信号，与在线强化学习训练方法相关
+   evidence：基于强化学习的链式思维压缩，利用rollout和奖励设计
+7. [Policy and World Modeling Co-Training for Language Agents](/202606/02/2606.02388v1-policy-and-world-modeling-co-training-for-language-agents)  
+   标签：评分：6.0/10、query:opd
+   evidence：利用在线RL展开为世界模型提供辅助监督
 
 
 <div class="dpr-home-promo-card">
