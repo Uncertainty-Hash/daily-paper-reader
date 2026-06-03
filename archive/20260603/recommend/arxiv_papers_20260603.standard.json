@@ -1,0 +1,486 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-03T22:19:04.721238+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 10,
+    "quick_skim_target": 11,
+    "quick_selected": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2605.28069v1",
+      "source": "arxiv",
+      "title": "ZipRL: Adaptive Multi-Turn Context Compression with Hindsight Response Replay",
+      "abstract": "Adaptive context compression is vital for scaling Large Language Models (LLMs) to complex, multi-turn agent tasks. However, rule-based compression methods may discard task-critical nuances, while Reinforcement Learning (RL) approaches usually struggle to balance information retention and token efficiency under the sparse rewards inherent to long-horizon workflows. To bridge this gap, we propose ZipRL, a novel adaptive compression framework tailored for Reinforcement Learning from Verifiable Rewards (RLVR). ZipRL features a multi-granularity compression mechanism for active, non-uniform information reduction, coupled with Hindsight Response Replay (HRR), a technique designed to densify training signals during RLVR optimization. Theoretically, we prove ZipRL's superior task-relevant utility over uniform methods. Concretely, ZipRL utilizes coarse-to-fine prompts for macro-compression and incorporates HRR into GRPO via generalized advantage reshaping. Multiple models of varying versions and parameter scales validate the effectiveness of our approach. Benchmarks on five agent tasks show ZipRL outperforms state-of-the-art approaches by 27.9% and 34.7% across Qwen3-4B and Qwen3-8B models, while maintaining exceptional token efficiency and robustness under extreme 256-turn extrapolation stress tests.",
+      "authors": [
+        "Zhexin Hu",
+        "Li Wang",
+        "Xiaohan Wang",
+        "Jiajun Chai",
+        "Xiaojun Guo",
+        "Wei Lin",
+        "Guojun Yin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-27T07:26:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.28069v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RLVR framework with hindsight response replay for context compression",
+      "llm_evidence_cn": "RLVR框架结合事后响应回放，增强训练信号密度",
+      "llm_evidence": "RLVR框架结合事后响应回放，增强训练信号密度",
+      "canonical_evidence": "RLVR框架结合事后响应回放，增强训练信号密度",
+      "llm_tldr_en": "ZipRL proposes adaptive multi-turn context compression for RLVR using multi-granularity compression and Hindsight Response Replay to densify training signals.",
+      "llm_tldr_cn": "针对长程多轮任务中信息压缩与稀疏奖励的矛盾，提出ZipRL框架，通过多粒度非均匀压缩机制和事后响应回放（HRR）技术，显著增强RLVR训练信号的密度，实现自适应上下文压缩，提升信息保留与令牌效率的平衡。",
+      "llm_tldr": "针对长程多轮任务中信息压缩与稀疏奖励的矛盾，提出ZipRL框架，通过多粒度非均匀压缩机制和事后响应回放（HRR）技术，显著增强RLVR训练信号的密度，实现自适应上下文压缩，提升信息保留与令牌效率的平衡。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.29847v1",
+      "source": "arxiv",
+      "title": "EvoRubric: Self-Evolving Rubric-Driven RL for Open-Ended Generation",
+      "abstract": "Reinforcement Learning (RL) has significantly advanced Large Language Models (LLMs) in verifiable domains, but aligning models for open-ended generation remains profoundly challenging due to the lack of definitive rewards. Current rubric-based RL methods mitigate this by employing explicit criteria; however, they rely heavily on static, human-annotated rubrics that inevitably cause policy lag, or expensive external proprietary models for dynamic updates. In this paper, we propose EvoRubric, a novel single-policy co-evolutionary RL framework that eliminates the reliance on static criteria and on external rubric generators. By unifying response generation and rubric generation under a single parameterized policy, EvoRubric dynamically alternates between a Reasoner and a Rubric Generator. To prevent reward hacking and ensure the reliability of generated signals, we introduce a multi-level verification pipeline featuring a meta-verifier, zero-variance pruning, and a Leave-One-Out peer consensus mechanism. Validated criteria are dynamically archived into a memory pool, yielding dense, multi-objective rewards to continuously co-optimize both roles. Extensive experiments across Medical, Writing, and Science domains demonstrate that EvoRubric consistently outperforms traditional static and external-LLM-driven alignment methods. Notably, our framework is compatible with human-expert priors. When initialized with expert-annotated rubrics, EvoRubric can further uncover novel, discriminative dimensions, achieving better performance than relying solely on static expert annotations.",
+      "authors": [
+        "Xin Guan",
+        "Xiaomeng Hu",
+        "Shen Huang",
+        "Zhenyi Wang",
+        "Bo Zhang",
+        "Zijian Li",
+        "Pengjun Xie",
+        "Bo Liu",
+        "Jiuxin Cao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-28T12:28:49+00:00",
+      "link": "https://arxiv.org/pdf/2605.29847v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "self-evolving rubric-driven RL for open-ended generation",
+      "llm_evidence_cn": "自演化标准驱动的RL框架，无需外部教师",
+      "llm_evidence": "自演化标准驱动的RL框架，无需外部教师",
+      "canonical_evidence": "自演化标准驱动的RL框架，无需外部教师",
+      "llm_tldr_en": "EvoRubric co-evolves response generation and rubric generation under a single policy to eliminate static rubrics and external models for open-ended RL.",
+      "llm_tldr_cn": "针对开放生成任务中缺乏确定奖励且静态标准导致策略滞后的问题，提出EvoRubric，一种单策略共进化RL框架，将响应生成和标准生成统一在同一策略中，动态交替优化，无需人工标准或外部模型，实现自我演化的对齐训练。",
+      "llm_tldr": "针对开放生成任务中缺乏确定奖励且静态标准导致策略滞后的问题，提出EvoRubric，一种单策略共进化RL框架，将响应生成和标准生成统一在同一策略中，动态交替优化，无需人工标准或外部模型，实现自我演化的对齐训练。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.27293v1",
+      "source": "arxiv",
+      "title": "BASIS: Batchwise Advantage Estimation from Single-Rollout Information Sharing for LLM Reasoning",
+      "abstract": "Reinforcement learning with verifiable rewards has become a standard recipe for improving the reasoning abilities of large language models. Existing algorithms face a tradeoff between computational efficiency and sample efficiency in value estimation and policy learning. We introduce BASIS, a critic-free post-training algorithm designed to address this tradeoff. At each online training step, BASIS samples only one rollout per prompt, but leverages rich information across prompts in the entire batch to improve value function estimation. Our experiments demonstrate that BASIS reduces MSE in value function estimation by 69% compared to REINFORCE++, a representative single-rollout baseline, and achieves lower MSE with one rollout than group mean estimators with 8 rollouts. This improvement in value estimation translates to better policy optimization: using substantially less training time, BASIS achieves performance close to multi-rollout GRPO-type baselines and often outperforms single-rollout REINFORCE-type baselines.",
+      "authors": [
+        "Shijin Gong",
+        "Erhan Xu",
+        "Kai Ye",
+        "Francesco Quinzan",
+        "Giulia Livieri",
+        "Chengchun Shi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-05-26T17:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.27293v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Critic-free online RL for LLM reasoning, batch advantage estimation",
+      "llm_evidence_cn": "无评论家在线RL，批量优势估计",
+      "llm_evidence": "无评论家在线RL，批量优势估计",
+      "canonical_evidence": "无评论家在线RL，批量优势估计",
+      "llm_tldr_en": "BASIS uses single-rollout per prompt but batch-level information sharing for value estimation, improving sample efficiency in LLM reasoning RL.",
+      "llm_tldr_cn": "现有基于可验证奖励的强化学习在值函数估计上面临计算效率与样本效率的权衡。本文提出无评论家后训练算法BASIS，每个提示仅采样一次，但利用批内跨提示信息共享改进值函数估计。实验表明与REINFORCE++相比，估计均方误差降低69%。该方法适用于在线RL训练。",
+      "llm_tldr": "现有基于可验证奖励的强化学习在值函数估计上面临计算效率与样本效率的权衡。本文提出无评论家后训练算法BASIS，每个提示仅采样一次，但利用批内跨提示信息共享改进值函数估计。实验表明与REINFORCE++相比，估计均方误差降低69%。该方法适用于在线RL训练。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.01075v1",
+      "source": "arxiv",
+      "title": "On the Generalization Gap in Self-Evolving Language Model Reasoning",
+      "abstract": "Recent work suggests that large language models (LLMs) can improve through self-evolution (SE), using supervision signals generated by the model itself. In this work, we ask: under a strict closed-loop setup, where the self-evolution algorithm has access only to an unlabeled prompt set and a base model, how close can internally generated supervision come to oracle-supervised training? We analyze four representative strategies in a unified offline self-evolution framework: single-round verification, multi-turn revision with feedback, iterative training, and curriculum learning. Our primary experiments use Knights and Knaves (KK) logical reasoning tasks, which provide deterministic solutions, controlled difficulty levels, and a clean testbed for easy-to-hard generalization. We first show that self-evolution consistently improves over the base model, but plateaus after excessive training compute is invested, and eventually still leaves a non-trivial gap to oracle supervision. We find that multi-turn critic-revision with large models can reach strong self-evolution performance, with Gemma 12B nearly matching oracle-supervised training. Beyond Knights and Knaves, we also evaluate self-evolution on real-world reasoning benchmarks, where gains are also modest. Overall, our results characterize when closed-loop self-evolution can help and show how internally generated supervision remains insufficient under this minimal formulation.",
+      "authors": [
+        "Zhenting Qi",
+        "Susanna Maria Baby",
+        "Stefanie Anna Baby",
+        "Kan Yuan",
+        "Andrew Tomkins",
+        "Tu Vu",
+        "Da-Cheng Juan",
+        "Cyrus Rashtchian"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-31T07:43:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.01075v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "studies self-evolution with self-generated supervision for reasoning, relating to using error trajectories for improvement",
+      "llm_evidence_cn": "研究使用自生成信号进行推理自我进化，与利用错误轨迹改进相关",
+      "llm_evidence": "研究使用自生成信号进行推理自我进化，与利用错误轨迹改进相关",
+      "canonical_evidence": "研究使用自生成信号进行推理自我进化，与利用错误轨迹改进相关",
+      "llm_tldr_en": "This work analyzes self-evolution strategies for LLM reasoning under closed-loop setup, showing that self-generated supervision can approach oracle-level training.",
+      "llm_tldr_cn": "该论文在严格闭环设定下探索大语言模型推理的自我进化，仅使用未标注提示集和基础模型。分析了四种策略：单轮验证、多轮修订、迭代训练和课程学习。在逻辑推理任务上，发现自生成监督信号可以接近或达到教师监督的效果，但存在泛化差距。工作揭示了自我进化用于推理的潜力和局限，对利用自修复信号提升推理能力具有指导意义。",
+      "llm_tldr": "该论文在严格闭环设定下探索大语言模型推理的自我进化，仅使用未标注提示集和基础模型。分析了四种策略：单轮验证、多轮修订、迭代训练和课程学习。在逻辑推理任务上，发现自生成监督信号可以接近或达到教师监督的效果，但存在泛化差距。工作揭示了自我进化用于推理的潜力和局限，对利用自修复信号提升推理能力具有指导意义。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.27703v1",
+      "source": "arxiv",
+      "title": "Hierarchical Prompt-Domain Control and Learning for Resource-Constrained Agentic Language Models",
+      "abstract": "Large Language Models are increasingly deployed inside agentic systems, where they must follow structured protocols, adapt to evolving states, and operate under memory, latency, and cost constraints. In such regimes, prompt extension is unreliable: growing contexts can push compact models outside their effective prompt domain, while deployment-time fine-tuning remains limited by scarce data and compute. We propose a hierarchical control-and-learning framework in which a compact model is first distilled to learn the required output schema, then supervised online by an oracle-controller loop. The controller monitors protocol validity and semantic performance, projects accumulated histories into a feasible prompt domain, and triggers lightweight oracle-supervised fine-tuning under drift. This separates schema learning for communication compatibility from semantic adaptation for task-level correction. We formalize prompt-domain feasibility and attention-induced saturation, motivating control of the effective prompt state rather than reliance on nominal context length. Using Multi-Fidelity Bayesian Optimization as a controlled sequential testbed, we characterize a core deployment failure mode and show improved reliability and cost-efficiency over non-hierarchical, distillation-only, and non-distilled baselines.",
+      "authors": [
+        "Joan Vendrell Gallart",
+        "Russell Bent",
+        "Michael Grosskopf"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-26T21:23:30+00:00",
+      "link": "https://arxiv.org/pdf/2605.27703v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses distillation followed by online oracle supervision for agentic LLMs, relevant to on-policy distillation",
+      "llm_evidence_cn": "使用蒸馏和在线oracle监督训练紧凑模型，与在线策略蒸馏相关",
+      "llm_evidence": "使用蒸馏和在线oracle监督训练紧凑模型，与在线策略蒸馏相关",
+      "canonical_evidence": "使用蒸馏和在线oracle监督训练紧凑模型，与在线策略蒸馏相关",
+      "llm_tldr_en": "Proposes hierarchical control-and-learning for resource-constrained agentic LLMs, using distillation and online oracle loop.",
+      "llm_tldr_cn": "该论文针对资源受限的智能体语言模型，提出分层控制与学习框架。紧凑模型首先通过蒸馏学习输出模式，然后由oracle控制器在线监督，根据协议有效性和语义性能调整提示域。方法融合了蒸馏和在线学习，适用于强化学习场景，与在线策略蒸馏有相似之处。实验表明在有限的资源下能维持有效性。",
+      "llm_tldr": "该论文针对资源受限的智能体语言模型，提出分层控制与学习框架。紧凑模型首先通过蒸馏学习输出模式，然后由oracle控制器在线监督，根据协议有效性和语义性能调整提示域。方法融合了蒸馏和在线学习，适用于强化学习场景，与在线策略蒸馏有相似之处。实验表明在有限的资源下能维持有效性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.01934v1",
+      "source": "arxiv",
+      "title": "HMPO: Hybrid Median-length Policy Optimization for Chain-of-Thought Compression",
+      "abstract": "Large language models achieve remarkable performance via extended chain-of-thought (CoT) reasoning, yet this lengthy process incurs substantial inference overhead. Existing CoT compression methods struggle with inflexible manual length budgets, computationally expensive multi-stage training pipelines, and fragile scalability restricted to small models. We propose HMPO (Hybrid Median-length Policy Optimization), a cost-effective, single-stage reinforcement learning framework. HMPO efficiently compresses CoT via three synergistic components: an adaptive median-based budget derived from successful rollouts to eliminate manual tuning, a cosine-decay token reward for smooth length penalization, and a multiplicative reward formulation that substantially mitigates trivial reward hacking by strictly prioritizing answer correctness. Trained exclusively on mathematical data, HMPO generalizes seamlessly across math, code, science, and instruction-following tasks. Extensive experiments scaling from 9B to 122B parameters across dense and Mixture-of-Experts (MoE) architectures demonstrate that HMPO achieves 19%--46% token compression with negligible accuracy degradation, all while drastically reducing training costs compared to existing multi-stage baselines.",
+      "authors": [
+        "Minghui Zheng",
+        "Hongxu Chen",
+        "Huimin Ren",
+        "Hongsheng Xin",
+        "Xiaoyang Qu",
+        "Ze Wang",
+        "Shuling Yang",
+        "Ziyu Peng",
+        "Kaike Zhang",
+        "Pan Zhou",
+        "Kun Zhan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-01T09:01:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.01934v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "single-stage RL for CoT compression using rollout-based budget",
+      "llm_evidence_cn": "基于成功轨迹的自适应预算和令牌奖励，用于思维链压缩",
+      "llm_evidence": "基于成功轨迹的自适应预算和令牌奖励，用于思维链压缩",
+      "canonical_evidence": "基于成功轨迹的自适应预算和令牌奖励，用于思维链压缩",
+      "llm_tldr_en": "HMPO is a single-stage RL framework for CoT compression using median-based budget from successful rollouts, cosine-decay token reward, and multiplicative reward formulation.",
+      "llm_tldr_cn": "针对思维链推理过长导致推理开销大且现有压缩方法复杂的问题，提出HMPO，一种单阶段强化学习框架，利用成功轨迹的自适应中位数预算、余弦衰减令牌奖励和乘法奖励公式，高效压缩思维链长度，同时保持推理质量。",
+      "llm_tldr": "针对思维链推理过长导致推理开销大且现有压缩方法复杂的问题，提出HMPO，一种单阶段强化学习框架，利用成功轨迹的自适应中位数预算、余弦衰减令牌奖励和乘法奖励公式，高效压缩思维链长度，同时保持推理质量。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.29327v1",
+      "source": "arxiv",
+      "title": "Reasoning-preserved Efficient Distillation of Large Language Models via Activation-aware Initialization",
+      "abstract": "Efficient Distillation (EDistill) compresses large language models (LLMs) by structured pruning parameters and tuning lightweight modules with high training efficiency. Although these EDistilled LLMs achieve state-of-the-art (SOTA) performance on general ability benchmarks relative to similarly sized LLMs, we identify a severe degradation in their multi-step reasoning ability, which we term reasoning collapse. We systematically analyze the geometric origins of reasoning collapse and show that the SOTA EDistill method based on width-reducing projection matrices suffers from eRank collapse, in which the effective rank (eRank) of hidden representations drops. We theoretically explain how singular values of randomly initialized projection matrices become unevenly distributed, leading to eRank collapse and thus token indistinguishability. To address this issue, we propose RED (Reasoning-preserved Efficient Distillation) for LLMs, which introduces activation-aware initialization to initialize projection matrices as channel-selection matrices, thus theoretically mitigating eRank collapse. Experiments on Llama and Qwen series demonstrate that RED substantially recovers reasoning while maintaining high training efficiency and SOTA general ability.",
+      "authors": [
+        "Junlin He",
+        "Yihong Tang",
+        "Tong Nie",
+        "Guilong Li",
+        "Binyu Yang",
+        "Jinxiao Du",
+        "Lijun Sun",
+        "Wei Ma"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-05-28T04:02:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.29327v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Efficient distillation preserving reasoning, related to on-policy distillation methods",
+      "llm_evidence_cn": "保留推理能力的高效蒸馏，与在策略蒸馏方法相关",
+      "llm_evidence": "保留推理能力的高效蒸馏，与在策略蒸馏方法相关",
+      "canonical_evidence": "保留推理能力的高效蒸馏，与在策略蒸馏方法相关",
+      "llm_tldr_en": "Activation-aware initialization reduces reasoning collapse in efficient distillation of LLMs.",
+      "llm_tldr_cn": "高效蒸馏方法（如结构化剪枝）虽然通用能力保持良好，但多步推理能力严重下降，称为推理坍缩。本文系统分析了推理坍缩的几何原因，发现基于宽度缩减投影矩阵的方法会导致有效秩坍缩。提出激活感知初始化，通过合理初始化投影矩阵保持表示的有效秩，从而保留推理能力。实验表明该方法显著减少了推理损失，为LLM压缩中的推理保持提供了新思路。",
+      "llm_tldr": "高效蒸馏方法（如结构化剪枝）虽然通用能力保持良好，但多步推理能力严重下降，称为推理坍缩。本文系统分析了推理坍缩的几何原因，发现基于宽度缩减投影矩阵的方法会导致有效秩坍缩。提出激活感知初始化，通过合理初始化投影矩阵保持表示的有效秩，从而保留推理能力。实验表明该方法显著减少了推理损失，为LLM压缩中的推理保持提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.02388v1",
+      "source": "arxiv",
+      "title": "Policy and World Modeling Co-Training for Language Agents",
+      "abstract": "Reinforcement learning (RL) improves large language model (LLM) agents by teaching them which actions lead to high rewards, but provides little supervision on what those actions do to the environment. World modeling (WM) can fill this gap, yet existing approaches often require separate simulators, extra training stages, or additional inference-time computation. We observe that on-policy RL rollouts already contain the needed signal: each transition pairs an action with its resulting next observation. Based on this observation, we propose PaW, a Policy and World modeling co-training framework that adds auxiliary WM supervision to the same policy during RL, without changing the inference paradigm. To make auxiliary WM supervision informative and stable, PaW introduces three components: action-entropy-based WM data selection, noise-tolerant WM loss, and reward-adaptive loss balancing. Experiments on three agentic task benchmarks show consistent improvements over strong RL baselines across models and RL algorithms. These results suggest that standard RL rollouts are a practical source of WM supervision for language-agent training.",
+      "authors": [
+        "Ning Lu",
+        "Baijiong Lin",
+        "Shengcai Liu",
+        "Jiahao Wu",
+        "Haoze Lv",
+        "Yanbin Wei",
+        "Lingting Zhu",
+        "Shengju Qian",
+        "Xin Wang",
+        "Ying-Cong Chen",
+        "Qi Wang",
+        "Ke Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-01T15:35:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.02388v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses on-policy RL rollouts for auxiliary world model supervision, relevant to on-policy distillation methods",
+      "llm_evidence_cn": "利用在线策略RL轨迹进行辅助世界模型监督，与在线策略蒸馏方法相关",
+      "llm_evidence": "利用在线策略RL轨迹进行辅助世界模型监督，与在线策略蒸馏方法相关",
+      "canonical_evidence": "利用在线策略RL轨迹进行辅助世界模型监督，与在线策略蒸馏方法相关",
+      "llm_tldr_en": "PaW co-trains policy and world model using on-policy RL rollouts without extra simulators, improving sample efficiency.",
+      "llm_tldr_cn": "该论文提出PaW框架，在LLM智能体的强化学习过程中添加辅助世界模型监督。利用在线策略RL的轨迹对（动作与下一观测）作为训练信号，无需外部模拟器或额外推理时间。该方法在不改变推理范式的前提下提升了策略与世界模型的协同训练，显著提高了样本效率和任务表现。与在线策略蒸馏共享利用在线轨迹的思想。",
+      "llm_tldr": "该论文提出PaW框架，在LLM智能体的强化学习过程中添加辅助世界模型监督。利用在线策略RL的轨迹对（动作与下一观测）作为训练信号，无需外部模拟器或额外推理时间。该方法在不改变推理范式的前提下提升了策略与世界模型的协同训练，显著提高了样本效率和任务表现。与在线策略蒸馏共享利用在线轨迹的思想。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.29782v1",
+      "source": "arxiv",
+      "title": "Hista and Numca: Estimate State Value Effectively for LLM Reinforcement Learning",
+      "abstract": "Reinforcement learning (RL) refines large language models (LLMs) by directly optimizing model behavior through reward signals. While accurate state value estimation is critical for stable training in classical RL, it remains an underexplored challenge in LLM post-training. In this work, we introduce the State Value Estimation Benchmark (SVEB) to assess state estimation within existing RL frameworks and show that critics in standard approaches like PPO collapse to a coarse group-average baseline. To address this, we propose two techniques: Numca, which leverages numerical spans as gradable milestones for state value estimation, and Hista, a framework that uses LLM's hidden states as representation to weighted average disjoint rollouts and their return. Extensive experiments demonstrate that both methods yield more accurate state value estimates and enhance training performance across different RL algorithms and model sizes without incurring significant computational overhead.",
+      "authors": [
+        "Zizhe Chen",
+        "Jiqian Dong",
+        "Yizhou Tian",
+        "Garry Yang",
+        "Yongqiang Chen",
+        "Zhitang Chen",
+        "James Cheng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-05-28T11:31:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.29782v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "improves state value estimation for LLM RL",
+      "llm_evidence_cn": "改进了大语言模型强化学习的状态值估计",
+      "llm_evidence": "改进了大语言模型强化学习的状态值估计",
+      "canonical_evidence": "改进了大语言模型强化学习的状态值估计",
+      "llm_tldr_en": "Proposes Hista and Numca to improve state value estimation in LLM RL, addressing critic collapse in PPO via numerical spans and hidden state weighting.",
+      "llm_tldr_cn": "本文针对大语言模型强化学习中状态值估计被忽视的问题，提出了SVEB基准测试和两种新方法：Numca利用数值跨度作为渐进里程碑进行状态值估计，Hista使用LLM隐藏状态加权平均不相关的轨迹。实验表明这些方法改善了值函数估计的准确性，为提升在线RL训练稳定性提供了基础工具。",
+      "llm_tldr": "本文针对大语言模型强化学习中状态值估计被忽视的问题，提出了SVEB基准测试和两种新方法：Numca利用数值跨度作为渐进里程碑进行状态值估计，Hista使用LLM隐藏状态加权平均不相关的轨迹。实验表明这些方法改善了值函数估计的准确性，为提升在线RL训练稳定性提供了基础工具。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.30712v1",
+      "source": "arxiv",
+      "title": "ExpGraph: Model-Agnostic Experience Learning with Graph-Structured Memory for LLM Agents",
+      "abstract": "Large language model (LLM) agents have shown strong capabilities in reasoning, tool use, and multi-step interaction, but they often solve tasks from scratch and fail to reuse successful strategies or failure lessons from prior experience. Fine-tuning on collected experience can improve reuse, but it is inflexible when stronger or more suitable executors emerge. We propose ExpGraph, a model-agnostic experience learning framework that enables frozen and replaceable LLM executors to improve through external experience reuse without parameter updates. ExpGraph summarizes historical trajectories into reusable skills and failure lessons, organizes them as nodes in a self-evolving experience graph, and retrieves useful experiences through graph diffusion and utility-aware ranking. A lightweight retrieval copilot is trained with reinforcement learning using feedback that compares executor performance with and without retrieved experiences, while the graph is updated online from downstream task outcomes. We evaluate ExpGraph on ExpSuite, covering question answering, mathematical reasoning, code generation, and multi-step agentic environments including ALFWorld and AppWorld. ExpGraph improves over the strongest baseline by 12.2% and 4.7% on static tasks with smaller and larger executors, and by 21.4% and 12.7% in agentic environments, while reducing average interaction steps by 12.7% and 21.6%. Ablations show that graph-structured experience, utility-aware ranking, and adaptive retrieval jointly enable effective experience reuse across diverse tasks and executor models.",
+      "authors": [
+        "Tao Feng",
+        "Chongrui Ye",
+        "Tianyang Luo",
+        "Jingjun Xu",
+        "Xueqiang Xu",
+        "Haozhen Zhang",
+        "Zhigang Hua",
+        "Yan Xie",
+        "Shuang Yang",
+        "Ge Liu",
+        "Jiaxuan You"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-29T01:04:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.30712v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "experience graph with failure lessons for LLM agents",
+      "llm_evidence_cn": "包含失败教训的经验图用于智能体经验学习",
+      "llm_evidence": "包含失败教训的经验图用于智能体经验学习",
+      "canonical_evidence": "包含失败教训的经验图用于智能体经验学习",
+      "llm_tldr_en": "Proposes ExpGraph, a model-agnostic framework that stores historical trajectories as reusable skills and failure lessons in a graph, enabling frozen LLMs to improve through external experience reuse.",
+      "llm_tldr_cn": "大语言模型智能体常从零开始解决问题，未能复用成功策略或失败教训。本文提出ExpGraph，一种模型无关的经验学习框架，将历史轨迹总结为可复用技能和失败教训，组织成自演化的经验图。在检索时，图结构记忆能提供相关经验指导，提升后续任务表现。实验表明ExpGraph在多个智能体任务上有效减少重复错误并提升成功率。",
+      "llm_tldr": "大语言模型智能体常从零开始解决问题，未能复用成功策略或失败教训。本文提出ExpGraph，一种模型无关的经验学习框架，将历史轨迹总结为可复用技能和失败教训，组织成自演化的经验图。在检索时，图结构记忆能提供相关经验指导，提升后续任务表现。实验表明ExpGraph在多个智能体任务上有效减少重复错误并提升成功率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.01365v1",
+      "source": "arxiv",
+      "title": "Early Diagnosis of Wasted Computation in Multi-Agent LLM Systems via Failure-Aware Observability",
+      "abstract": "Tool-using multi-agent large language model (LLM) systems spend computation through model tokens, tool calls, retries, and code execution before producing an answer. When a run fails, final-answer evaluation reveals the endpoint but usually not the point at which the trajectory stopped making recoverable progress. This paper introduces a failure-aware observability framework for diagnosing wasted computation in multi-agent LLM traces. The framework maps recurring failure modes to online trace signals, including tool reliability, execution recovery, orchestration loops, evidence availability, information change, and budget pressure. We instantiate the framework in a three- agent question-answering system and evaluate it on 165 GAIA validation traces under identical execution caps. Operational failures remain common: 22/53 level-1 runs, 33/86 level-2 runs, and 12/26 level-3 runs fail to produce a usable final answer. The traces expose different mechanisms behind these outcomes, including insufficient evidence, repeated-action loops, max-step termination, tool-failure streaks, and execution calls that succeed without useful output. Mean token use rises from 8,152 tokens at level 1 to 16,389 tokens at level 3, while evidence availability and sentence-level support diverge. A cached 10-trace LLM-judge grounding audit shows that cheap online signals and deeper semantic metrics capture complementary layers of failure. The results position failure-aware observability as a diagnostic layer between raw execution logs and final-answer accuracy.",
+      "authors": [
+        "Xianyou Li",
+        "Weiran Yan",
+        "Yichao Wu",
+        "Penghao Liang",
+        "Mengwei Yuan",
+        "Jianan Liu",
+        "Jing Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-31T17:50:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.01365v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Failure-aware observability framework for multi-agent systems",
+      "llm_evidence_cn": "多Agent系统中的故障感知可观测性框架",
+      "llm_evidence": "多Agent系统中的故障感知可观测性框架",
+      "canonical_evidence": "多Agent系统中的故障感知可观测性框架",
+      "llm_tldr_en": "Early diagnosis framework for wasted computation via failure-aware observability, mapping failure modes to trace signals.",
+      "llm_tldr_cn": "多Agent LLM系统中，运行失败后最终答案评估难以揭示何时计算变得不可恢复。本文提出故障感知可观测性框架，将常见失败模式映射到在线追踪信号，包括工具可靠性、执行恢复等。在三Agent问答系统上评估了165个轨迹，实现了对浪费计算的早期诊断。该工作为LLM推理中的过程监督和故障分析提供了实用工具。",
+      "llm_tldr": "多Agent LLM系统中，运行失败后最终答案评估难以揭示何时计算变得不可恢复。本文提出故障感知可观测性框架，将常见失败模式映射到在线追踪信号，包括工具可靠性、执行恢复等。在三Agent问答系统上评估了165个轨迹，实现了对浪费计算的早期诊断。该工作为LLM推理中的过程监督和故障分析提供了实用工具。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
