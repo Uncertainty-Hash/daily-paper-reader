@@ -1,0 +1,302 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-04T21:47:29.728725+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.01249v2",
+      "source": "arxiv",
+      "title": "Trust Region On-Policy Distillation",
+      "abstract": "On-Policy Distillation (OPD) is a fundamental technique for efficient post-training of large language models (LLMs), with broad applications in agent learning, multi-task enhancement, and model compression. However, OPD training becomes unstable when the teacher and student distributions differ substantially, as teacher supervision on student-generated tokens may yield unreliable policy gradients and even cause optimization failure. This work addresses reliable on-policy token-level supervision through credit assignment strategies, and proposes Trust Region On-Policy Distillation, TrOPD. It features the following characteristics: 1) Trust-Region On-Policy Learning: TrOPD performs OPD only in regions where the teacher provides reliable supervision, mitigating the optimization difficulty of the K1 reverse-KL estimator under distribution mismatch. 2) Outlier Estimation: For outlier regions, we explore gradient clipping, masking, and forward-KL estimation to reduce the adverse effects of unreliable supervision. 3) Off-Policy Guidance: The student continues generation from teacher prefixes and uses forward KL to imitate off-policy guidance, encouraging on-policy exploration toward reliable regions. Experiments show that TrOPD consistently outperforms SoTA OPD baselines, including OPD, EOPD, and REOPOLD, across mathematical reasoning, code generation, and general-domain benchmarks.",
+      "authors": [
+        "Xingrun Xing",
+        "Haoqing Wang",
+        "Boyan Gao",
+        "Ziheng Li",
+        "Yehui Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-05-31T14:04:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.01249v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Trust Region On-Policy Distillation for LLMs",
+      "llm_evidence_cn": "针对大语言模型的信任区域在线策略蒸馏",
+      "llm_evidence": "针对大语言模型的信任区域在线策略蒸馏",
+      "canonical_evidence": "针对大语言模型的信任区域在线策略蒸馏",
+      "llm_tldr_en": "Proposes TrOPD, a trust-region on-policy distillation method that performs OPD only where teacher provides reliable supervision, improving stability.",
+      "llm_tldr_cn": "针对在线策略蒸馏（OPD）在师生分布差异大时训练不稳定的问题，提出TrOPD，通过信用分配确保仅在教师可靠区域进行蒸馏，避免梯度不可靠。实验表明，TrOPD提高了OPD训练的稳定性与性能，适用于代理学习、多任务增强等场景。",
+      "llm_tldr": "针对在线策略蒸馏（OPD）在师生分布差异大时训练不稳定的问题，提出TrOPD，通过信用分配确保仅在教师可靠区域进行蒸馏，避免梯度不可靠。实验表明，TrOPD提高了OPD训练的稳定性与性能，适用于代理学习、多任务增强等场景。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.02684v1",
+      "source": "arxiv",
+      "title": "Filter, Then Reweight: Rethinking Optimization Granularity in On-Policy Distillation",
+      "abstract": "On-Policy distillation (OPD) in large language models is shifting from full-trace KL supervision toward more selective training paradigms. Recent OPD methods increasingly focus on selecting which trajectories to learn from, which tokens are most informative, and which supervision signals are most reliable. Motivated by this trend, we rethink optimization granularity of OPD and propose \\fireicon\\ FiRe-OPD (Filter, then Reweight), which jointly adjusts supervision signals at both trajectory and token levels. In details, FiRe-OPD first filters trajectories to remove low-quality rollout samples, and then applies soft reweighting within the retained trajectories to emphasize informative tokens. Compared with hard token selection, FiRe-OPD leverages a soft-weighting mechanism to effectively mitigate information loss and enhance optimization stability, thereby achieving finer-grained OPD optimization. We validate the effectiveness of FiRe-OPD across strong-to-weak, single-teacher, and multi-teacher settings, and demonstrate its superiority over recent token-level OPD methods ( (e.g., +6.25 on AIME 2024 in strong-to-weak, +18.81 on Miner in multi-teacher). Our code is available at https://github.com/YuYingLi0/FiRe-OPD.",
+      "authors": [
+        "Yuying Li",
+        "Leqi Zheng",
+        "Yongzi Yu",
+        "Wenrui Zhou",
+        "Xuchang Zhong",
+        "Xing Hu",
+        "Jing Jin",
+        "Huangjie Yuan",
+        "Tao Feng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-01T17:58:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.02684v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "On-Policy Distillation, trajectory filtering, token reweighting",
+      "llm_evidence_cn": "在线策略蒸馏，轨迹过滤，令牌重加权",
+      "llm_evidence": "在线策略蒸馏，轨迹过滤，令牌重加权",
+      "canonical_evidence": "在线策略蒸馏，轨迹过滤，令牌重加权",
+      "llm_tldr_en": "FiRe-OPD improves On-Policy Distillation by filtering low-quality rollouts and reweighting tokens for selective supervision.",
+      "llm_tldr_cn": "现有在线策略蒸馏（OPD）方法逐步从全轨迹KL监督转向选择性训练，但粒度不够精细。FiRe-OPD从轨迹和令牌两个层面联合优化：先过滤掉低质量轨迹，再在保留轨迹内软重加权信息量大的令牌。实验表明该方法比硬令牌选择更有效，提升了蒸馏效率和模型性能。该工作为OPD的粒度优化提供了新视角。",
+      "llm_tldr": "现有在线策略蒸馏（OPD）方法逐步从全轨迹KL监督转向选择性训练，但粒度不够精细。FiRe-OPD从轨迹和令牌两个层面联合优化：先过滤掉低质量轨迹，再在保留轨迹内软重加权信息量大的令牌。实验表明该方法比硬令牌选择更有效，提升了蒸馏效率和模型性能。该工作为OPD的粒度优化提供了新视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04036v1",
+      "source": "arxiv",
+      "title": "Self-Distilled Policy Gradient",
+      "abstract": "On-policy self-distillation, where a language model conditions on privileged context to supervise its own generations, is a promising source of dense supervision for sparse-reward reinforcement learning. Actually, it can be instantiated as an auxiliary full-vocabulary student-to-teacher reverse Kullback-Leibler divergence loss. We therefore propose SDPG, a self-distilled policy-gradient framework that combines group-relative verifier advantages with normalized standard deviation, exact full-vocabulary on-policy self-distillation, as well as reference-policy KL regularization. Empirically, SDPG improves stability and performance over RLVR and self-distillation baselines. The code is available at https://github.com/lauyikfung/SDPG.",
+      "authors": [
+        "Yifeng Liu",
+        "Shiyuan Zhang",
+        "Yifan Zhang",
+        "Quanquan Gu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-02T02:31:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.04036v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes SDPG combining group-relative verifier advantages with on-policy self-distillation",
+      "llm_evidence_cn": "提出SDPG，结合分组相对验证器优势和在线自蒸馏",
+      "llm_evidence": "提出SDPG，结合分组相对验证器优势和在线自蒸馏",
+      "canonical_evidence": "提出SDPG，结合分组相对验证器优势和在线自蒸馏",
+      "llm_tldr_en": "Proposes Self-Distilled Policy Gradient (SDPG) combining GRPO-based advantages with exact on-policy self-distillation and KL regularization, outperforming RLVR and self-distillation.",
+      "llm_tldr_cn": "该论文提出自蒸馏策略梯度（SDPG），将分组相对验证器优势（类似 GRPO）与精确的全词汇在线自蒸馏以及参考策略 KL 正则化相结合。SDPG 在奖励稀疏的强化学习场景下提供密集监督信号，实验表明其在稳定性和性能上超过 RLVR 和纯自蒸馏基线，代码已开源。",
+      "llm_tldr": "该论文提出自蒸馏策略梯度（SDPG），将分组相对验证器优势（类似 GRPO）与精确的全词汇在线自蒸馏以及参考策略 KL 正则化相结合。SDPG 在奖励稀疏的强化学习场景下提供密集监督信号，实验表明其在稳定性和性能上超过 RLVR 和纯自蒸馏基线，代码已开源。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.29584v2",
+      "source": "arxiv",
+      "title": "GAPD: Gold-Action Policy Distillation for Agentic Reinforcement Learning in Knowledge Base Question Answering",
+      "abstract": "Reinforcement learning (RL) is a natural fit for agentic knowledge base question answering (KBQA), where a model must issue executable actions, observe knowledge-base feedback, and eventually return an answer. However, current RL-based KBQA systems mainly optimize sparse rewards from the final answer, leaving intermediate action errors weakly supervised. This is especially limiting for logical-form annotated KBQA benchmarks: gold logical forms can be converted into executable action sequences, but existing pipelines use them mainly for warm-start data construction rather than for on-policy RL updates. We propose GAPD, a training-time Gold-Action Policy Distillation framework that adds dense token-level guidance to outcome-based RL. To align gold actions with on-policy student rollouts, GAPD uses MID-ANCHOR MATCHING: it treats the intermediate entities reached during student exploration and gold execution as state anchors, and matches student states to gold states through these explored entity sets. The current policy conditioned on this aligned gold action serves as a stop-gradient teacher, whose token distribution is distilled back to the ordinary student policy over generated action-token spans. GAPD consistently surpasses the current state of the art on WebQSP, GrailQA, and GraphQ.",
+      "authors": [
+        "Xin Sun",
+        "Jianan Xie",
+        "Zhongqi Chen",
+        "Qiang Liu",
+        "Shu Wu",
+        "Bowen Song",
+        "Weiqiang Wang",
+        "Zilei Wang",
+        "Liang Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-28T08:28:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.29584v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gold-action policy distillation for RL in KBQA",
+      "llm_evidence_cn": "基于最优动作策略蒸馏的KBQA强化学习",
+      "llm_evidence": "基于最优动作策略蒸馏的KBQA强化学习",
+      "canonical_evidence": "基于最优动作策略蒸馏的KBQA强化学习",
+      "llm_tldr_en": "GAPD provides dense token-level supervision by distilling gold action policies into on-policy RL updates for KBQA agents.",
+      "llm_tldr_cn": "知识库问答的强化学习常受限于稀疏奖励。本文提出GAPD框架，将最优逻辑形式转化为动作序列，在在线RL更新时进行策略蒸馏，提供密集令牌级指导。实验表明该方法显著提升中间动作准确性和最终答案质量。",
+      "llm_tldr": "知识库问答的强化学习常受限于稀疏奖励。本文提出GAPD框架，将最优逻辑形式转化为动作序列，在在线RL更新时进行策略蒸馏，提供密集令牌级指导。实验表明该方法显著提升中间动作准确性和最终答案质量。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.30838v1",
+      "source": "arxiv",
+      "title": "COMPASS: Cognitive MCTS-Guided Process Alignment for Safe Search Agents",
+      "abstract": "LLM-powered search agents enable multi-step reasoning and tool use. However, these capabilities introduce retrieval-induced safety degradation, as harmful intents may decompose into seemingly innocuous sub-queries that lead to unsafe outcomes. Existing alignment methods struggle to capture sparse safety signals and fail to supervise diverse violations across multi-step interactions. We propose COMPASS, a Cognitive MCTS-Guided Process Alignment framework designed to achieve robust safety alignment throughout the agent workflow while preserving general utility. COMPASS integrates cognitive tree exploration (CTE) to efficiently synthesize stealthy attack trajectories, and introspective step-wise alignment (ISA) to isolate risky intermediate actions for fine-grained process supervision. Empirical results show that COMPASS achieves a favorable safety-utility trade-off while requiring substantially less training data.",
+      "authors": [
+        "Wenkai Shen",
+        "Pengyang Zhou",
+        "Jiahe Xu",
+        "Jiaming Qian",
+        "Haozhe He",
+        "Zhihao Huang",
+        "Chaochao Chen",
+        "Xiaolin Zheng"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-29T04:51:06+00:00",
+      "link": "https://arxiv.org/pdf/2605.30838v1",
+      "tags": [
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses process alignment with MCTS for safe search agents, related to process supervision",
+      "llm_evidence_cn": "使用MCTS过程对齐确保搜索代理安全，与过程监督相关",
+      "llm_evidence": "使用MCTS过程对齐确保搜索代理安全，与过程监督相关",
+      "canonical_evidence": "使用MCTS过程对齐确保搜索代理安全，与过程监督相关",
+      "llm_tldr_en": "Proposes COMPASS, a cognitive MCTS-guided process alignment framework for safe LLM search agents, with step-level safety supervision.",
+      "llm_tldr_cn": "该论文针对大模型搜索代理的多步推理中潜在安全风险，提出 COMPASS 框架。通过认知树探索（CTE）合成攻击轨迹，并通过内省式逐步对齐（ISA）隔离有害中间动作。该方法实现过程级别的安全监督，在保持通用性的同时显著降低有害输出，为过程监督提供了新思路。",
+      "llm_tldr": "该论文针对大模型搜索代理的多步推理中潜在安全风险，提出 COMPASS 框架。通过认知树探索（CTE）合成攻击轨迹，并通过内省式逐步对齐（ISA）隔离有害中间动作。该方法实现过程级别的安全监督，在保持通用性的同时显著降低有害输出，为过程监督提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.03327v1",
+      "source": "arxiv",
+      "title": "CAPER: Clause-Aligned Process Supervision for Text-to-SQL",
+      "abstract": "Text-to-SQL systems are typically evaluated by query-level execution correctness, but this terminal signal provides little guidance about which intermediate SQL decision caused success or failure. Token-level dense supervision is also ill-suited: SQL tokens do not align with complete semantic decisions, can penalize execution-equivalent queries, and are difficult to label reliably at scale. We therefore propose CAPER, which automatically derives clause-level supervision via counterfactual intervention on the SQL abstract syntax tree, enabling root-cause error localization for reward modeling; the resulting data is used to train CAPER-9B, a lightweight Clause-PRM that provides clause-boundary feedback for policy optimization and candidate verification. Experiments on BIRD and Spider show that clause-aligned supervision not only improves execution accuracy, achieving up to a 15.3% relative EX improvement over GPT-5.4, but also strengthens failure-localization capability, reaching 84.53% accuracy and 90.60% MRR on held-out failures. Our project page is at https://github.com/banrichard/RL-NL2SQL.",
+      "authors": [
+        "Lujie Ban",
+        "Jiasheng Shi",
+        "Jinyang Li",
+        "Xiaolin Han",
+        "Tsz Nam Chan",
+        "Chenhao Ma"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.CL"
+      ],
+      "published": "2026-06-02T08:35:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.03327v1",
+      "tags": [
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "clause-level process supervision for reward modeling aligns with PRM and step-level reward modeling",
+      "llm_evidence_cn": "子句级过程监督用于奖励建模，符合PRM和步骤级奖励建模需求",
+      "llm_evidence": "子句级过程监督用于奖励建模，符合PRM和步骤级奖励建模需求",
+      "canonical_evidence": "子句级过程监督用于奖励建模，符合PRM和步骤级奖励建模需求",
+      "llm_tldr_en": "CAPER automatically derives clause-level supervision for Text-to-SQL via counterfactual interventions, training a lightweight Clause-PRM.",
+      "llm_tldr_cn": "Text-to-SQL系统缺乏中间决策监督。CAPER通过对SQL抽象语法树进行反事实干预，自动生成子句级监督数据，并训练轻量级子句过程奖励模型（PRM）。该模型为策略优化和候选验证提供子句边界反馈，显著提升最终准确率，为过程监督在结构化任务中应用提供了新范式。",
+      "llm_tldr": "Text-to-SQL系统缺乏中间决策监督。CAPER通过对SQL抽象语法树进行反事实干预，自动生成子句级监督数据，并训练轻量级子句过程奖励模型（PRM）。该模型为策略优化和候选验证提供子句边界反馈，显著提升最终准确率，为过程监督在结构化任务中应用提供了新范式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.04807v1",
+      "source": "arxiv",
+      "title": "BiasGRPO: Stabilizing Bias Mitigation in High-Variance Reward Landscapes via Group-Relative Policy Optimization",
+      "abstract": "Mitigating social bias in Large Language Models (LLMs) presents a distinct alignment challenge: unlike verifiable tasks, bias lacks a single ground truth, creating a high-variance, subjective reward landscape. Previous preference-based fine-tuning methods have major trade-offs: Direct Preference Optimization (DPO) is limited by the lack of exploration inherent in offline training, while Proximal Policy Optimization (PPO) can lead to training instability due to potentially unreliable critic estimates. In this paper, we propose BiasGRPO, a framework using Group Relative Policy Optimization (GRPO) to stabilize alignment by normalizing rewards across a group of sampled completions. By substituting the value function with a group-relative baseline, our approach reduces instability while maintaining the exploration benefits of online training. We find that BiasGRPO outperforms DPO and PPO across multiple benchmarks, indicating its effectiveness. To adapt GRPO, we synthetically extend a dataset spanning multiple domains and contexts. We also create and release a custom bias reward model that effectively guides generation while being highly compute-efficient and avoiding knowledge degradation, providing a valuable resource that can be seamlessly integrated into multi-objective RLHF pipelines.",
+      "authors": [
+        "Saket Reddy",
+        "Ke Yang",
+        "ChengXiang Zhai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CY",
+        "cs.LG"
+      ],
+      "published": "2026-06-03T12:31:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.04807v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses GRPO an online RL method mentioned in composite requirement",
+      "llm_evidence_cn": "使用GRPO在线强化学习方法，符合复合需求中的GRPO要求",
+      "llm_evidence": "使用GRPO在线强化学习方法，符合复合需求中的GRPO要求",
+      "canonical_evidence": "使用GRPO在线强化学习方法，符合复合需求中的GRPO要求",
+      "llm_tldr_en": "BiasGRPO applies Group Relative Policy Optimization to mitigate social bias in LLMs, stabilizing training under high-variance reward landscapes.",
+      "llm_tldr_cn": "BiasGRPO提出使用组相对策略优化（GRPO）来缓解大语言模型中的社会偏见。该方法通过在一组采样完成上归一化奖励，替代价值函数，从而在高方差奖励地形下稳定对齐训练。实验表明，BiasGRPO在偏见缓解任务上优于DPO和PPO，提供了一种更稳定的在线RL训练方案，与复合需求中GRPO方法的要求契合。",
+      "llm_tldr": "BiasGRPO提出使用组相对策略优化（GRPO）来缓解大语言模型中的社会偏见。该方法通过在一组采样完成上归一化奖励，替代价值函数，从而在高方差奖励地形下稳定对齐训练。实验表明，BiasGRPO在偏见缓解任务上优于DPO和PPO，提供了一种更稳定的在线RL训练方案，与复合需求中GRPO方法的要求契合。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
