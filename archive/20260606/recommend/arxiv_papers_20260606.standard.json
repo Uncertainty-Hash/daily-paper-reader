@@ -1,0 +1,299 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-06T20:25:42.422179+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.03327v1",
+      "source": "arxiv",
+      "title": "CAPER: Clause-Aligned Process Supervision for Text-to-SQL",
+      "abstract": "Text-to-SQL systems are typically evaluated by query-level execution correctness, but this terminal signal provides little guidance about which intermediate SQL decision caused success or failure. Token-level dense supervision is also ill-suited: SQL tokens do not align with complete semantic decisions, can penalize execution-equivalent queries, and are difficult to label reliably at scale. We therefore propose CAPER, which automatically derives clause-level supervision via counterfactual intervention on the SQL abstract syntax tree, enabling root-cause error localization for reward modeling; the resulting data is used to train CAPER-9B, a lightweight Clause-PRM that provides clause-boundary feedback for policy optimization and candidate verification. Experiments on BIRD and Spider show that clause-aligned supervision not only improves execution accuracy, achieving up to a 15.3% relative EX improvement over GPT-5.4, but also strengthens failure-localization capability, reaching 84.53% accuracy and 90.60% MRR on held-out failures. Our project page is at https://github.com/banrichard/RL-NL2SQL.",
+      "authors": [
+        "Lujie Ban",
+        "Jiasheng Shi",
+        "Jinyang Li",
+        "Xiaolin Han",
+        "Tsz Nam Chan",
+        "Chenhao Ma"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB",
+        "cs.CL"
+      ],
+      "published": "2026-06-02T08:35:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.03327v1",
+      "tags": [
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "CAPER provides clause-level process supervision for text-to-SQL, a form of process supervision for reasoning",
+      "llm_evidence_cn": "CAPER为Text-to-SQL提供子句级过程监督，属于推理过程监督的一种形式",
+      "llm_evidence": "CAPER为Text-to-SQL提供子句级过程监督，属于推理过程监督的一种形式",
+      "canonical_evidence": "CAPER为Text-to-SQL提供子句级过程监督，属于推理过程监督的一种形式",
+      "llm_tldr_en": "CAPER automatically derives clause-level process supervision for text-to-SQL, enabling fine-grained reward modeling for reasoning steps.",
+      "llm_tldr_cn": "Text-to-SQL的终端信号无法定位中间错误，而token级监督不适合。本文提出CAPER，通过在SQL抽象语法树上进行反事实干预自动生成子句级监督，并训练轻量级Clause-PRM。该PRM能提供子句边界反馈，用于策略优化和候选验证。实验表明，子句级过程监督比token级或查询级监督更有效。该方法可推广到其他结构化推理任务。",
+      "llm_tldr": "Text-to-SQL的终端信号无法定位中间错误，而token级监督不适合。本文提出CAPER，通过在SQL抽象语法树上进行反事实干预自动生成子句级监督，并训练轻量级Clause-PRM。该PRM能提供子句边界反馈，用于策略优化和候选验证。实验表明，子句级过程监督比token级或查询级监督更有效。该方法可推广到其他结构化推理任务。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.06324v1",
+      "source": "arxiv",
+      "title": "From Failed Trajectories to Reliable LLM Agents: Diagnosing and Repairing Harness Flaws",
+      "abstract": "LLM-based agents increasingly rely on harnesses that provide execution environments, tool interfaces, context, lifecycle orchestration, observability, verification, and governance. Existing self-improving agents and automatic harness evolution methods mainly improve agents through runtime supervision, prompt optimization, workflow search, or harness modification based on final outcomes. However, they often fail to diagnose where the responsible evidence lies in failed trajectories and which harness layer causes the unreliable behavior, resulting in broad, indirect, or poorly scoped changes. This paper proposes HarnessFix, a trace-guided framework for diagnosing agent failures and repairing agent harnesses. HarnessFix compiles raw execution traces and harness code into a Harness-aware Trace Intermediate Representation (HTIR), which normalizes fragmented trajectory evidence and captures step-level provenance and control-flow relations. It then attributes failures to responsible trajectory steps and harness layers, consolidates recurring diagnoses into actionable flaw records, and maps them to scoped repair operators. Finally, HarnessFix generates and validates harness patches under flaw-specific repair specifications to reduce target flaws without introducing unacceptable regressions. We evaluate HarnessFix on SWE-Bench Verified, Terminal-Bench 2.0 Verified, GAIA and AppWorld. Across these benchmarks, HarnessFix improves held-out test performance over the initial harnesses by 15.2%--50.0%, outperforms human-designed and self-evolution baselines, and reveals recurring harness-flaw patterns across ETCLOVG layers.",
+      "authors": [
+        "Mengzhuo Chen",
+        "Junjie Wang",
+        "Zhe Liu",
+        "Yawen Wang",
+        "Qing Wang"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.MA"
+      ],
+      "published": "2026-06-04T15:58:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.06324v1",
+      "tags": [
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses failed trajectories to diagnose and repair agent harnesses",
+      "llm_evidence_cn": "利用失败轨迹诊断和修复智能体框架缺陷",
+      "llm_evidence": "利用失败轨迹诊断和修复智能体框架缺陷",
+      "canonical_evidence": "利用失败轨迹诊断和修复智能体框架缺陷",
+      "llm_tldr_en": "HarnessFix diagnoses agent failures using failed trajectories and repairs harness layers, directly relevant to using error trajectories for process supervision in LLM reasoning.",
+      "llm_tldr_cn": "当前自改进智能体方法难以从失败轨迹中定位框架层缺陷。本文提出HarnessFix，一种基于轨迹的框架，编译原始执行轨迹以诊断失败原因并自动修复智能体框架。实验表明HarnessFix能准确识别框架缺陷并生成有效修复，显著提升智能体可靠性。该工作直接利用错误轨迹进行诊断和改进，与利用失败轨迹进行过程监督的任务高度契合。",
+      "llm_tldr": "当前自改进智能体方法难以从失败轨迹中定位框架层缺陷。本文提出HarnessFix，一种基于轨迹的框架，编译原始执行轨迹以诊断失败原因并自动修复智能体框架。实验表明HarnessFix能准确识别框架缺陷并生成有效修复，显著提升智能体可靠性。该工作直接利用错误轨迹进行诊断和改进，与利用失败轨迹进行过程监督的任务高度契合。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.00306v1",
+      "source": "arxiv",
+      "title": "Rethinking the Role of Temperature in Large Language Model Distillation",
+      "abstract": "Reverse Kullback-Leibler (RKL) divergence is widely favored over forward KL (FKL) in large language models (LLM) distillation, yet this preference is largely based on comparisons that omit the temperature $τ$, overlooking its central role in softening teacher distributions and improving knowledge transfer. In this work, we revisit temperature in LLM distillation and show that it fundamentally changes the comparison between FKL and RKL. Our analysis reveals an asymmetric effect: temperature substantially enriches FKL with non-dominant token signals, whereas it mainly rescales RKL gradients, causing FKL to benefit much more from $τ$ scaling than RKL. This asymmetry overturns the standard empirical conclusion: although RKL outperforms FKL at $τ=1$, FKL consistently surpasses RKL at higher temperatures across instruction-following benchmarks. Moreover, the impact of temperature is not limited to FKL; it improves a broader family of distillation objectives, enabling simple KL-based methods to achieve competitive performance against recent state-of-the-art LLM distillation approaches.",
+      "authors": [
+        "Hoang-Chau Luong",
+        "Lingwei Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-29T19:32:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.00306v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "revisits temperature in LLM distillation, comparing forward and reverse KL divergence",
+      "llm_evidence_cn": "重新审视大语言模型蒸馏中的温度作用",
+      "llm_evidence": "重新审视大语言模型蒸馏中的温度作用",
+      "canonical_evidence": "重新审视大语言模型蒸馏中的温度作用",
+      "llm_tldr_en": "This paper analyzes temperature's asymmetric effect on forward and reverse KL divergences in LLM distillation, showing forward KL benefits more from temperature scaling, which has implications for distillation methods like on-policy distillation.",
+      "llm_tldr_cn": "该论文重新审视了大语言模型蒸馏中温度的作用，首次揭示了温度对前向KL散度和反向KL散度的不对称影响：温度显著丰富了前向KL的非主导令牌信号，而主要用于缩放反向KL梯度。这一发现推翻了标准实验结论，即反向KL在温度=1时优于前向KL，但温度缩放后前向KL可能反超。该工作为蒸馏方法（包括在线策略蒸馏）的温度选择提供了理论指导。",
+      "llm_tldr": "该论文重新审视了大语言模型蒸馏中温度的作用，首次揭示了温度对前向KL散度和反向KL散度的不对称影响：温度显著丰富了前向KL的非主导令牌信号，而主要用于缩放反向KL梯度。这一发现推翻了标准实验结论，即反向KL在温度=1时优于前向KL，但温度缩放后前向KL可能反超。该工作为蒸馏方法（包括在线策略蒸馏）的温度选择提供了理论指导。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.01934v1",
+      "source": "arxiv",
+      "title": "HMPO: Hybrid Median-length Policy Optimization for Chain-of-Thought Compression",
+      "abstract": "Large language models achieve remarkable performance via extended chain-of-thought (CoT) reasoning, yet this lengthy process incurs substantial inference overhead. Existing CoT compression methods struggle with inflexible manual length budgets, computationally expensive multi-stage training pipelines, and fragile scalability restricted to small models. We propose HMPO (Hybrid Median-length Policy Optimization), a cost-effective, single-stage reinforcement learning framework. HMPO efficiently compresses CoT via three synergistic components: an adaptive median-based budget derived from successful rollouts to eliminate manual tuning, a cosine-decay token reward for smooth length penalization, and a multiplicative reward formulation that substantially mitigates trivial reward hacking by strictly prioritizing answer correctness. Trained exclusively on mathematical data, HMPO generalizes seamlessly across math, code, science, and instruction-following tasks. Extensive experiments scaling from 9B to 122B parameters across dense and Mixture-of-Experts (MoE) architectures demonstrate that HMPO achieves 19%--46% token compression with negligible accuracy degradation, all while drastically reducing training costs compared to existing multi-stage baselines.",
+      "authors": [
+        "Minghui Zheng",
+        "Hongxu Chen",
+        "Huimin Ren",
+        "Hongsheng Xin",
+        "Xiaoyang Qu",
+        "Ze Wang",
+        "Shuling Yang",
+        "Ziyu Peng",
+        "Kaike Zhang",
+        "Pan Zhou",
+        "Kun Zhan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-01T09:01:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.01934v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning framework using rollouts for chain-of-thought compression",
+      "llm_evidence_cn": "使用rollouts的强化学习框架用于思维链压缩",
+      "llm_evidence": "使用rollouts的强化学习框架用于思维链压缩",
+      "canonical_evidence": "使用rollouts的强化学习框架用于思维链压缩",
+      "llm_tldr_en": "HMPO is a single-stage RL framework that compresses chain-of-thought reasoning using adaptive median-based budgets from successful rollouts and a multiplicative reward, reducing inference cost without manual tuning.",
+      "llm_tldr_cn": "现有思维链压缩方法存在手动预算调整、多阶段训练和可扩展性差等问题。本文提出HMPO，一种基于强化学习的单阶段CoT压缩框架，核心包括从成功rollouts自适应推导中位数预算、余弦衰减令牌奖励以及乘法奖励公式。实验表明该方法在保持推理质量的同时显著减少推理开销，无需手动调参，具有良好的可扩展性。",
+      "llm_tldr": "现有思维链压缩方法存在手动预算调整、多阶段训练和可扩展性差等问题。本文提出HMPO，一种基于强化学习的单阶段CoT压缩框架，核心包括从成功rollouts自适应推导中位数预算、余弦衰减令牌奖励以及乘法奖励公式。实验表明该方法在保持推理质量的同时显著减少推理开销，无需手动调参，具有良好的可扩展性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.04807v1",
+      "source": "arxiv",
+      "title": "BiasGRPO: Stabilizing Bias Mitigation in High-Variance Reward Landscapes via Group-Relative Policy Optimization",
+      "abstract": "Mitigating social bias in Large Language Models (LLMs) presents a distinct alignment challenge: unlike verifiable tasks, bias lacks a single ground truth, creating a high-variance, subjective reward landscape. Previous preference-based fine-tuning methods have major trade-offs: Direct Preference Optimization (DPO) is limited by the lack of exploration inherent in offline training, while Proximal Policy Optimization (PPO) can lead to training instability due to potentially unreliable critic estimates. In this paper, we propose BiasGRPO, a framework using Group Relative Policy Optimization (GRPO) to stabilize alignment by normalizing rewards across a group of sampled completions. By substituting the value function with a group-relative baseline, our approach reduces instability while maintaining the exploration benefits of online training. We find that BiasGRPO outperforms DPO and PPO across multiple benchmarks, indicating its effectiveness. To adapt GRPO, we synthetically extend a dataset spanning multiple domains and contexts. We also create and release a custom bias reward model that effectively guides generation while being highly compute-efficient and avoiding knowledge degradation, providing a valuable resource that can be seamlessly integrated into multi-objective RLHF pipelines.",
+      "authors": [
+        "Saket Reddy",
+        "Ke Yang",
+        "ChengXiang Zhai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CY",
+        "cs.LG"
+      ],
+      "published": "2026-06-03T12:31:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.04807v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses Group Relative Policy Optimization (GRPO) for alignment",
+      "llm_evidence_cn": "使用组相对策略优化(GRPO)进行对齐",
+      "llm_evidence": "使用组相对策略优化(GRPO)进行对齐",
+      "canonical_evidence": "使用组相对策略优化(GRPO)进行对齐",
+      "llm_tldr_en": "BiasGRPO applies GRPO to stabilize bias mitigation in LLMs, addressing high-variance reward landscapes without a value function, directly relevant to online RL training methods.",
+      "llm_tldr_cn": "现有方法在缓解大语言模型社会偏见时面临奖励高方差和训练不稳定的问题。本文提出BiasGRPO框架，利用组相对策略优化(GRPO)对一组采样完成进行奖励归一化，替代传统值函数，从而稳定对齐过程。实验表明BiasGRPO在多个偏见基准上有效降低偏见同时保持生成质量。该工作展示了GRPO在主观奖励场景下的应用潜力，与在线强化学习训练方法高度相关。",
+      "llm_tldr": "现有方法在缓解大语言模型社会偏见时面临奖励高方差和训练不稳定的问题。本文提出BiasGRPO框架，利用组相对策略优化(GRPO)对一组采样完成进行奖励归一化，替代传统值函数，从而稳定对齐过程。实验表明BiasGRPO在多个偏见基准上有效降低偏见同时保持生成质量。该工作展示了GRPO在主观奖励场景下的应用潜力，与在线强化学习训练方法高度相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03021v1",
+      "source": "arxiv",
+      "title": "Hint-Guided Diversified Policy Optimization for LLM Reasoning",
+      "abstract": "Recent developments in Large Language Models (LLMs) have showcased impressive reasoning capabilities, with Reinforcement Learning with Verifiable Rewards (RLVR) being a promising enhancement strategy. However, existing reward mechanisms are constrained to the outcome-level correctness and lack explicit signals to guide the model to consider diverse solutions. In contrast, human problem solving typically involves evaluating multiple potential approaches and selecting the most reliable solution, a cognitive process that current RLVR frameworks do not explicitly incentivize. Inspired by this, we propose Hint-Guided Diversified Policy Optimization (HDPO), allowing the model to first list all potential candidate solution outlines as hints and then select the most reliable one for further reasoning. HDPO comprises two stages of Cold Start for Structured Reasoning and Hint-Guided Diversified Reinforcement Learning to incentivize the model to generate diverse and reliable solutions following the ``propose-select-think'' trajectory. Experimental results show that HDPO effectively boosts LLM reasoning and enhances the diversity of candidate solutions as well as the LLM's ability to identify reliable solutions.",
+      "authors": [
+        "Zhiyu Cao",
+        "Kaixin Wu",
+        "Mingjie Zhong",
+        "Peifeng Li",
+        "Xiaobo Li",
+        "Can Ye",
+        "Qiaoming Zhu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-02T01:55:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.03021v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RLVR with hint-guided policy optimization for reasoning diversity",
+      "llm_evidence_cn": "基于提示引导的多样化策略优化，用于推理多样性",
+      "llm_evidence": "基于提示引导的多样化策略优化，用于推理多样性",
+      "canonical_evidence": "基于提示引导的多样化策略优化，用于推理多样性",
+      "llm_tldr_en": "Proposes Hint-Guided Diversified Policy Optimization (HDPO) that first lists candidate solution outlines as hints then selects the most reliable, enhancing RLVR with diversity incentives.",
+      "llm_tldr_cn": "该论文针对强化学习可验证奖励（RLVR）中只关注结果正确性、忽视推理多样性的问题，提出提示引导的多样化策略优化（HDPO）。方法先让模型列出多种候选方案概要作为提示，再选择最可靠方案，在数学推理任务上显著提升多样性和最终正确率。",
+      "llm_tldr": "该论文针对强化学习可验证奖励（RLVR）中只关注结果正确性、忽视推理多样性的问题，提出提示引导的多样化策略优化（HDPO）。方法先让模型列出多种候选方案概要作为提示，再选择最可靠方案，在数学推理任务上显著提升多样性和最终正确率。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.05859v1",
+      "source": "arxiv",
+      "title": "TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization",
+      "abstract": "Latent reasoning has emerged as a promising alternative to discrete Chain-of-Thought (CoT) in large language models (LLMs), enabling more expressive reasoning by operating over continuous representations. However, the inherently deterministic nature of continuous representations limits policy exploration in reinforcement learning (RL). To address this, we propose TARPO (Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization), a pure RL framework that adaptively switches between discrete token generation and continuous latent reasoning at each step. TARPO introduces a lightweight action head router that observes the current hidden state and samples a routing decision from a binary mode-selection space, preserving the stochasticity of discrete token sampling from the vocabulary. The LLM backbone and router are jointly optimized end-to-end with a shared group-relative advantage signal. Extensive experiments across Qwen2.5 (from 1.5B to 7B) and Llama-3.1-8B backbones demonstrate that TARPO consistently outperforms existing explicit and latent reasoning RL baselines across diverse benchmarks. Further analysis shows that TARPO learns adaptive token-wise switching behaviors while maintaining stable training dynamics. Our code is available at https://github.com/NKU-LITI/TARPO-master.",
+      "authors": [
+        "Liting Zhang",
+        "Shiwan Zhao",
+        "Xuyang Zhao",
+        "Zichen Xu",
+        "Jianye Wang",
+        "Qicheng Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-04T08:30:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.05859v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reinforcement learning framework for LLM reasoning",
+      "llm_evidence_cn": "大语言模型推理的强化学习框架",
+      "llm_evidence": "大语言模型推理的强化学习框架",
+      "canonical_evidence": "大语言模型推理的强化学习框架",
+      "llm_tldr_en": "TARPO proposes a pure RL framework for LLMs that adaptively switches between discrete token generation and continuous latent reasoning to improve exploration in reasoning tasks.",
+      "llm_tldr_cn": "大型语言模型的潜在推理虽然表达能力更强，但连续表示的确定性限制了强化学习的策略探索。TARPO提出了一个纯强化学习框架，通过轻量级动作头路由器在每个步骤自适应地在离散token生成和连续潜在推理之间切换，从而保持随机性以促进探索。实验表明，该方法在推理任务上有效提升了性能，为结合隐式和显式推理路径提供了新思路。",
+      "llm_tldr": "大型语言模型的潜在推理虽然表达能力更强，但连续表示的确定性限制了强化学习的策略探索。TARPO提出了一个纯强化学习框架，通过轻量级动作头路由器在每个步骤自适应地在离散token生成和连续潜在推理之间切换，从而保持随机性以促进探索。实验表明，该方法在推理任务上有效提升了性能，为结合隐式和显式推理路径提供了新思路。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
