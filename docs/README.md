@@ -6,43 +6,41 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-06
-- 运行时间：2026-06-06 20:28:09 UTC
+- 最新运行日期：2026-06-07
+- 运行时间：2026-06-07 20:52:36 UTC
 - 运行状态：成功
 - 本次总论文数：7
-- 精读区：2
-- 速读区：5
+- 精读区：3
+- 速读区：4
 
 ### 今日简报（AI）
-1. 今日聚焦Text-to-SQL过程监督与LLM Agent故障修复，两篇精读均获8.0高分。
-2. 最值得关注：CAPER通过子句对齐提升SQL生成可靠性；从失败轨迹诊断Agent框架缺陷的方法论。
-3. 建议优先阅读精读论文，深入理解过程监督和故障修复的设计思路。
-- 详情：[/202606/06/README](/202606/06/README)
+今日聚焦LLM后训练与推理优化，精读3篇高分论文。最值得关注的是异步策略优化框架ASymPO和双向逻辑链修复方法，分别解决无行为信息训练与推理鲁棒性问题。推荐优先精读ASymPO和链修复论文，速读可关注偏见缓解与自适应采样思路。
+- 详情：[/202606/07/README](/202606/07/README)
 
 ### 精读区论文标签
-1. [CAPER: Clause-Aligned Process Supervision for Text-to-SQL](/202606/06/2606.03327v1-caper-clause-aligned-process-supervision-for-text-to-sql)  
+1. [ASymPO: Asymmetric-Scale Policy Optimization for Asynchronous LLM Post-Training Without Behavior Information](/202606/07/2606.03070v2-asympo-asymmetric-scale-policy-optimization-for-asynchronous-llm-post-training-without-behavior-information)  
    标签：评分：8.0/10、query:opd
-   evidence：CAPER为Text-to-SQL提供子句级过程监督，属于推理过程监督的一种形式
-2. [From Failed Trajectories to Reliable LLM Agents: Diagnosing and Repairing Harness Flaws](/202606/06/2606.06324v1-from-failed-trajectories-to-reliable-llm-agents-diagnosing-and-repairing-harness-flaws)  
+   evidence：异步组相对强化学习方法用于大模型后训练
+2. [Imbuing Large Language Models with Bidirectional Logic for Robust Chain Repair](/202606/07/2606.05030v1-imbuing-large-language-models-with-bidirectional-logic-for-robust-chain-repair)  
    标签：评分：8.0/10、query:opd
-   evidence：利用失败轨迹诊断和修复智能体框架缺陷
+   evidence：利用错误轨迹通过目标条件桥接进行链修复
+3. [Selective-Advantage Entropy-Adaptive Horizon GRPO: Asymmetric Token-Level Discounting for Efficient Reinforcement Learning of Language Models](/202606/07/2606.05434v1-selective-advantage-entropy-adaptive-horizon-grpo-asymmetric-token-level-discounting-for-efficient-reinforcement-learning-of-language-models)  
+   标签：评分：8.0/10、query:opd
+   evidence：在GRPO中引入对负优势rollout的选择性折扣
 
 ### 速读区论文标签
-1. [Rethinking the Role of Temperature in Large Language Model Distillation](/202606/06/2606.00306v1-rethinking-the-role-of-temperature-in-large-language-model-distillation)  
+1. [Hint-Guided Diversified Policy Optimization for LLM Reasoning](/202606/07/2606.03021v1-hint-guided-diversified-policy-optimization-for-llm-reasoning)  
    标签：评分：7.0/10、query:opd
-   evidence：重新审视大语言模型蒸馏中的温度作用
-2. [BiasGRPO: Stabilizing Bias Mitigation in High-Variance Reward Landscapes via Group-Relative Policy Optimization](/202606/06/2606.04807v1-biasgrpo-stabilizing-bias-mitigation-in-high-variance-reward-landscapes-via-group-relative-policy-optimization)  
+   evidence：基于RLVR的提示引导多样化策略优化
+2. [BiasGRPO: Stabilizing Bias Mitigation in High-Variance Reward Landscapes via Group-Relative Policy Optimization](/202606/07/2606.04807v1-biasgrpo-stabilizing-bias-mitigation-in-high-variance-reward-landscapes-via-group-relative-policy-optimization)  
    标签：评分：7.0/10、query:opd
-   evidence：使用组相对策略优化(GRPO)进行对齐
-3. [TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization](/202606/06/2606.05859v1-tarpo-token-wise-latent-explicit-reasoning-via-action-routing-policy-optimization)  
-   标签：评分：7.0/10、query:opd
-   evidence：大语言模型推理的强化学习框架
-4. [HMPO: Hybrid Median-length Policy Optimization for Chain-of-Thought Compression](/202606/06/2606.01934v1-hmpo-hybrid-median-length-policy-optimization-for-chain-of-thought-compression)  
+   evidence：分组相对策略优化用于偏见缓解，一种在线RL方法
+3. [Small RL Controller, Large Language Model: RL-Guided Adaptive Sampling for Test-Time Scaling](/202606/07/2606.03102v1-small-rl-controller-large-language-model-rl-guided-adaptive-sampling-for-test-time-scaling)  
    标签：评分：6.0/10、query:opd
-   evidence：使用rollouts的强化学习框架用于思维链压缩
-5. [Hint-Guided Diversified Policy Optimization for LLM Reasoning](/202606/06/2606.03021v1-hint-guided-diversified-policy-optimization-for-llm-reasoning)  
+   evidence：强化学习引导的自适应采样用于测试时扩展
+4. [TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization](/202606/07/2606.05859v1-tarpo-token-wise-latent-explicit-reasoning-via-action-routing-policy-optimization)  
    标签：评分：6.0/10、query:opd
-   evidence：基于提示引导的多样化策略优化，用于推理多样性
+   evidence：自适应切换离散与连续推理模式的强化学习优化
 
 
 <div class="dpr-home-promo-card">
