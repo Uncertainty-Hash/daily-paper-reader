@@ -1,0 +1,474 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-08T20:46:31.760772+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2606.01476v1",
+      "source": "arxiv",
+      "title": "OmniOPD: Logit-Free On-Policy Distillation via Speculative Verification",
+      "abstract": "On-Policy Distillation (OPD) trains a student model on its own generative trajectories under dense token-level feedback from a stronger teacher, mitigating both the off-policy distribution shift of Supervised Fine-Tuning (SFT) and the sparse credit assignment of Reinforcement Learning (RL). However, standard OPD faces two coupled limitations. First, it requires direct access to the teacher's token-level logits, excluding a broad class of capable proprietary models from serving as teachers. Second, the token-level logit signal itself is brittle, depending on a narrow overlap of plausible next tokens between teacher and student, and prone to amplifying degenerate patterns such as repetition loops. In this paper, we introduce OmniOPD, a novel framework that addresses both limitations through a logit-free, chunk-level supervision signal. OmniOPD replaces deterministic logit matching with Monte Carlo rollouts that approximate the teacher's local preferences through a continuous semantic similarity metric over multi-token chunks, and concentrates this supervision via a peak-entropy scheduler that audits the student only at its high-uncertainty reasoning forks. A Dirichlet-Multinomial Bayesian prior and a base-model KL anchor further bound the variance of discrete sampling and prevent policy collapse across unaudited tokens. Across competitive benchmarks, OmniOPD surpasses the standard OPD approach by up to +28.64% on math, confirming that chunk-level semantic verification extracts a more reliable learning signal than token-level logit matching, whose high information density is offset by significant noise and brittleness. Furthermore, when paired with stronger black-box teachers such as Claude-4.5-Haiku and Gemini-2.5-Flash, OmniOPD achieves an additional +9.54% relative on math over its open-weight teacher counterpart, advancing the student past the performance of self-exploratory RL.",
+      "authors": [
+        "Yuhang Zhou",
+        "Lizhu Zhang",
+        "Yifan Wu",
+        "Mingyi Wang",
+        "Peng Bo",
+        "Jiayi Liu",
+        "Xiangjun Fan",
+        "Zhuokai Zhao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-05-31T22:31:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.01476v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "logit-free on-policy distillation via speculative verification",
+      "llm_evidence_cn": "通过投机验证实现无对数概率的在线策略蒸馏",
+      "llm_evidence": "通过投机验证实现无对数概率的在线策略蒸馏",
+      "canonical_evidence": "通过投机验证实现无对数概率的在线策略蒸馏",
+      "llm_tldr_en": "Introduces OmniOPD, a logit-free OPD framework using speculative verification to overcome teacher logit dependence and brittleness.",
+      "llm_tldr_cn": "标准OPD依赖教师模型的令牌级对数概率，限制了教师选择且信号脆弱。本文提出OmniOPD，通过投机验证框架摆脱对数概率需求，同时保持密集监督。实验表明该方法可兼容闭源教师，且避免重复退化模式。",
+      "llm_tldr": "标准OPD依赖教师模型的令牌级对数概率，限制了教师选择且信号脆弱。本文提出OmniOPD，通过投机验证框架摆脱对数概率需求，同时保持密集监督。实验表明该方法可兼容闭源教师，且避免重复退化模式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.03532v1",
+      "source": "arxiv",
+      "title": "When Should the Teacher Move? Temporal Coupling and Stability in Self On-Policy Distillation",
+      "abstract": "Self on-policy distillation trains a student policy against a teacher derived from its own parameter history, yet the teacher's update schedule -- which governs the \\emph{temporal coupling} between teacher and student -- has not been systematically studied as a stability variable. Through a controlled schedule sweep on Qwen3-8B, we establish that \\emph{isolation periods}, defined as complete teacher freezing between updates, are the key structural property enabling stable learning, not teacher age. To characterize these underlying training dynamics, we introduce a diagnostic framework of temporal KL structure, refresh shock, and length-tail risk. This framework further uncovers \\emph{state-oblivious collapse}: optimal short-horizon fixed schedules catastrophically fail under long-horizon training because a clock-driven refresh can copy a transiently drifting student into the teacher in a single, irreversible step. This failure mode is invisible under short-horizon evaluation and mechanistically distinct from EMA's chronic contamination. To address this, we propose \\emph{Consolidation-Gated Teacher Refresh} (CGTR), which preserves isolation periods while gating each refresh on joint evidence of reward improvement and length-tail safety, ensuring every teacher movement responds to genuine student consolidation rather than a clock signal. With a single shared parameter set and no per-dataset retuning, CGTR achieves \\textbf{zero collapse} and the best final score on all four tasks (Chemistry, Biology, Physics, ToolUse), self-regulating its refresh frequency to each task's learning dynamics.",
+      "authors": [
+        "Haowei Guo",
+        "Baolong Bi",
+        "Ruicheng Zhang",
+        "Bingqian Sun",
+        "Wentao Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-02T11:54:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.03532v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self on-policy distillation teacher update schedule",
+      "llm_evidence_cn": "自在线策略蒸馏教师更新调度",
+      "llm_evidence": "自在线策略蒸馏教师更新调度",
+      "canonical_evidence": "自在线策略蒸馏教师更新调度",
+      "llm_tldr_en": "Studies teacher update schedule in self on-policy distillation; finds isolation periods (teacher freezing) are key for stability; introduces diagnostic framework for temporal KL structure, refresh shock, length-tail risk.",
+      "llm_tldr_cn": "该论文研究了自在线策略蒸馏中教师更新调度对稳定性的影响。通过控制实验发现，教师更新之间的隔离期（完全冻结教师）是确保稳定学习的关键结构属性，而非教师年龄。论文还引入了一个诊断框架，包括时序KL结构、刷新冲击和长度尾风险，并揭示了状态无关崩溃现象。这项工作为在线策略蒸馏中的教师时序耦合提供了系统理解。",
+      "llm_tldr": "该论文研究了自在线策略蒸馏中教师更新调度对稳定性的影响。通过控制实验发现，教师更新之间的隔离期（完全冻结教师）是确保稳定学习的关键结构属性，而非教师年龄。论文还引入了一个诊断框架，包括时序KL结构、刷新冲击和长度尾风险，并揭示了状态无关崩溃现象。这项工作为在线策略蒸馏中的教师时序耦合提供了系统理解。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.07000v1",
+      "source": "arxiv",
+      "title": "Teaching the Way, Not the Answer: Privileged Tutoring Distillation for Multimodal Policy Optimization",
+      "abstract": "Recent post-training methods, particularly Reinforcement Learning with Verifiable Rewards (RLVR), have significantly enhanced the reasoning ability of Large Vision-Language Models (LVLMs). However, the sparse nature of verifiable rewards provides little token-level supervision for failed rollouts, often leading to inefficient exploration in complex multimodal reasoning tasks. Although policy distillation can offer dense guidance, external teacher based methods introduce substantial computational overhead, while answer conditioned tuning methods may expose answer-level information and induce shortcut-like generation behavior. To address these limitations, we propose PTD-PO, a Privileged Tutoring Distillation Policy Optimization framework for RLVR that provides dense guidance without exposing the answer to the student policy. Specifically, PTD-PO constructs structured privileged hints from spatial attention guidance and intermediate textual reasoning steps, and uses them through in-context learning to produce step-wise token-distribution supervision. The student is still optimized under the original answer-free context, and its failed rollouts are aligned with the hint-augmented reference model at the token-distribution level. To further stabilize distillation under the distribution shift between guided and unguided contexts, we introduce a Top-K Jensen-Shannon divergence objective that focuses alignment on informative token probabilities while reducing memory overhead. Experiments on LVLMs ranging from 2B to 8B parameters show that PTD-PO consistently outperforms RLVR and distillation baselines, mitigates entropy collapse, and improves complex multimodal reasoning performance.",
+      "authors": [
+        "Shizhe Xiang",
+        "Ke An",
+        "Wenlong Yu",
+        "Yue Liu",
+        "Jian Luan",
+        "Pei Fu",
+        "Qilong Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-05T07:43:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.07000v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses privileged tutoring distillation to provide token-level supervision for failed rollouts in RLVR",
+      "llm_evidence_cn": "使用特权指导蒸馏为RLVR中的失败轨迹提供令牌级监督",
+      "llm_evidence": "使用特权指导蒸馏为RLVR中的失败轨迹提供令牌级监督",
+      "canonical_evidence": "使用特权指导蒸馏为RLVR中的失败轨迹提供令牌级监督",
+      "llm_tldr_en": "Proposes PTD-PO, a privileged tutoring distillation framework that gives dense token-level guidance for failed rollouts in multimodal RLVR, avoiding answer leakage.",
+      "llm_tldr_cn": "多模态RLVR中验证奖励稀疏，失败轨迹缺乏监督。本文提出PTD-PO，通过特权教师蒸馏为失败轨迹提供密集令牌级指导，同时避免暴露答案诱导捷径。实验表明该方法在复杂多模态推理任务上显著优于基线。",
+      "llm_tldr": "多模态RLVR中验证奖励稀疏，失败轨迹缺乏监督。本文提出PTD-PO，通过特权教师蒸馏为失败轨迹提供密集令牌级指导，同时避免暴露答案诱导捷径。实验表明该方法在复杂多模态推理任务上显著优于基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.07082v1",
+      "source": "arxiv",
+      "title": "On the Geometry of On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) is increasingly used to improve large language model reasoning, but its training dynamics remain poorly understood. We characterize the trajectory of OPD updates in parameter space and compare it with supervised fine-tuning (SFT) and reinforcement learning with verifiable rewards (RLVR). A suite of parameter-space diagnostics consistently places OPD in a relaxed off-principal regime: compared with SFT, its updates affect fewer weights and avoid principal directions more strongly, while compared with RLVR, they remain less tightly constrained. Beyond this static localization, OPD exhibits subspace locking: its cumulative updates rapidly enter a narrow low-dimensional channel. Constraining training to the update subspace formed early in training preserves OPD performance but substantially degrades SFT, indicating that the locked subspace is functionally sufficient for OPD. Control experiments further show that sparsifying the update tokens and shifting rollout generation off-policy preserve the rank dynamics, whereas mixing the OPD objective with RLVR changes them. Overall, these results suggest that OPD is not merely an intermediate point between SFT and RLVR, but induces its own update geometry in parameter space.",
+      "authors": [
+        "Zhennan Shen",
+        "Yanshu Li",
+        "Qingyu Yin",
+        "Chak Tou Leong",
+        "Zhilin Wang",
+        "Yanxu Chen",
+        "Rongduo Han",
+        "Sunbowen Lee",
+        "Yi R. Fung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-05T09:20:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.07082v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "geometry of on-policy distillation; compares OPD with SFT and RLVR",
+      "llm_evidence_cn": "在线策略蒸馏的几何性质；对比OPD与SFT和RLVR",
+      "llm_evidence": "在线策略蒸馏的几何性质；对比OPD与SFT和RLVR",
+      "canonical_evidence": "在线策略蒸馏的几何性质；对比OPD与SFT和RLVR",
+      "llm_tldr_en": "Characterizes OPD parameter-space geometry, showing relaxed off-principal regime and subspace locking; constraining to early subspace preserves performance.",
+      "llm_tldr_cn": "理解OPD训练动力学对优化至关重要。本文通过参数空间诊断发现OPD处于松弛离主成分状态，更新快速锁定到低维子空间。将训练限制在该子空间可保持性能，为高效训练提供理论指导。",
+      "llm_tldr": "理解OPD训练动力学对优化至关重要。本文通过参数空间诊断发现OPD处于松弛离主成分状态，更新快速锁定到低维子空间。将训练限制在该子空间可保持性能，为高效训练提供理论指导。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05434v1",
+      "source": "arxiv",
+      "title": "Selective-Advantage Entropy-Adaptive Horizon GRPO: Asymmetric Token-Level Discounting for Efficient Reinforcement Learning of Language Models",
+      "abstract": "Group Relative Policy Optimisation (GRPO) has emerged as an effective reinforcement-learning algorithm for aligning language models on reasoning tasks, but it treats every token position and every sampled rollout symmetrically. We introduce two complementary extensions: (i) Adaptive-Horizon GRPO (AH-GRPO), which weights each token's policy gradient using a cumulative entropy-based discount that reduces the effective horizon when the model is uncertain, and (ii) Selective-Advantage AH-GRPO (SA-AH-GRPO), which applies this discounting only to negative-advantage rollouts, leaving positive-advantage, successful trajectories unattenuated. We evaluate standard GRPO with alpha = 0, AH-GRPO with alpha = 0.5, and SA-AH-GRPO with alpha = 0.5 on the GSM8K mathematical reasoning benchmark using both Qwen 2.5-1.5B-Instruct and Qwen 2.5-3B-Instruct fine-tuned with LoRA. On the 3B model, SA-AH-GRPO achieves Pass@1 = 0.858 at its peak at step 30 and maintains 0.846 at 180 steps, with training variance reduced to 0.0246, a 3.6 times reduction relative to GRPO while matching its peak accuracy. On the 1.5B model, SA-AH-GRPO achieves a peak Pass@1 of 0.686, improving over the zero-shot baseline of 0.637. Our analysis shows that asymmetric discounting preserves the full gradient signal on correct solutions, prevents entropy collapse, and substantially stabilises training, suggesting a principled inductive bias for reinforcement learning with verifiable rewards on structured generation tasks.",
+      "authors": [
+        "Chirag Chawla",
+        "Rohan Charudatt Salvi",
+        "Madhav S. Baidya"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-03T20:57:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.05434v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "GRPO extension with asymmetric token-level discounting for negative-advantage rollouts",
+      "llm_evidence_cn": "GRPO扩展，对负优势轨迹施加非对称令牌级折扣",
+      "llm_evidence": "GRPO扩展，对负优势轨迹施加非对称令牌级折扣",
+      "canonical_evidence": "GRPO扩展，对负优势轨迹施加非对称令牌级折扣",
+      "llm_tldr_en": "Proposes Adaptive-Horizon GRPO (AH-GRPO) and Selective-Advantage AH-GRPO that apply entropy-based discount only to negative-advantage rollouts.",
+      "llm_tldr_cn": "GRPO在推理任务中有效但对所有轨迹对称处理。本文提出自适应Horizon GRPO，基于熵折扣缩短不确定时的有效horizon；进一步提出选择性优势AH-GRPO，仅对负优势轨迹施加折扣。在数学推理任务上取得更好效率与性能平衡。",
+      "llm_tldr": "GRPO在推理任务中有效但对所有轨迹对称处理。本文提出自适应Horizon GRPO，基于熵折扣缩短不确定时的有效horizon；进一步提出选择性优势AH-GRPO，仅对负优势轨迹施加折扣。在数学推理任务上取得更好效率与性能平衡。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.03021v1",
+      "source": "arxiv",
+      "title": "Hint-Guided Diversified Policy Optimization for LLM Reasoning",
+      "abstract": "Recent developments in Large Language Models (LLMs) have showcased impressive reasoning capabilities, with Reinforcement Learning with Verifiable Rewards (RLVR) being a promising enhancement strategy. However, existing reward mechanisms are constrained to the outcome-level correctness and lack explicit signals to guide the model to consider diverse solutions. In contrast, human problem solving typically involves evaluating multiple potential approaches and selecting the most reliable solution, a cognitive process that current RLVR frameworks do not explicitly incentivize. Inspired by this, we propose Hint-Guided Diversified Policy Optimization (HDPO), allowing the model to first list all potential candidate solution outlines as hints and then select the most reliable one for further reasoning. HDPO comprises two stages of Cold Start for Structured Reasoning and Hint-Guided Diversified Reinforcement Learning to incentivize the model to generate diverse and reliable solutions following the ``propose-select-think'' trajectory. Experimental results show that HDPO effectively boosts LLM reasoning and enhances the diversity of candidate solutions as well as the LLM's ability to identify reliable solutions.",
+      "authors": [
+        "Zhiyu Cao",
+        "Kaixin Wu",
+        "Mingjie Zhong",
+        "Peifeng Li",
+        "Xiaobo Li",
+        "Can Ye",
+        "Qiaoming Zhu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-02T01:55:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.03021v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Hint-guided diversified policy optimization using RLVR for LLM reasoning",
+      "llm_evidence_cn": "使用提示引导多样化策略优化和可验证奖励强化学习提升推理",
+      "llm_evidence": "使用提示引导多样化策略优化和可验证奖励强化学习提升推理",
+      "canonical_evidence": "使用提示引导多样化策略优化和可验证奖励强化学习提升推理",
+      "llm_tldr_en": "Proposes Hint-Guided Diversified Policy Optimization (HDPO) that uses candidate solution outlines as hints to guide RLVR, improving reasoning diversity.",
+      "llm_tldr_cn": "现有RLVR仅用结果奖励，缺乏引导模型探索多样解法的信号。本文提出提示引导多样化策略优化（HDPO），让模型先生成候选方案大纲（提示），再选择最可靠方案。HDPO在数学推理任务上显著提高了推理多样性和准确性。该方法为在线RL训练中引入过程信号提供了新思路。",
+      "llm_tldr": "现有RLVR仅用结果奖励，缺乏引导模型探索多样解法的信号。本文提出提示引导多样化策略优化（HDPO），让模型先生成候选方案大纲（提示），再选择最可靠方案。HDPO在数学推理任务上显著提高了推理多样性和准确性。该方法为在线RL训练中引入过程信号提供了新思路。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.01934v1",
+      "source": "arxiv",
+      "title": "HMPO: Hybrid Median-length Policy Optimization for Chain-of-Thought Compression",
+      "abstract": "Large language models achieve remarkable performance via extended chain-of-thought (CoT) reasoning, yet this lengthy process incurs substantial inference overhead. Existing CoT compression methods struggle with inflexible manual length budgets, computationally expensive multi-stage training pipelines, and fragile scalability restricted to small models. We propose HMPO (Hybrid Median-length Policy Optimization), a cost-effective, single-stage reinforcement learning framework. HMPO efficiently compresses CoT via three synergistic components: an adaptive median-based budget derived from successful rollouts to eliminate manual tuning, a cosine-decay token reward for smooth length penalization, and a multiplicative reward formulation that substantially mitigates trivial reward hacking by strictly prioritizing answer correctness. Trained exclusively on mathematical data, HMPO generalizes seamlessly across math, code, science, and instruction-following tasks. Extensive experiments scaling from 9B to 122B parameters across dense and Mixture-of-Experts (MoE) architectures demonstrate that HMPO achieves 19%--46% token compression with negligible accuracy degradation, all while drastically reducing training costs compared to existing multi-stage baselines.",
+      "authors": [
+        "Minghui Zheng",
+        "Hongxu Chen",
+        "Huimin Ren",
+        "Hongsheng Xin",
+        "Xiaoyang Qu",
+        "Ze Wang",
+        "Shuling Yang",
+        "Ziyu Peng",
+        "Kaike Zhang",
+        "Pan Zhou",
+        "Kun Zhan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-01T09:01:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.01934v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for chain-of-thought compression using rollouts and reward design",
+      "llm_evidence_cn": "基于强化学习的思维链压缩方法，利用成功轨迹和奖励设计",
+      "llm_evidence": "基于强化学习的思维链压缩方法，利用成功轨迹和奖励设计",
+      "canonical_evidence": "基于强化学习的思维链压缩方法，利用成功轨迹和奖励设计",
+      "llm_tldr_en": "HMPO is a single-stage RL framework that compresses CoT reasoning by using adaptive median budgets from successful rollouts and a cosine-decay token reward, relevant to online RL and reasoning optimization.",
+      "llm_tldr_cn": "针对大语言模型思维链过长导致推理开销大的问题，本文提出HMPO框架。该框架采用单阶段强化学习，通过从成功轨迹中自适应推导中位数预算来消除手动调参，并设计余弦衰减令牌奖励实现平滑长度惩罚。HMPO在保持推理质量的同时显著压缩思维链长度，为推理优化提供了高效方案，与在线RL和推理优化主题紧密相关。",
+      "llm_tldr": "针对大语言模型思维链过长导致推理开销大的问题，本文提出HMPO框架。该框架采用单阶段强化学习，通过从成功轨迹中自适应推导中位数预算来消除手动调参，并设计余弦衰减令牌奖励实现平滑长度惩罚。HMPO在保持推理质量的同时显著压缩思维链长度，为推理优化提供了高效方案，与在线RL和推理优化主题紧密相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.03089v1",
+      "source": "arxiv",
+      "title": "Constitutional On-Policy Safe Distillation",
+      "abstract": "On-policy self-distillation (OPSD) has emerged as an efficient post-training paradigm by using a teacher conditioned on privileged information to provide dense token-level supervision. Prior work has shown that OPSD can collapse in verifiable reasoning tasks, but safety alignment differs in that it is guided by high-level constitutions rather than explicit target answers, making it a natural setting to revisit dense distillation. However, our pilot study show that safety OPSD still suffers from severe collapse: constitutional conditioning contracts the teacher distribution toward short and overly conservative responses, and Reverse KL further amplifies this contraction into reduced expressiveness. We formalize this effect as geometric leakage under safety boundaries in a non-orthogonal semantic space, where safety pressure transfers into the expressiveness dimension. Based on this analysis, we propose Constitutional On-Policy Safe Distillation (COPSD), which first calibrates the teacher through a Cross-SFT cold-start and then performs constitution-conditioned on-policy distillation. Experiments on 12 benchmarks show that COPSD achieves a consistently stronger safety--helpfulness trade-off than baselines while substantially reducing the safety tax on general reasoning ability.",
+      "authors": [
+        "Ming Wen",
+        "Yuxuan Liu",
+        "Kun Yang",
+        "Yunhao Feng",
+        "Zhuoer Xu",
+        "Yuhao Sun",
+        "Shiwen Cui",
+        "Xiang Zheng",
+        "Xingjun Ma",
+        "Yu-Gang Jiang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-02T03:17:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.03089v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "on-policy self-distillation for safety alignment with constitutional constraints",
+      "llm_evidence_cn": "基于宪法的在线安全蒸馏方法",
+      "llm_evidence": "基于宪法的在线安全蒸馏方法",
+      "canonical_evidence": "基于宪法的在线安全蒸馏方法",
+      "llm_tldr_en": "Examines collapse in safety on-policy self-distillation and proposes constitutional conditioning to mitigate geometric leakage and maintain expressiveness.",
+      "llm_tldr_cn": "针对在线自蒸馏在安全对齐中出现分布坍缩和表达力下降的问题，本文提出宪法在线安全蒸馏方法，通过宪法条件化防止教师分布过于保守，并形式化为几何泄漏效应。实验表明该方法在保持安全性的同时维持了模型表达力，为安全对齐提供了新视角。",
+      "llm_tldr": "针对在线自蒸馏在安全对齐中出现分布坍缩和表达力下降的问题，本文提出宪法在线安全蒸馏方法，通过宪法条件化防止教师分布过于保守，并形式化为几何泄漏效应。实验表明该方法在保持安全性的同时维持了模型表达力，为安全对齐提供了新视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03070v2",
+      "source": "arxiv",
+      "title": "ASymPO: Asymmetric-Scale Policy Optimization for Asynchronous LLM Post-Training Without Behavior Information",
+      "abstract": "Asynchronous reinforcement learning can improve language-model post-training throughput by decoupling response generation from policy optimization, but stale responses introduce distribution drift. Standard behavior-corrected methods control this drift with behavior-policy probabilities, importance ratios, or clipping, which requires token-aligned, versioned, and numerically consistent behavior log-probabilities across rollout and learner systems. We ask whether asynchronous group-relative RL can instead be stabilized using only current-policy probabilities. We identify a scale-imbalance failure mode: when stale responses are evaluated under the current policy, positive and negative loss terms can appear at different negative log-probability scales, so zero-sum advantages no longer imply balanced loss contributions. We propose Asymmetric-Scale Policy Optimization (ASymPO), which normalizes each response's token loss by its current average token negative log-probability. ASymPO requires no behavior-policy probabilities, restores response-level zero-sum balance, and preserves a nonzero learning signal. We also introduce Scaled Policy Optimization (SPO), a fixed negative-scaling baseline, and evaluate both current-policy-only objectives in asynchronous mathematical reasoning post-training.",
+      "authors": [
+        "Zehua Liu",
+        "Yuxuan Yao",
+        "Xiaojin Fu",
+        "Tao Zhong",
+        "Mingxuan Yuan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-02T03:00:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.03070v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "asynchronous RL for LLM post-training; addresses distribution drift without behavior information",
+      "llm_evidence_cn": "异步RL用于大语言模型后训练；无需行为信息处理分布漂移",
+      "llm_evidence": "异步RL用于大语言模型后训练；无需行为信息处理分布漂移",
+      "canonical_evidence": "异步RL用于大语言模型后训练；无需行为信息处理分布漂移",
+      "llm_tldr_en": "Introduces ASymPO, an asynchronous group-relative RL method that stabilizes training without behavior-policy log-probabilities, addressing scale-imbalance failure mode.",
+      "llm_tldr_cn": "异步RL能提升LLM后训练吞吐量，但陈旧响应引发分布漂移。本文提出ASymPO，仅使用当前策略概率稳定异步组相对RL，并识别出尺度不平衡失效模式。实验表明无需行为信息即可有效控制漂移。该方法为在线RL训练提供了新思路。",
+      "llm_tldr": "异步RL能提升LLM后训练吞吐量，但陈旧响应引发分布漂移。本文提出ASymPO，仅使用当前策略概率稳定异步组相对RL，并识别出尺度不平衡失效模式。实验表明无需行为信息即可有效控制漂移。该方法为在线RL训练提供了新思路。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.04807v1",
+      "source": "arxiv",
+      "title": "BiasGRPO: Stabilizing Bias Mitigation in High-Variance Reward Landscapes via Group-Relative Policy Optimization",
+      "abstract": "Mitigating social bias in Large Language Models (LLMs) presents a distinct alignment challenge: unlike verifiable tasks, bias lacks a single ground truth, creating a high-variance, subjective reward landscape. Previous preference-based fine-tuning methods have major trade-offs: Direct Preference Optimization (DPO) is limited by the lack of exploration inherent in offline training, while Proximal Policy Optimization (PPO) can lead to training instability due to potentially unreliable critic estimates. In this paper, we propose BiasGRPO, a framework using Group Relative Policy Optimization (GRPO) to stabilize alignment by normalizing rewards across a group of sampled completions. By substituting the value function with a group-relative baseline, our approach reduces instability while maintaining the exploration benefits of online training. We find that BiasGRPO outperforms DPO and PPO across multiple benchmarks, indicating its effectiveness. To adapt GRPO, we synthetically extend a dataset spanning multiple domains and contexts. We also create and release a custom bias reward model that effectively guides generation while being highly compute-efficient and avoiding knowledge degradation, providing a valuable resource that can be seamlessly integrated into multi-objective RLHF pipelines.",
+      "authors": [
+        "Saket Reddy",
+        "Ke Yang",
+        "ChengXiang Zhai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CY",
+        "cs.LG"
+      ],
+      "published": "2026-06-03T12:31:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.04807v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Group-relative policy optimization (GRPO) applied to bias mitigation in LLMs",
+      "llm_evidence_cn": "将组相对策略优化应用于大语言模型偏见缓解",
+      "llm_evidence": "将组相对策略优化应用于大语言模型偏见缓解",
+      "canonical_evidence": "将组相对策略优化应用于大语言模型偏见缓解",
+      "llm_tldr_en": "BiasGRPO uses GRPO to stabilize alignment under high-variance reward landscapes, avoiding critic instability of PPO.",
+      "llm_tldr_cn": "在偏见缓解任务中，奖励景观主观且方差高，PPO的批评者估计不稳定。本文提出BiasGRPO，利用组相对策略优化（GRPO）通过组内奖励归一化来稳定训练。无需价值函数，在多个偏见基准上优于DPO和PPO。GRPO是一种重要的在线RL方法，与用户需求中的在线RL训练方法高度相关。",
+      "llm_tldr": "在偏见缓解任务中，奖励景观主观且方差高，PPO的批评者估计不稳定。本文提出BiasGRPO，利用组相对策略优化（GRPO）通过组内奖励归一化来稳定训练。无需价值函数，在多个偏见基准上优于DPO和PPO。GRPO是一种重要的在线RL方法，与用户需求中的在线RL训练方法高度相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.06586v1",
+      "source": "arxiv",
+      "title": "Improving Cross-Lingual Factual Recall via Consistency-Driven Reinforcement Learning",
+      "abstract": "Large language models (LLMs) trained predominantly on English data encode substantial world knowledge, yet often fail to express it reliably in other languages, a phenomenon known as cross-lingual factual inconsistency. To study and address this, we introduce PolyFact, a large-scale parallel multilingual factual QA dataset containing 100K Wikidata-grounded facts across 12 typologically diverse languages. Using PolyFact, we compare light continual pretraining (CPT), supervised fine-tuning (SFT), and reinforcement learning via Group Relative Policy Optimization (GRPO) for improving cross-lingual factual recall in Qwen-2.5-7B and OLMo-2-1124-7B. We find that GRPO consistently outperforms SFT, improving both cross-lingual consistency and generalization to unseen languages, while CPT on parallel data yields limited additional gains. Mechanistic analyses further show that GRPO reorganizes multilingual routing by reducing language specialization in MLP layers and attention heads, thereby promoting more shared cross-lingual representations. We release our code, models, and dataset.",
+      "authors": [
+        "Jonathan von Rad",
+        "Louis Arts",
+        "George Burgess",
+        "Eleftheria Kolokytha",
+        "Harry O'Donnell",
+        "Ektor Oikonomidis Doumpas",
+        "Eduardo Sanchez",
+        "Yao Lu",
+        "Pontus Stenetorp"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-04T18:00:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.06586v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses Group Relative Policy Optimization (GRPO) for cross-lingual factual recall, an online RL method",
+      "llm_evidence_cn": "使用组相对策略优化（GRPO）进行跨语言事实回忆，一种在线强化学习方法",
+      "llm_evidence": "使用组相对策略优化（GRPO）进行跨语言事实回忆，一种在线强化学习方法",
+      "canonical_evidence": "使用组相对策略优化（GRPO）进行跨语言事实回忆，一种在线强化学习方法",
+      "llm_tldr_en": "PolyFact dataset and GRPO-based RL improve cross-lingual factual recall in LLMs, outperforming SFT and continual pretraining; GRPO is an online RL method relevant to OPD theme.",
+      "llm_tldr_cn": "本文针对大语言模型跨语言事实回忆不一致问题，构建了包含12种语言的10万事实数据集PolyFact，并比较了持续预训练、监督微调和组相对策略优化（GRPO）等方法。结果显示GRPO在提升跨语言一致性和泛化能力上显著优于其他方法。GRPO作为一种在线强化学习训练方法，与用户关注的OPD、GRPO等方向高度契合。",
+      "llm_tldr": "本文针对大语言模型跨语言事实回忆不一致问题，构建了包含12种语言的10万事实数据集PolyFact，并比较了持续预训练、监督微调和组相对策略优化（GRPO）等方法。结果显示GRPO在提升跨语言一致性和泛化能力上显著优于其他方法。GRPO作为一种在线强化学习训练方法，与用户关注的OPD、GRPO等方向高度契合。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reinforcement learning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,668 @@
+Title: When Should the Teacher Move? Temporal Coupling and Stability in Self On-Policy Distillation
+
+URL Source: https://arxiv.org/pdf/2606.03532v1
+
+Published Time: Wed, 03 Jun 2026 01:04:55 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# When Should the Teacher Move? Temporal Coupling and Stability in Self On-Policy Distillation 
+
+Haowei Guo 1∗ Baolong Bi 2∗ Ruicheng Zhang 3 Bingqian Sun 1 Wentao Zhang 1†
+
+> 1
+
+Peking University 2University of Chinese Academy of Sciences 3Tsinghua University 
+
+> guohaowei0309@gmail.com
+
+, wentao.zhang@pku.edu.cn 
+
+Abstract 
+
+Self on-policy distillation trains a student pol-icy against a teacher derived from its own parameter history, yet the teacher’s update schedule—which governs the temporal cou-pling between teacher and student—has not been systematically studied as a stability vari-able. Through a controlled schedule sweep on Qwen3-8B, we establish that isolation pe-riods , defined as complete teacher freezing between updates, are the key structural prop-erty enabling stable learning, not teacher age. To characterize these underlying training dy-namics, we introduce a diagnostic framework of temporal KL structure, refresh shock, and length-tail risk. This framework further un-covers state-oblivious collapse : optimal short-horizon fixed schedules catastrophically fail under long-horizon training because a clock-driven refresh can copy a transiently drifting student into the teacher in a single, irreversible step. This failure mode is invisible under short-horizon evaluation and mechanistically distinct from EMA’s chronic contamination. To address this, we propose Consolidation-Gated Teacher Refresh (CGTR), which preserves isolation pe-riods while gating each refresh on joint evi-dence of reward improvement and length-tail safety, ensuring every teacher movement re-sponds to genuine student consolidation rather than a clock signal. With a single shared pa-rameter set and no per-dataset retuning, CGTR achieves zero collapse and the best final score on all four tasks (Chemistry, Biology, Physics, ToolUse), self-regulating its refresh frequency to each task’s learning dynamics. 
+
+1 Introduction 
+
+Large language model post-training increasingly relies on on-policy learning (Schulman et al., 2017; Ouyang et al., 2022; Shao et al., 2024; DeepSeek-AI et al., 2025), where the model improves by sam-         
+
+> ∗Equal contribution. †Corresponding author. 0.65
+> 0.75
+> 0.85
+> 150175200275300225 250
+> 0
+> M=50
+> EMAα=0.04
+> CGTR
+
+✗ Collapse  
+
+> TrainingSteps
+> Test mean@16
+> CGTR(Ours):0.806
+> EMA：0.713
+> //
+
+Figure 1: Long-horizon results (300 steps, Chemistry, steps 150–300 shown). M =50 collapses catastrophi-cally at step 189 (test mean@16 → 0); EMA α=0 .04 
+
+plateaus at 0.713 ; CGTR (ours) achieves the best final score of 0.806 with zero collapse. 
+
+pling from its own current policy rather than imi-tating static demonstrations. On-policy distillation extends this principle by providing the student with dense token-level supervision from a teacher during on-policy rollouts (Agarwal et al., 2024), reducing the distribution mismatch inherent in classical off-policy distillation. A natural extension is to derive this teacher from the model itself rather than an external source, as recent self-distillation methods do by constructing teacher signals from the same model under richer contexts—privileged reasoning, environment feedback, or compression-oriented in-structions (Zhao et al., 2026; Hübotter et al., 2026; Li et al., 2026; Yang et al., 2026; Sang et al., 2026). Unlike a fixed external teacher, a self-teacher co-evolves with the student it trains, introducing a fundamental tension that prior work has not sys-tematically studied. On the one hand, the teacher must follow the student over time to support boot-strapping and remain relevant. On the other hand, if the teacher tracks the student too closely, it loses 
+
+temporal independence : its distribution converges to the student’s current distribution, the distillation objective becomes self-confirming rather than cor-rective, and the regularization it provides collapses. 1
+
+> arXiv:2606.03532v1 [cs.LG] 2 Jun 2026
+
+The teacher must therefore serve as a robust anchor capable of rescuing the student from suboptimal distributions—not a passive copy that ratifies what-ever the student currently does. We call the degree to which the teacher tracks the student temporal coupling , and ask: how does temporal coupling shape training stability and long-horizon learning? 
+
+Each canonical mechanism for controlling tem-poral coupling embodies a distinct failure mode, but prior work treats these mechanisms as imple-mentation choices rather than stability-critical vari-ables. Tight coupling (e.g., updating the teacher at every step) eliminates temporal independence entirely, causing reference collapse : the distilla-tion signal vanishes and training becomes uncon-strained. EMA (Polyak and Juditsky, 1992; Tar-vainen and Valpola, 2017; Grill et al., 2020) miti-gates this by diluting each update, but continuous soft tracking means that student drift accumulates in the teacher without bound over long training horizons, leading to chronic teacher contamination .Sparse hard refresh (Mnih et al., 2015) avoids both failure modes in the short run: by periodically copy-ing the student into the teacher and then freezing it for many steps, creating isolation periods during which student fluctuations cannot contaminate the teacher. This structural independence—not teacher age—is the key property that enables stable learn-ing, as our 100-step schedule sweep confirms (Sec-tion 3.3), with long-horizon experiments providing further evidence (Figure 1). Yet isolation periods alone are not sufficient for long-horizon stability when the refresh schedule is fixed. A fixed interval is oblivious to student state: the teacher is updated at every M -th step regardless of whether the student is currently consolidating or drifting. If a hard refresh fires at the wrong moment (e.g., during a transient entropy spike or a reward plateau), the teacher absorbs corrupted behavior in a single, irreversible copy. Once copied, the contaminated teacher continuously reinforces the corrupted state through subsequent distillation, and there is no partial recovery path thereafter. This analysis motivates a schedule that preserves the structural isolation advantage of hard refresh while conditioning each refresh on observable evi-dence that the student has genuinely consolidated. We propose Consolidation-Gated Teacher Refresh 
+
+(CGTR), which maintains a minimum isolation pe-riod and gates each refresh on the joint satisfaction of a reward-improvement condition and a length-tail safety condition. When all conditions are met, the refresh is corrective; when any fails, the teacher remains frozen regardless of elapsed time. This de-sign eliminates the need to pre-specify a refresh in-terval while ensuring that every teacher movement is strictly a response to genuine progress rather than a response to a clock signal alone. Our contributions are as follows: • Through a systematic diagnostic framework utilizing temporal KL structure, refresh shock, and length-tail risk, we establish isolation pe-riods as the fundamental structural property enabling stable self on-policy distillation. • We first uncover state-oblivious collapse , a long-horizon failure mode of fixed-interval hard refresh in which a single ill-timed update causes irreversible capability loss invisible at short training horizons. • We propose Consolidation-Gated Teacher Re-fresh (CGTR), which gates each refresh on reward improvement and length-tail safety. CGTR achieves zero collapse and the best score on all four tasks (Chemistry, Biology, Physics, ToolUse) with a single parameter set. 
+
+2 Related Work 
+
+On-Policy Distillation and Self-Distillation. 
+
+Knowledge distillation trains a student to match a teacher’s predictive distribution (Hinton et al., 2015), which sequence-level distillation adapts for autoregressive generation by having the student im-itate teacher-generated sequences (Kim and Rush, 2016). On-policy distillation extends this by train-ing the student on its own sampled trajectories with dense teacher supervision (Agarwal et al., 2024). Iterative self-training showed early on that a model can bootstrap its own training signal by generat-ing and filtering self-produced reasoning (Zelik-man et al., 2022; Zhang et al., 2026a, 2025). Re-cent self-distillation methods eliminate the need for an external teacher by deriving supervisory signals from the same model under richer con-texts, including privileged reasoning information, environment feedback, reward-verifiable directions, and compression-oriented instructions (Zhao et al., 2026; Hübotter et al., 2026; Yang et al., 2026; Sang et al., 2026). While existing literature has achieved remarkable progress in constructing robust self-teacher signals, the temporal dynamics governing when and how the self-teacher should update re-main completely unexplored. Our research fills 2this critical void by systematically examining the teacher update schedule and establishing its indis-pensable role in determining the long-horizon train-ing stability of self-directed learning. 
+
+Stability and Failure Modes in Self-Distillation. 
+
+Recent work has begun to analyze why self-distillation succeeds or fails. Li et al. (2026) show that teacher–student compatibility and thinking-pattern alignment critically affect distillation out-comes. Other works identify information leak-age, unstable long-horizon training, and the need for reward-grounded or periodically synchronized teachers as key concerns (Yang et al., 2026; Sang et al., 2026). These studies treat teacher move-ment as a fixed implementation choice, and dif-ferent mechanisms—hard refresh, fixed teachers, and EMA (Mnih et al., 2015; Polyak and Judit-sky, 1992; Tarvainen and Valpola, 2017)—are adopted without analyzing whether the optimal in-terval is task-dependent. We address this gap by treating temporal coupling as a first-class stability variable, identifying what structural property en-ables long-horizon consolidation, and showing that the optimal hard refresh interval varies with task characteristics—motivating CGTR as an adaptive schedule that generalizes across settings. 
+
+3 Analysis of Teacher Update Schedules 
+
+3.1 Preliminary: Setup and Update Rules 
+
+Let πθ denote the student policy parameterized by 
+
+θ, trained via gradient updates on a reward sig-nal and a distillation objective. Let πϕ denote the 
+
+self-teacher policy parameterized by ϕ, which is de-rived from a historical version of θ. The combined training objective at step t is: 
+
+Lt(θ) = −Ex∼πθ
+
+r(x) + λ · KL  πθ ∥ πϕ
+
+, (1) where r(·) is the task reward and λ controls the strength of the distillation regularizer. In practice, the reward term uses GRPO-style pol-icy gradient and the KL term is approximated by a top-k Jensen–Shannon Divergence (JSD) with importance-sampling correction (Appendix A). Two canonical update rules define the temporal coupling between ϕ and θ:
+
+Periodic hard refresh. The teacher parameters are updated to match the student every M steps: 
+
+ϕt =
+
+(
+
+θt if t mod M = 0 ,ϕt−1 otherwise. (2) Between consecutive refreshes, πϕ is completely frozen, forming an isolation period during which student fluctuations cannot contaminate the teacher. 
+
+Exponential moving average (EMA). The teacher is updated continuously at every step: 
+
+ϕt = (1 − α) ϕt−1 + α θ t, 0 < α ≤ 1. (3) EMA has no isolation period: the teacher absorbs a fraction α of student updates at every step, bound-ing per-step contamination but allowing drift to accumulate over long horizons. To control for teacher age, we derive a lag-aligned EMA baseline ( α=0 .04 ; Appendix E). Ta-ble 1 summarizes the schedule sweep results (setup in Section 5.1; terminology in Appendix F). 
+
+3.2 Fast Synchronization Causes Reference Collapse 
+
+At M =1 , teacher and student parameters are vir-tually identical: KL( πθ∥πϕ) collapses toward 0 regardless of student behavior, the regularizer dis-appears, and sequence lengths grow unchecked to 16,908 by step 14, forcing early termination with no test score. At M =2 , the teacher lags by only one step, providing negligible temporal independence. Training collapses at step 86 (entropy dropping to 0.047, seqlen spiking to 15,126; final test score 0.225). The KL mean at M =2 is only 0.031—not because the regularizer is strong, but because the teacher has matched the student’s drifted distribu-tion, rendering the KL penalty vacuous. This loss of temporal independence underlies both failures— a pattern we term reference collapse .
+
+Diagnostic: KL temporal structure. What mat-ters is not the KL level but its temporal structure : a corrective refresh produces a transient KL spike as the student re-adapts to the new teacher; a contam-inating pattern shows no spike but subsequent en-tropy growth. Figure 2 contrasts these two patterns, providing a diagnostic that distinguishes healthy training from silent collapse in progress. 
+
+3.3 Sparse Hard Refresh Achieves Best Short-Horizon Performance 
+
+Among all schedule-sweep settings, M =50 
+
+achieves the best test score ( 0.755 at step 100) with the lowest entropy ( 0.499 ), lowest KL mean (0.005 ), and highest SNR ( 0.497 , Table 8). These results confirm that isolation periods—the com-plete freezing of the teacher between updates—are the key mechanism for stability and performance. 3Schedule Test m@16 B@4 Ent. mean Ent. std Rew. mean KL mean Collapse 
+
+M = 1 ‡ N/A N/A ∼1.05 — — — step 10 
+
+M = 2 0.225 0.276 0.900 1.063 0.504 0.031 step 86 
+
+M = 3 0.673 0.740 1.715 1.167 0.607 0.085 —
+
+M = 4 0.656 0.718 1.536 1.131 0.595 0.053 —
+
+M = 5 0.653 0.723 2.001 1.091 0.629 0.064 —
+
+M = 8 0.596 0.629 1.413 0.713 0.597 0.004 —
+
+M = 10 0.669 0.737 0.545 0.278 0.614 0.025 recov. 
+
+M = 20 0.629 0.689 0.595 0.119 0.598 0.004 —
+
+M = 50 0.755 0.827 0.499 0.048 0.629 0.005 —Fixed 0.697 0.751 0.437 0.097 0.637 0.008 partial EMA α = 0.1 0.645 0.689 1.417 0.694 0.613 0.005 —EMA α = 0.04 0.713 0.782 0.727 0.142 0.665 0.022 —
+
+Table 1: Schedule sweep results on Qwen3-8B / SciKnowEval Chemistry (100 steps). Test m@16 : test mean@16 accuracy over 16 samples (primary); B@4 : best-of-4 test accuracy; Ent. : token entropy (training mean / std); Rew. :mean rollout reward; KL : mean student–teacher KL; Collapse : first step with seqlen_norm >8000 (— = none). ‡M1 terminated at step 16; no test score available. 10 20 30 40 70 80 90                                
+
+> 0.00 1
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> 100 0.0 10 20 30 40 70 80 90 100
+> 0.00 1
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> 0.05
+> 0.06
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 1
+> 2
+> 3
+> 4
+> 5
+> Entropy drift
+> KL  Divergence
+> KL spike
+> (Corrective)
+> Refresh
+> Refresh
+> 50 60
+> Training Step
+> KL  Divergence
+> Collapse
+> (step 55)
+> NoKL spike
+> (Contaminated)
+> Token  Entropy
+> Token  Entropy
+> KL (M=2)
+> KL (EMA α=0. 1)
+> Training Step
+> Entropy (dashed) Entropy drift
+> KL (M=50)
+> Entropy
+> 50 60
+
+Figure 2: Illustration of two refresh dynamics. (Left) A corrective refresh (e.g., M =50 ) produces a transient KL spike as the teacher absorbs genuine improvement; the student then re-adapts under the new target. (Right) A
+
+contaminating pattern (low M or EMA with high α) produces no correction spike and is followed by gradual entropy growth as student drift propagates through the teacher. 
+
+The advantage of M =50 over EMA α=0 .04 is not attributable to teacher age: lag-aligned EMA (α=0 .04 ; Appendix E) matches M =50 in aver-age teacher age yet produces markedly worse en-tropy stability (mean 0.727 vs. 0.499). The dif-ference is structural: each isolation window com-pletely freezes the teacher, whereas EMA incor-porates a fraction of student updates at every step and never resets the teacher-student gap —drift ac-cumulates unboundedly regardless of the per-step mixing rate—a failure mode we term steady-state contamination . This establishes a key principle: 
+
+isolation period, not teacher age, enables stable self-distillation . Furthermore, entropy alone is an unreliable consolidation signal: it can be high dur-ing productive exploration or suppressed by over-regularization. Reward improvement directly veri-fies that the student has made genuine progress. 
+
+3.4 The Fragility of Fixed Isolation Periods 
+
+The schedule-sweep results reveal a second struc-tural observation: while sparse hard refresh creates the best short-horizon stability, a fixed update in-terval is inherently oblivious to student state . The teacher is refreshed at every M -th step regardless of whether the student is currently consolidating or drifting. If a refresh fires during a transient en-tropy spike or a reward plateau, the teacher absorbs corrupted behavior in a single, irreversible copy— unlike EMA, which limits contamination per step 4Schedule Param. indep. State aware Observed failure                
+
+> Tight refresh ( M≤2)Violated N/A Reference collapse EMA (any α)Violated Violated Steady-state contamination Fixed refresh ( Mlarge) Met Violated State-oblivious collapse
+> CGTR (ours) Met Met —
+
+Table 2: Two structural requirements for stable teacher update, validated in Sections 3.2–3.4. “Met” indicates the requirement is structurally satisfied by the schedule; “Violated” indicates the observed failure follows. 
+
+by α, a hard copy applies the full student state in-stantaneously with no partial recovery path. The longer the isolation period, the larger the potential drift that can accumulate before the next refresh, amplifying this irreversibility risk in proportion to the very property that made isolation beneficial—a failure mode we term state-oblivious collapse .Compounding this, the optimal interval M ∗ is dataset-dependent: different tasks have different learning dynamics, reward densities, and trajec-tory length characteristics, so the collapse boundary shifts across datasets. A single pre-specified M is therefore unlikely to be simultaneously safe across all tasks. This motivates an adaptive refresh rule that preserves isolation periods while conditioning each update on whether the student has genuinely consolidated, which we develop in Section 4. 
+
+Diagnostic: length-tail expansion as a leading collapse indicator. Collapse typically manifests first in the tail of the sequence length distribution before it appears in mean entropy or reward. Ta-ble 1 shows that M =2 ’s seqlen max reaches 15,126 and M =1 ’s reaches 16,908 at collapse. In contrast, 
+
+M =50 maintains seqlen max = 4 , 176 through-out the sweep. Figure 5 (Appendix G) illustrates how tail expansion in M =2 precedes collapse by roughly 35 steps—a warning invisible in entropy or reward means alone. Monitoring seqlen tail growth thus provides a fast, stateless early-warning signal of incipient collapse. 
+
+3.5 Two Structural Requirements 
+
+The schedule sweep above reveals two necessary structural requirements that any viable teacher up-date rule must satisfy simultaneously. 
+
+(A) Parameter independence. The teacher must remain sufficiently separated from the student so that KL( πθ ∥ πϕ) continues to exert corrective pres-sure; synchronization renders the regularizer vac-uous. This requirement is violated by tight hard refresh ( M ≤2) and EMA alike—the former syn-chronizes parameters directly, the latter never resets 1 Fixed Refresh M=50                                        
+
+> Student π �
+> 050 100 150 200 ……
+> t
+> Self-teacher π φ
+> !
+> Copies transient drift
+> Isolation period Isolation period Isolation period
+> ✗
+> State-oblivious collapse
+> atstep 189
+> 2EMA α =0.04
+> 050 100 150 200
+> Entropy drift
+> 3CGTR (O urs )
+> Gate
+> blocked
+> 
+> 189
+> ……
+> t
+> 050 100 150 200 ……
+> t
+> 4585130
+> 
+> Clock-based copy ignores student consolidation state
+> Contamination bounded per step, unbounded over long horizons
+> Combines isolation with state-aware refresh
+> Student π �
+> Self-teacher π φ
+> Student π �
+> Self-teacher π φ
+> No isolation Chronic contamination
+> Ensure sufficient para-
+> meter independence.
+> Isolation ≥ Mmin Rolling-window mean re-
+> ward exceeds last-refresh
+> baseline by at least δr.
+> Reward ↑The seqlen tail ratio
+> remains below the
+> collapse threshold .
+> Length-tail safe
+> AND AND 
+> CGTR gate s：All must pass to refresh
+> Gate
+> blocked
+> Gate
+> blocked
+> Gate
+> blocked
+
+Figure 3: Comparison of three teacher update strate-gies. (1) Fixed refresh ( M =50 ): clock-based copies create isolation periods but ignore student state, causing state-oblivious collapse when a refresh fires during tran-sient drift (step 189). (2) EMA ( α=0 .04 ): no isolation period; contamination is bounded per step but accu-mulates unboundedly over long horizons. (3) CGTR (ours): combines isolation periods with consolidation-gated refreshes—all three conditions (isolation, reward, length-tail) must pass before the teacher moves. 
+
+the teacher-student gap regardless of mixing rate. Only isolation periods enforce this separation. 
+
+(B) State awareness. Each teacher update must be triggered by evidence that the student has consol-idated, rather than by elapsed training steps alone. A refresh that fires during transient drift copies the corrupted state into the teacher in a single, irre-versible step. Clock-based schedules violate this requirement by construction. Table 2 maps each canonical schedule to these re-quirements; no clock-based schedule satisfies both simultaneously, motivating a rule that combines structural isolation with observable evidence of genuine student consolidation. 
+
+4 Consolidation-Gated Teacher Refresh 
+
+Consolidation-Gated Teacher Refresh (CGTR) is designed to satisfy both structural requirements from Section 3.5 simultaneously: parameter inde-pendence via a hard isolation floor, and state aware-ness via conditional gating on observable consol-idation signals. Each condition can be evaluated from a single rolling window with no additional model inference or learned component (Figure 3). The full update rule is: 
+
+ϕt =
+
+
+
+θt if 
+
+IsolationGate 
+
+∧ RewardGate 
+
+∧ LengthGate 
+
+,ϕt−1 otherwise. (4) 5Sched. Test fin Test peak Ent mn Ent fin Coll. #Ref                    
+
+> M=50 0.000 0.744 0.539 0.525 189 6EMA-04 0.713 0.798 1.539 3.015 ——CGTR 0.806 0.809 0.654 0.780 —3
+> Table 3: Long-horizon comparison results (300 steps, no auxiliary recovery). Test fin/peak = test mean@16 at end / best step. Ent mn/fin = entropy mean / final. Collapse = first step test <0.01 ; #Ref = teacher refreshes.
+
+where tlast is the step of the most recent teacher re-fresh. The three conditions are defined as follows. 
+
+Isolation gate. The teacher is held frozen for at least Mmin steps after the last refresh: 
+
+t − tlast ≥ Mmin . (5) This enforces parameter independence (Sec-tion 3.5): during the isolation window the teacher cannot absorb any student fluctuation, ensuring 
+
+KL( πθ ∥ πϕ) remains a meaningful corrective sig-nal. The condition is a hard prerequisite; the two state-awareness gates below are evaluated only once it is met. 
+
+Reward gate. The mean training reward over the most recent w steps must exceed the reward recorded at the last teacher refresh by at least δr:
+
+¯rt−w:t > r ref + δr, (6) where rref is the rolling-average reward captured at the time of the last refresh (updated after each successful refresh), and δr ≥ 0 is the improvement threshold. ¯rt−w:t is computed online from training rollouts and requires no additional model inference. This implements a ratchet : rref rises with each re-fresh, so every subsequent teacher update requires strictly higher performance than the previous one. 
+
+Length-tail gate. The maximum sequence length must remain below a safety threshold, ruling out incipient length explosion: 
+
+max( seqlen t−w:t) < L max . (7) This addresses the behavioral stability dimension of state awareness: a rising length tail is a leading indicator of generation collapse (Section 3.4) that reward improvement alone cannot detect in time. Compared to a fixed-M schedule, CGTR intro-duces three interpretable hyperparameters ( Mmin ,
+
+δr, Lmax ), each with a direct physical interpreta-tion: Mmin bounds the isolation period, δr sets the performance consolidation threshold, and Lmax 
+
+caps the behavioral stability margin. These are set once from schedule-sweep diagnostics, in contrast to the opaque integer M of a fixed schedule. 
+
+5 Results 
+
+We evaluate CGTR and fixed-schedule baselines in a 300-step long-horizon comparison (Chemistry), run per-gate ablations to verify each condition’s in-dividual contribution, and test all three methods on Biology, Physics, and ToolUse to assess cross-task generalization. Table 3 summarizes the Chemistry long-horizon results; Table 5 reports the gate abla-tion; Table 6 reports the cross-task comparison. 
+
+5.1 Experimental Setup Datasets. We evaluate on two benchmark fami-lies spanning five tasks: • Science Q&A (Chemistry, Physics, Biol-ogy, Materials): Undergraduate-level scien-tific multiple-choice reasoning using the rea-soning subsets (level L3) from SciKnowE-val (Feng et al., 2024). Each question provides four options; correctness is judged by exact option match against the gold label. • Tool use : Mapping a tool-API specification and user request to the correct tool call, using ToolAlpaca (Tang et al., 2023). The reward is a binary signal indicating whether the pre-dicted tool name and arguments exactly match the reference call. We use Qwen3-8B (Yang et al., 2025) (pre-trained, no instruction-tuning) on SciKnowE-val (Feng et al., 2024) Chemistry (1,890/210 split). Training uses 4×A100 GPUs, FSDP, global batch size 16 ( n=4 rollouts per question), AdamW lr 10 −5, distillation top-k=20 , JSD α=0 .5. The primary metric is test_mean@16 (average correct-ness over 16 greedy samples per test question); we also report test_best@ k. The schedule sweep cov-ers M ∈ { 1, 2, 3, 4, 5, 8, 10 , 20 , 50 }, fixed teacher, and EMA α ∈ {0.1, 0.04 }, each evaluated at step 100. Long-horizon comparison (Chemistry) and cross-task runs (Biology, Physics, ToolUse) each use 300-step training on held-out data. Full experimental details are given in Appendix A. 
+
+5.2 Fixed-Interval Refresh Collapses Under Long-Horizon Training 
+
+Table 3 and Figure 4 report the long-horizon comparison; M =50 collapses catastrophically at 61 50 100 200 250 300 150              
+
+> Training Steps
+> 0.0 0.2 0.4 0.6 0.8
+> Test  Mean@16
+> CGTR: 0.806 EMA: 0.713 M=50: collapse
+> M=50 collapse (step 189)
+> 150 100 200 250 300 150
+> Training Steps
+> 0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+> Token Entropy
+> M= 50
+> EMA α=0.04 CGTR
+> M= 50
+> EMA α=0.04 CGTR
+> Refresh
+
+Figure 4: Long-horizon comparison (300 steps, Chemistry, no auxiliary recovery). (Left) Test mean@16: M =50 
+
+(blue) collapses at step 189; EMA α=0 .04 (orange) plateaus at 0.713 ; CGTR (green) achieves 0.806 with zero collapse and 3 adaptive refreshes. (Right) Token entropy: EMA entropy drifts upward throughout training, while CGTR entropy remains stably low; M =50 drops to zero after collapse. 
+
+step 189: mean@ 16 drops from its peak of 0.744 (step 187) to 0.000 and does not recover for the re-mainder of training. The mechanism is consistent with the structural prediction of Section 3.4: the hard refresh at step 150 fires while the student is in an elevated entropy state ( ≈ 0.98 ), copying a transiently unstable snapshot into the teacher. By step 189, entropy collapses toward zero and the model degenerates into repetitive outputs; no sub-sequent refresh can rescue the system because the KL penalty has become vacuous once the teacher matches the degenerate student. EMA α=0 .04 avoids catastrophic failure by cap-ping per-step contamination, but the trade-off is chronic drift: entropy grows monotonically from 
+
+≈ 0.7 to 3.0 by step 300, and performance plateaus at 0.713 after step 190 with no further gain. 
+
+5.3 CGTR Achieves Best Long-Horizon Performance Without Per-Dataset Tuning 
+
+CGTR outperforms both baselines on every metric in the Chemistry long-horizon run (Table 3): high-est final score ( 0.806 ), highest peak score ( 0.809 ), lowest entropy mean ( 0.654 ), and zero collapse over 300 steps. The reward ratchet and length-tail guard ensure that every teacher update captures consolidation rather than transient drift, avoiding the failure modes that trap both fixed schedules. 
+
+Gate activation trace. Table 4 quantifies the gate behavior over 300 Chemistry steps. CGTR triggers exactly 3 refreshes (step 45, 85, 130); the reward gate is the dominant filter, blocking 54 of 57 can-didate steps, while the length-tail gate provides 13 additional independent blocks.           
+
+> Gate Passed Blocked
+> Isolation ( ≥Mmin )33Reward 354 Length-tail 313
+> Total refreshes 3
+
+Table 4: CGTR gate activations over 300 steps. All 3 refreshes passed all gates; “Blocked” counts steps where the gate alone would have prevented an update. 
+
+Variant Test fin Test peak #Ref Coll. 
+
+CGTR (full) 0.806 0.809 3 —w/o Isolation gate 0.731 0.768 12 —w/o Reward gate 0.000 0.781 6 218 w/o Length-tail gate 0.771 0.792 4 —
+
+Table 5: Gate ablation on Chemistry (300 steps). Test fin/peak = test mean@16 at end / best step. #Ref = teacher refreshes; Coll. = first collapse step (— = none). 
+
+After the third refresh at step 130 (reward =0.844 ), the threshold rises to 0.894. The student does not reach this level in the remaining 170 steps, so the teacher stays frozen from step 130 to 300. During this self-determined isolation window, test accuracy improves from 0.752 to 0.806 ( +0 .054 )— demonstrating that a long static teacher is beneficial once the reward ratchet has ensured it encodes a genuinely consolidated state. 
+
+5.4 Ablation: Each Gate Is Necessary 
+
+We remove one gate at a time on Chemistry (300 steps) to quantify each condition’s independent con-tribution (Table 5). Removing the reward gate is the most dam-7Task Sched. Test fin Test peak Ent fin Coll.                                                     
+
+> Chemistry
+> M=50 0.000 0.744 0.525 189 EMA-04 0.713 0.798 3.015 —CGTR 0.806 0.809 0.780 —Biology
+> M=50 0.000 0.560 0.000 130 EMA-04 0.471 0.569 3.522 —CGTR 0.485 0.573 0.204 —Physics
+> M=50 0.670 0.702 0.450 —EMA-04 0.660 0.728 2.271 —CGTR 0.703 0.735 0.278 —ToolUse
+> M=50 0.467 0.612 1.843 —EMA-04 0.481 0.641 3.206 —CGTR 0.536 0.643 0.892 —
+> Table 6: Cross-task generalization (300 steps). Test fin = final mean@16; Test peak = best step value. Coll. = step of first test <0.01 ; — = no collapse.
+
+aging: without the ratchet condition, refreshes fire during transient reward dips, doubling the re-fresh count (6 vs. 3) and collapsing at step 218 (test fin = 0 .000 ); the length-tail gate guards only against generation explosion—it monitors seqlen tail growth, not reward-level bad refreshes—and therefore cannot intercept an ill-timed copy trig-gered during a reward dip before length pathol-ogy has emerged. Removing the isolation gate 
+
+(Mmin =0 ) quadruples the refresh rate (12 vs. 3); without a structural freeze floor the teacher tracks the student too closely, and chronic contamination during reward-plateau windows degrades the final score to 0.731 without triggering hard collapse. Re-moving the length-tail gate allows one premature refresh at step 127 (reward above threshold but tail ratio 3.41 >L max ), slightly corrupting the teacher and dropping the final score by 0.035; the run avoids collapse, confirming the length-tail gate as a complementary guard against ill-timed updates. 
+
+Cross-task generalization. We run all three schedules for 300 steps on Biology, Physics, and ToolUse to test whether the failure modes general-ize. Table 6 reports the results. The cross-task results (Table 6) are consistent across all four settings. Biology: M =50 collapses at step 130 (final → 0.000 ), replicating the Chem-istry failure on a different task; CGTR avoids col-lapse and outperforms EMA (final 0.485 vs. 0.471), triggering twice (steps 127, 192). Physics: all three schedules avoid collapse; CGTR still leads on fi-nal test (0.703), peak (0.735), and entropy (0.278), with a single gate trigger at step 180 reflecting Physics’ characteristically slower reward dynamics. 
+
+ToolUse: no hard collapse; M =50 nonetheless declines from peak 0.612 to final 0.467 under state-oblivious refreshes, EMA declines similarly (final 0.481, entropy 3.206), while CGTR holds the best final (0.536) and lowest entropy (0.892) with two well-timed refreshes (steps 95, 190). 
+
+Summary. CGTR achieves the best final and peak score on all four tasks, along with a zero-collapse rate , while M =50 collapses in two of four (Chemistry at step 189, Biology at step 130). CGTR resolves this with a single shared param-eter set : its gate conditions self-regulate refresh frequency to each task’s distinct dynamics—3 re-freshes in Chemistry, 2 in Biology, 1 in Physics, and 2 in ToolUse—without any per-dataset retun-ing. Critically, all gate thresholds were fixed prior to the long-horizon and cross-task experiments, based solely on the 100-step schedule-sweep di-agnostics on Chemistry; the Biology, Physics, and ToolUse results therefore constitute a clean held-out evaluation of the chosen parameters across tasks (see Appendix C for selection rationale and Appendix D for a sensitivity analysis confirming that performance is stable and collapse-free across a range of threshold values). 
+
+6 Conclusion 
+
+In this work, we show that isolation periods —not teacher age—are the structural property that en-ables stable self on-policy distillation, and that fixed-interval schedules carrying this advantage nonetheless fail catastrophically at long horizons through state-oblivious collapse : a single ill-timed refresh irreversibly copies a transiently drifting student into the teacher, a failure mode mecha-nistically distinct from EMA’s chronic contami-nation and invisible under short-horizon evaluation. Our proposed Consolidation-Gated Teacher Re-fresh (CGTR) resolves this tension by preserving isolation periods while gating each refresh on joint evidence of reward improvement and length-tail safety, ensuring every teacher movement is a re-sponse to genuine student consolidation rather than a clock signal. CGTR achieves zero collapse and the best final score on all four tasks (Chemistry, Biology, Physics, ToolUse) with a single shared parameter set—demonstrating that the right ques-tion for teacher scheduling is not “how old should the teacher be?” but “is the student ready for the teacher to move?” 
+
+8Limitations 
+
+Our experiments are conducted on a single model family (Qwen3-8B) across four tasks at moderate training scale. Although the core phenomena are consistent across all settings studied, extending the analysis to larger models, longer horizons, and a broader range of task types remains an open direc-tion. The reward gate currently relies on a binary correctness signal; whether denser or learned re-ward signals interact differently with the gating dynamics is an open question. 
+
+References 
+
+Rishabh Agarwal, Nino Vieillard, Yongchao Zhou, Piotr Stanczyk, Sabela Ramos, Matthieu Geist, and Olivier Bachem. 2024. On-policy distillation of language models: Learning from self-generated mistakes. In 
+
+International Conference on Learning Representa-tions . ArXiv:2306.13649. DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Zhihong Shao, Peiyi Wang, Shirong Ma, Xiao Bi, Xiaokang Zhang, Xingkai Yu, Yu Wu, and 1 others. 2025. DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning. arXiv preprint arXiv:2501.12948 .Kehua Feng, Keyan Ding, Weijie Wang, Xiang Zhuang, Zeyuan Wang, Ming Qin, Yu Zhao, Jianhua Yao, Qiang Zhang, and Huajun Chen. 2024. Sciknoweval: Evaluating multi-level scientific knowledge of large language models. Preprint , arXiv:2406.09098. Jean-Bastien Grill, Florian Strub, Florent Altché, Corentin Tallec, Pierre H. Richemond, Elena Buchatskaya, Carl Doersch, Bernardo Avila Pires, Zhaohan Daniel Guo, Mohammad Gheshlaghi Azar, Bilal Piot, Koray Kavukcuoglu, Rémi Munos, and Michal Valko. 2020. Bootstrap your own latent: A new approach to self-supervised learning. In Ad-vances in Neural Information Processing Systems ,volume 33, pages 21271–21284. Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 2015. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531 .Jonas Hübotter, Frederike Lübeck, Lejs Behric, An-ton Baumann, Marco Bagatella, Daniel Marta, Ido Hakimi, Idan Shenfeld, Thomas Kleine Buening, Carlos Guestrin, and Andreas Krause. 2026. Re-inforcement learning via self-distillation. Preprint ,arXiv:2601.20802. Yoon Kim and Alexander M. Rush. 2016. Sequence-level knowledge distillation. In Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing , pages 1317–1327. Association for Computational Linguistics. Yaxuan Li, Yuxin Zuo, Bingxiang He, Jinqian Zhang, Chaojun Xiao, Cheng Qian, Tianyu Yu, Huan-ang Gao, Wenkai Yang, Zhiyuan Liu, and Ning Ding. 2026. Rethinking on-policy distillation of large lan-guage models: Phenomenology, mechanism, and recipe. Preprint , arXiv:2604.13016. Ilya Loshchilov and Frank Hutter. 2019. Decoupled weight decay regularization. In International Confer-ence on Learning Representations .Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A. Rusu, Joel Veness, Marc G. Bellemare, Alex Graves, Martin Riedmiller, Andreas K. Fidje-land, Georg Ostrovski, Stig Petersen, Charles Beat-tie, Amir Sadik, Ioannis Antonoglou, Helen King, Dharshan Kumaran, Daan Wierstra, Shane Legg, and Demis Hassabis. 2015. Human-level control through deep reinforcement learning. Nature , 518(7540):529– 533. Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welin-der, Paul Christiano, Jan Leike, and Ryan Lowe. 2022. Training language models to follow instructions with human feedback. Advances in Neural Information Processing Systems , 35:27730–27744. Boris T. Polyak and Anatoli B. Juditsky. 1992. Ac-celeration of stochastic approximation by averag-ing. SIAM Journal on Control and Optimization ,30(4):838–855. Hejian Sang, Yuanda Xu, Zhengze Zhou, Ran He, Zhipeng Wang, and Jiachen Sun. 2026. Crisp: Com-pressed reasoning via iterative self-policy distillation. 
+
+Preprint , arXiv:2603.05433. John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. 2017. Proxi-mal policy optimization algorithms. arXiv preprint arXiv:1707.06347 .Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Mingchuan Zhang, Y.K. Li, Y. Wu, and Daya Guo. 2024. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. Preprint , arXiv:2402.03300. Qiaoyu Tang, Ziliang Deng, Hongyu Lin, Xianpei Han, Qiao Liang, Boxi Cao, and Le Sun. 2023. Toolalpaca: Generalized tool learning for language models with 3000 simulated cases. Preprint , arXiv:2306.05301. Antti Tarvainen and Harri Valpola. 2017. Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning re-sults. In Advances in Neural Information Processing Systems , volume 30. An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, 
+
+9Chengen Huang, Chenxu Lv, Chujie Zheng, Dayi-heng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao Ge, Haoran Wei, Huan Lin, Jialong Tang, and 41 oth-ers. 2025. Qwen3 technical report. arXiv preprint arXiv:2505.09388 .Chenxu Yang, Chuanyu Qin, Qingyi Si, Minghui Chen, Naibin Gu, Dingyu Yao, Zheng Lin, Weiping Wang, Jiaqi Wang, and Nan Duan. 2026. Self-distilled rlvr. 
+
+Preprint , arXiv:2604.03128. Eric Zelikman, Yuhuai Wu, Jesse Mu, and Noah D. Goodman. 2022. STaR: Self-taught reasoner boot-strapping reasoning with reasoning. In Advances in Neural Information Processing Systems , volume 35, pages 15476–15488. Ruicheng Zhang, Guangyu Chen, Zunnan Xu, Zihao Liu, Zhizhou Zhong, Mingyang Zhang, Jun Zhou, and Xiu Li. 2026a. Robostereo: Dual-tower 4d em-bodied world models for unified policy optimization. 
+
+arXiv preprint arXiv:2603.12639 .Ruicheng Zhang, Kaixi Cong, Jun Zhou, Zhizhou Zhong, Zunnan Xu, Shuiyang Mao, Wei Liu, and Xiu Li. 2026b. Kvpo: Ode-native grpo for autore-gressive video alignment via kv semantic exploration. 
+
+arXiv preprint arXiv:2605.14278 .Ruicheng Zhang, Mingyang Zhang, Jun Zhou, Zhangrui Guo, Xiaofan Liu, Zunnan Xu, Zhizhou Zhong, Puxin Yan, Haocheng Luo, and Xiu Li. 2025. Mind-v: Hierarchical video generation for long-horizon robotic manipulation with rl-based physical align-ment. arXiv preprint arXiv:2512.06628 .Siyan Zhao, Zhihui Xie, Mengchen Liu, Jing Huang, Guan Pang, Feiyu Chen, and Aditya Grover. 2026. Self-distilled reasoner: On-policy self-distillation for large language models. Preprint , arXiv:2601.18734. 
+
+# Supplementary Material 
+
+A Experimental Details 
+
+A.1 Data and Prompt Format Dataset splits. SciKnowEval (Feng et al., 2024) is split 9:1 into train and test sets: Chemistry 1,890/210, Biology 450/50, Physics 720/80, Materi-als 841/94. ToolAlpaca (Tang et al., 2023) contains 3,938 tool-use instances covering 426 real-world APIs; we use a 9:1 split (3,544 train / 394 test). No question appears in both splits; the test set is held out throughout training. 
+
+Prompt format. Each question is presented as a two-turn conversation. The system turn contains a fixed instruction:                 
+
+> Given aquestion and four options, please select the right answer. Respond in the following format: <reasoning>
+> . . . </reasoning><answer> . . . </answer> .For the answer, only output the letter (A, B, C, or D).
+
+The user turn contains the question body with op-tions appended. The maximum prompt length is 2,048 tokens and the maximum response length is 8,192 tokens (total context 18,944 tokens). 
+
+A.2 Reward Function 
+
+The reward is a binary correctness signal: 
+
+r = 1extract (ˆ y) = y∗,
+
+where ˆy is the model response and y∗ is the ground-truth option letter. Extraction parses the last <answer> . . . </answer> tag in the response; if parsing fails the reward is 0. No external verifier or neural reward model is used. The ground-truth labels are not included in the training prompts, so there is no answer-leakage risk. 
+
+A.3 Rollout and Decoding Parameters Training rollouts. Temperature 1.0, top-p=1 .0,top-k=−1 (disabled), n=4 responses per question (GRPO group size (Shao et al., 2024; Zhang et al., 2026b)). 
+
+Test evaluation. Greedy decoding (tempera-ture 0, do_sample=False ), n=16 samples per question for mean@16. Schedule sweep: one evalu-ation at step 100. Long-horizon comparison (Chem-istry): every step ( test_freq = 1 ). Cross-task runs (Biology, Physics, ToolUse): every 10 steps. 10 Table 7: Full metrics for all schedule sweep experiments (100 steps). Slen mean/max = seqlen_norm; Succ = success_group_fraction mean; Ent. fin = last-step entropy. †M1 terminated step 16; ent. mean over steps 1–16 only.                                                                                                                                     
+
+> Setting T m@16 T B@4 Ent. mn Ent. sd Ent. fin Slen mn Slen mx Rew. mn KL mn Succ
+> M1 †N/A N/A ∼1.05 —0.492 —16908 ———M2 0.2250 0.2760 0.900 1.063 5.226 2890 15126 0.504 0.031 0.746 M3 0.6729 0.7396 1.715 1.167 3.663 2271 5100 0.607 0.085 0.773 M4 0.6562 0.7175 1.536 1.131 4.013 2204 4564 0.595 0.053 0.773 M5 0.6533 0.7228 2.001 1.091 3.548 1984 3516 0.629 0.064 0.793 M8 0.5964 0.6291 1.413 0.713 2.641 7942 12932 0.597 0.004 0.681 M10 0.6693 0.7373 0.545 0.278 0.839 2797 10473 0.614 0.025 0.770 M20 0.6286 0.6894 0.595 0.119 0.697 4496 6976 0.598 0.004 0.706 M50 0.7548 0.8273 0.499 0.048 0.416 2535 4176 0.629 0.005 0.816 Fixed 0.6967 0.7508 0.437 0.097 0.165 2590 4645 0.637 0.008 0.760 EMA α=0.1 0.6449 0.6890 1.417 0.694 2.248 8242 15704 0.613 0.005 0.684 EMA α=0.04 0.7128 0.7815 0.727 0.142 1.864 2839 5196 0.665 0.022 0.792
+
+A.4 Optimizer and Training Details 
+
+AdamW (Loshchilov and Hutter, 2019): β1=0 .9,
+
+β2=0 .999 , weight decay 0.01 , gradient clipping 
+
+ℓ2-norm 1.0, lr 10 −5, constant schedule. The long-horizon comparison uses a 10-step linear warm-up; the schedule sweep uses none. PPO (Schulman et al., 2017) mini-batch size 4 with gradient accu-mulation. 
+
+A.5 Distillation Loss 
+
+The distillation objective is a token-level top-k ap-proximation of the generalized Jensen–Shannon Divergence (JSD). For each token position, the top-k=20 logit indices of the student are se-lected; teacher log-probabilities are gathered at the same positions. A tail bucket absorbs the residual probability mass 1 − P 
+
+> i∈top-k
+
+pi, com-puted via logsumexp for numerical stability, yield-ing a (k+1) -class categorical for both student and teacher. The loss is the generalized JSD: 
+
+Ldistill = (1 −α) KL( M ∥πθ) + α KL( M ∥πϕ),
+
+(8) where M =(1 −α)πθ+απ ϕ and α=0 .5 (symmet-ric JSD). Per-token loss is clipped by importance-sampling weight min( ρ, c ) with c=2 .0, where ρ is the token-level IS ratio between the updated policy and the rollout policy, correcting for within-mini-batch distribution shift. 
+
+A.6 Collapse Detection and Early Termination 
+
+A run is declared collapsed at the first step satisfy-ing: (i) seqlen_norm > 8, 000 tokens (runaway length growth); or (ii) test mean@16 < 0.01 (complete capability loss). 
+
+M =1 triggers condition (i) at step 10 and is termi-nated at step 16 (seqlen = 16 , 908 ; no test score). 
+
+M =2 triggers condition (ii) at step 86 (seqlen 
+
+= 15 , 126 ). Long-horizon comparison M =50 col-lapse at step 189 is detected by condition (ii) only (test → 0.000 ). 
+
+B Experiment Details 
+
+B.1 Full Metric Table 
+
+Table 7 provides the complete set of recorded met-rics for all 100-step experiments. 
+
+B.2 SNR and Best-of-N Scores 
+
+Table 8 reports the signal-to-noise ratio (SNR, computed as mean_diff/std_diff over rollout groups) and best-of-N test accuracy at N ∈{2, 4, 8, 16 } for all 100-step schedule-sweep runs. 
+
+M =50 achieves the best B@ N scores across all 
+
+N , confirming its advantage in both mean accuracy and exploration diversity at short horizons. 
+
+C CGTR Hyperparameter Values and Selection Rationale 
+
+Table 9 lists all CGTR gate parameters and their values used in every experiment reported in this paper. No per-dataset tuning was performed : the same values are used for Chemistry (long-horizon comparison), Biology, Physics, and ToolUse. 11 Table 8: SNR and best-of-N test scores (100-step runs). 
+
+Setting SNR B@2 B@4 B@8 B@16 
+
+M =2 0.031 0.342 0.276 0.484 0.494 
+
+M =3 0.075 0.746 0.740 0.876 0.911 
+
+M =4 0.068 0.668 0.718 0.683 0.691 
+
+M =5 0.069 0.677 0.723 0.710 0.722 
+
+M =8 0.057 0.606 0.629 0.624 0.629 
+
+M =10 0.408 0.722 0.737 0.808 0.834 
+
+M =20 0.047 0.660 0.689 0.714 0.734 
+
+M =50 0.497 0.794 0.827 0.853 0.869 
+
+Fixed 0.448 0.727 0.751 0.772 0.788 EMA α=0 .1 0.087 0.667 0.689 0.707 0.719 EMA α=0 .04 0.065 0.749 0.782 0.801 0.819 
+
+Parameter independence guarantee. All gate thresholds were determined from the 100-step schedule sweep (Section 3.2–3.4), which involves only the short-horizon diagnostics on Chemistry. The long-horizon Chemistry run (300 steps) and all cross-task runs (Biology, Physics, ToolUse) were conducted after the parameters were fixed, with no further adjustment. This ordering ensures that the cross-task results constitute a proper held-out evaluation: the gate thresholds had zero exposure to the long-horizon or cross-task data at the time of selection.                  
+
+> Table 9: CGTR gate parameters used in all experiments. Rationale for each value is discussed in the text below.
+> Parameter Value Role
+> Mmin 30 Minimum isolation period (steps)
+> w5Rolling window size (steps) Check interval 5Gate evaluation frequency (steps)
+> δr0.05 Reward improvement threshold
+> Lmax 3.2 Max. seqlen tail ratio (max /μ )
+
+Selection of Mmin = 30 . The minimum isola-tion period was set to be strictly less than the best fixed-schedule baseline ( M =50 ), so that CGTR re-tains the freedom to refresh more frequently when conditions warrant, while still exceeding the M ≤5
+
+regime where parameter independence collapses (Section 3.2). The value 30 was read directly from the schedule-sweep failure boundary—a structural property of the model and task class, not a tuned quantity—and fixed before any long-horizon run. 
+
+Selection of δr = 0 .05 . The reward signal rt =
+
+1[correct ] has a binary scale [0 , 1] with per-window noise ≈ ± 0.02 (estimated from the rolling vari-ance over the schedule-sweep runs at step 100). A threshold of 0.05 places the bar at roughly 2.5×
+
+the noise level, requiring a gain that is unlikely to be a sampling fluctuation. This choice is grounded in the noise floor of the reward estimator, which is a property of the binary reward and rollout batch size ( n=4 ) rather than of any specific task; the same noise characteristics were observed across Chemistry, Biology, and Physics in the schedule sweep. 
+
+Selection of Lmax = 3 .2.
+
+The length-tail gate evaluates the condition 
+
+max( seqlen t−w:t)/mean (seqlen t−w:t) ≤ Lmax ,where the tail ratio characterizes the shape of the length distribution independently of its scale, mak-ing it comparable across tasks with different typical sequence lengths. In the 100-step schedule sweep, stable training runs ( M =10 , 20 , 50 ) maintain a tail ratio below 3.0 throughout, while collapsing runs (M =1 , 2) show ratios exceeding 4.0 in the steps immediately preceding collapse. A threshold of 
+
+3.2 was chosen to sit in the gap between these two regimes, providing a safety margin above the sta-ble ceiling ( 3.0) and well below the collapse onset (4.0). This calibration is derived entirely from the schedule-sweep diagnostics (Section 3.4) and does not use any data from the long-horizon or cross-task experiments. 
+
+D Hyperparameter Sensitivity Analysis 
+
+To provide the strongest possible evidence that the gate thresholds generalize across tasks, we conduct the sensitivity sweep on Biology —a task whose parameters were never involved in any threshold selection. We vary each gate threshold indepen-dently (300 steps) while holding the other two at their default values. Table 10 reports test fin and #Ref for each setting. Across all nine variants test fin ranges from 
+
+0.463 to 0.485 , a spread of 0.022 . Seven of nine variants match or exceed the EMA-04 base-line ( 0.471 ); the two exceptions ( δr=0 .02 : 0.463 ;
+
+Lmax =4 .0: 0.469 ) fall within 0.008 of EMA and correspond to configurations that are deliberately suboptimal by design (over-frequent refreshes and a loose length guard, respectively). Crucially, no 
+
+12 Table 10: Hyperparameter sensitivity on Biology (300 steps). Bolded rows are the default (selected from Chem-istry schedule sweep only). Test fin = final mean@16; #Ref = refreshes; Coll. = collapse step. 
+
+Param. Value Test fin #Ref Coll. 
+
+Mmin 
+
+20 0.471 3 —
+
+30 0.485 2 —
+
+40 0.479 2 —
+
+δr
+
+0.02 0.463 4 —
+
+0.05 0.485 2 —
+
+0.10 0.474 1 —
+
+Lmax 
+
+2.8 0.480 2 —
+
+3.2 0.485 2 —
+
+4.0 0.469 3 —
+
+variant collapses , whereas M =50 collapses at step 130 on Biology with the same setup—the safety guarantee is robust across the entire param-eter range tested. These results confirm that the default thresholds, derived solely from Chemistry diagnostics, transfer to a held-out task without re-quiring retuning, and that the performance plateau is broad rather than sharp. 
+
+E Lag Alignment Derivation 
+
+For a hard refresh with interval M , the teacher parameters are copied from the student at every 
+
+M -th step and held frozen in between. At any step within a refresh cycle, the teacher parameters were set k steps ago, where k is uniformly distributed over {1, 2, . . . , M }. The average age of the teacher parameters is therefore (M + 1) /2 steps, and the mean lag relative to the current student is (M −
+
+1) /2 steps. For EMA with rate α, the teacher at step t is a weighted average of all past student snapshots with exponentially decaying weights: 
+
+ϕt =
+
+> ∞
+
+X
+
+> k=0
+
+α(1 − α)kθt−k. (9) The mean age of this exponential weighting is (1 −
+
+α)/α steps. Setting the two mean ages equal gives the lag alignment condition :
+
+1 − αα = M − 12 =⇒ α ≈ 2
+
+M + 1 . (10) For M =50 , this yields α ≈ 2/51 ≈ 0.039 ; we use α = 0 .04 as the lag-aligned EMA baseline throughout the paper. If lag alone explained the performance difference between M =50 and EMA, then lag-aligned EMA should match sparse hard refresh across all training horizons. As shown in Section 3.3, it does not—the advantage of hard refresh is structural (isolation periods) rather than attributable to teacher age. 
+
+F Terminology 
+
+We collect here the key terms used throughout the paper. 
+
+Temporal independence. A teacher is tempo-rally independent when the correlation between 
+
+πϕ and the current πθ is sufficiently low that the distillation signal provides information not already present in the student’s on-policy distribution. As 
+
+M → 1 or α → 1, temporal independence van-ishes and the distillation objective becomes self-confirming. 
+
+Isolation period. In periodic hard refresh, the steps between two consecutive refreshes form an 
+
+isolation period during which the teacher is com-pletely frozen. Any student drift that occurs during this period is not absorbed by the teacher. There is no isolation period in EMA. 
+
+Teacher contamination. When the teacher tracks the student closely (low M or high α), it absorbs the student’s transient noise, errors, and distribution shifts. The distillation objective then reinforces rather than corrects these deviations. We call this teacher contamination . In EMA, contam-ination is bounded per step by α but accumulates over long horizons; in hard refresh, a single ill-timed update can contaminate the teacher fully and irreversibly. 
+
+Refresh shock. At each hard refresh, the teacher parameters jump from ϕt−1 to θt. The magnitude of this jump, ∥θt − ϕt−1∥, characterizes whether the refresh is corrective (the student has improved during the isolation period) or contaminating (the student has drifted or collapsed). A corrective re-fresh is followed by a transient KL spike as the student re-adapts; a contaminating refresh shows no such spike. 
+
+Length-tail risk. The distribution of gener-ated sequence lengths is heavy-tailed under reinforcement-style training. Collapse typically begins as an increase in the tail probability of very long sequences before it appears in mean entropy or 13 10 20 30 40 70 80 90 100 50 60                                               
+
+> Training Step
+> 01
+> 20
+> 40
+> 60
+> 80
+> 100
+> 120
+> Sequence  Length  (k  tokens)
+> Tail expansion
+> (step 12)
+> Collapse
+> (step87)
+> 140 M=2seqlen\ max
+> M=50 seqlen\ max
+> 10 20 30 40 70 80 90 100 50 60
+> Training Step
+> 1.00 1
+> 1.25
+> 1.50
+> 1.75
+> 2.00
+> 2.25
+> 2.50
+> 2.75
+> 3.00
+> Tail  Ratio  (seqlen\  max  / seqlen\  mean)
+> Collapse
+> (step 87)
+> Tail ratio (M=2)
+> Tail ratio (M=50)
+> Entropy (M =2, right axis)
+> 1
+> 2
+> 3
+> 4
+> 5
+> Token  Entropy  (M = 2)
+> Bounded
+> (M=50)
+> Danger threshold (x3)
+> max −mean band
+> M=2seqlen\ mean
+
+Figure 5: Length-tail risk dynamics. (Left) For M =2 (red), the seqlen tail expands progressively from step 50 onward, preceding the hard collapse at step 86. (Right) For M =50 (blue), the seqlen max remains bounded throughout training. Monitoring seqlen tail growth provides an early warning signal not visible in entropy or reward means alone. 
+
+reward. We track seqlen_max and seqlen_mean 
+
+as leading indicators of incipient collapse. 
+
+G Diagnostic Metric Analysis 
+
+Detailed per-metric analyses are provided in Sec-tion 3 of the main text. This appendix provides the length-tail dynamics figure and supplementary SNR data. 
+
+G.1 SNR and Teacher Reliability 
+
+The signal-to-noise ratio ( mean_diff/std_diff )measures how consistently the student improves across rollouts. As shown in Table 8, M =50 
+
+achieves the highest SNR (0.497 ), followed by Fixed Teacher ( 0.448 ) and M =10 (0.408 ), confirming that sparser refresh schedules pro-duce more reliable learning signals. The 
+
+success_group_fraction (fraction of rollout groups with at least one correct answer) is high-est for M =50 (0.816 ) and EMA α=0 .04 (0.792 ), confirming that these schedules sustain a produc-tive learning signal. 14
