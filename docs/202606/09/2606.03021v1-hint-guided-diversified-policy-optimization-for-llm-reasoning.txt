@@ -1,0 +1,1035 @@
+Title: Hint-Guided Diversified Policy Optimization for LLM Reasoning
+
+URL Source: https://arxiv.org/pdf/2606.03021v1
+
+Published Time: Wed, 03 Jun 2026 00:25:41 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# Hint-Guided Diversified Policy Optimization for LLM Reasoning 
+
+Zhiyu Cao 1*, Kaixin Wu 2, Mingjie Zhong 2, Peifeng Li 1†, Xiaobo Li 2, Can Ye 2, Qiaoming Zhu 1
+
+> 1
+
+School of Computer Science and Technology, Soochow University, Suzhou, China 
+
+> 2
+
+Ant Group, Hangzhou, China 
+
+zycao18@stu.suda.edu.cn , {pfli, qmzhu}@suda.edu.cn 
+
+Abstract 
+
+Recent developments in Large Language Mod-els (LLMs) have showcased impressive rea-soning capabilities, with Reinforcement Learn-ing with Verifiable Rewards (RLVR) being a promising enhancement strategy. However, ex-isting reward mechanisms are constrained to the outcome-level correctness and lack explicit signals to guide the model to consider diverse solutions. In contrast, human problem solving typically involves evaluating multiple potential approaches and selecting the most reliable so-lution, a cognitive process that current RLVR frameworks do not explicitly incentivize. In-spired by this, we propose Hint-Guided Diver-sified Policy Optimization (HDPO), allowing the model to first list all potential candidate solution outlines as hints and then select the most reliable one for further reasoning. HDPO comprises two stages of Cold Start for Struc-tured Reasoning and Hint-Guided Diversi-fied Reinforcement Learning to incentivize the model to generate diverse and reliable solu-tions following the “propose-select-think” tra-jectory. Experimental results show that HDPO effectively boosts LLM reasoning and enhances the diversity of candidate solutions as well as the LLM’s ability to identify reliable solutions. 
+
+1 Introduction 
+
+Recent research has yielded significant progress in enhancing the reasoning capabilities of Large Lan-guage Models (LLMs), exemplified by OpenAI-o1 (Jaech et al., 2024), DeepSeek-R1 (Guo et al., 2025), and Kimi-1.5 (Team et al., 2025), particu-larly for complex mathematical problem solving. A pivotal development underpinning these improve-ments is the adoption of Reinforcement Learning with Verifiable Reward (RLVR) (Liu et al., 2025b; Yan et al., 2025; Zhang et al., 2025a) as a core  
+
+> *
+
+Work done at Ant Group.  
+
+> †
+
+Corresponding author. 1 2 4 8 16 32 64 128 256 512 
+
+> Number of Attempts (N)
+> 0.50
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> Hit@N
+> Benefit from fewer attempts
+> Insufficient exploration
+> HDPO
+> GRPO
+
+Figure 1: Hit rate of HDPO and GRPO on Olympiad-Bench under different number of attempts. 
+
+training paradigm. Within this framework, pol-icy optimization algorithms are widely adopted to fine-tune LLMs, with Group Relative Policy Opti-mization (GRPO) (Shao et al., 2024) serving as a prominent instantiation of this approach. To ensure the credibility of complex reasoning, outcome-level rewards (Cobbe et al., 2021; Shao et al., 2024) are employed in RLVR to assess the correctness of the entire reasoning trajectory. How-ever, this approach does not take into account the rationality of the process, and its sparse rewards may lead to homogenization of rewards, failing to provide comprehensive supervision. Therefore, recent studies (Zhang et al., 2025b,a; Luo et al., 2025b) enhance the model’s reasoning ability by providing more detailed feedback, such as feedback in natural language and process supervision. We noticed that although the above methods have achieved notable success, they provide re-wards based exclusively on correctness and thus fail to encourage the exploration of diverse solu-tions. Consequently, if the model gets trapped in a wrong solution, it may struggle to recover and iden-tify the correct answer, reducing the fault tolerance of reasoning. As shown in Figure 1, we evaluate the Hit@N accuracy of Qwen3-4B across varying num-bers of sampling attempts. The results reveal that GRPO exhibits markedly lower performance when the number of attempts is limited, whereas HDPO consistently achieves superior accuracy even with 1                                                                                                                                                                                                            
+
+> arXiv:2606.03021v1 [cs.CL] 2 Jun 2026 Suppose that �,�,�,�are positive real numbers satisfying �+��+�=�� +�� . Find the smallest possible value of �=�
+> �+�
+> �+�
+> �+�
+> �.
+> <Candidate Solutions>
+> [1] Expand the given condition �+��+�=�� +�� to
+> obtain �� +�� +�� +�� =�� +�� , then rearrange terms …
+> [2] Use symmetry by assuming �=�and �=�to test if the
+> minimum occurs at symmetric values. Then verify whether …
+> [3] Apply the Cauchy-Schwarz inequality to the expression S,
+> treating it as a sum of ratios …
+> </Candidate Solutions>
+> <selected> [2] </selected>
+> <thinking>
+> We consider the possibility that the minimum occurs when the
+> variables are chosen symmetrically. Suppose �=�and �=�.
+> Then the condition becomes:
+> �+��+�=�∙�+�∙�⟹4�� =�2+�2.
+> So, �2−4�� +�2=0. This is a quadratic in �:
+> �2−4�� +�2=0⟹�−2�2−3�2=0⟹�−2�=±3�
+> …
+> Therefore, the smallest possible value is $\boxed{8}$.
+> </thinking>
+> \boxed{8}
+> <thinking>
+> Okay, so I have this problem where I need to find the smallest
+> possible value of �, which is given by:
+> �=�
+> �+�
+> �+�
+> �+�
+> �.
+> And the condition is that �+��+�=�� +�� , with �,�,�,�
+> being positive real numbers. Let me try to figure this out step by
+> step.
+> First, let me write down the given equation:
+> �+��+�=�� +�� ,
+> I should probably expand the left side:
+> �� +�� +�� +�� =�� +�� ,
+> Now, let me subtract �� +�� from both sides to see what's left:
+> �� +�� +�� +�� −�� −�� =0,
+> Let's group like terms:
+> �� +�� −�� +�� +�� −�� =0,
+> Wait, maybe factor terms with �and �:
+> ��+�−�+��+�−�� =0,
+> …
+> Thus, the smallest possible value of �is \boxed{6}.
+> </thinking>
+> \boxed{6}
+
+Figure 2: The comparison of HDPO’s “propose-select-think” reasoning process ( left ) and the traditional reasoning process ( right ). More case studies can be found in Appendix K. 
+
+fewer attempts. This suggests that the GRPO-trained model has insufficiently explored the space of diverse reasoning paths, which hinders its ability to generate correct answers within a limited num-ber of trials. Ideally, the model should be able to explore a broader range of solutions and choose the most reliable solutions for further refinement. The key challenge lies in designing mechanisms that both incentivize the generation of diverse solutions and effectively assess their reliability. To address this issue, we propose Hint-Guided Diversified Policy Optimization (HDPO), a novel approach to enhance the diversity and reliability of LLM reasoning. HDPO is built upon the “propose-select-think” reasoning trajectory, effectively stim-ulating the model to reason about diverse potential solutions. Specifically, our training methodology instills this capability in two stages: we first em-ploy supervised fine-tuning (SFT) in the cold start stage to establish the model’s proficiency in follow-ing the structured reasoning trajectory, followed by Reinforcement Learning (RL) to cultivate the policy model capable of generating diverse and re-liable solutions. In the cold start phase, we employ an advanced LLM to construct such structured rea-soning trajectories and apply filtering criteria based on correctness and reliability to ensure data quality. In the RL phase, we introduce diversity scheduling strategy and reliability reward to guide the model to actively explore all potential solutions. As illustrated in Figure 2, the “propose-select-think” framework employed by HDPO offers a sig-nificant advantage over the traditional approach. While the conventional paradigm extends the given condition in a brute-force manner and arrives at an incorrect answer, HDPO promotes broader explo-ration of the solution space by generating multiple candidate solutions prior to engaging in detailed reasoning. This preliminary exploration enables the model to identify underlying symmetries, a crit-ical insight that contributes to the correct answer. Crucially, HDPO advances existing paradigms through policy internalization and joint optimiza-tion . Unlike inference-time search methods (Wang et al., 2023; Yao et al., 2023) that incur high la-tency via repeated sampling, HDPO internalizes the explore-then-exploit mechanism into the pol-icy parameters via RLVR, enabling zero-overhead, single-pass reasoning. Furthermore, departing from accuracy-centric RLVR, it directly mitigates solution homogenization and unreliable selection by jointly optimizing a scheduled diversity reward and a confidence-based reliability reward. To sum-marize, our contributions are as follows: • We introduced HDPO to enhance LLM reason-ing, a novel framework based on the “propose-select-think” structured reasoning process. • The proposed diverse scheduling strategy and reliability reward enable LLMs to actively ex-plore diverse and reliable solutions. • Our extensive experimental results demon-strate that HDPO greatly boosts the model’s reasoning ability. 22 Related Work 
+
+Chain-of-Thought for LLM Reasoning. Chain-of-thought (Wei et al., 2022) reasoning has shown promising progress in recent years. Building on this idea, tree-of-thought (ToT) (Yao et al., 2023) generalizes reasoning into structured sequences of thoughts and determines the next action through self-evaluation. Zhou et al. (2023) proposes least-to-most prompting by decomposing problems, en-abling language models to solve problems that are more difficult than those in the prompts. Graph of Thoughts (GoT) (Besta et al., 2024) models LLM reasoning as an arbitrary graph, where thoughts were represented as vertices and dependencies be-tween thoughts are represented as edges. Unlike ToT/GoT, which require repeated sampling and heuristic scoring at inference, HDPO internalizes the propose-select-think paradigm into the pol-icy weights via reward-shaped RL, yielding zero-overhead inference. Through structured reinforce-ment learning, the model learns to generate diverse candidate hints and autonomously select the most reliable trajectory in a single forward pass. 
+
+Reinforcement Learning for LLM Reasoning. 
+
+Recent advancements in reinforcement learning (RL) (Shao et al., 2024; Yue et al., 2025; Liu et al., 2025a) have made significant progress in enhancing complex reasoning, shifting from surface-level re-sponse generation to sophisticated problem-solving. Ouyang et al. (2022) utilize preference data to train reward models and apply Proximal Policy Opti-mization (PPO) (Schulman et al., 2017) to perform reinforcement learning on LLMs for alignment with human preferences. Subsequently, numer-ous methods have employed reinforcement learn-ing to align LLMs with human preferences (Lee et al., 2024; Ryu et al., 2024; Xie et al., 2024). DeepSeekMath (Shao et al., 2024) proposes the GRPO algorithm, which simplifies the training pro-cess of reinforcement learning and significantly enhances the performance of LLMs in the mathe-matical domain through RL. Building on this foun-dation, Dr.GRPO (Liu et al., 2025b) proposes an unbiased optimization method that improves to-ken efficiency while maintaining reasoning perfor-mance. Aggarwal and Welleck (2025) use length constraints to ensure that the reasoning language model adheres to the specified length by the user. To ensure that sequence-level rewarding and opti-mization are aligned, Group Sequence Policy Op-timization (GSPO) (Zheng et al., 2025) defines importance ratios based on sequence likelihood. 
+
+3 Methods 
+
+3.1 Preliminary 
+
+We utilize the GRPO (Shao et al., 2024) algo-rithm to optimize the policy model πθ. GRPO estimates the advantage in a group-relative manner. Given prompt p, policy πθold generates G responses 
+
+{x1, . . . , x G} with rewards {r1, . . . , r G}, which are group-normalized to compute per-response ad-vantages: 
+
+ˆAi = ri − mean( r1, . . . , r G)std( r1, . . . , r G) + εnorm 
+
+, (1) where εnorm is a small constant for stability. The policy is then optimized using a clipped sur-rogate objective, regularized by a KL term to con-strain policy drift ( ϵ and β are hyper-parameters):                     
+
+> LGRPO (θ) = −1
+> G
+> GX
+> i=1
+> min
+> πθ(xi)
+> πθold (xi) ˆAi,
+> clip
+> πθ(xi)
+> πθold (xi),1−ϵ, 1 + ϵ
+> 
+> ˆAi
+> 
+> +βKL( πθ∥πθold ).
+> (2)
+
+GRPO operationalizes RLVR principles to im-prove reasoning and generation quality in LLMs by rewarding responses with positive relative ad-vantages while limiting policy deviation. 
+
+3.2 Overview 
+
+As shown in Figure 3, HDPO establishes a two-stage optimization policy. To enable the model to first propose candidate solutions and then se-lect the most reliable solution for thinking, we perform Cold Start for Structured Reasoning 
+
+in the first stage. Specifically, we distill the data of the “propose-select-think” reasoning trajectory from an advanced LLM to performs SFT. To en-sure the validity of these trajectories, we filter the distilled data based on both correctness and reliabil-ity. In the second stage, we propose Hint-Guided Diversified Reinforcement Learning to enhance the quality of model reasoning through the diver-sity scheduling strategy and the reliability reward during the process of policy optimization. 
+
+3.3 Cold Start for Structured Reasoning 
+
+Previous reasoning LLMs (Liu et al., 2025b; Yan et al., 2025; Zhang et al., 2025a) typically involve generating a single solution directly from a given problem, a paradigm that lacks an explicit mecha-nism to encourage exploration of the diverse solu-tion space. Therefore, we seek to teach the model 3Cold Start for Structured Reasoning 
+
+> Hint-Guided Diversified Reinforcement Learning
+
+�1,1 �1,2
+
+��,1 ��,2
+
+�1
+
+��
+
+…
+
+�1 �2 �… �� �  
+
+> 0.7 0.90.8
+
+…
+
+�1
+
+��       
+
+> Reliability Check
+> Advanced Agent
+> �=argmax
+> �∈[ 1,�]
+> 퐴�� �?Yes
+> No
+> Keep
+> Discard
+> Cold Start Data
+> SFT
+> Correctness Check
+> �=���?
+
+… �1,�1
+
+… �1,��      
+
+> ��������
+> ����
+> ����
+> Candidate Entropy
+> Most
+> Reliable
+> �1
+> �2
+> �3
+> Embedding
+> �1
+> �2
+> �3Propose Select Think
+> ����
+> 1����
+> 1����
+> 1
+
+…     
+
+> ����
+> �����
+> �����
+> �
+> Diversity &Reliability Injection
+> ����
+> 1
+> ����
+> �
+
+Accuracy :Figure 3: Overview of Hint-Guided Diversified Policy Optimization, comprising two stages: (1) Cold Start for Structured Reasoning , which constructs correctness- and reliability-filtered “propose-select-think” trajectories via an advanced LLM; and (2) Hint-Guided Diversified Reinforcement Learning , which optimizes the policy via diversity scheduling and reliability rewards to foster solution exploration. 
+
+to follow the “propose-select-think” reasoning tra-jectory. Specifically, the model initially generates an overview comprising multiple candidate solu-tions, each delineated in several sentences, and then selects the most reliable candidate to serve as a guiding hint for subsequent thinking. To fulfill the need for the policy model to fol-low the reasoning pattern of “propose-select-think”, we distill such trajectory data from an advanced teacher LLM. Given a problem q, the teacher model is prompted to generate a structured reasoning tra-jectory that adheres to the “propose-select-think” framework. The prompt for the structured reason-ing can be found in Appendix A. Each trajectory is of the form τ = {s1, s 2, ..., s m, c, o }, where si, c,and o respectively represent the i-th proposed can-didate solution, the most reliable solution selected, and the thinking process. To ensure the rationality of the generated data, we apply a two-fold filtering criterion: (1) the correctness of the final answer and (2) the reliability of the selected solution. We extract the final answer a from the thinking process o, and compare it with the ground truth 
+
+agt . If there is an error, we discard this piece of data. Otherwise, we proceed to check the reliability of the selected solution. Specifically, we feed the problem and the m candidate solution overviews sequentially into a lightweight model πs, allowing it to sample L answers for each candidate solution and calculate the accuracy Acc i of the sampled an-swers Ai corresponding to each candidate solution: 
+
+Ai = {ˆai,j }Lj=1 ∼ πs(q, s i), (3) 
+
+Acc i =
+
+P  
+
+> ˆai,j ∈A i
+
+1[ˆ ai,j = agt ]
+
+|A i| . (4) Our key insight is that more reliable candidate so-lutions are also conducive to the model generating accurate answers. If the optimal candidate solu-tion c selected by the model aligns with the candi-date solution exhibiting the highest accuracy, i.e., 
+
+c = arg max i∈[1 ,m ] Acc i, then it indicates that the solution selected by the model is reliable, and this piece of data is retained. After constructing the cold start training data 
+
+Dcssr = {(qi, τ i)}ni=1 , we optimize the policy model πθ through supervised fine-tuning:        
+
+> ˆπθ∼min
+> πθ
+> E(qi,τ i)∈D cssr
+> "nX
+> i=1
+> log ( πθ(τi|qi))
+> #
+> ,(5)
+
+where ˆπθ is the policy model after supervised fine-tuning during the cold start phase. 
+
+3.4 Hint-Guided Diversified Reinforcement Learning 
+
+Following the cold-start phase, the policy model has acquired the structured reasoning ability of “propose-select-think”. To further enhance its abil-ity to navigate a broader solution space and se-lect high-quality candidates, we refine the hints 4associated with candidate solutions through rein-forcement learning. For each problem q, the model 
+
+ˆπθ samples G reasoning trajectories in each roll-out. The form of the i-th reasoning trajectory is 
+
+xi = {si, 1, s i, 2, ..., s i,m i , c i, o i}, where mi repre-sents the number of candidate solutions generated in the i-th reasoning trajectory. For notational con-venience, we henceforth omit the subscript corre-sponding to each trajectory, i.e., each reasoning trajectory is denoted as x = {s1, s 2, ..., s m, c, o }.
+
+Format Reward. To ensure that the model’s out-put follows the predefined “propose-select-think” structure, we define the format reward. We de-termine (1) whether the model’s output contains the tags “ <Candidate Solutions></Candidate Solutions> ”, “ <selected></selected> ”, and “<thinking></thinking> ”; (2) whether the num-ber of candidate solution overview is between 1 and 5; (3) whether exactly one reliable solution is selected. A reward of rf mt = 0 .1 is granted for strict adherence to the structure, while any devia-tion results in a reward of rf mt = 0 .
+
+Accuracy Reward. To ensure the accuracy of the final answer, we extract the answer a from the model’s reasoning trace o, and judge whether it is consistent with the ground truth agt :
+
+racc =
+
+(
+
+1, if a = agt ,
+
+0, if a̸ = agt . (6) Therefore, the model receives positive feedback when its output matches the ground truth. 
+
+Diversity Reward. We aim to encourage the model to explore a broader solution space rather than be-ing confined to a single solution, as this facilitates the selection of more reliable solutions. There-fore, the candidate solutions should be pairwise distinct to ensure the diversity of solutions. To quantify the similarity among candidate solutions, candidate solutions are encoded into embeddings 
+
+E = {e1, . . . , e m}, and similarity is quantified as the average pairwise cosine similarities:       
+
+> αsim =1
+> m(m−1)
+> X
+> i∈[1 ,m ]
+> X
+> j∈[1 ,m ]\{ i}
+> cos( ei, e j).(7)
+
+In the early stages of training, the policy model should prioritize solution correctness to establish a solid foundation of reasoning. Once its ability is sufficiently strong, we gradually shift the opti-mization objective toward promoting solution di-versity. To this end, we have designed a diversity scheduling strategy, using sine learning coefficients to gradually increase the proportion of diversity re-wards during the training process. Therefore, the diversity reward for the t-th step in the training process is as follows:               
+
+> rdiv =μ(1 −αsim )·sin
+> π
+> 2·max(0 , t −twp )
+> tmax −twp
+> 
+> ,(8)
+
+where μ is the hyperparameter controlling the level of diversity, twp is the number of warm-up steps before the diversity reward is applied and tmax is the maximum number of training steps. Under this scheduling strategy, the weight coefficient of di-versity gradually increases from 0 to μ. As the model’s capability improves, we refine its reason-ing process to generate diverse candidate solutions while preserving answer correctness. 
+
+Reliability Reward. During the reinforcement learning phase, it is essential to maintain diversity among candidate solutions while simultaneously ensuring that the solution selected by the model is the most reliable. However, assessing reliability via the LLM-based sampling method described in Section 3.3 would incur substantial computational overhead. Therefore, we employ the entropy of the candidate solutions generated by the model as a proxy to judge the reliability of the solutions. Can-didate solutions with lower entropy reflect higher model confidence and are more likely to lead to the correct answer. The uncertainty of each candi-date solution is quantified by computing the mean entropy across its constituent tokens: 
+
+Ht = − 
+
+> |V|
+
+X
+
+> v=1
+
+p(t) 
+
+> v
+
+log p(t) 
+
+> v
+
+, ¯H = 1
+
+T
+
+> T
+
+X
+
+> t=1
+
+Ht, (9) where p(t) 
+
+> v
+
+is the probability of the v-th token in the vocabulary V at the t-th position, Ht is the entropy corresponding to the t-th token in the candidate solution, and T is the number of tokens in the can-didate solution. The candidate solutions s1 to sm
+
+are sorted in ascending order of entropy to obtain 
+
+S = {ˆs1, ˆs2, ..., ˆsm}, then the reliability reward corresponding to this reasoning trajectory is rrel :
+
+rrel = 1
+
+k , s.t. s c = ˆ sk, (10) which means that if the most reliable solution c
+
+chosen by the model is ranked k-th among all can-didate solutions, the reliability reward is rrel = 1 
+
+> k
+
+.In this manner, the model is incentivized to select candidate solutions that exhibit greater reliability. 5Methods AMC 23 AIME 24 AIME 25 Math Minerva Olympiad GPQA MMLU-Pro SciBench Avg.                                                                                                                                             
+
+> Previous RLVR Methods
+> EDGE-GRPO 73.79 16.36 19.37 84.10 49.89 48.79 46.76 54.10 25.79 46.55 Oat 73.59 38.91 16.64 85.34 38.75 50.82 44.43 47.72 26.31 46.95 SimpleRL 74.27 36.43 16.34 85.22 40.43 49.84 47.31 46.48 25.72 46.89 LUFFY 79.68 28.95 26.61 87.99 44.54 56.09 61.51 67.63 33.37 54.04 Critique-GRPO 81.88 44.93 28.44 91.22 51.51 61.46 67.28 74.31 41.38 60.27
+> Qwen3-4B
+> Base Model 59.10 20.36 18.73 78.53 39.82 40.11 46.81 57.95 21.93 42.59 GRPO 73.32 32.08 25.78 87.01 49.17 55.50 58.47 68.57 33.92 53.76 HDPO 83.26 43.56 27.92 92.47 54.92 62.37 65.49 76.12 43.16 61.03
+> Qwen2.5-Math-7B
+> Base Model 71.08 31.55 15.04 79.49 30.17 43.73 48.72 36.74 17.70 41.58 GRPO 80.92 40.76 24.55 89.72 44.86 53.68 60.18 53.19 35.54 53.71 HDPO 85.79 48.75 31.69 93.28 53.54 64.76 69.89 65.63 44.36 61.97
+> DS-R1-Llama-8B
+> Base Model 63.78 16.43 16.08 77.54 37.67 38.88 41.29 48.57 19.03 39.92 GRPO 76.62 24.55 22.32 85.53 45.14 54.74 58.60 59.53 36.10 51.46 HDPO 84.17 37.76 30.75 92.74 56.68 56.19 63.41 67.90 41.02 58.96
+
+Table 1: Comprehensive results on reasoning benchmarks. 
+
+By incorporating the aforementioned four re-wards, we guide the model to adhere to the “propose-select-think” trajectory, generating di-verse and reliable solutions. The overall reward of the i-th sample in the rollout is as follows, 
+
+ri = r(i) 
+
+> f mt
+
++ r(i) 
+
+> acc
+
++ 1[r(i) 
+
+> acc
+
+> 0] · r(i) 
+
+> div
+
++ ¯ racc · r(i)
+
+> rel
+
+, (11) 
+
+where 1[r(i) 
+
+> acc
+
+> 0] indicates whether the answer corresponding to the i-th sample is correct, and HDPO applies the diversity reward exclusively when the answer generated by the model is cor-rect. To calibrate the reliability reward and mitigate overconfidence, we scale r(i) 
+
+> rel
+
+by the group-level av-erage accuracy ¯racc = 1
+
+> G
+
+PGj=1 r(j)
+
+> acc
+
+. Subsequently, the group-relative advantage is computed based on Equation 1, and the model ˆπθ is optimized using the clipped loss function specified in Equation 2. 
+
+4 Experiments 
+
+4.1 Experimental Setup Datasets and Benchmarks. In the cold-start phase, DAPO-Math-17k (Yu et al., 2025) was uti-lized as seed data to generate thinking trajectories. Subsequently, DeepScaleR-Preview-Dataset (Luo et al., 2025a) was employed for the reinforcement learning stage. We evaluated HDPO on nine rea-soning benchmarks: AMC 2023 (MAA), AIME 2024 (Maxwell-Jia, 2024), AIME 2025 (math ai, 2025), Math-500 (Hendrycks et al., 2021), Minerva (Lewkowycz et al., 2022), Olympiad-Bench (He et al., 2024), MMLU-Pro (Wang et al., 2024b), SciBench (Wang et al., 2024a), and GPQA-Diamond (Rein et al., 2023). 
+
+Implementation Details. We experimented with using Qwen3-4B (Yang et al., 2025), 
+
+Qwen2.5-Math-7B (Yang et al., 2024), and 
+
+DeepSeek-R1-Distill-Llama-8B (Guo et al., 2025) as backbone models. In order to con-struct cold start data based on seed data, we em-ploy Qwen3-235B-A22B-Instruct-2507 to gener-ate thought trajectories and another lightweight model Qwen3-1.7B to measure the reliability of each candidate solution. More implementation de-tails can be found in Appendix B. 
+
+Baselines and Evaluation. We compared HDPO with the standard GRPO trained on DAPO-Math-17k and DeepScaleR-Preview-Dataset. Addition-ally, we also use the following powerful RLVR-based baselines: Qwen2.5-Math-7B-Oat-Zero (Liu et al., 2025b), Qwen-2.5-7B-SimpleRL-Zoo (Zeng et al., 2025), LUFFY-Qwen-Math-7B-Zero (Yan et al., 2025), EDGE-GRPO-Qwen-7B (Zhang et al., 2025b) and Critique-GRPO-8B (Zhang et al., 2025a). For each question in the test set, we sample 16 responses and calculate the unbiased pass@3 (Chen et al., 2021) metric for evaluation. 
+
+4.2 Main Results 
+
+We conducted evaluations on different model scales (4B, 7B, and 8B) and model families (Qwen and Llama). As shown in Table 1, HDPO outperforms the RLVR methods on both mathematical reason-ing and general reasoning benchmarks. It suggests that HDPO can be adapted to different LLMs. Ad-ditionally, since GRPO was employed for model optimization, we also compared with the original GRPO method. It can be observed that HDPO has 6Methods AIME 25 Math Olympiad GPQA                                         
+
+> HDPO 31.69 93.28 64.76 69.89
+> w/o Cold Start 28.63 90.55 61.59 65.74 w/o RL 21.47 85.81 51.23 58.13 w/o Diversity Reward 27.24 90.20 60.16 66.29 w/o Diversity Scheduling 30.51 91.77 63.43 68.17 w/o Reliability Reward 28.86 90.38 61.46 66.51 CS-Qwen3-14B 29.76 91.24 62.41 67.70 Random Reliability 27.45 89.58 60.73 65.47 Reverse Reliability 26.93 88.60 60.14 63.82 0/1 Reward 29.87 91.30 63.15 67.19
+
+Table 2: Ablation results for each component in HDPO. 
+
+a significant advantage over GRPO, with improve-ments of 8.24 and 7.58 respectively on Qwen3-4B and Qwen2.5-Math-7B, which is due to HDPO’s ability to encourage the model to explore more po-tential solutions, thereby choosing more reliable solutions and leading to accurate answers. It is worth noting that after optimization by HDPO, the performance of Qwen3-4B exceeds that of Critique-GRPO using Qwen3-8B as backbone. Moreover, HDPO not only improves mathemati-cal reasoning capabilities, but also has a stable en-hancement in general reasoning abilities, indicating its ability to generalize to other domains. 
+
+4.3 Ablation Study 
+
+Taking Qwen2.5-Math-7B as an example, we ana-lyze each module of HDPO in Table 2. 
+
+Cold Start and Reinforcement Learning. We experimented with removing the cold start phase (“w/o Cold Start”) and directly performing rein-forcement learning. The results indicate that the cold start effectively enhances the model’s rea-soning ability, attributed to its adaptation of the model to the “propose-select-think” reasoning pat-tern. Additionally, we used a relatively small LLM 
+
+Qwen3-14B to construct the cold start data (“CS-Qwen3-14B”). Although performance decreased compared to using a stronger model, it still sur-passed that of GRPO, indicating that higher-quality cold-start data generated by more capable models leads to better initialization. We also analyzed the scenario of directly removing the entire reinforce-ment learning phase (“w/o RL”) and only perform-ing cold start. The performance dropped compared to removing cold start phase, highlighting the im-portance of diversity and reliability. 
+
+Diversity. During the reasoning process, we en-courage the model to actively explore diverse solu-tion spaces by imposing the diversity reward. As shown in Table 2, the model performance decreases significantly after removing the diversity reward (“w/o Diversity Reward”), underscoring the im-portance of promoting diversity among candidate solutions to foster more thorough reasoning and improve answer accuracy. Recognizing that the model exhibits limited reasoning capability in the early stages of RL training, HDPO gradually in-creases the proportion of diversity rewards through a diversity scheduling strategy. We can observe that its contribution to HDPO is positive, indicat-ing that such a scheduling strategy is beneficial for balancing the accuracy and diversity. 
+
+Reliability. To unlock the model’s ability to se-lect reliable solutions, we designed the reliability reward that checks whether the solution selected by the model is optimal. After removing the reli-ability reward, the model’s performance declined because the model lacked the supervisory signal for the selection step and was unable to choose effective candidate solution. Reliability reward in HDPO is built on the foun-dation that the reliability and confidence of a so-lution are closely related. We also considered two other variants of the reliability reward. The first alternative randomly assigns the reliability reward of a sample to one of the values in [1 , 12 , ..., 1 
+
+> m
+
+] (i.e., “Random Reliability”), where m is the number of candidate solutions. The other method sorts the confidence of the candidate solutions in descend-ing order (i.e., “Reverse Reliability”), and the re-liability reward is the reciprocal of the rank of the solution selected by the model. Both variants show inferior performance compared to the reliability reward design in HDPO, verifying that solutions with high confidence are favorable for reasoning. In order to take into account the different degrees of reliability of the candidate solutions chosen by the model, we designed continuous rewards, which are inversely proportional to the ranking of the se-lected solutions. An alternative approach assigns a binary reward of 1 if the model selects the top-ranked solution and 0 otherwise. As shown by “0/1 Reward”, this discrete reward scheme degrades performance, which stems from its failure to dis-criminate between solutions of differing reliability. 
+
+4.4 Analysis Trends in Accuracy and Diversity. To maintain the diversity of candidate solutions generated by the model, we introduced diversity reward to en-courage differences between solutions. We com-pared the trend of diversity of candidate solutions and the accuracy of answers during the training 70 20 40 60 80 100 120 140 160 180 200           
+
+> Training Steps
+> 52
+> 54
+> 56
+> 58
+> 60
+> 62
+> 64
+> Accuracy (%)
+> Accuracy vs Training Steps
+> HDPO
+> w/o Div
+> w/o Scheduling
+> 020 40 60 80 100 120 140 160 180 200
+> Training Steps
+> 0.46
+> 0.48
+> 0.50
+> 0.52
+> 0.54
+> 0.56
+> 0.58
+> Diversity (1  sim )
+> Diversity vs Training Steps
+> HDPO
+> w/o Div
+> w/o Scheduling
+
+Figure 4: The effect of diversity reward configurations on model performance for Olympiad-Bench.          
+
+> Types Qwen3-4B Qwen2.5-Math-7B DS-R1-Llama-8B
+> Spearman 0.64 0.67 0.62 Kendall 0.61 0.63 0.57
+
+Table 3: Correlation between confidence and reliability. 
+
+process before and after adding diversity rewards. As shown in Figure 4, compared to the HDPO with diversity reward (i.e., “HDPO”), the perfor-mance of HDPO without adding diversity reward (i.e., “w/o Div”) reached saturation prematurely. This phenomenon results from the diversity reward directing the model toward a broader solution space rather than constraining optimization to outcome-level correctness. Furthermore, we examined the effect of ablating the diversity scheduling strategy (“w/o Scheduling”). The absence of scheduling mechanism compromises training stability, which in turn causes the model to overemphasize diversity. Although accuracy initially peaks, it subsequently exhibits fluctuations, ultimately yielding inferior performance compared to the scheduled variant. 
+
+Correlation between Solution Confidence and Reliability. HDPO treats solution confidence as a proxy for reliability, assuming a strong correla-tion between the two. To validate this, we sampled 10,000 training rollouts and ranked candidates us-ing both confidence and the LLM-sampled accu-racy metric (Section 3.3). As shown in Table 3, con-fidence and reliability demonstrate a strong positive correlation, with correlation coefficients exceeding 0.5 across all three backbones. We further assess the impact of the reliability reward on selection behavior. Specifically, we ex-tracted the candidate solutions chosen by the model and measured their reliability using the method de-scribed in Section 3.3 to assess whether the model’s selection aligns with the most reliable solution. As shown in Table 4, after applying the reliability re-ward, the model is able to select reliable solutions more accurately, aligning with the reliability de-rived from accuracy rate. This indicates that the reliability reward effectively stimulates the model’s capacity to identify reliable candidate solutions.                             
+
+> Backbones AIME 25 Math Olympiad GPQA
+> w/o Reliability Reward
+> Qwen3-4B 60.63 71.19 64.79 66.19 Qwen2.5-Math-7B 61.46 67.74 62.25 72.13 DS-R1-Llama-8B 57.71 66.54 58.54 63.04
+> w/ Reliability Reward
+> Qwen3-4B 75.64 87.40 80.58 81.50 Qwen2.5-Math-7B 77.29 91.65 82.27 82.17 DS-R1-Llama-8B 71.88 82.51 76.87 75.32
+
+Table 4: Assessing the impact of the reliability reward on candidate selection accuracy. 
+
+Methods AIME 25 Math Olympiad GPQA 
+
+HDPO (Iter 1) 29.32 90.15 61.98 67.04 HDPO (Iter 2) 30.46 90.77 62.84 68.15 HDPO (Iter 3) 31.63 91.75 63.96 69.23 HDPO (Iter 4) 31.32 92.33 63.85 69.06 HDPO (Iter 5) 31.43 92.14 63.89 69.48 
+
+Table 5: Experimental results from the first five itera-tions of the self-evolution process. 
+
+Self-Evolution Alternating between Cold Start and Reinforcement Learning. In the cold start phase, we employed an advanced LLM to con-struct structured reasoning trajectories following the “propose-select-think” framework. To alleviate the dependence on the teacher model, we designed a self-evolving policy optimization scheme. Specif-ically, during the cold start phase, the policy model 
+
+πθ serves as its own teacher model. In each itera-tion, we first employ πθ to curate cold start data and perform supervised fine-tuning on itself, and then proceed with reinforcement learning. This process is repeated over multiple sequential iterations. As presented in Table 5, we observed that after five iterations, the model’s perfor-mance is almost comparable to that of using 
+
+Qwen3-235B-A22B-Instruct-2507 as the teacher model to construct cold-start data. This indicates that our HDPO can also stimulate the reasoning ability of LLMs through a self-evolving iterative loop, thereby offering a scalable approach to contin-uously optimize the capability of the policy model. Additional analyses are provided in the appen-dices, covering diversity metrics and trade-offs (Ap-pendices C and D), model variants and alternative optimization algorithms (Appendices E and F), hy-perparameter and latency studies (Appendices G and H), as well as baseline comparisons and the positioning of HDPO (Appendices I and J). 85 Conclusion 
+
+In this paper, we propose Hint-Guided Diversified Policy Optimization (HDPO), explicitly guiding the model to expand the exploration space of rea-soning. HDPO leverages the “propose-select-think” reasoning paradigm, wherein multiple candidate so-lutions are generated as hints, and the most promis-ing candidate is selected for thinking. Experimental results on multiple benchmarks show that HDPO greatly enhances the reasoning ability of LLMs. 
+
+Limitations 
+
+Although HDPO can promote the diversity of solu-tions generated by the model in policy optimization, there are still two limitations. First, we inject di-versity in the form of hints, but there may be some incorrect solutions among the candidate solutions generated by the model, which could affect the sub-sequent reasoning of the model. How to improve the model’s robustness to candidate solutions is a direction worth exploring. On the other hand, HDPO employs the confidence of candidate solu-tions to estimate reliability. How to design other estimation strategies and integrate the results of multiple strategies to enhance the estimation of reliability is left for future work. 
+
+Acknowledgements 
+
+This research was supported by the National Natu-ral Science Foundation of China (Nos. 62276177 and 62376181), and Project Funded by the Prior-ity Academic Program Development of Jiangsu Higher Education Institutions. This work was also supported by Ant Group Research Intern Program. 
+
+References 
+
+Pranjal Aggarwal and Sean Welleck. 2025. L1: Controlling how long a reasoning model thinks with reinforcement learning. arXiv preprint arXiv:2503.04697 .Maciej Besta, Nils Blach, Ales Kubicek, Robert Ger-stenberger, Michal Podstawski, Lukas Gianinazzi, Joanna Gajda, Tomasz Lehmann, Hubert Niewiadom-ski, Piotr Nyczyk, and Torsten Hoefler. 2024. Graph of thoughts: Solving elaborate problems with large language models. In Thirty-Eighth AAAI Conference on Artificial Intelligence, AAAI 2024, Thirty-Sixth Conference on Innovative Applications of Artificial Intelligence, IAAI 2024, Fourteenth Symposium on Educational Advances in Artificial Intelligence, EAAI 2014, February 20-27, 2024, Vancouver, Canada ,pages 17682–17690. AAAI Press. Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu. 2024. Bge m3-embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation. 
+
+arXiv preprint arXiv:2402.03216 .Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde, Jared Kaplan, Harri Edwards, Yura Burda, Nicholas Joseph, Greg Brockman, and 1 oth-ers. 2021. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374 .Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, and 1 others. 2021. Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168 .Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shi-rong Ma, Peiyi Wang, Xiao Bi, and 1 others. 2025. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948 .Chaoqun He, Renjie Luo, Yuzhuo Bai, Shengding Hu, Zhen Thai, Junhao Shen, Jinyi Hu, Xu Han, Yujie Huang, Yuxiang Zhang, Jie Liu, Lei Qi, Zhiyuan Liu, and Maosong Sun. 2024. OlympiadBench: A challenging benchmark for promoting AGI with olympiad-level bilingual multimodal scientific prob-lems. In Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Vol-ume 1: Long Papers) , pages 3828–3850, Bangkok, Thailand. Association for Computational Linguistics. Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Ja-cob Steinhardt. 2021. Measuring mathematical prob-lem solving with the MATH dataset. In Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks 1, NeurIPS Datasets and Benchmarks 2021, December 2021, virtual .Aaron Jaech, Adam Kalai, Adam Lerer, Adam Richard-son, Ahmed El-Kishky, Aiden Low, Alec Helyar, Aleksander Madry, Alex Beutel, Alex Carney, and 1 others. 2024. Openai o1 system card. arXiv preprint arXiv:2412.16720 .Harrison Lee, Samrat Phatale, Hassan Mansoor, Thomas Mesnard, Johan Ferret, Kellie Lu, Colton Bishop, Ethan Hall, Victor Carbune, Abhinav Rastogi, and Sushant Prakash. 2024. RLAIF vs. RLHF: scaling reinforcement learning from human feedback with AI feedback. In Forty-first International Conference on Machine Learning, ICML 2024, Vienna, Austria, July 21-27, 2024 . OpenReview.net. Aitor Lewkowycz, Anders Andreassen, David Dohan, Ethan Dyer, Henryk Michalewski, Vinay V. Ra-masesh, Ambrose Slone, Cem Anil, Imanol Schlag, Theo Gutman-Solo, Yuhuai Wu, Behnam Neyshabur, Guy Gur-Ari, and Vedant Misra. 2022. Solving quan-titative reasoning problems with language models. In 
+
+9Advances in Neural Information Processing Systems 35: Annual Conference on Neural Information Pro-cessing Systems 2022, NeurIPS 2022, New Orleans, LA, USA, November 28 - December 9, 2022 .Che Liu, Haozhe Wang, Jiazhen Pan, Zhongwei Wan, Yong Dai, Fangzhen Lin, Wenjia Bai, Daniel Rueck-ert, and Rossella Arcucci. 2025a. Beyond distil-lation: Pushing the limits of medical llm reason-ing with minimalist rule-based rl. arXiv preprint arXiv:2505.17952 .Zichen Liu, Changyu Chen, Wenjun Li, Penghui Qi, Tianyu Pang, Chao Du, Wee Sun Lee, and Min Lin. 2025b. Understanding r1-zero-like training: A criti-cal perspective. arXiv preprint arXiv:2503.20783 .Michael Luo, Sijun Tan, Justin Wong, Xiaoxiang Shi, William Y Tang, Manan Roongta, Colin Cai, Jef-frey Luo, Tianjun Zhang, Li Erran Li, and 1 others. 2025a. Deepscaler: Surpassing o1-preview with a 1.5 b model by scaling rl. Notion Blog .Renjie Luo, Zichen Liu, Xiangyan Liu, Chao Du, Min Lin, Wenhu Chen, Wei Lu, and Tianyu Pang. 2025b. Language models can learn from verbal feedback without scalar rewards. arXiv preprint arXiv:2509.22638 .MAA. n.d. American mathematics competitions (AMC 10/12). Mathematics Competition Series. math ai. 2025. AIME 2025 dataset. https:// huggingface.co/datasets/math-ai/aime25 .Maxwell-Jia. 2024. AIME 2024 dataset. https: //huggingface.co/datasets/Maxwell-Jia/ AIME_2024 .Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welin-der, Paul F. Christiano, Jan Leike, and Ryan Lowe. 2022. Training language models to follow instruc-tions with human feedback. In Advances in Neural Information Processing Systems 35: Annual Confer-ence on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans, LA, USA, November 28 - December 9, 2022 .David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Di-rani, Julian Michael, and Samuel R. Bowman. 2023. Gpqa: A graduate-level google-proof q&a bench-mark. Preprint , arXiv:2311.12022. Sangwon Ryu, Heejin Do, Yunsu Kim, Gary Lee, and Jungseul Ok. 2024. Multi-dimensional optimization for text summarization via reinforcement learning. In Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) , pages 5858–5871, Bangkok, Thailand. Association for Computational Linguistics. John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. 2017. Proximal policy optimization algorithms. CoRR , abs/1707.06347. Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Yang Wu, and 1 others. 2024. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300 .Kimi Team, Angang Du, Bofei Gao, Bowei Xing, Changjiu Jiang, Cheng Chen, Cheng Li, Chenjun Xiao, Chenzhuang Du, Chonghua Liao, and 1 others. 2025. Kimi k1. 5: Scaling reinforcement learning with llms. arXiv preprint arXiv:2501.12599 .Xiaoxuan Wang, Ziniu Hu, Pan Lu, Yanqiao Zhu, Jieyu Zhang, Satyen Subramaniam, Arjun R. Loomba, Shichang Zhang, Yizhou Sun, and Wei Wang. 2024a. Scibench: Evaluating college-level scientific problem-solving abilities of large language models. In Forty-first International Conference on Machine Learning, ICML 2024, Vienna, Austria, July 21-27, 2024 , Proceedings of Machine Learning Research, pages 50622–50649. PMLR / OpenReview.net. Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V. Le, Ed H. Chi, Sharan Narang, Aakanksha Chowd-hery, and Denny Zhou. 2023. Self-consistency improves chain of thought reasoning in language models. In The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023 . OpenReview.net. Yubo Wang, Xueguang Ma, Ge Zhang, Yuansheng Ni, Abhranil Chandra, Shiguang Guo, Weiming Ren, Aaran Arulraj, Xuan He, Ziyan Jiang, Tianle Li, Max Ku, Kai Wang, Alex Zhuang, Rongqi Fan, Xiang Yue, and Wenhu Chen. 2024b. Mmlu-pro: A more robust and challenging multi-task language understanding benchmark. In Advances in Neural Information Pro-cessing Systems 38: Annual Conference on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver, BC, Canada, December 10 - 15, 2024 .Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed H. Chi, Quoc V. Le, and Denny Zhou. 2022. Chain-of-thought prompting elicits reasoning in large language models. In Ad-vances in Neural Information Processing Systems 35: Annual Conference on Neural Information Process-ing Systems 2022, NeurIPS 2022, New Orleans, LA, USA, November 28 - December 9, 2022 .Haoyuan Wu, Xueyi Chen, Rui Ming, Jilong Gao, Shoubo Hu, Zhuolun He, and Bei Yu. 2025. Totrl: Unlock LLM tree-of-thoughts reasoning potential through puzzles solving. CoRR , abs/2505.12717. Tianbao Xie, Siheng Zhao, Chen Henry Wu, Yitao Liu, Qian Luo, Victor Zhong, Yanchao Yang, and Tao Yu. 2024. Text2reward: Reward shaping with language models for reinforcement learning. In The Twelfth 
+
+10 International Conference on Learning Representa-tions, ICLR 2024, Vienna, Austria, May 7-11, 2024 .OpenReview.net. Jianhao Yan, Yafu Li, Zican Hu, Zhi Wang, Ganqu Cui, Xiaoye Qu, Yu Cheng, and Yue Zhang. 2025. Learning to reason under off-policy guidance. arXiv preprint arXiv:2504.14945 .An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, and 1 others. 2025. Qwen3 technical report. arXiv preprint arXiv:2505.09388 .An Yang, Beichen Zhang, Binyuan Hui, Bofei Gao, Bowen Yu, Chengpeng Li, Dayiheng Liu, Jianhong Tu, Jingren Zhou, Junyang Lin, and 1 others. 2024. Qwen2. 5-math technical report: Toward mathe-matical expert model via self-improvement. arXiv preprint arXiv:2409.12122 .Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik Narasimhan. 2023. Tree of thoughts: Deliberate problem solving with large language models. In Advances in Neural Information Processing Systems 36: Annual Confer-ence on Neural Information Processing Systems 2023, NeurIPS 2023, New Orleans, LA, USA, December 10 - 16, 2023 .Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Weinan Dai, Tiantian Fan, Gaohong Liu, Lingjun Liu, and 1 others. 2025. Dapo: An open-source llm reinforcement learning system at scale. arXiv preprint arXiv:2503.14476 .Yu Yue, Yufeng Yuan, Qiying Yu, Xiaochen Zuo, Ruofei Zhu, Wenyuan Xu, Jiaze Chen, Chengyi Wang, TianTian Fan, Zhengyin Du, and 1 others. 2025. Vapo: Efficient and reliable reinforcement learn-ing for advanced reasoning tasks. arXiv preprint arXiv:2504.05118 .Weihao Zeng, Yuzhen Huang, Qian Liu, Wei Liu, Ke-qing He, Zejun Ma, and Junxian He. 2025. Simplerl-zoo: Investigating and taming zero reinforcement learning for open base models in the wild. arXiv preprint arXiv:2503.18892 .Xiaoying Zhang, Hao Sun, Yipeng Zhang, Kaituo Feng, Chaochao Lu, Chao Yang, and Helen Meng. 2025a. Critique-grpo: Advancing llm reasoning with natural language and numerical feedback. arXiv preprint arXiv:2506.03106 .Xingjian Zhang, Siwei Wen, Wenjun Wu, and Lei Huang. 2025b. Edge-grpo: Entropy-driven grpo with guided error correction for advantage diversity. arXiv preprint arXiv:2507.21848 .Yanzhao Zhang, Mingxin Li, Dingkun Long, Xin Zhang, Huan Lin, Baosong Yang, Pengjun Xie, An Yang, Dayiheng Liu, Junyang Lin, and 1 others. 2025c. Qwen3 embedding: Advancing text embedding and reranking through foundation models. arXiv preprint arXiv:2506.05176 .Chujie Zheng, Shixuan Liu, Mingze Li, Xiong-Hui Chen, Bowen Yu, Chang Gao, Kai Dang, Yuqiong Liu, Rui Men, An Yang, and 1 others. 2025. Group sequence policy optimization. arXiv preprint arXiv:2507.18071 .Denny Zhou, Nathanael Schärli, Le Hou, Jason Wei, Nathan Scales, Xuezhi Wang, Dale Schuurmans, Claire Cui, Olivier Bousquet, Quoc V. Le, and Ed H. Chi. 2023. Least-to-most prompting enables com-plex reasoning in large language models. In The Eleventh International Conference on Learning Rep-resentations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023 . OpenReview.net. 
+
+11 Methods AIME 25 Math Olympiad GPQA 
+
+HDPO (0.6B) 31.69 93.28 64.76 69.89 HDPO (4B) 32.12 93.85 65.54 70.26 HDPO (bge-m3) 31.24 92.73 64.48 69.31 HDPO (B&R) 29.76 92.01 62.81 67.76 HDPO (LLM-Div) 32.51 92.14 64.22 70.47 
+
+Table 6: Comparison of different diversity measurement methods. 
+
+A Prompt for Structured Reasoning 
+
+We provide the prompt used for data construction in the cold start phase in Figure 6. We default to al-lowing the teacher model to generate up to M = 5 
+
+candidate solutions. Each solution overview in-cludes 1 to 5 sentences, containing high-level solu-tion strategies and concepts. 
+
+B Implementation Details 
+
+For the data construction in the cold start phase, we sample L = 10 answers each time to eval-uate reliability. After filtering, 83,279 data en-tries were retained for supervised fine-tuning. Dur-ing the reinforcement learning phase, we sam-ple G = 8 responses in each rollout, with the maximum length of the prompt set to 1024 and the maximum length of the response set to 3072. To calculate the diversity reward, we employ 
+
+Qwen3-Embedding-0.6B (Zhang et al., 2025c) as 
+
+πs to encode each candidate solution and set μ =0.5 to control the degree of diversity. The max-imum training steps tmax is set to 200, and the number of warm-up steps twp before applying the diversity reward is set to 20. All our experiments were conducted on a server equipped with 8 ×
+
+NVIDIA A100 (80GB) GPUs. 
+
+C Solution Diversity Measurement 
+
+To improve computational efficiency, HDPO em-ploys Qwen3-Embedding-0.6B to encode candi-date solutions and calculates cosine similarity to measure the diversity of solutions. To further investigate alternative approaches, we also ana-lyzed encoding with Qwen3-Embedding-4B and 
+
+bge-m3 (Chen et al., 2024), as well as measur-ing similarity by calculating the sum of pairwise BLEU 1 and ROUGE l scores (i.e., HDPO (B&R)). As shown in Table 6, the more powerful the em-bedding model, the more beneficial it is for model training, attributed to the fact that the embedding model directly influences the feedback for the diver-sity of candidate solutions generated by the model. 0 20 40 60 80 100 120 140 160 180 200                 
+
+> Training Steps
+> 52
+> 54
+> 56
+> 58
+> 60
+> 62
+> 64
+> Accuracy (%)
+> Accuracy vs Training Steps
+> HDPO ( =0.3)
+> HDPO ( =0.5)
+> HDPO ( =0.7)
+> 020 40 60 80 100 120 140 160 180 200
+> Training Steps
+> 0.46
+> 0.48
+> 0.50
+> 0.52
+> 0.54
+> 0.56
+> Diversity (1  sim )
+> Diversity vs Training Steps
+> HDPO ( =0.3)
+> HDPO ( =0.5)
+> HDPO ( =0.7)
+
+Figure 5: The effect of different weights of diversity rewards on model performance for Olympiad-Bench.             
+
+> Variant AIME 25 Math Olympiad GPQA
+> GRPO (Qwen2.5-Math-7B-Instruct) 25.72 91.36 59.34 64.51 HDPO (Qwen2.5-Math-7B-Instruct) 33.14 94.17 67.18 72.45
+
+Table 7: Performance comparison of GRPO and HDPO with Qwen2.5-Math-7B-Instruct. 
+
+Additionally, the method based on lexical matching does not take into account semantic-level informa-tion, demonstrate significantly poorer performance in diversity measurement compared to embedding-based approaches. Another optional approach is to prompt the LLM to determine the similarity between can-didate solutions. Specifically, we prompt 
+
+Qwen3-4B-Instruct-2507 to determine the simi-larity between two candidate solutions. The prompt we use is shown in Figure 7. Next, we parse out the probability that the model outputs “Yes” as a measure of the similarity between the two candi-date solutions. As shown by “HDPO (LLM-Div)” in Table 6, the performance of this approach is comparable to that of using the embedding repre-sentation to measure the semantic similarity. This indicates that semantic similarity can effectively reflect the correlation between solutions. However, the method of using the LLM to judge the rele-vance of solutions will lead to more computational overhead, so we adopt the approach of calculating the semantic similarity based on the embedding representation. 
+
+D Trade-off between Diversity and Accuracy 
+
+To prevent reward hacking caused by excessively low or high diversity, we control the diversity level through the hyperparameter μ. We visualize the changes in accuracy and diversity during model training at different levels of diversity by setting different values of μ, as shown in Figure 5. We can observe that both lower ( μ = 0 .3) and higher (μ = 0 .7) levels of diversity cause instability in model training, while the best results are achieved 12 Methods AMC 23 AIME 24 AIME 25 Math Minerva Olympiad GPQA Avg. 
+
+Dr.GRPO 81.80 42.53 23.16 88.72 44.24 52.07 59.74 56.04 HDPO-Dr.GRPO 84.75 52.83 31.55 93.14 55.55 58.94 67.67 63.49 DAPO 80.17 41.46 26.54 89.81 46.85 54.02 57.75 56.66 HDPO-DAPO 87.22 50.42 32.25 94.33 54.61 59.98 68.73 63.93 GSPO 79.09 42.42 26.31 91.08 43.63 52.57 60.94 55.15 HDPO-GSPO 85.31 51.53 37.32 93.09 53.62 56.52 68.14 63.65 
+
+Table 8: Experimental results using Dr.GRPO, DAPO, and GSPO as baseline algorithms.                                   
+
+> Variant AIME 25 Math Olympiad GPQA
+> HDPO ( M= 2 )27.31 91.39 58.95 65.43 HDPO ( M= 3 )28.46 92.85 60.26 68.26 HDPO ( M= 4 )30.18 93.72 62.48 69.31 HDPO ( M= 5 )31.69 93.28 64.76 69.89
+> HDPO ( M= 6 )30.84 93.85 64.19 68.73 HDPO ( M= 7 )29.36 92.61 62.74 68.16
+
+Table 9: The impact of different maximum candidate numbers M on model performance. 
+
+at μ = 0 .5. When the diversity level is low, the model struggles to discern distinctions among can-didate solutions, potentially generating homoge-neous solutions. Conversely, excessive diversity induces an overemphasis on solution heterogene-ity, causing the optimization process to prioritize the diversity reward at the expense of solution cor-rectness and thereby precipitating reward hacking behavior. 
+
+E Base Model vs. Instruction-tuned Model 
+
+In accordance with the guidelines provided by the official Qwen2.5-Math repository, the initial anal-ysis employed the base model Qwen2.5-Math-7B, which serves as a better starting point for fine-tuning. To investigate the generalizability of HDPO to instruction-tuned architectures, we further uti-lized Qwen2.5-Math-7B-Instruct as the backbone model. As demonstrated in Table 7, training with HDPO yields significant improvements in the rea-soning performance of the instruction-tuned vari-ant. 
+
+F Applying to Alternative Policy Optimization Algorithms 
+
+Since HDPO is agnostic to the specific policy op-timization algorithm, it can be readily adapted to other algorithms. To demonstrate this flexi-bility, we selected Dr.GRPO (Liu et al., 2025b), DAPO (Yu et al., 2025), and GSPO (Zheng et al.,                                 
+
+> Variant AIME 25 Math Olympiad GPQA
+> EDGE-GRPO 19.37 (0.30) 84.10 (0.07) 48.79 (0.08) 46.76 (0.14) Oat 15.83 (0.39) 85.34 (0.07) 50.82 (0.10) 44.43 (0.13) SimpleRL 16.34 (0.58) 85.22 (0.09) 49.84 (0.12) 47.31 (0.13) LUFFY 26.61 (0.72) 87.99 (0.14) 56.09 (0.18) 61.51 (0.24) Critique-GRPO 28.44 (0.88) 91.22 (0.19) 61.46 (0.26) 67.28 (0.33) GRPO 24.55 (0.64) 89.72 (0.12) 53.68 (0.18) 60.18 (0.17) HDPO 31.69 (0.82) 93.28 (0.16) 64.76 (0.22) 69.89 (0.28)
+
+Table 10: Analysis of the trade-off between performance and efficiency. 
+
+2025) as representative baseline algorithms for eval-uation. As shown in Table 8, integrating HDPO into each baseline algorithm yielded consistent per-formance improvements, thereby establishing the generalizability of our approach across diverse pol-icy optimization frameworks. 
+
+G Impact of Maximum Number of Candidates 
+
+To enhance the diversity of solutions explored by the model, we allow it to generate up to M = 5 
+
+candidate solutions. We systematically investigate the influence of varying the maximum number of candidates M on model performance, with results presented in Table 9. The empirical analysis re-veals that both insufficient and excessive values of M adversely affect performance. When M is too small, the model’s exploration of the solution space remains constrained, increasing the likeli-hood of missing valid solutions. Conversely, when 
+
+M is overly large, the inclusion of redundant or low-quality candidates introduces noise that can hinder the model’s ability to identify the correct an-swer. An optimal trade-off between coverage and conciseness is achieved at M = 5 , which yields the best overall performance. 
+
+H Inference Latency Analysis 
+
+To further analyze the trade-off between computa-tional resource consumption and performance, we took Qwen2.5-Math-7B as an example to analyze the inference latency. As shown in Table 10, where 13 Method AIME 25 Math Olympiad GPQA             
+
+> SC 19.73 85.34 48.56 54.12 ToTRL 26.54 90.36 57.82 63.24 HDPO 31.69 93.28 64.76 69.89
+> Table 11: Performance comparison of SC, ToTRL, and HDPO with Qwen2.5-Math-7B.
+
+the performance of the model is outside the paren-theses and the average inference latency (in sec-onds) per sample is inside the parentheses. It can be observed that HDPO increases the inference la-tency by less than 0.2s compared to previous SOTA methods, while achieving significant performance improvements. Additionally, the inference delay of HDPO is within 1 second, making it deployable in real-world scenarios. While the computational overhead of HDPO is a legitimate concern, it repre-sents a principled trade-off between computational cost and reasoning quality. 
+
+I Comparison with Other Advanced Reasoning Strategies 
+
+To further validate the effectiveness of HDPO, we compared it against Self-Consistency (SC) (Wang et al., 2023) and ToTRL (Wu et al., 2025), as de-tailed in Table 11. For the SC baseline, we gener-ated 40 reasoning paths per instance and employed majority voting to determine the final answer. The empirical results indicate that SC underperforms relative to both ToTRL and HDPO. This limitation likely stems from inadequate exploration during the inference phase, which renders the method suscep-tible to convergence on erroneous reasoning traces. Furthermore, HDPO demonstrates significantly su-perior performance compared to ToTRL. While ToTRL prioritizes answer correctness, it lacks feed-back regarding the solution process. This absence of process-level supervision constrains the model’s ability to explore optimal solution paths. 
+
+J Positioning of HDPO 
+
+Policy Internalization vs. Inference-Time Search. Unlike Tree-of-Thought (ToT) (Yao et al., 2023) and Self-Consistency (Wang et al., 2023) paradigms that rely on repeated model calls, explicit tree expansion, or post-hoc vot-ing during inference, HDPO internalizes the “ex-plore–evaluate–select” cognitive cycle directly into the policy network. This design preserves the fault-tolerance benefits of multi-path reasoning while eliminating the linear-to-exponential latency over-head inherent to search-based methods. 
+
+Explicit Optimization for Diversity and Reliabil-ity. Departing from accuracy-centric frameworks such as LUFFY (Yan et al., 2025) and Critique-GRPO (Zhang et al., 2025a), which primarily opti-mize for outcome-level correctness or rely on ex-ternal process critiques, HDPO directly addresses solution homogenization and unreliable trajectory selection. Our pipeline explicitly internalizes diver-sity and reliability into the policy: (1) Cold Start for Structured Reasoning establishes the “propose-select-think” trajectory via SFT, rigorously filtering data by both answer correctness and candidate re-liability (validated through lightweight accuracy sampling). (2) Hint-Guided Diversified RL injects dual optimization signals absent in prior frame-works: a sinusoidally scheduled diversity reward 
+
+penalizes semantic redundancy to prevent homo-geneous convergence, while a confidence-based 
+
+reliability reward (proxied by token entropy) trains the model to autonomously rank and select the most robust candidate. By embedding these ob-jectives directly into training, HDPO transcends correctness-centric paradigms, yielding a policy that inherently maintains broad solution coverage and fault-tolerant selection in a single forward pass. 
+
+Synergy between Diversity and Reliability. The diversity reward ( rdiv ) and reliability reward ( rrel )operate on decoupled reasoning phases: rdiv 
+
+encourages variation during candidate proposal ,while rrel guides the selection step. Crucially, rdiv 
+
+is gated by outcome correctness, preventing explo-ration from compromising accuracy. The diver-sity scheduling strategy further ensures that diver-sity optimization only activates after the warm-up phase, allowing the model to first master structural compliance and baseline correctness. 
+
+Insights on Entropy as a Reliability Proxy. 
+
+While the selection step initially relies on entropy-based confidence to choose a hint for further rea-soning, the ultimate optimization signal is the Veri-fiable Reward (outcome correctness). If the model selects a hint with low entropy (high confidence) that leads to an incorrect solution, the RLVR mech-anism assigns a negative reward. Over time, the policy learns to associate specific reasoning pat-terns with correctness, effectively calibrating the selection policy through trial and error, even if the raw token entropy remains uncalibrated. Moreover, by incentivizing the generation of multiple candidate outlines before selection, the 14 model reduces the risk of a single overconfident error dominating the process. Even if the entropy metric misranks the candidates, the correct reason-ing path is more likely to be present in the candi-date set compared to standard single-pass reason-ing. The RL objective then reinforces the selection of hints that lead to verifiable success, gradually aligning the reliability signal with actual perfor-mance rather than raw entropy. 
+
+K Case Study 
+
+To further analyze the advantages of HDPO, we provide three case studies. 
+
+Case 1. The first case, illustrated in Figures 8 and 9, highlights a critical limitation of the tra-ditional reasoning approach. As depicted in Fig-ure 8, the traditional reasoning process verifies the constraint only at three discrete points within the interval [0 , 1] , despite the requirement that the in-equality hold for all x ∈ [0 , 1] . Consequently, the model persists along this flawed line of reasoning and ultimately arrives at an incorrect solution. In contrast, HDPO’s “propose-select-think” reasoning framework enables it to generate candidate solu-tions that incorporate Chebyshev polynomials, an essential insight that leverages the extremal prop-erties of these polynomials to correctly determine the maximum value. 
+
+Case 2. Figures 10 and 11 present a second illustra-tive example that demonstrates a different failure mode of the conventional reasoning process. In Fig-ure 10, the model eventually adopts the correct so-lution in its third step by situating the circle within a coordinate system. However, it has already intro-duced an error in the second step by erroneously assuming that the distance from point O to chord 
+
+AB equals 4. This error stems from the model’s failure to recognize the proper solution strategy at the outset. By contrast, the HDPO method depicted in Figure 11 introduces coordinate geometry as a candidate approach from the beginning and main-tains this coherent line of reasoning throughout, ultimately yielding the correct solution. 
+
+Case 3 (Failure Case). In addition, we also present a failure case of HDPO, as shown in Figure 12. In this example, the model chose the first candi-date solution, but this solution did not take into account the use of complex number theory, which represents the fundamental approach to solving this problem. Consequently, the model made an erro-neous assumption during reasoning. Specifically, it incorrectly concluded that angle pairs such as 
+
+(8 ◦, 352 ◦) and (16 ◦, 344 ◦) possess opposite cosine values, failing to incorporate the complex number perspective into its analysis. The case shows that when the initial set of candidate solutions is gen-erated without the correct answer, the subsequent reasoning is compromised. Therefore, steering the model toward the generation of more pertinent can-didate solutions could enhance the reasoning capa-bilities of LLMs. 15 Structured Reasoning Prompt 
+
+Given a problem, please first consider all possible candidate solutions, and place an overview of all candidate solutions within <Candidate Solutions></Candidate Solutions>. Different solution overviews should be separated by “\n\n”. 1. The overview of the solution should be as concise as possible, containing 1 to 5 sentences. It should only elaborate on the high-level strategies and concepts, without going into specific calculations. 2. Different candidate solutions should exist differences at the method level, so do not output similar solution overviews. 3. Do not use line breaks within the same candidate solution overview, and use “\n\n” to separate different candidate solutions. 4. You can propose 1 to 5 candidate solutions, each preceded by the serial number enclosed in square brackets, such as “[1]”, “[2]”, “[3]”, etc. Each candidate solution overview is a core summary of the proposed solution. After thinking through the candidate solution overviews, choose the most reliable one and place the step number of the chosen solution (e.g., “[1]”) within <selected></selected>. Next, proceed with step-by-step reasoning based on the chosen solution. Place the reasoning process in the <thinking></thinking> and put your final answer in \\boxed{}. Problem: {} 
+
+Figure 6: The prompt used in structured reasoning. 
+
+Relevance Judgment Prompt 
+
+Given a question and its corresponding two candidate solution outlines, please determine whether these two candidate solutions are the same. We consider them to be the same when they meet the following two conditions. 1. They use the same branch of mathematics or specific theorem. 2. They rely on the same underlying logical dependencies, although the expressions may differ. If the two candidate solutions are the same, output "Yes", otherwise output "No", do not output redundant content. Question: {question} Candidate Solution 1: {candidate solution 1} Candidate Solution 2: {candidate solution 2} 
+
+Figure 7: The prompt used for solution relevance judgment. 
+
+16 Case 1 (Generation Model: Qwen2.5-Math-7B-GRPO) 
+
+Question: 
+
+Let a, b, c be real numbers such that 
+
+|ax 2 + bx + c| ≤ 1
+
+for all 0 ≤ x ≤ 1. Find the largest possible value of |a| + |b| + |c|.
+
+Response: 
+
+<thinking> To solve the problem, we need to find the maximum value of |a| + |b| + |c| given the constraint 
+
+|ax 2 + bx + c| ≤ 1 for all 0 ≤ x ≤ 1.We can start by evaluating the polynomial at specific points within the interval [0 , 1] . The points 
+
+x = 0 , x = 12 , and x = 1 are good choices because they will give us a system of equations that we can use to determine a, b, and c.1. At x = 0 , we have |c| ≤ 1.2. At x = 1 , we have |a + b + c| ≤ 1.3. At x = 12 , we have | a 
+
+> 4
+
++ b 
+
+> 2
+
++ c| ≤ 1.We need to find the values of a, b, and c that maximize |a| + |b| + |c| while satisfying these constraints. Let’s consider the possible values for c. Since |c| ≤ 1, we can set c = 1 or c = −1
+
+to maximize the sum. Let’s start with c = 1 . Then we have: 1. |a + b + 1 | ≤ 1, which implies −2 ≤ a + b ≤ 0.2. | a 
+
+> 4
+
++ b 
+
+> 2
+
++ 1 | ≤ 1, which implies −2 ≤ a 
+
+> 4
+
++ b 
+
+> 2
+
++ 1 ≤ 0, or −3 ≤ a 
+
+> 4
+
++ b 
+
+> 2
+
+≤ − 1.We can solve these inequalities to find the values of a and b. Let’s consider the boundary cases to maximize |a| + |b| + |c|.If we set a = 4 and b = −6, we get: 1. |4 − 6 + 1 | = | − 1| = 1 ≤ 1, which satisfies the constraint. 2. | 44 + −62 + 1 | = |1 − 3 + 1 | = | − 1| = 1 ≤ 1, which satisfies the constraint. So, |a| + |b| + |c| = |4| + | − 6| + |1| = 4 + 6 + 1 = 11 .Let’s check if there are any other possible values that could give a larger sum. If we set 
+
+c = −1, we get: 1. |a + b − 1| ≤ 1, which implies 0 ≤ a + b ≤ 2.2. | a 
+
+> 4
+
++ b 
+
+> 2
+
+− 1| ≤ 1, which implies 0 ≤ a 
+
+> 4
+
++ b 
+
+> 2
+
+≤ 2, or 0 ≤ a 
+
+> 4
+
++ b 
+
+> 2
+
+≤ 2.If we set a = −4 and b = 6 , we get: 1. | − 4 + 6 − 1| = |1| = 1 ≤ 1, which satisfies the constraint. 2. | −44 + 62 − 1| = | − 1 + 3 − 1| = |1| = 1 ≤ 1, which satisfies the constraint. So, |a| + |b| + |c| = | − 4| + |6| + | − 1| = 4 + 6 + 1 = 11 .Therefore, the largest possible value of |a| + |b| + |c| is 11 .</thinking> 
+
+11 ✘ Correct Answer: 17 
+
+Figure 8: The output produced by Qwen2.5-Math-7B following GRPO training with standard chain-of-thought reasoning in the first test case. 
+
+17 Case 1 (Generation Model: Qwen2.5-Math-7B-HDPO) 
+
+Question: 
+
+Let a, b, c be real numbers such that 
+
+|ax 2 + bx + c| ≤ 1
+
+for all 0 ≤ x ≤ 1. Find the largest possible value of |a| + |b| + |c|.
+
+Response: 
+
+<Candidate Solutions> [1] Use the fact that the quadratic polynomial is bounded by 1 in absolute value on [0,1], and evaluate it at key points such as x=0, x=1, and x=0.5 to derive constraints on a, b, c. Then express a, b, c in terms of these values and use linear programming or symmetry arguments to maximize |a| + |b| + |c|. [2] Consider the polynomial as a function in a finite-dimensional space and use the extreme values of the polynomial on [0,1] to form a system of inequalities. Apply the method of Lagrange multipliers to maximize the linear functional |a| + |b| + |c| subject to the quadratic constraint. [3] Assume symmetry or specific forms (e.g., a=0, or b=0) to reduce complexity and test boundary cases. However, this may miss the global maximum if the optimal polynomial is not symmetric or has non-zero a and b. [4] Use Chebyshev polynomials, which are known to be extremal with respect to maximum deviation from zero, and map the standard Chebyshev polynomial on [-1,1] to the interval [0,1]. Scale and shift the Chebyshev polynomial to satisfy the bound |P (x)| ≤ 1 and compute the coefficients to find the maximum of |a| + |b| + |c|. [5] Use polynomial interpolation and optimization: since the polynomial is bounded on [0,1], consider the values at three points (e.g., 0, 1/2, 1) and use the resulting system to express coefficients, then apply bounds and optimization techniques to maximize the sum of absolute values. </Candidate Solutions> <selected>[4]</selected> <thinking> We are given that |ax 2 + bx + c| ≤ 1 for all 0 ≤ x ≤ 1, and we are to find the maximum value of 
+
+|a| + |b| + |c|.The key insight is to use the properties of Chebyshev polynomials, which are known for being extremal with respect to the maximum norm. The Chebyshev polynomial of degree 2 on [−1, 1] is 
+
+T2(x) = 2 x2 − 1, which oscillates between -1 and 1 at three points. We want to map this polynomial to the interval [0 , 1] . Let t = 2 x − 1, which maps x ∈ [0 , 1] to 
+
+t ∈ [−1, 1] . Then x = t+1 2 , and we can substitute into T2(t) = 2 t2 − 1:
+
+P (x) = T2(2 x − 1) = 2(2 x − 1) 2 − 1 = 2(4 x2 − 4x + 1) − 1 = 8 x2 − 8x + 2 − 1 = 8 x2 − 8x + 1 .
+
+So a = 8 , b = −8, c = 1 , and |a| + |b| + |c| = 8 + 8 + 1 = 17 .Now, we check that |P (x)| ≤ 1 for 0 ≤ x ≤ 1. Since P (x) = T2(2 x − 1) , and T2(t) has maximum absolute value 1 on [−1, 1] , it follows that |P (x)| ≤ 1 for all x ∈ [0 , 1] .Is this the maximum possible? Suppose there exists another polynomial Q(x) = ax 2 + bx + c with 
+
+|Q(x)| ≤ 1 on [0 , 1] and |a| + |b| + |c| > 17 . By the properties of Chebyshev polynomials, the maximum of |a| + |b| + |c| under the given constraint is achieved at the extremal polynomial, which is a scaled and shifted Chebyshev polynomial. Since P (x) = 8 x2 − 8x + 1 achieves |a| + |b| + |c| = 17 and satisfies the bound, it must be the maximum. Thus, the largest possible value is 17 .</thinking> 
+
+17 ✓
+
+Figure 9: The output produced by Qwen2.5-Math-7B following HDPO training using “propose-select-think” structured reasoning in the first test case. 
+
+18 Case 2 (Generation Model: Qwen2.5-Math-7B-GRPO) 
+
+Question: 
+
+Circle O has radius 6. Point P lies outside circle O, and the shortest distance from P to circle O is 4. Chord AB is parallel to ←→
+
+OP , and the distance between AB and ←→
+
+OP is 2 . Compute 
+
+P A 2 + P B 2.
+
+Response: 
+
+<thinking> To solve the problem, we need to find the value of P A 2 + P B 2. Here’s the step-by-step reasoning: 1. **Understand the Geometry:** - Circle O has a radius of 6. - Point P is 4 units away from the circle, so the distance from P to the center O is 6 + 4 = 10 .- Chord AB is parallel to ←→
+
+OP and the distance between AB and ←→
+
+OP is 2. 2. **Find the Length of Chord AB :** - Since AB is parallel to ←→
+
+OP and the distance between them is 2, the perpendicular distance from O to AB is 6 − 2 = 4 or 6 + 2 = 8 . But since P is 4 units away from the circle and AB 
+
+is parallel to ←→
+
+OP , the perpendicular distance from O to AB must be 4 (as 8 would place AB 
+
+outside the circle). - Using the Pythagorean theorem in the right triangle formed by the radius, the perpendicular distance, and half the chord, we get: 
+
+ AB 
+
+2
+
+2
+
+= 6 2 − 42 = 36 − 16 = 20 = ⇒ AB 
+
+2 = √20 = 2 √5 = ⇒ AB = 4 √5
+
+3. **Find the Coordinates:** - Place the circle centered at O(0 , 0) and point P at (10 , 0) .- The chord AB is parallel to the x-axis and 2 units below the x-axis (since the distance from 
+
+O to AB is 4). - So, the coordinates of A and B can be (−2√5, −2) and (2 √5, −2) respectively. 4. **Calculate P A 2 and P B 2:** - Using the distance formula, we get: 
+
+P A 2 = (10 − (−2√5)) 2 + (0 − (−2)) 2 = (10 + 2 √5) 2 + 2 2 = 100 + 40 √5 + 20 + 4 = 124 + 40 √5
+
+P B 2 = (10 − 2√5) 2 + (0 − (−2)) 2 = (10 − 2√5) 2 + 2 2 = 100 − 40 √5 + 20 + 4 = 124 − 40 √5
+
+- Adding P A 2 and P B 2:
+
+P A 2 + P B 2 = (124 + 40 √5) + (124 − 40 √5) = 248 
+
+So, the final answer is: 
+
+248 
+
+</thinking> 
+
+248 ✘ Correct Answer: 272 
+
+Figure 10: The output produced by Qwen2.5-Math-7B following GRPO training with standard chain-of-thought reasoning in the second test case. 
+
+19 Case 2 (Generation Model: Qwen2.5-Math-7B-HDPO) 
+
+Question: 
+
+Circle O has radius 6. Point P lies outside circle O, and the shortest distance from P to circle O is 4. Chord AB is parallel to ←→
+
+OP , and the distance between AB and ←→
+
+OP is 2 . Compute 
+
+P A 2 + P B 2.
+
+Response: 
+
+<Candidate Solutions> [1] Use geometric symmetry and properties of circles and chords. Since AB is parallel to OP 
+
+and the distance between them is 2, the perpendicular distance from O to AB is either 4 + 2 = 6 
+
+or 4 − 2 = 2 . This approach relies on parameterizing the circle and solving systems of equations. [2] Use vector geometry: represent points A and B on the circle with AB parallel to vector ⃗OP , and the perpendicular distance between the lines is 2. [3] Use coordinate geometry by placing the center of circle O at the origin and point P along the x-axis. Since chord AB is parallel to ←→
+
+OP , it is horizontal, and the distance between AB 
+
+and ←→
+
+OP is 2, so AB is either at y = 2 or y = −2.</Candidate Solutions> <selected>[3]</selected> <thinking> We place the center of circle O at the origin (0 , 0) . Since the radius is 6, the circle has equation x2 + y2 = 36 .The shortest distance from point P to the circle is 4. Since the radius is 6, this means that the distance from O to P is 6 + 4 = 10 . We can place P at (10 , 0) , so that it lies on the x-axis. The line ←→
+
+OP is the x-axis (since O = (0 , 0) , P = (10 , 0) ). The chord AB is parallel to ←→
+
+OP , so it is horizontal. The distance between AB and ←→
+
+OP is 2. Since AB could be above or below the x-axis, we consider y = 2 and y = −2. By symmetry, the value of P A 2 + P B 2 will be the same in both cases, so we can choose y = 2 .Now, find the points A and B where y = 2 intersects the circle x2 + y2 = 36 :
+
+x2 + 2 2 = 36 ⇒ x2 + 4 = 36 ⇒ x2 = 32 ⇒ x = ±√32 = ±4√2
+
+So, A = (4 √2, 2) , B = ( −4√2, 2) 
+
+Now compute P A 2 and P B 2, where P = (10 , 0) 
+
+First, P A 2:
+
+P A 2 = (10 − 4√2) 2 + (0 − 2) 2 = (10 − 4√2) 2 + 4 
+
+Expand: 
+
+(10 − 4√2) 2 = 100 − 80 √2 + 16 · 2 = 100 − 80 √2 + 32 = 132 − 80 √2
+
+So: 
+
+P A 2 = 132 − 80 √2 + 4 = 136 − 80 √2
+
+Now P B 2:
+
+P B 2 = (10 + 4 √2) 2 + (0 − 2) 2 = (10 + 4 √2) 2 + 4 
+
+Expand: 
+
+(10 + 4 √2) 2 = 100 + 80 √2 + 32 = 132 + 80 √2
+
+So: 
+
+P B 2 = 132 + 80 √2 + 4 = 136 + 80 √2
+
+Now add P A 2 + P B 2:
+
+(136 − 80 √2) + (136 + 80 √2) = 136 + 136 = 272 
+
+The √2 terms cancel out. Thus, the answer is 272 
+
+</thinking> 
+
+272 ✓
+
+Figure 11: The output produced by Qwen2.5-Math-7B following HDPO training using “propose-select-think” structured reasoning in the second test case. 
+
+20 Case 3 (Generation Model: Qwen2.5-Math-7B-HDPO) 
+
+Question: 
+
+Compute sin 2 4◦ + sin 2 8◦ + sin 2 12 ◦ + · · · + sin 2 176 ◦.
+
+Response: 
+
+<Candidate Solutions> [1] Use the identity sin 2 θ = 1−cos 2 θ 
+
+> 2
+
+to rewrite each term in the sum. Then apply the sum of cosine series formula for angles in arithmetic sequence, simplifying the resulting expression using symmetry and periodicity of the cosine function. [2] Interpret the sum as a discrete approximation of an integral of sin 2 x over a interval, and use numerical methods or symmetry to estimate the value. However, this approach lacks precision and relies on approximation, making it unsuitable for exact computation. [3] Use complex exponentials to express sin 2 θ and convert the sum into a sum of powers of roots of unity, then apply properties of Gauss sums or Fourier analysis on finite groups. [4] Use a recursive or computational algorithm to evaluate each term numerically and sum them, but this is impractical for exact mathematical reasoning and lacks elegance and precision. </Candidate Solutions> <selected>[1]</selected> <thinking> We are given the sum: 
+
+sin 2 4◦ + sin 2 8◦ + sin 2 12 ◦ + · · · + sin 2 176 ◦
+
+This is a sum of sin 2 θ for θ = 4 k◦ where k = 1 , 2, . . . , 44 , since 4 × 44 = 176 .We use the identity: 
+
+sin 2 θ = 1 − cos 2 θ
+
+2
+
+Applying this to each term: 
+
+sin 2(4 k◦) = 1 − cos(8 k◦)2
+
+So the entire sum becomes: 
+
+> 44
+
+X
+
+> k=1
+
+sin 2(4 k◦) = 
+
+> 44
+
+X
+
+> k=1
+
+1 − cos(8 k◦)2 = 12
+
+> 44
+
+X
+
+> k=1
+
+1 − 12
+
+> 44
+
+X
+
+> k=1
+
+cos(8 k◦)= 12 · 44 − 12
+
+> 44
+
+X
+
+> k=1
+
+cos(8 k◦) = 22 − 12
+
+> 44
+
+X
+
+> k=1
+
+cos(8 k◦)
+
+Now we need to compute: 44 X
+
+> k=1
+
+cos(8 k◦)
+
+The sum of cos(8 k◦) for k = 1 to 44 can be evaluated using symmetry. Note that the angles 8k◦ for k = 1 to 44 are evenly spaced from 8◦ to 352 ◦, which is half the circle (since 8 × 44 = 352 ). These angles are symmetric about 180 ◦, and the cosine function is even but symmetric about 180 ◦, so the sum of cosines over a symmetric arithmetic sequence about 
+
+180 ◦ with evenly spaced steps is zero. To see this: the sequence 8◦, 16 ◦, . . . , 352 ◦ is symmetric about 180 ◦, and cos(360 ◦ − x) = cos x, so pairs like (8 ◦, 352 ◦), (16 ◦, 344 ◦), etc., have equal and opposite cosines. Since there are 44 terms (even number), they can be perfectly paired, and each pair sums to zero. Therefore: 44 X
+
+> k=1
+
+cos(8 k◦) = 0 
+
+So the original sum is: 
+
+22 − 12 · 0 = 22 
+
+</thinking> 
+
+22 ✘ Correct Answer: 45 2
+
+Figure 12: A failure case of Qwen2.5-Math-7B following HDPO training, where the candidate solutions did not include the most reliable solution. 
+
+21

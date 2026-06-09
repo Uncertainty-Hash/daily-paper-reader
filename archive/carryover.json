@@ -1,12 +1,97 @@
 {
-  "generated_at": "2026-06-08T20:46:31.761789+00:00",
-  "updated_date": "20260608",
+  "generated_at": "2026-06-09T21:53:45.686463+00:00",
+  "updated_date": "20260609",
   "carryover_days": 9,
   "tag_states": {
     "opd": {
-      "updated_date": "20260608",
+      "updated_date": "20260609",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2606.09071v1",
+          "source": "arxiv",
+          "title": "REFLECT: Intervention-Supported Error Attribution for Silent Failures in LLM Agent Traces",
+          "abstract": "Large language model (LLM) agents now solve complex tasks through long plan-and-execution traces, yet the ability to locate errors in a completed traces still lags far behind, especially in the \\emph{silent failure} regime. Existing approaches predict suspect steps via classifiers or LLM judges, or recover correct answers via retry, but none feed the intervention outcome back to \\emph{refine the attribution itself}. We propose \\methodname, a method that closes this gap by diagnosing a candidate error step, testing it through controlled replay with a diagnosis-specific patch, and using the verified outcome flip as contrastive evidence to refine the final attribution. Across four localization benchmarks spanning multi-hop reasoning across domains, \\methodname achieves the highest localization accuracy among same-auditor methods across all four benchmarks, with the largest gains on structured tool-use traces, while providing actionable localization even when ground-truth answers are unavailable.",
+          "authors": [
+            "Xiaofeng Lin",
+            "Yingxu Wang",
+            "Tung Sum Thomas Kwok",
+            "Daniel Guo",
+            "Sahil Arun Nale",
+            "Charles Fleming",
+            "Guang Cheng"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI"
+          ],
+          "published": "2026-06-08T06:11:57+00:00",
+          "link": "https://arxiv.org/pdf/2606.09071v1",
+          "tags": [
+            "keyword:opd",
+            "query:opd"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "error attribution in LLM agent traces via intervention replay",
+          "llm_evidence_cn": "通过干预重放进行LLM智能体轨迹错误归因",
+          "llm_evidence": "通过干预重放进行LLM智能体轨迹错误归因",
+          "canonical_evidence": "通过干预重放进行LLM智能体轨迹错误归因",
+          "llm_tldr_en": "Proposes REFLECT which uses controlled replay with diagnosis-specific patches to refine error attribution for silent failures in LLM agent traces.",
+          "llm_tldr_cn": "LLM智能体在执行复杂任务时，完成轨迹中的静默错误难以定位。现有方法仅预测或重试，未利用干预反馈改进归因。REFLECT通过诊断候选错误步骤、用特定补丁进行受控重放，并根据验证结果对比优化最终归因，在多步推理定位基准上取得了更准确的错误定位。",
+          "llm_tldr": "LLM智能体在执行复杂任务时，完成轨迹中的静默错误难以定位。现有方法仅预测或重试，未利用干预反馈改进归因。REFLECT通过诊断候选错误步骤、用特定补丁进行受控重放，并根据验证结果对比优化最终归因，在多步推理定位基准上取得了更准确的错误定位。",
+          "llm_tags": [
+            "query:opd"
+          ],
+          "matched_query_tag": "query:opd",
+          "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+          "matched_requirement_id": "req-7",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.09071v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.09380v1",
+          "source": "arxiv",
+          "title": "Reasoning Arena: Trace Tournaments When Verifiable Rewards Fall Short",
+          "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become a leading paradigm for improving the reasoning ability of large language models through outcome-based supervision. However, verifiable rewards frequently become uninformative at the group level: when all sampled traces of a given prompt receive identical rewards, group-relative advantage estimation provides no gradient signal, even though the traces may differ substantially in reasoning quality. We propose Reasoning Arena, an adaptive training framework that routes such non-diverse reward groups to a judge system instead of discarding them. Beyond examining the final answer, Reasoning Arena constructs trace tournaments, where reasoning traces are compared head-to-head to expose finer-grained preferences within the group, converting reasoning quality into rich relative reward signals. To make reward estimation efficient, rather than exhaustively comparing every pair, each new trace is evaluated against a small, dynamically updated pool of previously generated traces as anchors to efficiently establish a relative ranking. We then fit a Bradley-Terry model on the incomplete comparison graph, enabling scalable RL integration without quadratic pairwise comparisons. Empirical results demonstrate that Reasoning Arena consistently outperforms the RLVR baseline by 7.6% on average in competition mathematics and coding benchmarks. By converting otherwise wasted zero-advantage samples into useful gradient updates, our method accelerates training by 27% to 41%, saving nearly 50% of generation compute, and substantially improves overall reasoning performance.",
+          "authors": [
+            "Han Zhou",
+            "Adam X. Yang",
+            "Laurence Aitchison",
+            "Anna Korhonen",
+            "Albert Q. Jiang"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.AI",
+            "cs.CL"
+          ],
+          "published": "2026-06-08T11:57:17+00:00",
+          "link": "https://arxiv.org/pdf/2606.09380v1",
+          "tags": [
+            "keyword:opd",
+            "query:opd"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Addresses uninformative reward groups in RLVR by constructing trace tournaments with judge system",
+          "llm_evidence_cn": "通过构建轨迹锦标赛和裁判系统解决RLVR中奖励信息不足的问题",
+          "llm_evidence": "通过构建轨迹锦标赛和裁判系统解决RLVR中奖励信息不足的问题",
+          "canonical_evidence": "通过构建轨迹锦标赛和裁判系统解决RLVR中奖励信息不足的问题",
+          "llm_tldr_en": "Proposes Reasoning Arena to handle non-diverse reward groups in RLVR by routing them to judge-based trace tournaments for finer-grained evaluation.",
+          "llm_tldr_cn": "针对基于可验证奖励的强化学习（RLVR）中同一问题所有采样轨迹获得相同奖励而无法提供梯度信号的问题，提出推理竞技场框架。当出现非多样化奖励组时，将轨迹路由到裁判系统进行头对头比较的轨迹锦标赛，以暴露更细粒度的质量差异。该方法在不丢弃数据的情况下提升推理能力。",
+          "llm_tldr": "针对基于可验证奖励的强化学习（RLVR）中同一问题所有采样轨迹获得相同奖励而无法提供梯度信号的问题，提出推理竞技场框架。当出现非多样化奖励组时，将轨迹路由到裁判系统进行头对头比较的轨迹锦标赛，以暴露更细粒度的质量差异。该方法在不丢弃数据的情况下提升推理能力。",
+          "llm_tags": [
+            "query:opd"
+          ],
+          "matched_query_tag": "query:opd",
+          "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.09380v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }

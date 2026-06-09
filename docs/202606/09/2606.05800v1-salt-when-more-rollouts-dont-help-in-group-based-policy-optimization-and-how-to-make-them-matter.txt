@@ -1,0 +1,2234 @@
+Title: SALT: When More Rollouts Don't Help in Group-Based Policy Optimization and How to Make Them Matter
+
+URL Source: https://arxiv.org/pdf/2606.05800v1
+
+Published Time: Fri, 05 Jun 2026 00:45:32 GMT
+
+Number of Pages: 31
+
+Markdown Content:
+# SALT: When More Rollouts Don’t Help in Group-Based Policy Optimization and How to Make Them Matter 
+
+Powei Chang 1,2,∗ Jinpeng Zhang 1,∗ Chaoqun Sun 1,2 MiniWell Tsao 1 Lianrui Li 1,3
+
+Jianxiang Xiang 1 Chenyu Wang 1 Yukang Gao 1 Dongying Kong 1,† 
+
+> 1
+
+Bilibili Inc. 2 Fudan University 3 Zhejiang University  
+
+> ∗
+
+Equal contribution † Corresponding author {zhangjinpeng01, kongdongying}@bilibili.com 
+
+Abstract 
+
+Reinforcement learning with verifiable rewards (RLVR) often adopts GRPO-style group-relative updates, sampling multiple rollouts per prompt to construct normal-ized learning signals. However, merely increasing the number of rollouts does not reliably strengthen learning: under GRPO-style group normalization, per-rollout policy-gradient features can concentrate into a low-rank, signed geometry, causing substantial cancellation during aggregation and weakening the effective update. We address this failure mode with SALT , a S ubspace-A daptive geometry p L ug-in componen T that uses sample-wise gradient geometry to reweight the coefficients of group-relative updates. SALT estimates a dominant shared subspace from the mini-batch Gram geometry, decomposes group-relative coefficients into shared and residual channels, and adaptively amplifies the residual channel when signed cancellation is severe. Across diverse reasoning-oriented RLVR benchmarks and model scales, SALT improves effective update geometry and performance without modifying the reward model or the rollout sampling procedure 
+
+1 Introduction 
+
+Figure 1: Illustration of rollout inefficiency in GRPO-style RLVR. Per-rollout gradients ex-hibit signed, low-rank redundancy, so group-normalized aggregation cancels much of the learning signal. SALT adaptively suppresses common signals and amplifies non-redundant di-verse directions to strengthen effective updates. Reinforcement learning with verifiable rewards (RLVR) has become a central recipe for improving the reasoning ability of large language models (LLMs), as it optimizes model-generated solutions using automatically checkable outcome signals rather than subjective preference labels [36, 27]. Building on PPO-style policy optimization [ 34 ], Group Relative Policy Optimization (GRPO) and its variants improve scalability by replacing the critic with group-relative normalization over multi-ple rollouts, and are now widely used in reasoning-oriented RL pipelines [ 9, 47 ]. However, simply increasing the number of rollouts often yields sharply diminishing returns, suggesting a struc-tural inefficiency in how group-relative updates aggregate learning signals [18, 42]. Prior work commonly attributes this bottleneck to insufficient exploration and limited response diversity within larger rollout groups [ 15 ]. Accord-ingly, existing remedies primarily rely on policy-side signals, such as entropy-based, KL-based, or 
+
+> Preprint.
+> arXiv:2606.05800v1 [cs.LG] 4 Jun 2026
+
+confidence-based regularization, to mitigate the loss of response diversity and stabilize group-based training [49, 8, 41]. This leads to our pivotal research question: Beyond maintaining response diversity, when do additional rollouts actually trans-late into stronger and more informative group-relative updates ?In this work, we take a complementary update-space view of rollout effectiveness. We find that even when rollouts remain distinct at the sequence level, their per-sample policy-gradient features within each prompt group can become highly redundant. As illustrated in Figure 1, these features concentrate into a low-rank, signed geometry; after group-relative advantage weighting, they form opposing signed update directions that cancel during aggregation. We characterize this geometry via low effective dimensionality ( P R ) for spectral concentration and low effective sample size ( neff ) [ 20 ] for weak net update strength after signed aggregation. Together, these diagnostics show why additional rollouts add compute without proportional learning gains. This saturation arises from the structure of group-relative optimization. GRPO-style objectives center advantages within each prompt group [ 36 ], canceling gradient components shared across rollouts; when per-sample gradient features concentrate into a low-rank, signed geometry, the aggregated update is left to depend on a small residual component and can therefore fail to scale with additional rollouts. Thus, rollout inefficiency is not merely a sampling issue, but a failure to aggregate residual, non-redundant signals into effective learning progress. Motivated by this diagnosis, we propose SALT , a S ubspace-A daptive geometry p L ug-in componen Tfor GRPO-style training that uses mini-batch gradient geometry to reweight group-relative coefficients and reduce signed aggregation cancellation. SALT estimates a dominant shared subspace from mini-batch Gram geometry via a lightweight proxy [ 16 ], decomposes group-relative coefficients into shared and residual channels, and boosts the residual channel with a cancellation-aware mixing coefficient. By sample-wise geometry-based reweighting, SALT improves effective update geometry—spectral spread and signed aggregation strength—rather than relying only on policy-side exploration heuristics. We evaluate SALT across reasoning RLVR benchmarks, two model scales, and multiple GRPO-style recipes, assessing both task performance and update-geometry diagnostics. Our contributions are: • ( Phenomenon ) We diagnose signed low-rank redundancy in group-relative RLVR: within- and across-group policy-gradient features concentrate in a low-dimensional geometry, as reflected by low effective dimensionality ( P R ) and low effective sample size ( neff ). • ( Method ) We propose SALT , a subspace-adaptive plug-in that estimates a dominant shared subspace and reweights group-relative coefficients through shared and residual channels. • ( Effectiveness ) We validate SALT with extensive experiments and ablations, demonstrating consis-tent gains and improved effective update directions. 
+
+2 Gradient Redundancy 
+
+2.1 Preliminaries Notation. We view an auto-regressive language model with parameters θ as a policy πθ [39 ]. Given a prompt x and response y = ( y1, . . . , y |y|),
+
+πθ (y | x) = 
+
+> |y|
+
+Y
+
+> t=1
+
+πθ (yt | x, y <t ), (1) with reward r ∈ [0 , 1] assigned to each prompt–response pair (x, y ).
+
+Group Relative Policy Optimization (GRPO). We now focus on GRPO [ 36 , 10 ], which can introduce aggregation biases both within and across groups in our study. In each iteration, GRPO samples B prompts from P (Q); for each prompt q, it then samples a set of G candidate responses 
+
+{o1, o 2, . . . , o G} from the current policy πθold . Each response oi is assigned a scalar reward ri.Rewards within the group are normalized to obtain a response-level advantage [12]: 
+
+ˆAi = ri − mean (r1, r 2, · · · , r G)
+
+std (r1, r 2, · · · , r G) . (2) 2Figure 2: Signed low-rank gradient redundancy in GRPO-style RLVR. (a) Redundancy dynamics 
+
+for GRPO (top) and DAPO (bottom): throughout training, per-sample policy-gradient features concentrate in a low-dimensional subspace, causing strong cancellation and few effective independent update signals despite diverse rollouts. (b) Rollout scaling : increasing group size makes P R and neff 
+
+saturate rather than scale proportionally, showing that more rollouts need not yield more learning. It then updates the policy πθ using a PPO-style clipped objective [ 34 ]. Formally, the GRPO objective function is defined as: 
+
+JGRPO (θ) = Eq∼P (Q), {oi}Gi=1 ∼πθold (O|q)
+
+"
+
+1
+
+G
+
+> G
+
+X
+
+> i=1
+
+1
+
+|oi|
+
+> |oi|
+
+X
+
+> t=1
+
+min πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) ˆAi,t ,
+
+clip πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) , 1 − ϵ, 1 + ϵ
+
+!
+
+ˆAi,t 
+
+!
+
+− β DKL [πθ ∥ πref ]
+
+!# 
+
+.
+
+(3) More broadly, the rollout-based group optimization paradigm has led to a series of GRPO-style RLVR methods (e.g., DAPO [ 47 ]; more formulations in Appendix I). Nevertheless, they are prone to a shared phenomenon, within-group and cross-group gradient redundancy , which we study and characterize in the following sections. 
+
+2.2 Gradient Redundancy 
+
+We motivate our method from a persistent empirical pattern in GRPO-style RLVR: per-sample gradient features concentrate in a low-dimensional geometry, producing far fewer independent update signals than the raw sample count suggests. We quantify this with two complementary diagnostics: a regularized participation ratio ( P R ) from the batch Gram spectrum for spectral spread, and an effective sample size proxy ( neff ) from signed per-sample update contributions for net aggregation strength [ 46 , 20 ]. We report both within-group and batch-level variants to separate prompt-local redundancy from redundancy persisting across prompts. 
+
+2.2.1 Diagnostics Effective dimensionality. Let {gi}mi=1 ⊂ Rd denote gradient features for a collection of m samples (responses). We form the normalized Gram matrix 
+
+K ≜ 1
+
+m G⊤G ∈ Rm×m, G ≜ [g1, . . . , g m] ∈ Rd×m. (4) Since K is positive semidefinite, it admits eigenvalues λ1, . . . , λ m ≥ 0. We quantify the effective dimensionality of the set gii = 1 m via the participation ratio (PR), defined as the ratio between the squared first spectral moment and the second spectral moment 
+
+PR( K) ≜ (P i = 1 mλi)2
+
+Pmi=1 λ2
+
+> i
+
+. (5) Larger PR( K) indicates a less concentrated spectrum and thus a higher effective dimensionality. 3Effective sample size. Low PR indicates that gradient features concentrate in a low-dimensional subspace, i.e., stronger redundancy, but does not distinguish coherent agreement from cancellation. To quantify the net strength of the aggregated update, we use an effective sample size proxy [ 20 , 44 ]. 
+
+neff ({ui}mi=1 ) ≜
+
+Pmi=1 ui
+
+> 22
+
+Pmi=1 ∥ui∥22
+
+, (6) where ui = ˆAi∇θ log πθ denotes the signed per-sample update. 
+
+Alignment. To make the “opposing orientation” structure explicit, we also track a nonnegative alignment statistic positive-part cosine alignment [51] computed between per-sample directions 
+
+r({gi}mi=1 ) ≜ 2
+
+m(m − 1) 
+
+X
+
+> 1≤i<j ≤m
+
+[cos( gi, g j )] +. (7) where [x]+ = max( x, 0) . Higher values indicate stronger aligned modes, which can still cancel after signed aggregation when paired with opposing advantage signs. 
+
+2.2.2 Empirical observations Signed low-rank gradient redundancy. Group-based RL aggregates rollouts within each prompt group before averaging across prompts. We therefore report both within- and cross-group diagnostics for GRPO and DAPO under the setup in Section 4.1, with implementation details in Appendix D.1. As shown in Figure 2(a), per-sample gradient features in GRPO-style training exhibit signed low-rank structure: they concentrate in a shared subspace, while signed update directions often oppose the group or batch mean. This reduces spectral spread and causes strong aggregation cancellation, yielding low 
+
+P R and neff even with many rollouts. Appendix F.1 shows the same pattern on execution-verifiable code RLVR and additional model families. 
+
+Rollout scaling. Prior work shows that increasing rollout count gives diminishing returns [ 35 , 42 ]. Figure 2 (b) revisits this effect in gradient space: as G increases over {2, 4, 8, 16 , 32 , 64 , 128 , 256 },neither the spectral-spread diagnostic nor neff grows proportionally. Under group-relative objectives, additional rollouts often add directionally redundant gradients, contributing little independent signal after group-centered aggregation. These observations motivate the next subsection, where a simple decomposition explains why group-centered updates are vulnerable to redundancy. 
+
+2.3 Why redundancy hurts GRPO-style training 
+
+Although significant redundancy has been demonstrated, why does it still degrade RL training? For clarity, we analyze only the core policy-gradient term in Eq. (3), omitting KL and clipping terms. 
+
+Group centering cancels shared gradients. For a prompt q, GRPO samples G rollouts {oq,i }Gi=1 .Let ˆAq,i be the group-normalized advantage and sq,i ≜ ∇θ log πθ (oq,i | q) be the score gradient. The group-averaged policy-gradient contribution is 
+
+gq (θ) ≜ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i sq,i ,
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i = 0 , (8) where the second relation follows from within-group advantage centering [ 35 ]. Thus, any perfectly shared component is canceled: if sq,i ≡ sq , then gq (θ) = G−1(P 
+
+> i
+
+ˆAq,i )sq = 0 .More generally, write each score gradient as the sum of a common component and a residual [4]: 
+
+sq,i = ¯ sq + δq,i , ¯sq ≜ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+sq,i ,
+
+> G
+
+X
+
+> i=1
+
+δq,i = 0 . (9) Substituting this decomposition into the group update gives 
+
+gq (θ) = 1
+
+G
+
+ GX
+
+> i=1
+
+ˆAq,i 
+
+
+
+¯sq + 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i . (10) 4Thus, group centering removes the common component and makes the effective update depend on the residual directions, whose magnitude is bounded by 
+
+∥gq (θ)∥2 ≤ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆA2
+
+> q,i
+
+!1/2 GX
+
+> i=1
+
+∥δq,i ∥22
+
+!1/2
+
+≲ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+∥δq,i ∥22
+
+!1/2
+
+, (11) where the last step uses P 
+
+> i
+
+ˆA2 
+
+> q,i
+
+≈ G under unit empirical variance within the group and the derivation is provided in Appendix A. Therefore, more rollouts help only when they increase the residual gradient energy. Redundant score-gradient directions are removed by group centering and do not strengthen the update. This explains the rollout-scaling failure mode: sequence-level diversity may still leave small residual directions that cancel under signed advantages, reducing neff . Thus, effective rollout scaling requires non-redundant residual directions, motivating SALT to recover useful residual-channel signal under cancellation. We empirically validate this residual-bottleneck prediction in Appendix B. 
+
+3 Methodology 
+
+Motivated by the redundancy and signed cancellation identified above, SALT does not aim to preserve the original GRPO estimator. Instead, it intentionally constructs a geometry-reweighted surrogate. The procedure is summarized in Algorithm 1 in Appendix J. 
+
+3.1 Dual-Channel Advantage Reweighting 
+
+Let I = {(b, i ) : b = 1 , . . . , B, i = 1 , . . . , G } index all responses in the current mini-batch, and denote m ≜ |I| = BG . Stack the group-normalized advantages into 
+
+a ≜ [ ˆAb,i ](b,i )∈I ∈ Rm. (12) 
+
+Dominant subspace. Let the normalized batch Gram matrix Ktotal ∈ Rm×m be as defined in Eq. (4). Consider its eigen-decomposition 
+
+Ktotal = V ΛV ⊤, Λ = diag( λ1, . . . , λ m), (13) where V = [ v1, . . . , v m] is orthonormal. Let P R total ≜ P R (Ktotal ) be the participation ratio defined in Eq. (5) and (47). We set the dominant-subspace dimension by 
+
+kt ≜ clip   P R total 
+
+, 1, BG  , (14) and define Vk ≜ [v1, . . . , v kt ] ∈ Rm×kt together with the orthogonal projectors [48] 
+
+Pk ≜ VkV ⊤ 
+
+> k
+
+, P ⊥ 
+
+> k
+
+≜ I − Pk. (15) All quantities above are computed from mini-batch statistics [11, 14]. 
+
+Two-channel decomposition and reweighting. Motivated by the residual-view analysis in Sec. 2.3, we use a signed dominant channel together with a one-sided residual exploration channel: 
+
+amain ≜ Pka, aexp ≜ P ⊥ 
+
+> k
+
+[a]+, (16) where [a]+ ≜ max( a, 0) is applied elementwise. This avoids symmetrically amplifying hetero-geneous negative residuals that may reintroduce cancellation, while Pka preserves group-relative feedback. We validate this method choice in the ablation study in Section 4.3. Let {ub,i }(b,i )∈I be the signed per-sample update contributions, and let neff ({ub,i }) be the effective sample size proxy already defined in Eq. (6). We set the adaptive exploration mixing coefficient by 
+
+αt ≜ max 
+
+
+
+0 , 1 − neff 
+
+ {ub,i }(b,i )∈I 
+
+ 
+
+. (17) Finally, we form the reweighted advantages 
+
+a′ ≜ amain + αtaexp = Pka + αtP ⊥ 
+
+> k
+
+[a]+. (18) We keep the GRPO-style objective unchanged defined in Eq. (3) and replace the original coefficients 
+
+ˆAb,i by the corresponding entries of a′.
+
+3.2 Computational Cost 
+
+5Table 1: LM-head proxy preserves SALT -relevant geometry. Results are averaged over validation checkpoints and mini-batches.                       
+
+> Proxy Gram ρ↑PR err. ↓Subspace ↑
+> Reference Gradients Baselines
+> Full gradient 0.71 0.09 0.78
+> Blockwise sketch 0.76 0.07 0.81
+> Last block 0.79 0.06 0.84
+> Null Baselines
+> Permutation null 0.02 0.47 0.18
+> Noise null 0.00 0.56 0.13
+
+SALT uses mini-batch gradient geometry, but full-model per-sample gradients are prohibitive for LLMs. We therefore use the LM-head/output-projection gradient as a lightweight proxy, a stan-dard choice for scalable gradient embeddings and influence estimation [ 2, 29 , 28 ]. The proxy is not an entry-wise approximation to the full gradient; 
+
+SALT only requires it to preserve the sample-wise geometry used for reweighting. Table 1 validates this requirement: the proxy preserves 
+
+SALT -relevant geometry against full-gradient and blockwise references, while null baselines fail. De-tails are in Appendix E. Let the output logits be zb,i,t = Wout hb,i,t + bout , where hb,i,t ∈ Rd and Wout ∈ R|V|× d. We use the response-level output-projection gradient as the proxy feature: 
+
+∇Wout ℓb,i = 1
+
+|ob,i |
+
+> |ob,i |
+
+X
+
+> t=1
+
+ ∇zb,i,t ℓb,i,t 
+
+h⊤
+
+> b,i,t
+
+. (19) Thus, the geometry cost scales with the rollout mini-batch size m = BG rather than the total parameter count: forming the m × m Gram matrix costs O(m2) memory, and extracting the top-kt
+
+subspace costs O(m2kt) time with partial eigensolvers. Runtime results are provided in Appendix G. 
+
+3.3 SALT as a Geometry-Reweighted Surrogate 
+
+SALT is not an unbiased reformulation of the original GRPO estimator, but a geometry-reweighted surrogate that trades controlled coefficient distortion for reduced signed cancellation. Let m = BG 
+
+and S = [ s1, . . . , s m]. Treating a′ as a stop-gradient coefficient, the original update, the SALT update, and the corresponding batch surrogate are 
+
+ˆgGRPO = 1
+
+m Sa, ˆgSALT = 1
+
+m Sa ′, JSALT (θ) = 1
+
+m
+
+> m
+
+X
+
+> i=1
+
+a′ 
+
+> i
+
+log πθ (oi | qi). (20) instead of the original GRPO surrogate with coefficients ai. Its deviation from GRPO satisfies 
+
+ˆgSALT − ˆgGRPO = 1
+
+m S(a′ − a), ∥ˆgSALT − ˆgGRPO ∥2 ≤ 1
+
+m ∥S∥op ∥a′ − a∥2. (21) Thus, the surrogate bias is controlled by the reweighting magnitude and mini-batch gradient geometry. It is also useful: when the unbiased GRPO-style update is weakened by signed cancellation, SALT 
+
+adaptively increases the residual-channel contribution through neff . This makes the biased surrogate a worthwhile and controlled departure from GRPO. The next experiments section validates this trade-off empirically and Appendix F.5 quantifies the corresponding bias–cancellation trade-off. 
+
+4 Experiment 
+
+In this section, we conduct extensive experiments to answer the following research questions: • ( RQ1 ) Does SALT consistently improve GRPO-style performance across benchmarks and model scales, and are the gains cost-effective given the added geometry module? • ( RQ2 ) How does SALT affect exploration and optimization dynamics compared with alternative exploration controls? • ( RQ3 ) Which components of SALT are necessary, and how do they contribute to performance and geometric metrics? • ( RQ4 ) Does SALT make larger rollout groups actually useful under a fixed rollout budget, and why? 
+
+4.1 Experimental Setup Data and Evaluation. We evaluate SALT on GPQA-Diamond [ 31 ] and four math reasoning benchmarks: AIME24 [ 19 ], AIME25 [ 26 ], GSM8K [ 6] and MATH500 [ 23 ]. These datasets span 6Table 2: Main results on reasoning benchmarks. We compare the GRPO and DAPO algorithms with our method SALT across two different training datasets. We report ACC and Pass@8 and results are averaged over 5 runs. Bold numbers indicate improvements with SALT . Overall, incorporating 
+
+SALT yields consistent improvements over GRPO-style algorithms validated by significance tests.                                                                                                                                                                                                              
+
+> Dataset Method AIME24 AIME25 GSM8K MATH-500 GPQA
+> ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8
+> Deepseek-Distill-Qwen-1.5B
+> ∼Vanilla 29.1 59.3 22.0 42.6 80.3 95.0 85.5 96.4 34.5 82.4
+> MATH-TRAIN
+> GRPO 29.3 59.3 25.6 43.3 80.7 94.8 85.6 96.7 35.0 82.2 +SALT 32.1 62.9 27.1 47.2 83.4 96.5 87.2 98.4 38.4 85.5
+> DAPO 31.1 59.9 23.9 44.3 81.0 96.1 86.1 97.0 37.0 81.7 +SALT 30.6 60.6 25.6 46.3 82.5 97.1 87.1 97.0 39.6 83.5 DAPO-MATH
+> GRPO 29.1 59.0 23.6 44.2 82.2 95.3 85.9 96.8 36.2 83.7 +SALT 32.7 62.8 27.8 47.8 83.0 96.5 88.0 97.3 37.7 85.0
+> DAPO 29.0 61.3 26.0 45.0 82.2 95.0 84.8 96.8 36.0 80.9 +SALT 32.9 63.8 28.0 47.0 84.1 96.8 88.0 98.0 38.5 82.9 Deepseek-Distill-Qwen-7B
+> ∼Vanilla 50.7 78.0 36.7 64.0 90.3 97.4 94.9 98.8 48.9 82.4
+> MATH-TRAIN
+> GRPO 60.7 77.3 42.0 71.3 89.9 97.7 94.9 99.0 46.8 83.8 +SALT 64.7 80.4 45.3 74.5 91.9 98.7 95.2 98.9 51.2 87.9
+> DAPO 54.0 79.3 42.0 62.7 90.1 97.5 94.2 99.0 48.9 83.7 +SALT 57.3 82.2 44.8 66.6 91.7 99.0 95.2 99.1 52.2 88.1 DAPO-MATH
+> GRPO 61.5 78.0 42.8 72.1 90.4 97.8 95.0 99.1 47.6 84.6 +SALT 65.4 81.2 46.5 75.5 92.4 99.3 96.4 99.2 51.3 89.2
+> DAPO 54.8 80.0 43.0 64.0 90.4 97.6 94.4 99.1 49.2 84.1 +SALT 56.6 81.6 46.3 68.3 92.1 99.2 95.4 99.3 53.1 88.7
+
+scientific QA and mathematical problems. To ensure the stability of experiments, we run each experiment five times and report the average results with Accuracy and Pass@8. For the code experiment, we train on MBPP [ 3] and evaluate on HumanEval/HumanEval+ [ 5, 24 ] in Appendix F.1. 
+
+Training Dataset. We train our policy on two complementary math datasets for 2 epochs: MATH-Train-7.5k [ 17 ] and DAPO-Math-17k [ 47 ], aiming for a broader and more robust evaluation of training effectiveness across diverse math domains. 
+
+Settings. We use DeepSeek-Distill-Qwen [ 9] models at two scales (1.5B and 7B) as the base policy for training. We adopt a rule-based verifier to provide the reward signal. For each question we sample 8 responses with temperature 0.6 during training; we use the same sampling configuration for validation. Additional hyperparameters and implementation details are deferred to the Appendix C. 
+
+4.2 Main Result (For RQ1-1) SALT consistently improves GRPO-style training. Table 2 compares GRPO/DAPO with SALT under the same training and sampling setup. Averaged over tasks, SALT improves the corresponding backbone by about +2.54 percentage points per setting, with paired 95% CIs in Table 12. Gains are largest on AIME24 and GPQA, with no consistent degradation. These results show that SALT robustly improves rollout aggregation, increasing both accuracy and pass@8 without extra exploration budget. Beyond the main setting, Appendix F.1 shows cross-model gains of +3 acc on average across additional model families, including Qwen3-8B [ 40 ] and LLaMA-3.1-8B [ 1], and further demonstrates that SALT improves acc on HumanEval [ 5 ] in execution-verifiable code RLVR. 
+
+(For RQ1-2) SALT provides favorable cost–benefit. Since SALT adds a geometry module, we further evaluate whether its gains justify the extra wall-clock cost. Appendix G reports end-to-end training time. Across models and training sets, SALT adds about 7.7% average overhead in training time while improving both geometric effective metrics and accuracy by an average of 2.56 points. Thus, the controlled departure from GRPO in Section 3.3 is practically worthwhile, yielding measurable gains with modest extra cost. 7Figure 3: Training dynamics on MATH-TRAIN with GRPO (top) and DAPO (bottom), showing AIME25 accuracy, response entropy, P R , and neff . Entropy-based baselines increase response entropy but yield limited gains in geometry metrics and accuracy. In contrast, SALT improves both 
+
+P R and neff , achieving stronger performance via update exploration, not higher entropy. 
+
+Table 3: Average performance aggregated over reasoning benchmarks under GRPO and DAPO training. Bold denotes better performance.                                               
+
+> Dataset Method Pass@1 Pass@8 MATH-TRAIN
+> GRPO 51.2 75.4 + Entropy Bonus 51.0 75.1 + Clip Cov 51.6 75.9 + KL Cov 51.8 75.8 +SALT 53.7 78.1
+> DAPO 51.6 75.8 + Entropy Bonus 51.6 75.9 + Clip Cov 51.9 76.0 + KL Cov 52.0 76.1 +SALT 53.1 77.0 DAPO-MATH
+> GRPO 51.4 75.8 + Entropy Bonus 51.6 76.2 + Clip Cov 52.1 75.3 + KL Cov 52.0 76.6 +SALT 53.9 77.9
+> DAPO 51.6 75.8 + Entropy Bonus 51.7 76.2 + Clip Cov 52.1 75.8 + KL Cov 52.5 76.4 +SALT 54.3 77.7
+
+(For RQ2) SALT promotes effective exploration beyond entropy-increasing controls. Figure 3 tracks AIME25 test performance together with response entropy, effective dimensionality P R 
+
+(Eq. (5) ), and effective sample size neff (Eq. (6) )during GRPO training on both MATH-TRAIN and DAPO-MATH. Entropy-oriented baselines (entropy bonus, clip-cov, KL-cov [ 7, 37 , 25 ]) in-crease entropy as intended, but their improvements in P R and neff remain limited and do not consis-tently translate into better AIME25 performance. In contrast, SALT achieves the strongest AIME25 results while simultaneously yielding higher P R 
+
+and neff , indicating that SALT turns rollouts into more diverse and less-canceling update signals rather than merely amplifying sampling entropy. Table 3 further confirms this trend across diverse benchmarks, where SALT consistently outper-forms standard GRPO and entropy-promoting con-trols. In particular, improvement is observed on both the 1.5B and 7B scales (see Appendix F.2 for full results and additional analysis). 
+
+4.3 Ablation Study (For RQ3) Both the dual-channel structure and cancellation-aware mixing are necessary. 
+
+Figure 4(a) compares SALT with its ablations in the PR– neff plane. Removing either channel hurts update geometry: only-main reduces PR, while only-exp increases cancellation and lowers neff . Other controls show similar degradation: no-proj /rand-proj move toward the baseline, no-Pos reduces 
+
+neff , and alternative mixing rules fail to reach the high-PR/high-neff regime. In contrast, full SALT 
+
+achieves the best geometry and benchmark performance, indicating more diverse and less-canceling updates. Details are provided in Appendix F.3.1. Figure 4 (b) sweeps a fixed mixing coefficient α ∈ { 0, 0.25 , 0.5, 0.75 , 1.0} and exposes a clear trade-off: larger α boosts exploration but lowers neff via stronger gradient cancellation, while smaller 
+
+α preserves neff but under-explores and hurts accuracy. This sensitivity makes fixed-α tuning brittle and SALT avoids it by adapting the mixing strength online. It further shows the realized adaptive αt
+
+over training, illustrating that SALT replaces this brittle knob with an online-adjusted mixing signal. Beyond these component ablations, Appendix F.3.2 further introduces a matched-coefficient subspace intervention, which preserves the coefficient distribution of SALT while breaking its alignment with the true mini-batch gradient geometry. The degradation under these matched null variants, together 8Figure 4: Ablation and rollout-scaling analysis of SALT . (a) SALT achieves the best PR– neff 
+
+trade-off; ablations degrade update geometry. (b) Fixed-α exposes a brittle exploration–cancellation trade-off avoided by adaptive mixing. (c–d) With a fixed rollout budget, SALT better uses larger groups by raising P R while preserving neff , yielding consistent gains over GRPO/DAPO. with consistently low clipping fractions, suggests that SALT ’s gains come from geometry-aligned coefficient assignment rather than coefficient redistribution or PPO clipping artifacts. 4.4 Rollout Scaling Study (For RQ4-1) SALT makes larger rollout groups useful under a fixed budget. We study whether 
+
+SALT makes larger rollout groups G useful under a fixed rollout budget. Although increasing G
+
+provides more rollouts, it can also amplify gradient cancellation, so additional samples may not translate into stronger updates. As shown in Figure 4 (c), when G increases from 2 to 256, GRPO and DAPO exhibit diminishing returns, whereas SALT yields consistent gains across group sizes, with larger improvements at larger G. This indicates that SALT better utilizes additional rollouts under the same rollout budget, rather than merely benefiting from more compute. 
+
+(For RQ4-2) Why: SALT increases diversity while mitigating cancellation via adaptive mixing. 
+
+We also track participation ratio ( P R ) for diversity and effective sample size neff for gradient alignment in Figure 4 (d). As G increases, P R grows for both methods, but baseline neff decreases, revealing stronger cancellation. SALT maintains higher neff while further improving P R , allowing larger G to translate into effective updates. Overall, SALT enables large-G scaling under a fixed budget by jointly increasing P R and maintaining neff through adaptive main/exploration mixing. Additional mechanism evidence is provided in Appendix F.4. 
+
+5 Related Work 
+
+Reinforcement Learning in Reasoning. Recent progress in language model reasoning has in-creasingly relied on reinforcement learning (RL) to improve multi-step reasoning by directly opti-mizing task-level objectives on model-generated solutions [ 12 ]. A representative and widely used PPO-style [ 34 ] approach in this setting is Group Relative Policy Optimization , which constructs group-relative advantages from multiple completions per prompt without an explicit critic [36, 10]. 
+
+Optimization of GRPO. Recent GRPO variants improve training stability by modifying the optimization objective: DAPO introduces decoupled clipping and dynamic sampling [ 47 ], while GSPO uses sequence-level ratios to stabilize RL for large Mixture-of-Experts models [ 50 ]. Other works add entropy-aware advantages, self-correction, and multi-stage refinement to improve rea-soning [ 49 , 45 , 22 , 13 , 52 ]. However, these methods mainly reshape gradient signals rather than 
+
+explicitly modeling gradient features , leaving an important gap. 
+
+6 Conclusion 
+
+Limitations. SALT uses an LM-head gradient proxy and extra Gram computation, so its efficiency and geometry estimates may vary across architectures and training regimes. It is also a biased geometry-reweighted surrogate, whose gains depend on reducing signed cancellation enough to offset coefficient distortion. 
+
+Future work. Beyond the math and code RLVR settings studied here, future work will explore noisier learned rewards, multi-modal policies, agentic or search-based tasks, and other forms of group-based policy optimization. Less redundancy, more progress. 
+
+9References 
+
+[1] AI@Meta. Llama 3 model card. 2024. URL https://github.com/meta-llama/llama3/ blob/main/MODEL_CARD.md .[2] Jordan T. Ash, Chicheng Zhang, Akshay Krishnamurthy, John Langford, and Alekh Agarwal. Deep batch active learning by diverse, uncertain gradient lower bounds. In International Conference on Learning Representations (ICLR) , 2020. URL https://openreview.net/ forum?id=ryghZJBKPS .[3] Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, et al. Program synthesis with large language models. arXiv preprint arXiv:2108.07732 , 2021. [4] Junhua Chen, Zixi Zhang, Hantao Zhong, and Rika Antonova. Group policy gradient, 2025. URL https://arxiv.org/abs/2510.03679 .[5] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, Alex Ray, Raul Puri, Gretchen Krueger, Michael Petrov, Heidy Khlaaf, Girish Sastry, Pamela Mishkin, Brooke Chan, Scott Gray, Nick Ryder, Mikhail Pavlov, Alethea Power, Lukasz Kaiser, Mohammad Bavarian, Clemens Winter, Philippe Tillet, Felipe Petroski Such, Dave Cummings, Matthias Plappert, Fotios Chantzis, Elizabeth Barnes, Ariel Herbert-Voss, William Hebgen Guss, Alex Nichol, Alex Paino, Nikolas Tezak, Jie Tang, Igor Babuschkin, Suchir Balaji, Shantanu Jain, William Saunders, Christopher Hesse, Andrew N. Carr, Jan Leike, Josh Achiam, Vedant Misra, Evan Morikawa, Alec Radford, Matthew Knight, Miles Brundage, Mira Murati, Katie Mayer, Peter Welinder, Bob McGrew, Dario Amodei, Sam McCandlish, Ilya Sutskever, and Wojciech Zaremba. Evaluating large language models trained on code, 2021. [6] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman. Training verifiers to solve math word problems, 2021. Introduces GSM8K. [7] Ganqu Cui, Yuchen Zhang, Jiacheng Chen, Lifan Yuan, Zhi Wang, Yuxin Zuo, Haozhan Li, Yuchen Fan, Huayu Chen, Weize Chen, Zhiyuan Liu, Hao Peng, Lei Bai, Wanli Ouyang, Yu Cheng, Bowen Zhou, and Ning Ding. The entropy mechanism of reinforcement learning for reasoning language models, 2025. URL https://arxiv.org/abs/2505.22617 .[8] Runpeng Dai, Linfeng Song, Haolin Liu, Zhenwen Liang, Dian Yu, Haitao Mi, Zhaopeng Tu, Rui Liu, Tong Zheng, Hongtu Zhu, and Dong Yu. Cde: Curiosity-driven exploration for efficient reinforcement learning in large language models, 2025. URL https://arxiv.org/ abs/2509.09675 .[9] DeepSeek-AI. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning, 2025. URL https://arxiv.org/abs/2501.12948 .[10] DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, et al. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948 , 2025. doi: 10.48550/ arXiv.2501.12948. URL https://arxiv.org/abs/2501.12948 .[11] Marco Del Giudice. Effective dimensionality: A tutorial. Multivariate Behavioral Research ,56(3):527–542, 2021. doi: 10.1080/00273171.2020.1743631. URL https://doi.org/10. 1080/00273171.2020.1743631 .[12] Fei Ding, Baiqiao Wang, Zijian Zeng, and Youwei Wang. Multi-layer grpo: Enhancing reasoning and self-correction in large language models, 2025. URL https://arxiv.org/abs/2506. 04746 .[13] Lang Feng, Zhenghai Xue, Tingcong Liu, and Bo An. Group-in-group policy optimization for llm agent training, 2025. URL https://arxiv.org/abs/2505.10978 .10 [14] Hamza Giaffar, Camille Rullán Buxó, and Mikio Aoi. The effective number of shared dimen-sions between paired datasets. In Sanjoy Dasgupta, Stephan Mandt, and Yingzhen Li, editors, 
+
+Proceedings of The 27th International Conference on Artificial Intelligence and Statistics ,volume 238 of Proceedings of Machine Learning Research , pages 4249–4257. PMLR, 02–04 May 2024. URL https://proceedings.mlr.press/v238/giaffar24a.html .[15] Tuomas Haarnoja, Haoran Tang, Pieter Abbeel, and Sergey Levine. Reinforcement learning with deep energy-based policies, 2017. URL https://arxiv.org/abs/1702.08165 .[16] James Hazelden. Fast neural tangent kernel alignment, norm and effective rank via trace estimation. arXiv:2511.10796 , 2025. doi: 10.48550/arXiv.2511.10796. URL https://www. arxiv.org/abs/2511.10796 .[17] Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving with the math dataset. 
+
+NeurIPS , 2021. [18] Zhenyu Hou, Pengfan Du, Yilin Niu, Zhengxiao Du, Aohan Zeng, Xiao Liu, Minlie Huang, Hongning Wang, Jie Tang, and Yuxiao Dong. Does rlhf scale? exploring the impacts from data, model, and method, 2024. URL https://arxiv.org/abs/2412.06000 .[19] Hugging Face H4. Huggingfaceh4/aime_2024. https://huggingface.co/datasets/ HuggingFaceH4/aime_2024 , 2024. Accessed: 2026-01-16. [20] Leslie Kish. Survey Sampling . John Wiley & Sons, 1965. [21] Hynek Kydlíˇ cek and Hugging Face. Math-verify, 2026. URL https://github.com/ huggingface/Math-Verify . GitHub repository. Accessed 2026-01-16. [22] Lianrui Li, Dakuan Lu, Jiawei Shao, Chi Zhang, and Xuelong Li. Scrpo: From errors to insights, 2025. URL https://arxiv.org/abs/2511.06065 .[23] Hunter Lightman, Vineet Kosaraju, Yura Burda, Harri Edwards, Bowen Baker, Teddy Lee, Jan Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. arXiv preprint arXiv:2305.20050 , 2023. [24] Jiawei Liu, Chunqiu Steven Xia, Yuyao Wang, and Lingming Zhang. Is your code generated by chatGPT really correct? rigorous evaluation of large language models for code generation. In Thirty-seventh Conference on Neural Information Processing Systems , 2023. URL https: //openreview.net/forum?id=1qvx610Cu7 .[25] Volodymyr Mnih, Adrià Puigdomènech Badia, Mehdi Mirza, Alex Graves, Timothy P. Lill-icrap, Tim Harley, David Silver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning, 2016. URL https://arxiv.org/abs/1602.01783 .[26] OpenCompass. opencompass/aime2025. https://huggingface.co/datasets/ opencompass/AIME2025 , 2025. Accessed: 2026-01-16. [27] Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback, 2022. URL https://arxiv.org/abs/2203.02155 .[28] Sung Min Park, Kristian Georgiev, Andrew Ilyas, Guillaume Leclerc, and Aleksander Madry. TRAK: Attributing model behavior at scale. In Proceedings of the 40th International Conference on Machine Learning (ICML) , volume 202 of Proceedings of Machine Learning Research ,2023. URL https://proceedings.mlr.press/v202/park23c.html .[29] Garima Pruthi, Frederick Liu, Satyen Kale, and Mukund Sundararajan. Estimating training data influence by tracing gradient descent. In Advances in Neural Information Processing Systems (NeurIPS) , 2020. URL https://arxiv.org/abs/2002.08484 .11 [30] Stefano Recanatesi, Serena Bradde, Vijay Balasubramanian, Nicholas A. Steinmetz, and Eric Shea-Brown. A scale-dependent measure of system dimensionality. Patterns , 3(8):100555, 2022. doi: 10.1016/j.patter.2022.100555. URL https://www.sciencedirect.com/science/ article/pii/S266638992200160X .[31] David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R. Bowman. Gpqa: A graduate-level google-proof q&a benchmark, 2023. [32] John Schulman. Approximating kl divergence. Blog post, 2016. URL http://joschu.net/ blog/kl-approx.html . Accessed 2026-01-16. Some secondary sources cite the post as 2020. [33] John Schulman, Philipp Moritz, Sergey Levine, Michael I. Jordan, and Pieter Abbeel. High-dimensional continuous control using generalized advantage estimation, 2016. URL https: //arxiv.org/abs/1506.02438 .[34] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347 , 2017. doi: 10.48550/arXiv. 1707.06347. URL https://arxiv.org/abs/1707.06347 .[35] Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, Y. K. Li, Y. Wu, and Daya Guo. Deepseekmath: Pushing the limits of mathematical reasoning in open language models, 2024. URL https://arxiv.org/abs/ 2402.03300 .[36] Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, Y. K. Li, Yu Wu, and Daya Guo. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300 , 2024. doi: 10.48550/arXiv.2402.03300. URL https://arxiv.org/abs/2402.03300 .[37] Han Shen. On entropy control in llm-rl algorithms, 2025. URL https://arxiv.org/abs/ 2509.03493 .[38] Guangming Sheng, Chi Zhang, Zilingfeng Ye, Xibin Wu, Wang Zhang, Ru Zhang, Yanghua Peng, Haibin Lin, and Chuan Wu. Hybridflow: A flexible and efficient rlhf framework. arXiv preprint arXiv: 2409.19256 , 2024. [39] Richard S. Sutton and Andrew G. Barto. Reinforcement Learning: An Introduction . MIT Press, Cambridge, MA, 2 edition, 2018. [40] Qwen Team. Qwen3 technical report, 2025. URL https://arxiv.org/abs/2505.09388 .[41] Chaoqi Wang, Yibo Jiang, Chenghao Yang, Han Liu, and Yuxin Chen. Beyond reverse kl: Generalizing direct preference optimization with diverse divergence constraints, 2023. URL 
+
+https://arxiv.org/abs/2309.16240 .[42] Yixuan Even Xu, Yash Savani, Fei Fang, and J. Zico Kolter. Not all rollouts are useful: Down-sampling rollouts in llm reinforcement learning, 2025. URL https://arxiv.org/abs/2504. 13818 .[43] An Yang, Beichen Zhang, Binyuan Hui, Bofei Gao, Bowen Yu, Chengpeng Li, Dayiheng Liu, Jianhong Tu, Jingren Zhou, Junyang Lin, Keming Lu, Mingfeng Xue, Runji Lin, Tianyu Liu, Xingzhang Ren, and Zhenru Zhang. Qwen2.5-math technical report: Toward mathematical expert model via self-improvement. arXiv preprint arXiv:2409.12122 , 2024. [44] Yaning Yang, Elaine F. Remmers, Chukwuma B. Ogunwole, Daniel L. Kastner, Peter K. Gregersen, and Wentian Li. Effective sample size: Quick estimation of the effect of related samples in genetic case-control association analyses. arXiv: q-bio/0611093 , 2006. URL 
+
+https://arxiv.org/abs/q-bio/0611093 .[45] Jian Yao, Ran Cheng, Xingyu Wu, Jibin Wu, and Kay Chen Tan. Diversity-aware policy optimization for large language model reasoning. In Advances in Neural Information Process-ing Systems (NeurIPS) , 2025. URL https://openreview.net/forum?id=5eZ0iykpDU .Spotlight. 12 [46] Dong Yin, Ashwin Pananjady, Max Lam, Dimitris Papailiopoulos, Kannan Ramchandran, and Peter Bartlett. Gradient diversity: a key ingredient for scalable distributed learning. In 
+
+Proceedings of the Twenty-First International Conference on Artificial Intelligence and Statistics ,volume 84 of Proceedings of Machine Learning Research , pages 1998–2007. PMLR, 2018. URL https://proceedings.mlr.press/v84/yin18a.html .[47] Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Weinan Dai, Tiantian Fan, Gaohong Liu, Lingjun Liu, Xin Liu, Haibin Lin, Zhiqi Lin, Bole Ma, Guangming Sheng, Yuxuan Tong, Chi Zhang, Mofan Zhang, Wang Zhang, Hang Zhu, Jinhua Zhu, Jiaze Chen, Jiangjie Chen, Chengyi Wang, Hongli Yu, Yuxuan Song, Xiangpeng Wei, Hao Zhou, Jingjing Liu, Wei-Ying Ma, Ya-Qin Zhang, Mingxuan Wang, Lin Yan, Mu Qiao, and Yonghui Wu. Dapo: An open-source llm reinforcement learning system at scale, 2025. URL https: //arxiv.org/abs/2503.14476 .[48] Tianhe Yu, Saurabh Kumar, Abhishek Gupta, Sergey Levine, Karol Hausman, and Chelsea Finn. Gradient surgery for multi-task learning, 2020. URL https://arxiv.org/abs/2001.06782 .[49] Xingjian Zhang, Siwei Wen, Wenjun Wu, and Lei Huang. Edge-grpo: Entropy-driven grpo with guided error correction for advantage diversity, 2025. URL https://arxiv.org/abs/2507. 21848 .[50] Chujie Zheng, Shixuan Liu, Mingze Li, Xiong-Hui Chen, Bowen Yu, Chang Gao, Kai Dang, Yuqiong Liu, Rui Men, An Yang, Jingren Zhou, and Junyang Lin. Group sequence policy optimization. arXiv preprint arXiv:2507.18071 , 2025. doi: 10.48550/arXiv.2507.18071. URL 
+
+https://arxiv.org/abs/2507.18071 .[51] Boris Zhestiankin and Maria Ponomareva. Zhestyatsky at SemEval-2021 task 2: ReLU over cosine similarity for BERT fine-tuning. In Alexis Palmer, Nathan Schneider, Natalie Schluter, Guy Emerson, Aurelie Herbelot, and Xiaodan Zhu, editors, Proceedings of the 15th International Workshop on Semantic Evaluation (SemEval-2021) , pages 163–168, Online, August 2021. Association for Computational Linguistics. doi: 10.18653/v1/2021.semeval-1.17. URL https: //aclanthology.org/2021.semeval-1.17/ .[52] Yujun Zhou, Zhenwen Liang, Haolin Liu, Wenhao Yu, Kishan Panaganti, Linfeng Song, Dian Yu, Xiangliang Zhang, Haitao Mi, and Dong Yu. Evolving language models without labels: Majority drives selection, novelty promotes variation, 2025. URL https://arxiv.org/abs/ 2509.15194 .13 Appendix A Proof of the residual-gradient norm bound 
+
+This appendix provides a detailed derivation of the norm bound (Eq. (11) ) used in Section 2.3. The argument is deterministic, which holds for each prompt group without invoking expectations, and relies only on standard Euclidean inequalities. 
+
+Setup. Fix a prompt q. GRPO-style training samples G rollouts {oq,i }Gi=1 and forms the group-averaged score-gradient update 
+
+gq (θ) ≜ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i sq,i , sq,i ≜ ∇θ log πθ (oq,i | q). (22) In standard GRPO-style implementations, the advantage is centered within each prompt group [35], hence GX
+
+> i=1
+
+ˆAq,i = 0 . (23) Define the within-group mean score gradient and residuals: 
+
+¯sq ≜ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+sq,i , δq,i ≜ sq,i − ¯sq . (24) By construction, the residuals sum to zero: 
+
+> G
+
+X
+
+> i=1
+
+δq,i =
+
+> G
+
+X
+
+> i=1
+
+sq,i − G¯sq = G¯sq − G¯sq = 0 . (25) 
+
+Residual-only form of the group update. Substituting sq,i = ¯ sq + δq,i into gq (θ) yields 
+
+gq (θ) = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i (¯ sq + δq,i )= 1
+
+G
+
+ GX
+
+> i=1
+
+ˆAq,i 
+
+
+
+¯sq + 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i . (26) Using the group-centering property (Eq. (23) ), the mean-component term vanishes, giving the residual-only identity 
+
+gq (θ) = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i . (27) 
+
+Norm bound via Cauchy–Schwarz. We now prove the bound (Eq. (11)) 
+
+∥gq (θ)∥2 ≤ 1
+
+G
+
+ GX
+
+> i=1
+
+ˆA2
+
+> q,i
+
+1/2 GX
+
+> i=1
+
+∥δq,i ∥22
+
+1/2
+
+. (28) 
+
+Proof. Define 
+
+u ≜
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i ∈ Rd, (29) so that 
+
+gq (θ) = 1
+
+G u. (30) 14 Hence ∥gq (θ)∥2 = 1 
+
+> G
+
+∥u∥2. We bound ∥u∥2 by duality. For any vector v ∈ Rd with ∥v∥2 = 1 ,
+
+v⊤u = v⊤
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i δq,i =
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i v⊤δq,i . (31) Applying the scalar Cauchy–Schwarz inequality to the sequences { ˆAq,i }Gi=1 and {v⊤δq,i }Gi=1 gives 
+
+|v⊤u| ≤ 
+
+ GX
+
+> i=1
+
+ˆA2
+
+> q,i
+
+1/2 GX
+
+> i=1
+
+(v⊤δq,i )21/2
+
+. (32) Next, since ∥v∥2 = 1 , we have for each i,
+
+(v⊤δq,i )2 ≤ ∥ v∥22 ∥δq,i ∥22 = ∥δq,i ∥22, (33) which implies GX
+
+> i=1
+
+(v⊤δq,i )2 ≤
+
+> G
+
+X
+
+> i=1
+
+∥δq,i ∥22. (34) Combining Eq. (32) and (34) yields, for all ∥v∥2 = 1 ,
+
+|v⊤u| ≤ 
+
+ GX
+
+> i=1
+
+ˆA2
+
+> q,i
+
+1/2 GX
+
+> i=1
+
+∥δq,i ∥22
+
+1/2
+
+. (35) Finally, using the dual characterization of the Euclidean norm, ∥u∥2 = sup ∥v∥2=1 v⊤u (equivalently, 
+
+sup ∥v∥2=1 |v⊤u|), we obtain 
+
+∥u∥2 ≤
+
+ GX
+
+> i=1
+
+ˆA2
+
+> q,i
+
+1/2 GX
+
+> i=1
+
+∥δq,i ∥22
+
+1/2
+
+. (36) Multiplying by 1/G and recalling Eq. (30) proves the bound (Eq. (28) and (11)). 
+
+B Residual-gradient diagnostic 
+
+Section 2.3 predicts that GRPO-style rollout scaling is limited by the residual gradient energy after removing the within-group shared component. We validate this prediction by measuring the residual-gradient bottleneck across different rollout group sizes. 
+
+Metrics. For each prompt group, let sq,i denote the per-rollout score-gradient feature and decom-pose it as 
+
+sq,i = ¯ sq + δq,i , ¯sq = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+sq,i .
+
+We compute the total, shared, and residual gradient energies as 
+
+Etot (q) = 
+
+> G
+
+X
+
+> i=1
+
+∥sq,i ∥22, Esh (q) = G∥¯sq ∥22, Eδ (q) = 
+
+> G
+
+X
+
+> i=1
+
+∥sq,i − ¯sq ∥22.
+
+The residual-energy ratio is then defined as 
+
+ρδ (q) = Eδ (q)
+
+Etot (q) .
+
+We also measure the realized group-update norm 
+
+∥gq ∥2 = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ˆAq,i sq,i 
+
+> 2
+
+15 Figure 5: Residual-gradient bottleneck under rollout scaling. (a) As the rollout group size G
+
+increases, the shared-energy ratio decreases while the residual-energy ratio increases and saturates. (b) The residual-bound proxy remains bounded, whereas the realized update norm decreases with the group-averaging scale. (c) Across prompt groups, the realized update norm follows the residual-bound proxy, supporting that effective GRPO-style rollout scaling depends on non-redundant residual directions after group centering rather than on rollout count alone. and compare it with the residual-energy bound 
+
+Bδ (q) = 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+∥δq,i ∥22
+
+!1/2
+
+.
+
+In practice, we compute these quantities from the same LM-head gradient-proxy features used by 
+
+SALT , avoiding the need to materialize full-model per-sample gradients. Equivalently, given the group-wise Gram matrix Kq = S⊤ 
+
+> q
+
+Sq , we compute 
+
+Eδ (q) = tr( Kq ) − 1
+
+G 1⊤Kq 1, ∥gq ∥22 = 1
+
+G2 ˆA⊤ 
+
+> q
+
+Kq ˆAq .
+
+Validation Results. Figure 5 validates the residual-bottleneck prediction. As G increases, the residual-energy ratio increases but saturates, while the residual-bound proxy remains bounded and the realized update norm decreases. Moreover, the update norm correlates with the residual-bound proxy both globally, with Pearson 0.56 and Spearman 0.52 , and within each fixed G, where correlations remain above 0.95 . Thus, larger rollout groups strengthen GRPO-style training only when they introduce non-redundant residual directions that survive group-centered aggregation. 
+
+C Implementation Details 
+
+In this section, we will provide more details on the implementation of our experiments in Section 4.1 
+
+C.1 Hyperparameter Configuration 
+
+For reproducibility, we implement our method in the VeRL [ 38 ] framework as a modular component, enabling plug-and-play integration with various GRPO-style algorithms. We conduct experiments using DeepSeek-Distill-Qwen models at two scales (1.5B and 7B) and all experiments are conducted on a single server equipped with 8x NVIDIA H20 GPUs. Table 4 summarizes the hyperparameter settings used in our experiments (including GRPO and DAPO). Additionally, in Section 4.2 we compare methods proposed by Cui et al. [7] for increasing policy entropy. By constraining updates to tokens with high covariance, these methods prevent entropy collapse (the specific formulas are provided in Appendix I). 
+
+C.2 System Prompt and Reward System prompt. For all experiments, we applied a unified system prompt to constrain the model’s output format, requiring explicit step-by-step reasoning and a clearly delineated final answer 16 Table 4: The hyperparameter configuration for training. 
+
+Hyperparameter Value (default setting) 
+
+Training Setting 
+
+Rollout samples per prompt 8Rollout temperature 0.6 Learning rate 1e-6 Validation temperature 0.6 Entropy coefficient 0KL loss coefficient 0.001 Prompt length 1024 Response length 8192 Train batch size 64 Mini-Batch Size 32 Training epochs 2
+
+Additional Setting for DAPO 
+
+Generation batch size 128 Filter groups enable True Max numbers of generation batches 10 Clip ratio (Low) 0.2 Clip ratio (High) 0.28 
+
+KL-Covariance 
+
+KL covariance ratio 0.002 PPO KL coefficient 1Clip ratio (Low) 0.2 Clip ratio (High) 0.2 Training epochs 2
+
+Clip-Covariance 
+
+Clip covariance ratio 0.0002 Clip covariance lb 1.0 Clip covariance ub 5.0 Clip ratio (Low) 1Clip ratio (High) 1Please reason step by step, and put your final answer within \boxed{}. 
+
+which is the default prompt in VeRL [38]. 
+
+Reward function. To better align the training signal with the reward for solving problems correctly, we use the Math-Verify library [ 21 ] to extract the final answer (see the reference code for details). For GRPO, the reward is set to 1 for a correct answer and 0 otherwise; for DAPO, the reward is 1 for a correct answer and −1 otherwise. 
+
+D Formal definitions of metrics 
+
+D.1 Metrics in redundancy observation 
+
+In Section 2.2.1, we introduce the metrics used to measure gradient redundancy. This section presents a detailed description of these metrics, which are divided into in and out categories. In each iteration, we sample a mini-batch of prompts {qb}Bb=1 . For each prompt qb, we sample a group of G responses and obtain a set of gradient features {gb,i }Gi=1 ⊂ Rd. We use gb,i as the geometric object for measuring alignment and effective dimensionality. Throughout, we define the flattened index set of all sampled responses as I = {(b, i ) : b = 1 , . . . , B, i = 1 , . . . , G } with |I| = BG .To quantify cancellation in the actual update, we additionally define the signed per-sample update contribution ub,i ∈ R|θ| as the parameter-gradient contribution multiplied by the scalar coefficient 17 used by the objective. Concretely, we instantiate 
+
+ub,i ≜ ˆAb,i vb,i , (37) where vb,i is the response-level parameter-gradient contribution and ˆAb,i is the normalized advantage. 
+
+(1) Positive cosine similarity. For any two vectors x, y ∈ Rd, define the cosine similarity 
+
+cos( x, y ) ≜ ⟨x, y ⟩/(∥x∥2∥y∥2) and its positive version [cos( x, y )] + ≜ max {0, cos( x, y )}. For a set of m vectors {gi}mi=1 , we define the mean positive cosine similarity [51] 
+
+r({gi}mi=1 ) ≜ 2
+
+m(m − 1) 
+
+X
+
+> 1≤i<j ≤m
+
+[cos( gi, g j )] +. (38) We report within-group and batch-level variants: 
+
+rin (qb) ≜ r({gb,i }Gi=1 ), (39) 
+
+rin ,mean ≜ 1
+
+B
+
+> B
+
+X
+
+> b=1
+
+rin (qb), (40) 
+
+rtotal ≜ r({gb,i }(b,i )∈I ). (41) 
+
+(2) Participation ratio (PR). Given a set of m gradient features {gi}mi=1 , let G = [ g1, . . . , g m] ∈
+
+Rd×m and form the normalized Gram matrix 
+
+K ≜ 1
+
+m G⊤G ∈ Rm×m. (42) Let {λi}mi=1 denote the eigenvalues of K (computed by a symmetric eigensolver); in implementation we clamp λi ← max {0, λ i} for numerical stability. We define the participation ratio [30, 16] 
+
+PR( K) ≜ (Pmi=1 λi)2
+
+Pmi=1 λ2
+
+> i
+
+. (43) Larger PR( K) indicates a less concentrated spectrum and thus a higher effective dimensionality of the set {gi}mi=1 .We report within-group and batch-level variants: 
+
+PR in (qb) ≜ PR( Kin (qb)) , (44) 
+
+Kin (qb) ≜ 1
+
+G G⊤ 
+
+> b
+
+Gb, Gb ≜ [gb, 1, . . . , g b,G ], (45) 
+
+PR in ,mean ≜ 1
+
+B
+
+> B
+
+X
+
+> b=1
+
+PR in (qb), (46) 
+
+PR total ≜ PR( Ktotal ), (47) 
+
+Ktotal ≜ 1
+
+BG G⊤
+
+> all
+
+Gall , (48) where Gall ≜ [gb,i ](b,i )∈I stacks all gradient features in the mini-batch. 
+
+(3) Effective sample size proxy. For a set of signed update vectors {ui}mi=1 , we define the effective sample size proxy 
+
+neff ({ui}mi=1 ) ≜ ∥Pmi=1 ui∥22Pmi=1 ∥ui∥22
+
+. (49) This ratio increases when updates add coherently and decreases under cancellation [20, 44]. We report within- and cross-group variants: 
+
+nin eff (qb) ≜ neff ({ub,i }Gi=1 ), (50) 18 neff ,in ,mean ≜ 1
+
+B
+
+> B
+
+X
+
+> b=1
+
+nin eff (qb), (51) and for cross-group aggregation we first compute prompt-level mean updates 
+
+¯ub ≜ 1
+
+G
+
+> G
+
+X
+
+> i=1
+
+ub,i , (52) then define 
+
+nout eff ≜ neff ({¯ub}Bb=1 ). (53) 
+
+D.2 Metrics in evaluation 
+
+In Section 4.1, we evaluate the benchmarks with the following metrics: 
+
+Pass@k. Pass@k is a standard metric for math-generation benchmarks that measures whether at least one of the top k sampled solutions solves the problem. Concretely, for each instance, we draw n
+
+candidate outputs (typically with stochastic decoding) and mark c of them as correct according to the evaluator (e.g., unit tests or an exact-match checker). The estimated pass@k is given by 
+
+pass@ k =
+
+
+
+1, c ≥ k, 
+
+1 −
+
+ n−ck
+
+ nk
+
+ , c < k, (54) which corresponds to the probability that a uniformly chosen subset of k samples contains at least one correct solution. We report pass@ k averaged over all instances and, to ensure the stability of the experiments, we will run validation five times and report the average results. 
+
+E Proxy Fidelity and Blockwise Whole-Model Geometry 
+
+SALT relies on the geometry of per-sample policy-gradient features, including sample-wise similarity, signed alignment, spectral concentration, and the dominant subspace used for the shared/residual decomposition. Directly materializing full per-sample gradients over all model parameters is pro-hibitively expensive for LLM training. Therefore, in our practical implementation, we use the LM-head/output-projection gradient as a lightweight proxy for estimating the geometry required by SALT .We emphasize that the proxy is not intended to match the full-model gradient entry-wise. SALT 
+
+only uses the proxy through low-dimensional sample-wise geometry : the cosine-Gram structure, the signed alignment pattern relevant to cancellation, the participation-ratio spectrum, and the top eigenspace used to construct the dominant and residual channels. This appendix therefore evaluates whether the LM-head proxy preserves these SALT -relevant geometric quantities against stronger references , including full-gradient diagnostics on smaller models and blockwise whole-model sketches on larger models. 
+
+E.1 References and Protocol 
+
+For each validation checkpoint, we use the same rollouts, rewards, and group-normalized advantages as in training. We compare the LM-head proxy against three types of reference gradients. 
+
+Small-model full-gradient reference. First, on smaller models where diagnostic computation is tractable, we compute full trainable-parameter per-sample gradients. This directly tests whether the proxy reflects whole-model gradient geometry. These full gradients are used only for validation and are never materialized during SALT training. 
+
+Blockwise whole-model sketch. Second, for larger models, we compute blockwise per-sample gradients from representative Transformer blocks, including early, middle, late, and randomly sampled blocks. We also report an aggregated blockwise reference by combining the sampled-block Gram statistics. This blockwise sketch tests whether the LM-head proxy captures geometry beyond a single adjacent layer. 19 Table 5: Proxy fidelity against full-gradient and blockwise references. Results are averaged over validation checkpoints and mini-batches. The LM-head proxy preserves the geometry used by 
+
+SALT substantially better than permutation and noise nulls.                                                                                                                                                                                  
+
+> Baselines Gram ρ↑Sign agree. ↑PR rel. err. ↓Subspace overlap ↑ktmatch ↑a′cosine ↑
+> Reference Gradients Baselines
+> Full gradient, small model 0.71 ±0.06 0.82 ±0.03 0.09 ±0.04 0.78 ±0.05 0.74 ±0.07 0.86 ±0.04
+> Blockwise aggregate 0.76 ±0.05 0.84 ±0.03 0.07 ±0.03 0.81 ±0.04 0.79 ±0.06 0.88 ±0.03
+> Early block 0.58 ±0.07 0.75 ±0.04 0.16 ±0.06 0.64 ±0.06 0.61 ±0.08 0.77 ±0.05
+> Middle block 0.64 ±0.06 0.78 ±0.04 0.13 ±0.05 0.69 ±0.05 0.66 ±0.07 0.80 ±0.05
+> Late block 0.73 ±0.05 0.83 ±0.03 0.08 ±0.04 0.79 ±0.05 0.77 ±0.06 0.87 ±0.04
+> Last block, disjoint 0.79 ±0.04 0.85 ±0.03 0.06 ±0.03 0.84 ±0.04 0.82 ±0.05 0.90 ±0.03
+> Random-block average 0.68 ±0.06 0.80 ±0.04 0.10 ±0.04 0.73 ±0.05 0.71 ±0.07 0.84 ±0.04
+> Null Baselines
+> Permutation null 0.02 ±0.04 0.51 ±0.02 0.47 ±0.15 0.18 ±0.06 0.19 ±0.08 0.08 ±0.05
+> Noise null 0.00 ±0.03 0.50 ±0.02 0.56 ±0.18 0.13 ±0.05 0.12 ±0.06 0.03 ±0.04
+
+Disjoint last-block reference. Third, we retain the original disjoint last-block validation. The LM-head and last-block parameters have zero parameter overlap, so agreement cannot be explained by shared parameters. 
+
+Null baselines. We include two null baselines: a permutation null, which randomly permutes sample correspondence between proxy and reference gradients, and a noise null, which replaces proxy features with random vectors of matched dimension. 
+
+E.2 Metrics 
+
+Let pi denote the LM-head proxy for sample i, and gi a reference gradient. We evaluate only the geometric quantities used by SALT .
+
+Gram correlation. We compute cosine-Gram matrices 
+
+eKpij = ⟨pi, p j ⟩∥pi∥2∥pj ∥2
+
+, eKgij = ⟨gi, g j ⟩∥gi∥2∥gj ∥2
+
+, (55) and report Spearman correlation over off-diagonal entries. 
+
+Signed alignment. Since SALT targets signed cancellation, we report sign agreement between eKpij 
+
+and eKgij on high-magnitude reference pairs. 
+
+Spectral consistency. We compare the participation ratio 
+
+PR( K) = (P 
+
+> r
+
+λr )2
+
+P 
+
+> r
+
+λ2
+
+> r
+
+, (56) and report PR error as well as the consistency of the selected dominant dimension kt.
+
+Subspace consistency. Let V pk and V gk be the top-k eigenspaces of the proxy and reference Gram matrices. We report principal-angle overlap, computed from the singular values of (V pk )⊤V gk .
+
+Reweighting consistency. To measure whether the proxy leads to similar SALT decisions, we compare the reweighted advantages induced by proxy and reference geometries: 
+
+a′ 
+
+> proxy
+
+= P pk a + αpt (I − P pk )[ a]+, (57) and analogously a′ 
+
+> ref
+
+. We report cosine similarity and rank correlation between them. 20 0 50 100 150 200               
+
+> Training Step
+> 0.2
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Spearman
+> (a) Gram Structure Correlation
+> Original
+> Permuted
+> Noise
+> 050 100 150 200
+> Training Step
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> Sign Agreement
+> (b) Sign Agreement by Magnitude
+> Top 50% magnitude
+> Top 25% magnitude
+> Random baseline
+> 050 100 150 200
+> Training Step
+> 1.00
+> 1.05
+> 1.10
+> 1.15
+> 1.20
+> 1.25
+> 1.30
+> 1.35
+> 1.40
+> Participation Ratio (PR)
+> (c) Low-Rank Structure Consistency
+> PR (Last Block)
+> PR (Gradient Proxy)
+> 050 100 150 200
+> Training Step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Singular Value (  )
+> (d) Subspace Overlap ( k=8)
+> mean( )
+> min( )
+
+Figure 6: Disjoint last-block proxy validation. We validate the LM-head proxy against per-sample gradients from the last Transformer block on identical rollouts and advantages. Since the two parameter subsets are disjoint, their agreement cannot arise from shared parameters. We compare the geometry used by SALT : (a) cosine-Gram correlation is high while permutation/noise nulls are near zero; (b) high-magnitude signed pairs agree far above chance; (c) P R dynamics are closely tracked; and (d) the dominant top-k eigenspace ( k=8 ) is well preserved, despite less stable tail directions. 
+
+E.3 Results 
+
+Table 5 summarizes proxy fidelity across checkpoints and mini-batches. The LM-head proxy preserves the SALT -relevant geometry against both full-gradient diagnostics and blockwise references. It achieves substantially higher Gram correlation, signed agreement, PR consistency, subspace overlap, and reweighting consistency than permutation and noise nulls. Figure 6 shows the original disjoint last-block validation. Despite zero parameter overlap, the LM-head proxy tracks the last-block reference in Gram structure, signed alignment, PR dynamics, and dominant subspace, while the null baselines remain near chance. Together with the full-gradient and blockwise results in Table 5, this supports using the LM-head proxy as a scalable estimator of the geometry required by SALT .
+
+F Details of Experiment 
+
+F.1 Additional Experiments for RQ1 
+
+Table 6: Cross-model generalization under matched budgets. Across models using the same RLVR pipeline, GRPO +SALT consistently out-performs GRPO. 
+
+Model Average 
+
+ACC Pass@8 
+
+Deepseek-Distill-Qwen Model Deepseek-Distill-Qwen-1.5B 
+
+GRPO 51.2 75.4 + SALT 53.7 78.1 + ∆ + 2.5 + 2.7 
+
+Deepseek-Distill-Qwen-7B 
+
+GRPO 66.9 85.8 + SALT 69.7 88.1 + ∆ + 2.8 + 2.3 
+
+Instruct Model LLaMA-3.1-8B 
+
+GRPO 33.5 54.8 + SALT 36.1 57.0 + ∆ + 2.6 + 2.2 
+
+Qwen-3-8B 
+
+GRPO 80.1 89.0 + SALT 82.8 92.3 + ∆ + 2.8 + 3.3 
+
+Math Model Qwen-2.5-Math-1.5B 
+
+GRPO 43.7 62.5 + SALT 46.9 65.1 + ∆ + 3.2 + 2.6 
+
+Deepseek-Math-7B 
+
+GRPO 33.2 52.2 + SALT 37.2 55.7 + ∆ + 4.0 + 2.5 
+
+In Table 2, we show that adding SALT yields effective task-level gains. Figure 3 further il-lustrates the geometric characteristics observed during training, demonstrating that SALT can in-deed bring meaningful improvements. In this section, we will focus on different model fami-lies and non-mathematical RLVR tasks to more intuitively show that this phenomenon is broadly prevalent in RLVR. 
+
+Cross-Models Generalization. We evaluate whether the signed low-rank structure and the resulting gradient cancellation observed in Fig-ure persist across model families, and whether 
+
+SALT consistently improves both gradient effec-tiveness ( P R and nef f ) and downstream accu-racy. For all models, we keep the RLVR pipeline identical to the main experiments. We match the total sampling budget and the number of optimization steps between GRPO and adding 
+
+SALT [1, 40, 43, 35]. Geometry persists across models. We observe consistently low effective rank (small PR) and strong gradient cancellation (low nef f ) in Fig-ure 7. SALT selectively fixes cancellation. Across models, SALT increases both P R and nef f , in-21 Figure 7: Signed low-rank geometry persists across model families, and SALT mitigates gradient cancellation. Training dynamics on AIME25 across multiple model families under matched sampling and optimization budgets. Top: Pass@1; Middle: effective sample size neff ; Bottom: participation ratio ( P R ). Despite GRPO exhibiting low PR and low neff (strong cancellation), adding SALT 
+
+consistently increases both PR and neff , translating into improved Pass@1. 
+
+Figure 8: Code RLVR results on MBPP with DeepSeek-R1-Distill-Qwen-7B. GRPO exhibits strong cancellation (lower effective sample size neff ) and an effectively low-rank update geometry (lower P R ), while SALT consistently increases both neff and P R with higher Pass@1 performance. dicating that rollouts are converted into effective update directions rather than being canceled by opposing alignments. As summarized in Table 6, on average across all models, adding SALT improves ACC by 3.0 points and Pass@8 by 2.6 points compared to GRPO. SALT consistently improves average accuracy and Pass@8 across distilled base models, instruction-tuned models, and math-specialized models, sug-gesting that SALT ’s gains stem from mitigating gradient cancellation rather than merely encouraging randomness. 
+
+Code RLVR. We further evaluate SALT on code generation with execution-based verification, where rewards are obtained by running unit tests. This setting serves as an orthogonal, non-math RLVR domain with a high-precision verifier, enabling us to examine whether the signed low-rank geometry and the effectiveness of SALT generalize beyond mathematical reasoning. To better expose this phenomenon, we train DeepSeek-R1-Distill-Qwen-7B for five epochs on the MBPP training set [ 3] with a batch size of 32. As shown in Figure 8, signed low-rank geometry persists during code RLVR training: compared with GRPO, SALT yields modest but consistent Pass@1 gains on both HumanEval [ 5] and HumanEval+ [ 24 ], while also improving neff and PR, indicating less cancellation and more diverse effective updates. 
+
+F.2 Detailed Results for RQ2 
+
+This appendix provides the complete results and supplementary analyzes for RQ2 in Section 4.2. 22 Table 7: Per-benchmark performance comparison aggregated under GRPO and DAPO training. Results are averaged over 5 runs. Bold numbers indicate best performance within each block. Overall, compared with entropy-control methods, SALT not only introduce more effective directions at the geometric level, but also achieve the best task performance. 
+
+Training Method AIME24 AIME25 GSM8K MATH-500 GPQA 
+
+ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 
+
+Deepseek-Distill-Qwen-1.5B MATH-T 
+
+GRPO 29.3 59.3 25.6 43.3 80.7 94.8 85.6 96.7 35.0 82.2 + Entropy Bonus 29.0 59.1 25.4 43.2 80.5 94.7 85.4 96.6 34.8 82.1 + Clip Cov 29.6 60.1 25.9 44.2 81.1 95.3 86.0 97.0 35.2 82.4 + KL Cov 29.8 60.0 26.0 44.0 81.3 95.1 86.2 97.1 35.5 82.6 + SALT 32.1 62.9 27.1 47.2 83.4 96.5 87.2 98.4 38.4 85.5 
+
+DAPO 30.1 59.9 23.9 44.3 81.0 96.1 86.1 97.0 37.0 81.7 + Entropy Bonus 30.0 60.0 24.0 44.5 81.2 96.2 86.0 97.0 37.1 81.8 + Clip Cov 30.3 60.1 24.3 44.6 81.4 96.4 86.2 97.1 37.3 82.0 + KL Cov 30.4 60.2 24.4 44.7 81.5 96.5 86.3 97.2 37.4 82.0 + SALT 30.6 60.6 25.6 46.3 82.5 97.1 87.1 97.0 39.6 83.5 DAPO-M 
+
+GRPO 29.1 59.0 23.6 44.2 82.2 95.3 85.9 96.8 36.2 83.7 + Entropy Bonus 29.3 59.4 23.9 44.6 82.4 95.6 86.1 97.0 36.5 83.5 + Clip Cov 29.9 59.2 24.5 43.8 82.6 95.0 86.5 96.6 36.9 83.5 + KL Cov 30.0 59.8 24.6 45.0 82.6 95.8 86.6 97.2 37.0 84.2 + SALT 32.7 62.8 27.8 47.8 83.0 96.5 88.0 97.3 37.7 85.0 
+
+DAPO 29.0 61.3 26.0 45.0 82.2 95.0 84.8 96.8 36.0 80.9 + Entropy Bonus 29.2 61.5 26.2 45.4 82.4 95.4 85.0 97.0 36.3 81.3 + Clip Cov 29.8 61.2 26.8 44.9 82.7 95.2 85.3 96.7 36.7 81.0 + KL Cov 30.0 61.8 27.0 45.8 82.9 95.6 85.6 97.2 37.0 81.6 + SALT 32.9 63.8 28.0 47.0 84.1 96.8 88.0 98.0 38.5 82.9 Deepseek-Distill-Qwen-7B MATH-T 
+
+GRPO 60.7 77.3 42.0 71.3 89.9 97.7 94.9 99.0 46.8 83.8 + Entropy Bonus 60.2 77.1 41.6 71.2 90.0 97.7 94.8 98.9 46.5 83.7 + Clip Cov 61.1 77.9 42.3 72.1 90.2 97.8 95.0 99.1 47.1 84.3 + KL Cov 61.5 78.1 42.6 72.0 90.1 97.8 95.1 99.0 47.3 84.4 + SALT 64.7 80.4 45.3 74.5 91.9 98.7 95.2 98.9 51.2 87.9 
+
+DAPO 54.0 79.3 42.0 62.7 90.1 97.5 94.2 99.0 48.9 83.7 + Entropy Bonus 54.3 79.6 42.2 63.4 90.1 97.7 94.2 99.2 49.1 84.1 + Clip Cov 54.7 79.4 42.5 63.0 90.3 97.6 94.3 89.7 49.5 83.9 + KL Cov 54.9 79.8 42.7 63.7 90.2 97.7 94.3 99.1 49.6 84.4 + SALT 57.3 82.2 44.8 66.6 91.7 99.0 95.2 99.1 52.2 88.1 DAPO-M 
+
+GRPO 61.5 78.0 42.8 72.1 90.4 97.8 95.0 99.1 47.6 84.6 + Entropy Bonus 61.2 78.1 42.9 72.6 90.6 97.9 95.1 89.5 48.8 85.1 + Clip Cov 61.9 78.6 43.3 72.5 90.7 98.0 95.2 89.9 48.3 84.8 + KL Cov 62.2 78.8 43.4 73.2 90.8 98.0 95.2 89.8 48.5 85.6 + SALT 65.4 81.2 46.5 75.5 92.4 99.3 96.4 99.2 51.3 89.2 
+
+DAPO 54.8 80.0 43.0 64.0 90.4 97.6 94.4 89.5 49.2 84.1 + Entropy Bonus 54.9 80.0 43.2 64.8 90.6 97.8 94.5 99.1 49.6 84.6 + Clip Cov 55.2 79.7 43.8 64.3 90.7 97.7 94.6 89.7 49.9 86.3 + KL Cov 55.0 80.2 44.3 65.4 90.7 97.9 94.6 99.1 50.4 84.8 + SALT 56.6 81.6 46.3 68.3 92.1 99.2 95.4 99.3 53.1 88.7 
+
+Full Results. Table 3 reports the averaged results for DeepSeek-Distill-Qwen-1.5B in the main paper. Here we provide the complete results per-benchmark for both the 1.5B and 7B models in Table 7. Two patterns are consistent across model scales and benchmarks. First, SALT achieves the strongest overall performance , with gains often more pronounced in Pass@8 than in Pass@1, indicating improved effectiveness under multi-sample evaluation. Second, these gains are consistent with the mechanism emphasized throughout the paper: the update combines a stable main learning signal with an adaptive exploration component, which improves credit assignment and mitigates noisy or misaligned updates. As a result, SALT yields more reliable optimization under the same training budget, translating into higher downstream accuracy rather than merely increasing or regulating response entropy .23 F.3 Additional Ablations for RQ3 F.3.1 Component Necessity Ablations 
+
+In Section 4.3, we conduct ablation studies on the individual components of our method SALT , and present further details below (Table 8). 
+
+Ablation definitions. We ablate SALT by selectively removing or modifying its key components while keeping the rest of the training pipeline identical. Let a denote the per-sample advantage vector, 
+
+Pk the estimated common-gradient subspace projector, and P ⊥ 
+
+> k
+
+= I − Pk its orthogonal complement. 
+
+SALT forms the modified advantages as: • SALT (full). a′ = Pka + αt P ⊥ 
+
+> k
+
+[a]+, where αt is the cancellation-aware mixing weight computed from effective sample size. • only-main . a′ = Pka. This variant keeps only the main channel and removes the residual exploration channel. • only-exp . a′ = αt P ⊥ 
+
+> k
+
+[a]+. This variant removes the main channel and updates purely along the residual directions. • no-Positive . a′ = Pka + αt P ⊥ 
+
+> k
+
+a. This variant removes the positive gating in the residual channel, allowing signed residuals to be amplified. • no-proj . a′ = a + αt [a]+. This variant removes the subspace decomposition entirely (i.e., no projection), retaining only the mixing and gating mechanism. • rand-proj . a′ = ePka + αt eP ⊥ 
+
+> k
+
+[a]+, where ePk = eVk eV ⊤ 
+
+> k
+
+is constructed from a random orthonormal basis eVk ∈ Rm×kt and eP ⊥ 
+
+> k
+
+= I − ePk. This control removes data-driven subspace estimation while preserving the same two-channel structure. To provide a more comprehensive assessment, we further evaluate alternative mixing schedules that control αt using proxies other than nef f (e.g., PR-driven or entropy-driven rules), while keeping all other settings fixed. These controls test whether SALT ’s gains come from the cancellation-aware mixing, rather than from heuristic adaptivity. • fixed-α. a′ = Pka + α P ⊥ 
+
+> k
+
+[a]+ with a constant α ∈ [0 , 1] (shared across steps). This control removes cancellation-aware adaptivity and tests whether a fixed mixing weight suffices. • PR-α. a′ = Pka + αt P ⊥ 
+
+> k
+
+[a]+ with αt = clip 
+
+ P R total  
+
+> m−1
+
+, 0, 1
+
+
+
+. This control drives mixing using effective dimensionality (PR) rather than cancellation ( neff ). • Entropy-α. a′ = Pka + αt P ⊥ 
+
+> k
+
+[a]+ with αt = clip 
+
+ Ht−Hmin  
+
+> Hmax −Hmin
+
+, 0, 1
+
+
+
+, where Ht is the policy entropy at step t and Hmin , H max are computed over the same training run. This control uses exploration level as a proxy to set αt instead of neff .All variants use the same kt and αt computation when applicable, and differ only in how a is transformed into a′.
+
+Benchmark performance. While the main text focuses on the PR– neff geometry in Figure 4 (a), we also report the final benchmark performance of SALT and all ablations under identical training budgets. Table 8 summarizes results across all benchmarks. Overall, the full SALT achieves the best performance and the most consistent gains. In contrast, removing either channel ( only-main /only-exp ), breaking the learned subspace structure ( no-proj /rand-proj ), or replacing cancellation-aware mixing with alternative schedules ( fixed-α/PR-α/Entropy-α) leads to degraded performance, corroborating that both the dual-channel design and cancellation-aware mixing are necessary .
+
+Visualization of αt dynamics and clipping diagnostics. We further visualize the temporal evolu-tion of the adaptive mixing coefficient αt under different rollout group sizes. As shown in Figure 9, larger rollout groups consistently lead to higher αt, indicating that SALT adaptively places more weight on the residual/exploration channel when redundancy and signed cancellation become stronger. This behavior is consistent with the design of the cancellation-aware mixing rule. 24 Table 8: SALT component ablations and alternative mixing schedules under GRPO (Deepseek-Distill-Qwen-1.5B; MATH-Train). Results are reported as Pass@1/Pass@8 on AIME24/25, GSM8K, MATH-500, and GPQA. Bold indicates the best performance. Overall, the full SALT design achieves the strongest average results, and removing key components consistently degrades performance. 
+
+Method AIME24 AIME25 GSM8K MATH-500 GPQA Average 
+
+ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 Vanilla 29.1 59.3 22.0 42.6 80.3 95.0 85.5 96.4 34.5 82.4 50.2 75.1 GRPO 29.3 59.3 25.6 43.3 80.7 94.8 85.6 96.7 35.0 82.2 51.2 75.4 + only-main 30.1 60.5 25.3 44.6 81.9 95.7 86.0 97.1 36.2 83.2 51.9 76.2 + only-exp 29.8 60.0 25.0 44.0 81.5 95.4 85.9 97.0 35.8 82.9 51.6 75.9 + no-Pos 29.6 59.7 24.7 43.8 81.1 95.2 85.8 96.8 35.4 82.5 51.3 75.6 + no-proj 29.4 59.4 24.4 43.4 80.9 95.0 85.7 96.7 35.2 82.3 51.1 75.4 + rand-proj 29.5 59.5 24.6 43.6 81.0 95.1 85.8 96.8 35.3 82.4 51.2 75.5 + PR-αt 30.3 61.0 25.4 45.0 82.0 95.9 86.1 97.3 36.5 83.7 52.1 76.6 + Ent-αt 30.0 60.6 25.2 44.5 81.8 95.6 86.0 97.2 36.1 83.3 51.8 76.2 + Fixed-αt 30.7 59.9 24.9 44.1 82.4 95.4 85.9 97.0 35.7 82.8 52.1 75.8 + SALT 32.1 62.9 27.1 47.2 83.4 96.5 87.2 98.4 38.4 85.5 53.7 78.1 0 50 100 150 200                                 
+
+> Training Step
+> 0.30
+> 0.35
+> 0.40
+> 0.45
+> 0.50
+> 0.55
+> 0.60
+> Adaptive mixing coefficient  t
+> Ablation Study-t(Number of Rollouts G=8)
+> 050 100 150 200
+> Training Step
+> 0.40
+> 0.45
+> 0.50
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> Adaptive mixing coefficient  t
+> Ablation Study-t(Number of Rollouts G=64)
+> 050 100 150 200
+> Training Step
+> 0.45
+> 0.50
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> Adaptive mixing coefficient  t
+> Ablation Study-t(Number of Rollouts G=128)
+> 050 100 150 200
+> Training Step
+> 0.000000
+> 0.000025
+> 0.000050
+> 0.000075
+> 0.000100
+> 0.000125
+> 0.000150
+> 0.000175
+> 0.000200
+> PG Clip Fraction
+> PG Clip Fraction (Number of Rollouts G=8)
+> 050 100 150 200
+> Training Step
+> 0.00000
+> 0.00002
+> 0.00004
+> 0.00006
+> 0.00008
+> 0.00010
+> 0.00012
+> 0.00014
+> 0.00016
+> 0.00018
+> PG Clip Fraction
+> PG Clip Fraction (Number of Rollouts G=64)
+> 050 100 150 200
+> Training Step
+> 0.000000
+> 0.000025
+> 0.000050
+> 0.000075
+> 0.000100
+> 0.000125
+> 0.000150
+> 0.000175
+> 0.000200
+> PG Clip Fraction
+> PG Clip Fraction (Number of Rollouts G=128)
+
+Figure 9: Adaptive mixing coefficient and policy-gradient clipping fraction under different rollout group sizes. As the rollout group size increases from G = 8 to G = 128 , the adaptive mixing coefficient αt increases, indicating that SALT assigns more weight to the residual channel when larger rollout groups induce stronger redundancy and cancellation . Meanwhile, the policy-gradient clipping fraction remains at the 10 −4 level and stays below 2 × 10 −4 throughout training, suggesting that the observed gains are unlikely to be driven by PPO clipping artifacts .We also report the policy-gradient clipping fraction in the same figure to rule out clipping-induced artifacts. Across all rollout group sizes, the clipping fraction remains at the 10 −4 level and stays below 2 × 10 −4 throughout training. Therefore, the effect of SALT is unlikely to be driven by PPO clipping nonlinearities; instead, the diagnostic supports our interpretation that SALT improves update aggregation through geometry-aware residual reweighting. 
+
+F.3.2 Matched-Coefficient Subspace Intervention 
+
+The component ablations above verify the necessity of individual SALT components. However, modifying a component may also change the marginal distribution, scale, and positive mass of the reweighted coefficients, making it difficult to fully isolate whether the improvement comes from geometry-aware subspace alignment or from coefficient reshaping alone. To address this, we introduce a matched-coefficient subspace intervention that preserves the coefficient distribution of 
+
+SALT while breaking its alignment with the true mini-batch gradient geometry .
+
+Protocol. For each checkpoint and mini-batch, we fix the prompts, sampled rollouts, rewards, original group-normalized advantages, and the adaptive mixing coefficient. We first compute the 25 Table 9: Matched-coefficient subspace intervention on DeepSeek-Distill-Qwen-7B / MATH-TRAIN. Coef. Dist. indicates whether the marginal distribution of reweighted coefficients is matched to the corresponding standard SALT variant under the same backbone; Geo. Align. indicates whether the coefficient-to-sample assignment is aligned with the true data-dependent mini-batch gradient geometry. Matched null variants preserve the coefficient distribution of SALT while breaking this geometry alignment. Their degradation in effective update geometry indicates that SALT ’s gains come from geometry-aligned coefficient assignment rather than coefficient redistribution alone. Backbone Method Coef. Dist. Geo. Align. Da ↓ Dg ↓ neff ↑ U⊥ Gain ↑                                                                                                                            
+
+> GRPO Backbone ––0.000 0.000 0.31 ±0.05 1.00 ×
+> GRPO RandSubspace-SALT No No 0.22 ±0.04 0.18 ±0.03 0.50 ±0.05 1.13 ×
+> GRPO Permuted-SALT Yes No 0.24 ±0.04 0.19 ±0.03 0.43 ±0.05 1.08 ×
+> GRPO Matched-RandSubspace Yes No 0.24 ±0.04 0.18 ±0.03 0.55 ±0.04 1.18 ×
+> GRPO +SALT Yes Yes 0.24 ±0.04 0.16 ±0.03 0.80 ±0.04 1.47 ×
+> DAPO Backbone ––0.000 0.000 0.82 ±0.03 1.00 ×
+> DAPO RandSubspace-SALT No No 0.16 ±0.03 0.13 ±0.02 0.86 ±0.04 1.07 ×
+> DAPO Permuted-SALT Yes No 0.17 ±0.03 0.13 ±0.02 0.84 ±0.04 1.04 ×
+> DAPO Matched-RandSubspace Yes No 0.17 ±0.03 0.12 ±0.02 0.89 ±0.03 1.10 ×
+> DAPO +SALT Yes Yes 0.17 ±0.03 0.11 ±0.02 1.00 ±0.03 1.24 ×
+
+standard SALT coefficients a′ 
+
+> SALT
+
+and record their sorted values. We then construct matched null variants by reassigning the same sorted coefficient values according to alternative sample orderings. This keeps the marginal distribution, norm, and positive mass of the coefficients identical to SALT ,while disrupting their sample-wise alignment with the data-dependent gradient geometry. 
+
+Intervention variants. We consider two matched null variants. Permuted-SALT randomly per-mutes the assignment between a′ 
+
+> SALT
+
+and samples. Matched-RandSubspace first samples a random orthogonal subspace with the same dimension as the SALT dominant subspace, uses the induced residual scores to rank samples, and then assigns the sorted values of a′ 
+
+> SALT
+
+according to this random-subspace ranking. In both variants, the coefficient distribution is exactly matched to SALT ; only the alignment between coefficients and the true mini-batch gradient geometry is broken. 
+
+Results and interpretation. As shown in Table 9, both matched null variants degrade the effective update geometry compared with SALT . Since these variants preserve the coefficient distribution, this degradation cannot be explained by changes in coefficient scale, sparsity, or positive mass. Instead, the result indicates that the gains of SALT rely on assigning reweighted coefficients to geometry-aligned samples, rather than merely changing the distribution of coefficient values. Together with the clipping diagnostic in Figure 9, where the policy-gradient clipping fraction remains below 2 × 10 −4, these results further suggest that the observed gains are unlikely to arise from PPO clipping artifacts. 
+
+F.4 Additional evidence for RQ4 
+
+In Section 4.4, we show that larger rollout groups G amplify both update diversity and gradient cancellation, and that SALT can better translate large-G rollouts into effective learning. Here we provide additional analyses to connect these geometric trends to the underlying mechanism and to rule out simpler alternatives. First, we examine how SALT allocates updates between its main and exploration channels (Figure 4). Consistently, the exploration channel’s contribution and the mixing coefficient αt increase with G, indicating on-demand exploration under severe cancellation. Second, we compare against an entropy-only variant: while an entropy bonus improves randomness, it does not recover Neff as effectively, leading to weaker or less reliable gains. Together, these results suggest that increasing entropy alone is insufficient; cancellation-aware mixing is key. F.5 Bias–Cancellation Trade-off Diagnostics 
+
+Section 3.3 shows that SALT intentionally departs from the original GRPO-style estimator by replac-ing the group-normalized coefficients a with geometry-reweighted coefficients a′. This appendix quantifies whether this biased surrogate is both controlled and useful : controlled if the update devia-tion from GRPO remains moderate, and useful if the deviation increases the effective residual update and improves downstream accuracy. 26 Figure 10: Rollout scaling diagnostics: (a) Decomposition of SALT ’s gradient/update contributions into the main and exploration channels as the rollout group size G increases; the exploration share (and thus mixing) grows with G, indicating on-demand exploration under stronger cancellation. 
+
+(b) Comparison with an entropy-only baseline at G = 8 , G = 64 and G = 256 : entropy increases randomness (higher P R ) but does not recover Neff as effectively as SALT , leading to weaker or less reliable gains. Table 10: Bias–cancellation trade-off diagnostics averaged over the last 20% training checkpoints and 5 seeds on DeepSeek-Distill-Qwen-7B / MATH-TRAIN. Da measures coefficient distortion, Dg
+
+measures update deviation from the corresponding backbone, neff measures cancellation-adjusted effective update size, and U⊥ measures residual-channel update strength. SALT introduces a moderate deviation while increasing effective update strength and downstream accuracy .                                                      
+
+> Backbone Method Da↓Dg↓neff ↑U⊥Gain ↑Avg. ACC ↑
+> GRPO Backbone 0.000 0.000 0.31 ±0.05 1.00 ×66 .9
+> GRPO +SALT 0.24 ±0.04 0.16 ±0.03 0.80 ±0.04 1.47 ×69 .7
+> DAPO Backbone 0.000 0.000 0.82 ±0.03 1.00 ×65 .8
+> DAPO +SALT 0.17 ±0.03 0.11 ±0.02 1.00 ±0.03 1.24 ×68 .2
+
+Metrics. Let S = [ s1, . . . , s m] denote the score-gradient feature matrix and K = 1 
+
+> m
+
+S⊤S be the mini-batch Gram matrix. For any coefficient vector c, define the induced update 
+
+ˆg(c) = 1
+
+m Sc, ∥ˆg(c)∥2 =
+
+r 1
+
+m c⊤Kc. (58) We measure the coefficient distortion and update deviation introduced by SALT as 
+
+Da = ∥a′ − a∥2
+
+∥a∥2 + ϵ , Dg = ∥ˆg(a′) − ˆg(a)∥2
+
+∥ˆg(a)∥2 + ϵ . (59) To measure whether the deviation is useful, we report the cancellation-adjusted effective update size 
+
+neff (c) = c⊤Kc 
+
+Pmi=1 c2 
+
+> i
+
+Kii + ϵ , (60) and the residual-channel update strength 
+
+U⊥(c) = 1
+
+m SP ⊥ 
+
+> k
+
+c
+
+> 2
+
+=
+
+r 1
+
+m (P ⊥ 
+
+> k
+
+c)⊤K(P ⊥ 
+
+> k
+
+c). (61) All quantities are computed from the same Gram statistics already used by SALT , without materializing full-model gradients. 
+
+Results. Table 10 reports averages over training checkpoints and seeds. The original GRPO/DAPO updates have zero coefficient distortion by definition. SALT introduces a nonzero but bounded deviation from the backbone update, while consistently increasing neff , residual-channel update strength, and downstream accuracy. This supports the interpretation that SALT ’s biased surrogate is worthwhile: it departs from the unbiased GRPO-style estimator in a controlled way to recover effective residual updates under signed cancellation. 27 G Computational Cost 
+
+In this section, we will report the the complexity analysis and the wall-clock time cost. 
+
+G.1 Computational Complexity 
+
+Let B be the number of prompts in a mini-batch, G the number of rollouts per prompt, and m ≜ BG 
+
+the total number of sampled responses in the batch. Our dual-channel reweighting introduces a 
+
+geometry module on top of the base GRPO/DAPO [ 36 , 47 ] update. Its cost depends on m (batch rollout count), rather than the full parameter size of the language model. Table 11: End-to-end wall-clock training time (Hour:Min) for GRPO/DAPO and variants, with and without SALT , on MATH-TRAIN/DAPO-MATH. All runs use the same training configura-tion; times include the full training loop.                                   
+
+> Method Time Cost (Hour:Min) MATH-TRAIN DAPO-MATH Deepseek-Distill-Qwen-1.5B
+> GRPO 07:21 15:41 +SALT 07:58 17:08 + Entropy Bonus 08:48 17:14 + Clip Cov 07:53 16:03 + KL Cov 07:34 16:01 DAPO 07:17 16:01 +SALT 08:05 17:58
+> Deepseek-Distill-Qwen-7B
+> GRPO 24:07 61:26 +SALT 26:22 66:08 + Entropy Bonus 25:52 17:14 + Clip Cov 25:31 63:30 + KL Cov 25:32 63:35 DAPO 24:31 62:23 +SALT 25:58 66:04
+
+(1) Per-sample gradient feature extraction. 
+
+For each response (b, i ), we compute a last-layer gradient embedding proxy gb,i based on the output projection gradients (Eq. (19) ). This step reuses quantities already produced in backprop (token-level ∇z ℓ and hidden states h), and aggregates over tokens to obtain a response-level feature. De-noting the average response length by T and the proxy feature dimension by dg . In practice this overhead is typically small compared to the full forward+backward pass through the transformer stack [2, 29, 28]. 
+
+(2) Forming the Gram matrix. Stack all fea-tures into Gall ∈ Rdg ×m and form 
+
+Ktotal = 1
+
+m G⊤
+
+> all
+
+Gall ∈ Rm×m. (62) The memory to store Ktotal is O(m2). The time to compute G⊤
+
+> all
+
+Gall is O(dg m2); since dg is fixed for a given proxy choice, the dominant scaling with 
+
+m is O(m2) up to the constant factor dg .
+
+(3) Computing the dominant subspace (top-
+
+kt eigenvectors). We only need the leading kt
+
+eigenvectors to build the projector Pk. Using partial eigensolvers, the time complexity scales as 
+
+O(m2kt), (63) and the additional memory beyond storing Ktotal is typically O(mk t) to hold the eigenvectors 
+
+Vk ∈ Rm×kt . The dominant dimension is set adaptively by kt = clip( ⌊PR total ⌋, 0, BG ), so kt ≪ m
+
+in our settings. 
+
+(4) Advantage projection and reweighting. Given Vk, the main/exploration channels are 
+
+amain = Pka, aexp = P ⊥ 
+
+> k
+
+[a]+, (64) where Pk = VkV ⊤ 
+
+> k
+
+and P ⊥ 
+
+> k
+
+= I − Pk. We never need to materialize Pk ∈ Rm×m. Compute Pka as 
+
+Vk(V ⊤ 
+
+> k
+
+a), which costs O(mk t); similarly for P ⊥ 
+
+> k
+
+[a]+. Thus, projection/reweighting is linear in m
+
+up to kt and is negligible compared with the Gram/eigensolver steps. 
+
+Overall overhead. The geometry module is dominated by (i) storing the Gram matrix ( O(m2)
+
+memory) and (ii) extracting the top-kt subspace ( O(m2kt) time). Crucially, this overhead depends on m = BG and is independent of the total parameter count of the backbone model, since we use last-layer gradient embeddings as a scalable proxy. 28 Table 12: Paired improvements of SALT over the corresponding baseline, reported as ∆+u
+
+−l (mean paired gain with 95% bootstrap CI over N = 5 matched seeds). 
+
+Training AIME24 AIME25 GSM8K MATH-500 GPQA 
+
+ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 ACC Pass@8 
+
+Deepseek-Distill-Qwen-1.5B MATH-T GRPO +2 .8+0 .7 
+
+> −0.6
+
++3 .6+1 .0 
+
+> −0.8
+
++1 .5+0 .4 
+
+> −0.3
+
++3 .9+0 .9 
+
+> −0.8
+
++2 .7+0 .8 
+
+> −0.6
+
++1 .7+0 .6 
+
+> −0.5
+
++1 .6+0 .6 
+
+> −0.4
+
++1 .7+0 .5 
+
+> −0.5
+
++3 .4+0 .9 
+
+> −0.8
+
++3 .3+0 .8
+
+> −0.7
+
+DAPO −0.5+0 .4 
+
+> −0.3
+
++0 .7+0 .6 
+
+> −0.5
+
++1 .7+0 .5 
+
+> −0.4
+
++2 .0+0 .7 
+
+> −0.6
+
++1 .5+0 .6 
+
+> −0.5
+
++1 .0+0 .3 
+
+> −0.2
+
++1 .0+0 .4 
+
+> −0.3
+
++0 .0+0 .9 
+
+> −0.8
+
++2 .6+0 .9 
+
+> −0.7
+
++1 .8+0 .6
+
+> −0.5
+
+DAPO-M GRPO +3 .6+1 .1 
+
+> −0.9
+
++3 .8+1 .0 
+
+> −0.8
+
++4 .2+1 .1 
+
+> −0.9
+
++3 .6+1 .0 
+
+> −0.8
+
++0 .8+0 .6 
+
+> −0.8
+
++1 .2+0 .5 
+
+> −0.4
+
++2 .1+0 .8 
+
+> −0.6
+
++0 .5+0 .6 
+
+> −0.5
+
++1 .5+0 .5 
+
+> −0.4
+
++1 .3+0 .7
+
+> −0.8
+
+DAPO +3 .9+1 .1 
+
+> −0.9
+
++2 .5+0 .9 
+
+> −0.8
+
++2 .0+0 .7 
+
+> −0.6
+
++2 .0+0 .8 
+
+> −0.7
+
++1 .9+0 .7 
+
+> −0.6
+
++1 .8+0 .7 
+
+> −0.6
+
++3 .2+0 .9 
+
+> −0.8
+
++1 .2+0 .5 
+
+> −0.5
+
++2 .5+0 .9 
+
+> −0.7
+
++2 .0+0 .7
+
+> −0.8
+
+Deepseek-Distill-Qwen-7B MATH-T GRPO +4 .0+1 .0 
+
+> −0.8
+
++3 .1+0 .9 
+
+> −0.7
+
++3 .3+0 .9 
+
+> −0.8
+
++3 .2+1 .0 
+
+> −0.8
+
++2 .0+0 .7 
+
+> −0.6
+
++1 .0+0 .3 
+
+> −0.2
+
++0 .3+0 .4 
+
+> −0.3
+
+−0.1+0 .3 
+
+> −0.2
+
++4 .4+1 .1 
+
+> −0.9
+
++4 .1+1 .1
+
+> −0.9
+
+DAPO +3 .3+1 .0 
+
+> −0.8
+
++2 .9+0 .9 
+
+> −0.7
+
++2 .8+1 .0 
+
+> −0.8
+
++3 .9+1 .1 
+
+> −0.9
+
++1 .6+0 .7 
+
+> −0.6
+
++1 .5+0 .6 
+
+> −0.5
+
++1 .0+0 .3 
+
+> −0.2
+
++0 .1+0 .3 
+
+> −0.2
+
++3 .3+1 .0 
+
+> −0.8
+
++4 .4+1 .2
+
+> −0.9
+
+DAPO-M GRPO +3 .9+1 .0 
+
+> −0.9
+
++3 .2+0 .9 
+
+> −0.7
+
++3 .7+1 .0 
+
+> −0.8
+
++3 .4+1 .0 
+
+> −0.8
+
++2 .0+0 .7 
+
+> −0.6
+
++1 .5+0 .6 
+
+> −0.5
+
++1 .4+0 .4 
+
+> −0.3
+
++0 .1+0 .4 
+
+> −0.3
+
++3 .7+1 .1 
+
+> −0.9
+
++4 .6+1 .2
+
+> −0.9
+
+DAPO +1 .8+0 .6 
+
+> −0.6
+
++1 .6+0 .6 
+
+> −0.7
+
++3 .3+1 .0 
+
+> −0.9
+
++4 .3+1 .2 
+
+> −0.9
+
++1 .7+0 .7 
+
+> −0.6
+
++1 .6+0 .6 
+
+> −0.5
+
++1 .0+0 .3 
+
+> −0.2
+
++0 .2+0 .4 
+
+> −0.3
+
++3 .9+1 .1 
+
+> −0.9
+
++4 .6+1 .2
+
+> −0.9
+
+G.2 Time Cost 
+
+Table 11 reports the end-to-end wall-clock training time for each method under the same hardware and training setup. All runs use identical hyperparameters and differ only in the reweighting/regularization module. SALT adds a lightweight geometry module on top of GRPO/DAPO; consistent with the analysis in Appendix G.1, its overhead is small relative to the full forward/backward pass and mainly comes from forming the m × m Gram statistics. 
+
+H Statistical significance 
+
+For each setting, we run SALT and the corresponding baseline (GRPO/DAPO) with N = 5 matched seeds {2025 , 2026 , 2027 , 2028 , 2029 } under identical training and evaluation configurations. For each seed s, we define the paired improvement as ds ≜ score SALT 
+
+s − score base 
+
+s , and report the mean improvement ∆ ≜ 1
+
+N
+
+PNs=1 ds.We compute 95% confidence intervals via paired bootstrap: we resample {ds}Ns=1 with replacement for B times and take the 2.5/97.5 percentiles of the bootstrap means as (∆ low , ∆high ). We report results in the compact form ∆+u
+
+−l where u = ∆ high − ∆ and l = ∆ − ∆low in Table 12. 
+
+I Formulations of GRPO-style Variants 
+
+In Section 2.1, we briefly introduced the formulations of RL and GRPO. In this section, we will proceed from PPO to GRPO, and then present the formal formulations for several optimized vari-ants [35]. 
+
+Proximal Policy Optimization (PPO) Proximal Policy Optimization (PPO) [ 34 ] is a widely adopted actor–critic reinforcement learning algorithm, and it is frequently employed in the RL-based fine-tuning of large language models (LLMs). Specifically, PPO updates the LLM by maximizing the surrogate objective defined as follows: 
+
+JPPO (θ) = Eq∼P (Q), o ∼πθold (O|q)
+
+1
+
+|o|
+
+|o|
+
+X
+
+t=1 
+
+min πθ (ot | q, o <t )
+
+πθold (ot | q, o <t ) ˆAt,
+
+clip 
+
+ πθ (ot | q, o <t )
+
+πθold (ot | q, o <t ) , 1 − ϵ, 1 + ϵ
+
+
+
+ˆAt
+
+!# 
+
+.
+
+(65) In this objective, q ∼ P (Q) denotes a query sampled from the data distribution, o = ( o1, . . . , o |o|)
+
+is a response generated by the behavior policy πθold and ˆAt is an estimator of the advantage at time 29 step t. Given the value function V and the reward function R, ˆAt is computed using the Generalized Advantage Estimation (GAE) [33]. 
+
+Group Relative Policy Optimization (GRPO) In PPO, the value function is often realized as an additional model comparable in size to the policy, leading to substantial memory and computation overhead. In the LLM setting, rewards are typically provided only at the sequence level, which further complicates learning token-level value estimates. To address this, Shao et al. [35] propose 
+
+Group Relative Policy Optimization (GRPO), which eliminates the value function and instead uses the average reward of multiple samples for the same question as a baseline. Concretely, for each question 
+
+q, GRPO draws {o1, . . . , o G} ∼ πθold (· | q) and maximizes the following objective (Eq. (3)): 
+
+JGRPO (θ) = Eq∼P (Q), {oi}Gi=1 ∼πθold (O|q)
+
+"
+
+1
+
+G
+
+> G
+
+X
+
+> i=1
+
+1
+
+|oi|
+
+> |oi|
+
+X
+
+> t=1
+
+min πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) ˆAi,t ,
+
+clip πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) , 1 − ϵ, 1 + ϵ
+
+!
+
+ˆAi,t 
+
+!
+
+− β DKL [πθ ∥ πref ]
+
+!# 
+
+.
+
+(66) Rewards within the group are normalized to obtain a response-level advantage (Eq. (2)) 
+
+ˆAi = ri − mean (r1, r 2, · · · , r G)
+
+std (r1, r 2, · · · , r G) . (67) And different from the KL penalty term used in Eq. (65) , the KL divergence is computed with the following unbiased estimator 
+
+DKL [πθ ∥ πref ] = πref (oi,t | q, o i,<t )
+
+πθ (oi,t | q, o i,<t ) − log 
+
+ πref (oi,t | q, o i,<t )
+
+πθ (oi,t | q, o i,<t )
+
+
+
+− 1. (68) which is guaranteed to be positive [32]. 
+
+Decoupled Clip and Dynamic Sampling Policy Optimization (DAPO) Yu et al. [47] propose the Decouple Clip and Dynamic Sampling Policy Optimization (DAPO) algorithm. DAPO samples a group of outputs {oi}Gi=1 , and optimizes the policy via the following objective: 
+
+JDAPO (θ) = E(q,a )∼D , {oi}Gi=1 ∼πθold (·| q)
+
+"
+
+1
+
+PGi=1 |oi|
+
+> G
+
+X
+
+> i=1
+> |oi|
+
+X
+
+> t=1
+
+min πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) ˆAi,t ,
+
+clip πθ (oi,t | q, o i,<t )
+
+πθold (oi,t | q, o i,<t ) , 1 − ϵlow , 1 + ϵhigh 
+
+!
+
+ˆAi,t 
+
+!# 
+
+,
+
+(69) s.t. 0 < { oi | is _equivalent( a, o i) } < G. 
+
+where the reward ri,t (θ) and advantage ˆAi,t are the same with Eq. (3) in GRPO. 
+
+Entropy Bonus. We consider a standard entropy regularization baseline by augmenting the GRPO objective with a token-level policy entropy term. For a state si,t = ( q, o i,<t ), define [37, 25] 
+
+Hθ (si,t ) ≜ − X
+
+> a∈V
+
+πθ (a | si,t ) log πθ (a | si,t ), (70) where V is the vocabulary. The entropy-bonus variant optimizes with entropy coefficient λENT ≥ 0.
+
+JENT (θ) = JGRPO (θ) + λENT · Eq, {oi}Gi=1 
+
+"
+
+1
+
+G
+
+> G
+
+X
+
+> i=1
+
+1
+
+|oi|
+
+> |oi|
+
+X
+
+> t=1
+
+Hθ (q, o i,<t )
+
+#
+
+, (71) 30 J Algorithm 
+
+Algorithm 1 provides the full per-step implementation of the SALT advantage reweighting procedure described in Section 3. 
+
+Algorithm 1 SALT : Dual-Channel Advantage Reweighting for GRPO-style RLVR 
+
+Require: Policy πθ ; prompts {qb}Bb=1 ; rollouts per prompt G; small numerical constant ϵ.
+
+Ensure: Updated parameters θ. 
+
+> 1:
+
+Rollout and reward. For each prompt qb, sample G responses {ob,i }Gi=1 ∼ πθ (·| qb) and compute rewards {rb,i }Gi=1 . 
+
+> 2:
+
+Group-normalized advantages. Compute GRPO-style normalized advantages ˆAb,i within each prompt group and stack them into 
+
+a ← vec( ˆAb,i ) ∈ Rm, m = BG.  
+
+> 3:
+
+Output-projection gradient features. For each response (b, i ), compute the response-level output-projection gradient 
+
+∇Wout ℓb,i = 1
+
+|ob,i |
+
+> |ob,i |
+
+X
+
+> t=1
+
+ ∇zb,i,t ℓb,i,t 
+
+h⊤
+
+> b,i,t
+
+,
+
+and flatten it into a feature vector gb,i . 
+
+> 4:
+
+Batch Gram geometry. Stack all features into 
+
+F ← [gb,i ](b,i ) ∈ Rd×m, K ← 1
+
+m F⊤F ∈ Rm×m. 
+
+> 5:
+
+Dominant subspace. Compute K = V ΛV ⊤ and the regularized participation score 
+
+PR( K) ← (Pmj=1 λj )2
+
+Pmj=1 λ2
+
+> j
+
+.
+
+Set 
+
+kt ← clip  ⌊PR( K)⌉, 1, m , Vk ← [v1, . . . , v kt ]. 
+
+> 6:
+
+Projectors. Construct 
+
+Pk ← VkV ⊤ 
+
+> k
+
+, P ⊥ 
+
+> k
+
+← I − Pk. 
+
+> 7:
+
+Dual-channel advantage decomposition. 
+
+amain ← Pka, aexp ← P ⊥ 
+
+> k
+
+[a]+. 
+
+> 8:
+
+Signed-cancellation estimate. Construct signed per-sample update contributions 
+
+ub,i ∝ ˆAb,i ∇θ log πθ (ob,i |qb),
+
+and compute 
+
+neff ←
+
+P 
+
+> (b,i )
+
+ub,i 
+
+> 22
+
+P 
+
+> (b,i )
+
+∥ub,i ∥22 + ϵ . 
+
+> 9:
+
+Adaptive mixing and policy update. Set 
+
+αt ← max(0 , 1 − neff ), a′ ← amain + αtaexp = Pka + αtP ⊥ 
+
+> k
+
+[a]+.
+
+Update θ with the base GRPO-style objective, replacing each ˆAb,i by a′
+
+> b,i
+
+.31
