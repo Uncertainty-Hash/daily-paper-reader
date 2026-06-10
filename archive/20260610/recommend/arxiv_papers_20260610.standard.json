@@ -1,0 +1,519 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-10T22:27:13.928252+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2606.09380v1",
+      "source": "arxiv",
+      "title": "Reasoning Arena: Trace Tournaments When Verifiable Rewards Fall Short",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become a leading paradigm for improving the reasoning ability of large language models through outcome-based supervision. However, verifiable rewards frequently become uninformative at the group level: when all sampled traces of a given prompt receive identical rewards, group-relative advantage estimation provides no gradient signal, even though the traces may differ substantially in reasoning quality. We propose Reasoning Arena, an adaptive training framework that routes such non-diverse reward groups to a judge system instead of discarding them. Beyond examining the final answer, Reasoning Arena constructs trace tournaments, where reasoning traces are compared head-to-head to expose finer-grained preferences within the group, converting reasoning quality into rich relative reward signals. To make reward estimation efficient, rather than exhaustively comparing every pair, each new trace is evaluated against a small, dynamically updated pool of previously generated traces as anchors to efficiently establish a relative ranking. We then fit a Bradley-Terry model on the incomplete comparison graph, enabling scalable RL integration without quadratic pairwise comparisons. Empirical results demonstrate that Reasoning Arena consistently outperforms the RLVR baseline by 7.6% on average in competition mathematics and coding benchmarks. By converting otherwise wasted zero-advantage samples into useful gradient updates, our method accelerates training by 27% to 41%, saving nearly 50% of generation compute, and substantially improves overall reasoning performance.",
+      "authors": [
+        "Han Zhou",
+        "Adam X. Yang",
+        "Laurence Aitchison",
+        "Anna Korhonen",
+        "Albert Q. Jiang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-08T11:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.09380v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Addresses uninformative verifiable rewards by comparing traces head-to-head",
+      "llm_evidence_cn": "通过轨迹头对头比较解决可验证奖励无信息问题",
+      "llm_evidence": "通过轨迹头对头比较解决可验证奖励无信息问题",
+      "canonical_evidence": "通过轨迹头对头比较解决可验证奖励无信息问题",
+      "llm_tldr_en": "Proposes Reasoning Arena to handle non-diverse reward groups via trace tournaments, extracting finer-grained signals.",
+      "llm_tldr_cn": "针对RLVR中组内轨迹奖励相同时梯度消失的问题，提出Reasoning Arena框架。该框架将奖励无差异的组路由到裁判系统进行轨迹锦标赛，通过逐对比对暴露推理质量差异。实验表明该方法在奖励稀疏时仍能提供有效梯度，推动推理能力持续提升。",
+      "llm_tldr": "针对RLVR中组内轨迹奖励相同时梯度消失的问题，提出Reasoning Arena框架。该框架将奖励无差异的组路由到裁判系统进行轨迹锦标赛，通过逐对比对暴露推理质量差异。实验表明该方法在奖励稀疏时仍能提供有效梯度，推动推理能力持续提升。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.10709v1",
+      "source": "arxiv",
+      "title": "Effective Reinforcement Learning for Agentic Search by Recycling Zero-Variance Queries During Training",
+      "abstract": "The use of GRPO-style algorithms has become the standard strategy for training LLM search agents under outcome-only rewards. With these algorithms, a query contributes to parameter updates only when its rollout group mixes successes and failures; all-correct (too-easy) and all-incorrect (too-hard) groups are zero-variance and waste rollout cost. Existing approaches treat zero-variance as a static property and either discard or pre-filter such groups. We hypothesize and empirically validate that queries flip between zero-variance and signal-bearing states as the policy evolves during training. Building on this intuition, we propose query recycling, which returns zero-variance groups to a mutable pool for future resampling, so that the effective training distribution co-evolves with the policy. With the proposed technique, a 1.7B parameter model trained on synthetic data can reach 66.0 average Pass@1 accross seven multi-hop QA benchmarks, matching or surpassing systems with up to 7B parameters trained on benchmark-derived supervision. Analysis of recycling patterns shows that recycled queries supply roughly three quarters of the effective batch by the end of training, with contributions split between recovery from policy improvement and policy drift.",
+      "authors": [
+        "João Coelho",
+        "João Magalhães",
+        "Bruno Martins",
+        "Chenyan Xiong"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T11:12:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.10709v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly uses GRPO-style algorithms and proposes query recycling to improve training efficiency",
+      "llm_evidence_cn": "直接使用GRPO风格算法，提出查询回收机制提升训练效率",
+      "llm_evidence": "直接使用GRPO风格算法，提出查询回收机制提升训练效率",
+      "canonical_evidence": "直接使用GRPO风格算法，提出查询回收机制提升训练效率",
+      "llm_tldr_en": "Identifies zero-variance queries in GRPO training and introduces query recycling to reuse them, improving sample efficiency and reducing rollout costs.",
+      "llm_tldr_cn": "现有GRPO训练中，全正确或全错误的查询组因零方差无法贡献梯度而被丢弃。本文发现查询的方差状态会动态变化，据此提出查询回收机制，将这些组重新投入采样池。在LLM搜索任务上，该方法显著降低了训练成本并提升了最终性能，为GRPO的实用化提供了重要改进。",
+      "llm_tldr": "现有GRPO训练中，全正确或全错误的查询组因零方差无法贡献梯度而被丢弃。本文发现查询的方差状态会动态变化，据此提出查询回收机制，将这些组重新投入采样池。在LLM搜索任务上，该方法显著降低了训练成本并提升了最终性能，为GRPO的实用化提供了重要改进。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.10968v1",
+      "source": "arxiv",
+      "title": "Beyond Uniform Token-Level Trust Region in LLM Reinforcement Learning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become standard for improving LLM reasoning. However, existing PPO-style trust-region mechanisms remain position-agnostic by enforcing uniform thresholds across all tokens independently. This pointwise treatment conflicts with autoregressive generation in two critical ways. First, uniform thresholds ignore autoregressive asymmetry. Early-stage deviations produce compounding sequence-level drift, causing static thresholds to under-regulate early divergence and excessively constrain late-stage exploration. Second, evaluating token-level divergence in isolation overlooks cumulative prefix drift, granting the same divergence allowance regardless of how far the conditioning history has already deviated from the rollout policy. To address this limitation, we propose CPPO (Cumulative Prefix-divergence Policy Optimization), a token-level masking rule that aligns updates with a finite-horizon policy-improvement bound via two coupled mechanisms. First, a position-weighted threshold imposes stricter limits at early positions whose effects persist longer, relaxing constraints for late-stage tokens. Second, a cumulative prefix budget tracks historical deviations, dynamically restricting further token-level deviation to prevent compounding errors along the prefix. Empirically, CPPO enhances training stability and significantly improves reasoning accuracy across various model scales.",
+      "authors": [
+        "Renjie Mao",
+        "Xiangxin Zhou",
+        "Lvfang Tao",
+        "Yixin Ding",
+        "Yu Shi",
+        "Yongguang Lin",
+        "Yuheng Wu",
+        "Honglin Zhu",
+        "Qian Qiu",
+        "Wenxi Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T15:09:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.10968v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Improves trust region mechanisms in RLVR for LLM reasoning",
+      "llm_evidence_cn": "改进LLM推理中RLVR的信任区域机制",
+      "llm_evidence": "改进LLM推理中RLVR的信任区域机制",
+      "canonical_evidence": "改进LLM推理中RLVR的信任区域机制",
+      "llm_tldr_en": "Proposes non-uniform token-level trust region to address autoregressive asymmetry in RLVR for LLM reasoning.",
+      "llm_tldr_cn": "针对RLVR训练中PPO式信任区域忽略自回归不对称性的问题，提出非均匀词元级信任区域方法。该方法考虑早期偏差的累积漂移效应，在不同位置设置差异化约束，从而更好地促进后期探索并防止早期过度约束。实验表明该方法提升了训练稳定性和推理性能。",
+      "llm_tldr": "针对RLVR训练中PPO式信任区域忽略自回归不对称性的问题，提出非均匀词元级信任区域方法。该方法考虑早期偏差的累积漂移效应，在不同位置设置差异化约束，从而更好地促进后期探索并防止早期过度约束。实验表明该方法提升了训练稳定性和推理性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11119v1",
+      "source": "arxiv",
+      "title": "TRACE: A Unified Rollout Budget Allocation Framework for Efficient Agentic Reinforcement Learning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) is a promising approach for enhancing reasoning and agentic behavior in large language models. However, rollout-intensive policy optimization is often limited by insufficient reward contrast, arising when overly simple or complex prompts generate low-variance feedback and when outcome-only rewards assign the same terminal assessment to every decision in a multi-turn rollout. Past efforts have focused on allocating available rollout resources to promising prompts, yet they only leverage sample informativeness at the prompt level and neglect variation in prefix-level informativeness across turns within the same rollout. This work targets multi-turn agentic RL by modeling each ReAct-style thought-action-observation turn as a semantically distinct node, allowing budget allocation to extend from prompt roots to turn-level prefixes with further continuations, which naturally forms tree-structured rollouts. We introduce Tree Rollout Allocation for Contrastive Exploration (TRACE), a unified rollout allocation framework that enhances reward contrast within a fixed sampling budget. Technically, TRACE allocates rollout budget to both prompt roots and intermediate prefixes that are most likely to yield mixed terminal rewards. A shared generalizable predictor estimates conditional success probability at these anchors from prefix histories to guide this allocation. The resulting adaptive tree structure enriches outcome-only feedback and amplifies the policy-update signal. Empirically, TRACE achieves competitive performance and efficiency gains on typical agentic benchmarks, e.g., improving Qwen3-14B Multi-Hop QA average accuracy by 2.8 points over competitive baselines at equal sampling cost.",
+      "authors": [
+        "Heming Zou",
+        "Qi Wang",
+        "Yun Qu",
+        "Yuhang Jiang",
+        "Lizhou Cai",
+        "Yixiu Mao",
+        "Ru Peng",
+        "Xin Xu",
+        "Weijie Liu",
+        "Kai Yang",
+        "Saiyong Yang",
+        "Xiangyang Ji"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-09T17:16:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.11119v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RLVR with unified rollout budget allocation for efficient training",
+      "llm_evidence_cn": "RLVR统一分配rollout预算提升训练效率",
+      "llm_evidence": "RLVR统一分配rollout预算提升训练效率",
+      "canonical_evidence": "RLVR统一分配rollout预算提升训练效率",
+      "llm_tldr_en": "Proposes TRACE, a unified rollout budget allocation framework for RLVR, addressing insufficient reward contrast by modeling prefix-level informativeness, improving training efficiency for multi-turn agentic RL.",
+      "llm_tldr_cn": "RLVR训练中固定rollout预算导致简单或困难查询产生低信号。本文提出TRACE框架，统一建模提示级别和前缀级别的信息量，动态分配rollout资源，从而提升多轮智能体强化学习的训练效率。",
+      "llm_tldr": "RLVR训练中固定rollout预算导致简单或困难查询产生低信号。本文提出TRACE框架，统一建模提示级别和前缀级别的信息量，动态分配rollout资源，从而提升多轮智能体强化学习的训练效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.03102v1",
+      "source": "arxiv",
+      "title": "Small RL Controller, Large Language Model: RL-Guided Adaptive Sampling for Test-Time Scaling",
+      "abstract": "Test-time scaling improves the reasoning performance of large language models but incurs substantial cost in both total computation and latency. Existing adaptive sampling methods partially mitigate this issue by dynamically deciding when to stop sampling, yet they typically rely on heuristic rules or rely on distribution assumptions. In this work, we formulate adaptive sampling as a Markov decision process (MDP). We train a lightweight sampling controller with reinforcement learning (RL) to jointly balance answer correctness, latency, and computation cost. At each round, the controller decides to stop sampling or to acquire additional samples. Our method is lightweight which only relies on statistics of final answers, and can be trained and deployed on CPU. We further show that the resulting framework admits an interpretation as the Lagrangian relaxation of a constrained optimization problem with explicit budget constraints. Experiments against strong baselines such as ASC and ESC show that our method achieves improved trade-offs among answer correctness, sampling rounds, and total samples required.",
+      "authors": [
+        "Runpeng Dai",
+        "Tong Zheng",
+        "Rui Liu",
+        "Chengsong Huang",
+        "Hongtu Zhu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-02T03:42:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.03102v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL from verifiable rewards for LLM reasoning",
+      "llm_evidence_cn": "基于可验证奖励的强化学习用于LLM推理",
+      "llm_evidence": "基于可验证奖励的强化学习用于LLM推理",
+      "canonical_evidence": "基于可验证奖励的强化学习用于LLM推理",
+      "llm_tldr_en": "Proposes RL-trained lightweight controller for adaptive sampling in LLM test-time scaling, using correctness as verifiable reward.",
+      "llm_tldr_cn": "针对大语言模型测试时扩展中计算成本高的问题，本文提出将自适应采样建模为马尔可夫决策过程，并使用强化学习训练一个轻量级控制器，以平衡正确性、延迟和计算成本。通过仅依赖最终答案统计的可验证奖励，控制器动态决定是否继续采样。实验表明该方法在提升推理性能的同时显著降低了开销。",
+      "llm_tldr": "针对大语言模型测试时扩展中计算成本高的问题，本文提出将自适应采样建模为马尔可夫决策过程，并使用强化学习训练一个轻量级控制器，以平衡正确性、延迟和计算成本。通过仅依赖最终答案统计的可验证奖励，控制器动态决定是否继续采样。实验表明该方法在提升推理性能的同时显著降低了开销。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03762v1",
+      "source": "arxiv",
+      "title": "Tool-Aware Optimization with Entropy Guidance for Efficient Agentic Reinforcement Learning",
+      "abstract": "Agentic reinforcement learning (RL) equips large language models (LLMs) with tool-use capabilities that substantially improve reasoning on complex tasks. However, integrating external tools often destabilizes training: over-reliance on tools can induce input distribution shift, while overly conservative tool use limits effective exploration. To address this issue, we propose a unified framework TAO-RL that couples tool-aware trajectory filtering with entropy-guided exploration for efficient policy optimization. Specifically, at the data level, TAO-RL filters rollout trajectories along two criteria: discarding those where all tool invocations fail to execute, and removing those where all rollouts are either correct or incorrect, as both cases yield degenerate advantage estimates that contribute no discriminative learning signal. This joint filtering retains data that are both tool-capable and informative, establishing a high-quality training distribution. At the algorithmic level, we introduce a tool-aware entropy-guided bonus that reshapes the advantage function at post-tool-call tokens, encouraging the policy to explore more diverse reasoning paths at critical decision points. These two components are mutually reinforcing: trajectory filtering establishes a clean and informative training foundation, while entropy-guided exploration drives stronger reasoning behaviors at critical tool-interaction junctures. Extensive experiments on 7 challenging reasoning benchmarks across 3 model scales demonstrate the superiority of TAO-RL over existing methods.",
+      "authors": [
+        "Hongye Cao",
+        "Nuo Yan",
+        "Haoyuan Deng",
+        "Ziwei Wang",
+        "Tianpei Yang",
+        "Jing Huo",
+        "Yuyao Zhang",
+        "Yang Gao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-02T15:16:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.03762v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "tool-aware RL with entropy guidance for efficient agentic RL",
+      "llm_evidence_cn": "工具感知强化学习与熵引导探索",
+      "llm_evidence": "工具感知强化学习与熵引导探索",
+      "canonical_evidence": "工具感知强化学习与熵引导探索",
+      "llm_tldr_en": "Proposes TAO-RL for tool-aware trajectory filtering and entropy-guided exploration in agentic RL for LLMs.",
+      "llm_tldr_cn": "大型语言模型在强化学习中集成工具使用时常出现训练不稳定。本文提出TAO-RL框架，通过工具感知轨迹过滤（丢弃失败工具调用和同质轨迹）和熵引导探索，实现高效策略优化。在复杂推理任务上，TAO-RL提升了工具利用效率和推理性能。该方法为agentic RL提供了稳定训练方案。",
+      "llm_tldr": "大型语言模型在强化学习中集成工具使用时常出现训练不稳定。本文提出TAO-RL框架，通过工具感知轨迹过滤（丢弃失败工具调用和同质轨迹）和熵引导探索，实现高效策略优化。在复杂推理任务上，TAO-RL提升了工具利用效率和推理性能。该方法为agentic RL提供了稳定训练方案。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.07190v1",
+      "source": "arxiv",
+      "title": "From Correctness to Utility: Gain-Based Prefix Evaluation for LLM Reasoning",
+      "abstract": "Reasoning prefixes shape the future trajectory of LLM problem solving, yet existing process reward models usually evaluate them through local step correctness. We argue that correctness is a useful but indirect proxy for the effect we ultimately care about: whether a prefix increases the probability of successful completion. We define this effect as prefix gain, the solve-rate improvement induced by conditioning lightweight student model group on a prefix, and use it to train a Prefix Utility Model (PUM) with a simple pairwise ranking objective. PUM learns outcome-grounded prefix utility and can score both complete trajectories and partial reasoning prefixes. Across Best-of-$N$ selection, beam search, and reinforcement learning on mathematical reasoning, PUM provides a strong prefix-level supervision signal, especially when candidate pools are large, search budgets increase, or rule-based rewards are sparse. We release all data, models, and code at https://zhiqix.github.io/pum-project-page.",
+      "authors": [
+        "Yuhang Zhou",
+        "Yixin Cao",
+        "Guangnan Ye"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-05T11:56:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.07190v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "gain-based prefix evaluation for process supervision in LLM reasoning",
+      "llm_evidence_cn": "基于增益的前缀评估用于LLM推理过程监督",
+      "llm_evidence": "基于增益的前缀评估用于LLM推理过程监督",
+      "canonical_evidence": "基于增益的前缀评估用于LLM推理过程监督",
+      "llm_tldr_en": "Proposes Prefix Utility Model (PUM) that learns outcome-grounded prefix utility for process supervision in LLM reasoning.",
+      "llm_tldr_cn": "现有过程奖励模型基于局部步骤正确性评估推理前缀，但正确性并非最终效果的完美代理。本文提出前缀效用模型PUM，通过轻量级学生模型计算前缀的求解率提升增益，并使用成对排序目标训练。PUM能有效评估部分推理轨迹，在数学推理的Best-of-N选取、束搜索和强化学习中均优于传统方法。该工作为过程监督提供了更直接的效用信号。",
+      "llm_tldr": "现有过程奖励模型基于局部步骤正确性评估推理前缀，但正确性并非最终效果的完美代理。本文提出前缀效用模型PUM，通过轻量级学生模型计算前缀的求解率提升增益，并使用成对排序目标训练。PUM能有效评估部分推理轨迹，在数学推理的Best-of-N选取、束搜索和强化学习中均优于传统方法。该工作为过程监督提供了更直接的效用信号。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.06825v1",
+      "source": "arxiv",
+      "title": "Progress-SQL: Improving Reinforcement Learning for Text-to-SQL via Progressive Rewards",
+      "abstract": "Reinforcement learning has recently shown promise in improving large language models for Text-to-SQL generation, yet existing methods typically optimize one-shot rewards defined over a single SQL state. Such rewards provide limited guidance for iterative SQL correction and are insufficient to capture the improvement of multi-turn SQL refinement. In this paper, we propose Progress-SQL, a multi-turn reinforcement learning framework with progressive rewards for Text-to-SQL. Our approach introduces an Oracle-guided Diagnostic Tree (ODT), which abstracts SQL queries into clause-level structural profiles and produces diagnostic feedback for next-turn refinement. To provide dense and robust reward signals, we combine ODT-based structural alignment with lexical alignment and define a progressive reward that measures the improvement from the initial SQL to the final SQL. We further incorporate a progression latency reward that favors earlier correctness and an execution status reward that encourages recovery from the invalid SQL. Experiments on BIRD, Spider, and Spider robustness variants demonstrate that our method consistently improves Text-to-SQL performance across both primary and robustness evaluations.",
+      "authors": [
+        "Shihao Zhang",
+        "Xiaoman Wang",
+        "Yuan Liu",
+        "Yunshi Lan",
+        "Weining Qian"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-05T01:59:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.06825v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "improving RL for Text-to-SQL with progressive rewards and diagnostic tree",
+      "llm_evidence_cn": "使用渐进奖励和诊断树改进Text-to-SQL的强化学习",
+      "llm_evidence": "使用渐进奖励和诊断树改进Text-to-SQL的强化学习",
+      "canonical_evidence": "使用渐进奖励和诊断树改进Text-to-SQL的强化学习",
+      "llm_tldr_en": "Proposes Progress-SQL, a multi-turn RL framework with progressive rewards and Oracle-guided Diagnostic Tree for SQL refinement.",
+      "llm_tldr_cn": "针对Text-to-SQL任务中单步奖励难以指导多轮SQL修正的问题，本文提出Progress-SQL框架，引入Oracle引导的诊断树对SQL进行子句结构分析并提供诊断反馈，结合渐进奖励信号实现多轮强化学习优化。实验证明该方法在SQL生成质量上优于传统单步奖励方法。",
+      "llm_tldr": "针对Text-to-SQL任务中单步奖励难以指导多轮SQL修正的问题，本文提出Progress-SQL框架，引入Oracle引导的诊断树对SQL进行子句结构分析并提供诊断反馈，结合渐进奖励信号实现多轮强化学习优化。实验证明该方法在SQL生成质量上优于传统单步奖励方法。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08035v1",
+      "source": "arxiv",
+      "title": "DyCo-RL: Dynamic Cross-Modal Coordination for Visual Reasoning",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has emerged as a leading paradigm for enhancing visual reasoning in Multimodal Large Language Models (MLLMs). However, existing RLVR methods optimize primarily for the reasoning outcome, fundamentally overlooking the fine-grained cross-modal coordination required during the generation process. Through token-level analyses and controlled interventions, we reveal that during Chain-of-Thought (CoT) reasoning, MLLMs frequently fail to dynamically alternate between extracting visual evidence and synthesizing textual context-a coordination breakdown that is causally linked to reasoning failures. Motivated by these findings, we propose DyCo-RL, which integrates dynamic cross-modal coordination into RLVR optimization. Specifically, DyCo-RL uses the Fisher-Rao geodesic distance to measure within-modality attention shifts, assigning tokens to either visually-oriented or text-oriented functional roles. It then evaluates the alignment between a token's actual attention allocation and its assigned role, leveraging this score for alignment-guided advantage reweighting during policy optimization. Extensive experiments demonstrate that the algorithm-agnostic DyCo-RL, when applied to Qwen2.5-VL-3B/7B, consistently improves four representative RLVR algorithms across seven benchmarks spanning visual-centric and mathematical reasoning.",
+      "authors": [
+        "Hangui Lin",
+        "Yan Shu",
+        "Zhengyang Liang",
+        "Chi Liu",
+        "Xiangrui Liu",
+        "Minghao Qin",
+        "Teng Long",
+        "Zheng Liu",
+        "Nicu Sebe"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-06T07:56:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.08035v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "improves RLVR for visual reasoning by addressing cross-modal coordination",
+      "llm_evidence_cn": "通过改善跨模态协调提升视觉推理中的RLVR",
+      "llm_evidence": "通过改善跨模态协调提升视觉推理中的RLVR",
+      "canonical_evidence": "通过改善跨模态协调提升视觉推理中的RLVR",
+      "llm_tldr_en": "Reveals cross-modal coordination breakdown in MLLM reasoning and proposes DyCo-RL to integrate dynamic coordination into RLVR for better visual reasoning.",
+      "llm_tldr_cn": "多模态RLVR仅优化结果，忽略了推理过程中视觉与文本协调的细粒度动态。本文发现跨模态协调失败是推理错误的因果因素，并提出DyCo-RL，将动态跨模态协调纳入RLVR优化。实验表明DyCo-RL显著提升了多模态推理的准确率。",
+      "llm_tldr": "多模态RLVR仅优化结果，忽略了推理过程中视觉与文本协调的细粒度动态。本文发现跨模态协调失败是推理错误的因果因素，并提出DyCo-RL，将动态跨模态协调纳入RLVR优化。实验表明DyCo-RL显著提升了多模态推理的准确率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08708v1",
+      "source": "arxiv",
+      "title": "PRPO: Perception-Reinforced Policy Optimization via Token-Level Dynamic Advantage Reshaping",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has become an effective paradigm for improving the reasoning capability of Large Vision-Language Models (LVLMs). However, existing RLVR methods primarily rely on trajectory-level outcome rewards, which assign identical learning signals across all generated tokens. This coarse-grained credit assignment is fundamentally mismatched to multimodal reasoning, where only a sparse subset of tokens is causally grounded in visual evidence. Consequently, these pivotal perceptual tokens receive weak supervision and are often overwhelmed by language priors or reasoning-template tokens. To address this limitation, we propose Perception-Reinforced Policy Optimization (PRPO), a token-level reinforcement learning framework that explicitly identifies and reinforces pivotal perceptual tokens within long-horizon multimodal reasoning trajectories. PRPO introduces Robust Visual Dependency (RVD), a principled metric that identifies tokens whose predictions are both visually grounded and perturbation-stable, filtering out brittle or noisy visual tokens. Based on RVD, we further propose Perceptual Advantage Reshaping (PAR), a token-level credit assignment technique that amplifies perceptually informative tokens while preserving stable gradients for non-perceptual tokens. Extensive experiments on seven multimodal reasoning benchmarks demonstrate that PRPO consistently outperforms strong LVLM baselines across both 3B and 7B model scales, achieving average gains of 23.3% and 21.1%, respectively. PRPO achieves state-of-the-art performance with improved training efficiency and stronger cross-task generalization. Our findings highlight the importance of fine-grained credit assignment for scalable multimodal reinforcement learning.",
+      "authors": [
+        "Qiming Li",
+        "Tianlun Li",
+        "Xiaolong Cheng",
+        "Hangyu Li",
+        "Ruiyan Gong",
+        "Kangning Niu",
+        "Kaitao Jiang",
+        "Mu Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-07T16:06:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.08708v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes token-level RLVR for multimodal reasoning",
+      "llm_evidence_cn": "提出token级RLVR用于多模态推理",
+      "llm_evidence": "提出token级RLVR用于多模态推理",
+      "canonical_evidence": "提出token级RLVR用于多模态推理",
+      "llm_tldr_en": "Introduces Perception-Reinforced Policy Optimization (PRPO) with token-level dynamic advantage reshaping to improve credit assignment in multimodal RLVR.",
+      "llm_tldr_cn": "现有RLVR对生成的所有token赋予相同学习信号，但在多模态推理中仅有少数token与视觉证据因果相关。本文提出感知强化策略优化（PRPO），通过token级动态优势重塑，为因果重要的感知token提供更强监督。实验表明PRPO在视觉推理任务上显著优于基线。",
+      "llm_tldr": "现有RLVR对生成的所有token赋予相同学习信号，但在多模态推理中仅有少数token与视觉证据因果相关。本文提出感知强化策略优化（PRPO），通过token级动态优势重塑，为因果重要的感知token提供更强监督。实验表明PRPO在视觉推理任务上显著优于基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09071v1",
+      "source": "arxiv",
+      "title": "REFLECT: Intervention-Supported Error Attribution for Silent Failures in LLM Agent Traces",
+      "abstract": "Large language model (LLM) agents now solve complex tasks through long plan-and-execution traces, yet the ability to locate errors in a completed traces still lags far behind, especially in the \\emph{silent failure} regime. Existing approaches predict suspect steps via classifiers or LLM judges, or recover correct answers via retry, but none feed the intervention outcome back to \\emph{refine the attribution itself}. We propose \\methodname, a method that closes this gap by diagnosing a candidate error step, testing it through controlled replay with a diagnosis-specific patch, and using the verified outcome flip as contrastive evidence to refine the final attribution. Across four localization benchmarks spanning multi-hop reasoning across domains, \\methodname achieves the highest localization accuracy among same-auditor methods across all four benchmarks, with the largest gains on structured tool-use traces, while providing actionable localization even when ground-truth answers are unavailable.",
+      "authors": [
+        "Xiaofeng Lin",
+        "Yingxu Wang",
+        "Tung Sum Thomas Kwok",
+        "Daniel Guo",
+        "Sahil Arun Nale",
+        "Charles Fleming",
+        "Guang Cheng"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-08T06:11:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.09071v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses intervention and replay to attribute errors in LLM agent traces, leveraging failure rollouts",
+      "llm_evidence_cn": "利用干预和回放归因LLM智能体轨迹中的错误，利用失败rollout",
+      "llm_evidence": "利用干预和回放归因LLM智能体轨迹中的错误，利用失败rollout",
+      "canonical_evidence": "利用干预和回放归因LLM智能体轨迹中的错误，利用失败rollout",
+      "llm_tldr_en": "Proposes REFLECT, which diagnoses candidate error steps in LLM agent traces, tests them via controlled replay with patches, and uses the outcome flip as contrastive evidence to refine attribution, achieving superior localization accuracy.",
+      "llm_tldr_cn": "LLM智能体轨迹中的静默错误难以定位。本文提出REFLECT方法，先诊断候选错误步骤，然后通过受控回放注入特定补丁，利用结果翻转作为对比证据细化归因，在多跳推理和工具使用基准上显著提升错误定位准确率。",
+      "llm_tldr": "LLM智能体轨迹中的静默错误难以定位。本文提出REFLECT方法，先诊断候选错误步骤，然后通过受控回放注入特定补丁，利用结果翻转作为对比证据细化归因，在多跳推理和工具使用基准上显著提升错误定位准确率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.10646v1",
+      "source": "arxiv",
+      "title": "How Does Reasoning Flow? Tracing Attention-Induced Information Flow for Targeted RL in LLMs",
+      "abstract": "Token-level credit assignment remains a key obstacle for reinforcement learning (RL) in large language models (LLMs), where RL recipes typically treat all tokens equally, failing to distinguish decisive reasoning steps from routine formatting or fluent filler. Recent attempts leverage model-internal signals to assign finer-grained credit, but these are often point-wise heuristics that ignore the global structure of information propagation. We propose FlowTracer, an RL framework that traces answer-targeted reasoning flow on an attention-induced directed acyclic graph in which nodes correspond to tokens and edge capacities come from aggregated attention weights and derives token credit from this global structure. The edge capacities are reweighted to retain only the influence that can reach the answer region, while enforcing local flow conservation so intermediate tokens neither lose nor gain effective mass due to path length or irrelevant branches. On this graph, FlowTracer extracts an information-flow backbone connecting the question to the answer and scores tokens by flow throughput, revealing high-impact hubs and aggregation checkpoints that mediate long-range dependencies. These derived importances are used to shape token-level rewards, enabling learning signals to focus precisely on the tokens that route information toward (or away from) correct answers and delivering consistent performance gains across a range of reasoning tasks.",
+      "authors": [
+        "Zhichen Dong",
+        "Yang Li",
+        "Yuhan Sun",
+        "Weixun Wang",
+        "Yijia Luo",
+        "Zinian Peng",
+        "Taiheng Ye",
+        "Chao Yang",
+        "Wenbo Su",
+        "Yu Cheng",
+        "Bo Zheng",
+        "Junchi Yan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-09T09:56:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.10646v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "token-level credit assignment for RL in LLMs via attention flow",
+      "llm_evidence_cn": "通过注意力流进行LLM中RL的token级信用分配",
+      "llm_evidence": "通过注意力流进行LLM中RL的token级信用分配",
+      "canonical_evidence": "通过注意力流进行LLM中RL的token级信用分配",
+      "llm_tldr_en": "Proposes FlowTracer, an RL framework tracing attention flow for token credit assignment in LLMs.",
+      "llm_tldr_cn": "针对大语言模型强化学习中所有token被等同对待的问题，本文提出FlowTracer，基于注意力诱导的有向图追溯推理流，从全局信息传播结构导出token信用，从而实现细粒度奖励分配。实验表明该方法在推理任务上提升了强化学习效率和最终性能。",
+      "llm_tldr": "针对大语言模型强化学习中所有token被等同对待的问题，本文提出FlowTracer，基于注意力诱导的有向图追溯推理流，从全局信息传播结构导出token信用，从而实现细粒度奖励分配。实验表明该方法在推理任务上提升了强化学习效率和最终性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

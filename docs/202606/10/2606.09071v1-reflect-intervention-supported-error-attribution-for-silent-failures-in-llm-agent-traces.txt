@@ -1,0 +1,707 @@
+Title: REFLECT: Intervention-Supported Error Attribution for Silent Failures in LLM Agent Traces
+
+URL Source: https://arxiv.org/pdf/2606.09071v1
+
+Published Time: Tue, 09 Jun 2026 02:15:32 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# REFLECT: Intervention-Supported Error Attribution for Silent Failures in LLM Agent Traces 
+
+Xiaofeng Lin 1 Yunxi Wang 1 Tung Sum Thomas Kwok 1 Daniel Guo 1 Sahil Arun Nale 1 Charles Fleming 2 3 
+
+Guang Cheng 1
+
+# Abstract 
+
+Large language model (LLM) agents now solve complex tasks through long plan-and-execution traces, yet the ability to locate errors in a com-pleted trace still lags far behind, especially in the 
+
+silent failure regime. Existing approaches predict suspect steps via classifiers or LLM judges, or re-cover correct answers via retry, but none feed the intervention outcome back to refine the attribution itself . We propose R EFLECT , a method that closes this gap by diagnosing a candidate error step, test-ing it through controlled replay with a diagnosis-specific patch, and using the verified outcome flip as contrastive evidence to refine the final attribu-tion. On four localization benchmarks spanning multiple domains, R EFLECT achieves the highest localization accuracy among same-auditor meth-ods on all four benchmarks, with the largest gains on structured tool-use traces, while providing ac-tionable localization even when ground-truth an-swers are unavailable. 
+
+# 1. Introduction 
+
+While large language model (LLM) agents can now solve very complex tasks through long plan-and-execution traces (Yao et al., 2023b;a; Guo et al., 2024; Plaat et al., 2025; 2024), their ability to review a completed trace and reliably localize where it went wrong still lags far be-hind (Huang et al., 2024; Tyen et al., 2024; Srivatsa et al., 2025). That gap matters directly for deployment (Jaffe et al., 2024; Gartner, 2025; Yehudai et al., 2025; Yu et al., 2025; Rombaut et al., 2025; Lunney & Lueder, 2016): AI cannot reliably boost productivity if humans must still step in to inspect completed work and find the source of failure, and agents cannot be trusted on high-stakes tasks unless they can 
+
+Accepted at the ICML 2026 Workshop on Failure Modes in Agentic AI (FAGEN). 1University of California, Los Angeles, USA 
+
+> 2
+
+Cisco, USA 3University of Mississippi, USA. Correspondence to: Guang Cheng <guangcheng@stat.ucla.edu>. 
+
+Preprint. June 9, 2026. 
+
+Figure 1. Silent failure and the correction–attribution gap. (a) The trace completes normally but produces a wrong answer; no step signals an error. (b) Retry or self-reflection may recover the correct answer via an independent path, but this success does not identify which original step was decisive. 
+
+localize errors rather than merely output plausible answers. This challenge is especially acute in the silent failure regime, where state-of-the-art agents complete without runtime ex-ceptions (no tool crashes, no malformed JSON, no obvious runtime signal) and yet the final answer is still wrong. As agents grow more capable, silent failures become the dom-inant mode: the outputs look well-formed, and only the semantics are wrong (Turpin et al., 2023; Azaria & Mitchell, 2023; Liang et al., 2024; Sun et al., 2024). While techniques based on reflection, retry, or stronger reasoning (Wang et al., 2023; Shinn et al., 2023; Chen et al., 2024; Madaan et al., 2023; OpenAI, 2024; Guo et al., 2025) can increase task ac-curacy, they do not resolve this problem, because correction is not attribution . A system can recover the correct answer by resampling or generating a different trajectory, yet still fail to identify which step in the original trace caused the failure. 1
+
+> arXiv:2606.09071v1 [cs.AI] 8 Jun 2026 REFLECT: Intervention-Supported Error Attribution for Silent Failures
+
+Concurrent work has explored locating errors in complex agent traces, but existing approaches exhibit three recurring gaps: localization without execution grounding : trained classifiers (Zhang et al., 2025; Liu et al., 2026) and LLM judges (Deshpande et al., 2025) predict suspect steps but cannot verify those predictions, and are known to hallucinate confident but wrong attributions (Huang et al., 2024; Tyen et al., 2024); correction without attribution coupling : retry and backtracking methods (Samanta et al., 2026; Shinn et al., 2023) may recover correct answers but do not identify which step in the original trace was responsible, treating correction as an end rather than evidence; and signal checking without causal testing : constraint and anomaly detectors (Barke et al., 2026; Khalifa et al., 2025; Lightman et al., 2023; Vacareanu et al., 2024) flag suspicious steps but do not verify whether fixing the flagged step actually changes the outcome. These gaps share a common root: attribution hypotheses are stated but not tested. 
+
+We therefore identify four requirements for faithful error attribution in agent traces, which together distinguish tested attribution from untested prediction : (1) attribution must be grounded in execution outcomes, not narrative expla-nation; (2) evidence must derive from the same trace via prefix-preserving replay, not from independent retries; (3) replay must be targeted: constrained by a diagnosis-specific intervention, rather than bare resampling; and (4) attribu-tion must be computed at inference time on the test trace, not predicted by a pre-trained classifier. Existing methods satisfy at most two of these requirements (Table 1). To instantiate these requirements, we propose R EFLECT 
+
+(Reflective Fault Localization Engine for Agent Correction). While prior work has used targeted intervention to validate debugging hypotheses (Ma et al., 2025), R EFLECT is the first to feed verified outcome flips back into step-level re-localization, closing the loop from correction to attribution. It localizes the earliest decisive error step in a completed, non-crashing trace through three stages: (1) diagnose a can-didate error step and produce a structured repair plan; (2) test 
+
+the hypothesis by injecting a targeted correction at that step and replaying the agent from the localized point, preserv-ing the original prefix; and (3) verify and re-localize , if the replayed trace produces the correct answer, the contrastive evidence between the original and corrected continuations sharpens the final attribution. The output is an attribution record : the localized step, the intervention applied, and the verified outcome change. Our primary evaluation regime assumes access to expected answers, modeling development-time debugging : the natural setting for CI/CD pipelines, unit-tested workflows, and any task with deterministic or strongly checkable outputs where developers need to understand why an agent failed, not just 
+
+whether it failed. Our contributions are as follows: 1. We identify four principal requirements for faithful error attribution in agent traces: execution ground-ing, prefix-preserving replay, targeted intervention, and inference-time computation. 2. We propose R EFLECT , a method that instantiates all four requirements in a unified pipeline by combining diagnosis-guided intervention with controlled replay, producing attribution records backed by intervention evidence rather than free-form rationales alone. 3. We evaluate R EFLECT across four benchmarks span-ning table question answering, multi-hop reasoning, chain-of-thought verification, and software engineer-ing. REFLECT achieves the highest localization ac-curacy among same-auditor methods, significantly improves localization when correction is successful, while still providing actionable localization even when ground truth answers are unavailable, with code and data provided in the supplementary material. 1
+
+# 2. Related Work 
+
+Inference-time correction methods: reflection (Shinn et al., 2023), self-consistency (Wang et al., 2023), self-debug (Chen et al., 2024), and extended reasoning (OpenAI, 2024; Guo et al., 2025; Yao et al., 2023b; Zhong et al., 2024) improve task accuracy but do not diagnose why the original trace failed; their critiques attach to new attempts rather than tested attributions of the original trajectory (Huang et al., 2024; Tyen et al., 2024; Turpin et al., 2023). 
+
+Localization without execution grounding (violates R1). 
+
+TRAIL (Deshpande et al., 2025) provides a benchmark and taxonomy for span-level trace diagnosis but evaluates LLM judges that inspect traces without any execution-based verifi-cation. AgenTracer (Zhang et al., 2025) uses counterfactual replay to curate training data , then distills the signal into a fine-tuned 8B model that at inference time outputs a learned prediction without performing any intervention (also vi-olates R4). TrajAD (Liu et al., 2026) similarly trains a supervised anomaly detector on synthetically perturbed tra-jectories, producing step-level classifications without causal testing (also violates R4). ThinkPRM (Khalifa et al., 2025) and related process reward models (Choudhury, 2025; Xi et al., 2025) score each step via a trained verifier, but the score reflects training-distribution patterns rather than test-time intervention evidence (also violates R4).   
+
+> 1The err-loc library (core pipeline, all baselines, evalua-tion metrics) and the WTQ agent traces with human step-level annotations are included as supplementary material.
+
+2REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Table 1. Comparison by attribution requirements. R1: execution-grounded (not narrative-only). R2: prefix-preserving replay (not independent retry). R3: targeted intervention (not bare resampling). R4: inference-time computation (not pre-trained classifier). ★ de-notes partial satisfaction. Extended justification in Appendix P.                                         
+
+> Method R1 R2 R3 R4 Reflection (Shinn et al., 2023) ✗✗✗✓
+> ICS (Samanta et al., 2026) ★✓✗✓
+> LLM-as-judge (Deshpande et al., 2025) ✗✗✗✓
+> AgenTracer (Zhang et al., 2025) ✗✗✗✗
+> TrajAD (Liu et al., 2026) ✗✗✗✗
+> ThinkPRM (Khalifa et al., 2025) ✗✗✗✗
+> AgentRx (Barke et al., 2026) ✗✗✗✓
+> DoVer (Ma et al., 2025) ★★✓✓
+> REFLECT ✓✓✓✓
+
+Signal checking without causal testing (violates R1, R2). 
+
+AgentRx (Barke et al., 2026) synthesizes constraints from tool schemas and audits each step for violations, producing structured evidence logs, but never tests whether fixing a flagged step actually changes the outcome. 
+
+Correction without attribution coupling (violates R2, R3). Reflexion (Shinn et al., 2023) generates verbal self-critiques and retries, but the new trajectory is independent of the original prefix, so success does not identify which original step was decisive. ICS (Samanta et al., 2026) back-tracks to a localized step and resamples from a bare prefix, an untargeted retry that conflates stochastic variation with causal signal (violates R3), and does not use correction outcomes to refine attribution. DoVer (Ma et al., 2025) creates a failure hypothesis via an LLM log summarizer, then uses targeted intervention to validate whether the hy-pothesized fix resolves the failure. However, the replay out-come (Validated/Refuted/Inconclusive) is only used to eval-uate the correction, and the localization never gets refined with intervention feedback. LDB (Zhong et al., 2024) de-bugs code by verifying runtime execution step-by-step with breakpoint-based inspection (Weiser, 1981; Zeller & Hilde-brandt, 2002), but does not produce intervention-supported attribution records. REFLECT is, to our knowledge, the first method that closes the attribution loop by feeding intervention outcomes back into step-level re-localization, thereby combining all four properties in a unified pipeline. The contrast is summarized in Table 1. We provide extended per-baseline positioning in Appendix P. 
+
+# 3. Method: R EFLECT 
+
+REFLECT localizes the earliest decisive error step in a com-pleted, non-crashing trace through three stages (Figure 2): 
+
+diagnose a candidate step (§3.2), test it through targeted re-play (§3.3), and verify and re-localize using the outcome as contrastive evidence (§3.4). All stages operate at inference time on the test trace (R4). 
+
+3.1. Problem Setup and Attribution Record 
+
+Let an agent trace be 
+
+τ = ( u1, . . . , u T , y ),
+
+where each step ut records the model-side state at step t
+
+(reasoning or assistant message), the action taken if any, and the resulting observation if any. For tool-use agents, ut
+
+may be unpacked as (st, a t, o t); for pure reasoning traces, it reduces to a reasoning step. We assume the run com-pleted without runtime exceptions, yet the final answer y is incorrect. The localization target is the earliest decisive error step i∗:the earliest step whose correction enables a verified-correct continuation under replay. We use this operational notion because traces may contain multiple correlated mistakes, while only some are decisive for the final failure. An attribution record is an operational object (i∗, ∆i∗ ) con-sisting of a targeted intervention at step i∗ and a controlled replay that (i) preserves the prefix τ<i ∗ and (ii) flips the outcome from incorrect to correct. When correction suc-ceeds, this record provides intervention-supported evidence for the attribution; it establishes that the intervention at 
+
+i∗ is sufficient to change the outcome, though it does not claim causal minimality or uniqueness; other interventions may also suffice. This operational definition directly imple-ments the interventional criterion used in concurrent work for ground-truth annotation (Zhang et al., 2025), but applied here as an inference-time test on each trace rather than a labeling protocol for training data. When correction fails after all rounds, the record falls back to the best available localization from the iterative diagnosis process. 
+
+3.2. Stage 1: Diagnosis 
+
+Stage 1 produces the attribution hypothesis to be tested by the subsequent stages. The localizer audits the full trace and predicts a candidate earliest decisive error step. Given the task input, the completed trace, the agent’s final answer, and, in the oracle regime, the expected answer, an auditor LLM returns 
+
+ℓ0 = (ˆ ı0, c ), (1) where ˆı0 is the provisional candidate step and c ∈ [0 , 1] is a confidence score. Free-text reasoning and a suggested fix are also retained for downstream use, but the main object passed to later stages is the candidate step ˆı0. All steps before ˆı0 are treated as the preserved prefix. In the primary oracle regime, the expected answer may be provided to the localizer; in proxy settings it is withheld. Prompt formatting details are deferred to Appendix A. 3REFLECT: Intervention-Supported Error Attribution for Silent Failures   
+
+> Figure 2. REFLECT in three stages, mapped to the four attribution requirements (R1–R4). Stage 1 produces a candidate error hypothesis. Stage 2 tests it through prefix-preserving targeted replay (R1, R2, R3). Stage 3 is the conceptual novelty: successful correction is reused as contrastive evidence to refine attribution rather than merely validating a fix. The verified rollback point becomes the attributed step index; the original and corrected continuations refine the error explanation at that point. R4 holds by construction.
+
+3.3. Stage 2: Targeted Replay 
+
+Because replay is constrained by a diagnosis-specific re-pair plan rather than unconstrained retry (R3), validated empirically in §4.5, and preserves the original prefix while producing an execution outcome, it simultaneously satisfies R1 (execution grounding), R2 (prefix-preserving replay), and R3. Given a localized error step, Stage 2 constructs a targeted intervention and replays the agent from a nearby rollback point. The goal is not to obtain any successful retry, but to test whether changing the hypothesized step changes the downstream outcome. 
+
+Error classification. The classifier maps the localized step to a coarse error family and produces a short correction sketch. This label is not itself the contribution; it serves only to make the subsequent repair plan more specific. The full taxonomy is deferred to Appendix A. 
+
+Repair planning. From the localized step and its coarse error family, the Diagnostician produces a structured repair plan 
+
+π =  root_cause , instr , forbidden , tool exp 
+
+, (2) containing a brief diagnosis, a correction instruction, ac-tions to avoid, and an expected next tool when applicable. The purpose of π is to constrain replay toward a targeted test of the hypothesized error rather than an unconstrained retry. Prompt templates and ablation-specific null plans are deferred to Appendix A. 
+
+Rollback selection. Because localization may be off by one or two steps, R EFLECT replays from a small neighbor-hood around ˆı0:
+
+{ˆı0, ˆı0−1, . . . , max(ˆ ı0−K+1 , 1) }.
+
+This lets the method recover from slight localization error while preserving as much of the original prefix as possible. 
+
+Repair loop. Algorithm 1 summarizes the replay proce-dure. In each diagnosis round, R EFLECT builds a repair plan, selects rollback points near the localized step, and reruns the agent from each prefix with injected guidance. The first regenerated step is optionally gated for faithfulness to the plan (§3.3.1), and a verifier determines whether the replayed trace corrects the outcome. On success, R EFLECT uses the corrected continuation to refine the attribution (§3.4); on failure, it relocalizes on the best candidate trace and contin-ues to the next round. A successful correction is informative only when it is tied to a targeted intervention near the local-ized step; otherwise it is treated as an uninformative retry rather than evidence of attribution. 3.3.1. F AITHFULNESS GATE 
+
+The faithfulness gate checks whether the first regenerated step follows the repair plan rather than drifting to an unre-lated recovery path (Jacovi & Goldberg, 2020; Doshi-Velez & Kim, 2017). We implement this as a lightweight rule-based filter plus an LLM judgment when needed. In soft mode the verdict is logged; in hard mode unfaithful first steps are rejected and replay is retried with feedback. The gate operationalizes the distinction between targeted inter-vention and uninformative retry (R3): if the agent ignores the repair plan and succeeds via an unrelated recovery path, that success does not constitute evidence about the hypothe-sized error step. The exact verdict schema and retry policy are deferred to Appendix A. 4REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Algorithm 1 REFLECT Repair Loop                                                                                      
+
+> Require: Trace τ, localization ℓ, classification κ
+> Ensure: RepairResult (success/fail, corrected trace, final attribu-tion) 1: for d= 1 , . . . , D do ▷diagnosis rounds 2: πd←DIAGNOSE (τ, ℓ, κ )
+> 3: P←ROLLBACK POINTS (ℓ. prefix_len , K )
+> 4: for p∈Pdo ▷rollback points 5: m←BUILD INJECTION (πd, p )
+> 6: τ′←AGENT RERUN (τ≤p, m )
+> 7: v←GATE (πd, τ ′
+> p+1 )▷§3.3.1 8: if hard gate and ¬v. faithful then
+> 9: retry up to Rtimes with feedback 10: end if
+> 11: if VERIFY (τ′) = correct then
+> 12: ℓ′←POST CORR EXPLAIN (τ, τ ′, ℓ )
+> 13: return success ,τ′,ℓ′
+> 14: end if
+> 15: end for
+> 16: τbest ←SELECT BEST (candidates )▷best-fix score (proxy) / failure diagnosis (oracle) 17: ℓ←LOCALIZE (τbest )▷re-localize 18: κ←CLASSIFY (τbest , ℓ )
+> 19: τ←τbest
+> 20: end for
+> 21: return fail ,τ,ℓ
+
+3.4. Stage 3: Verified Rollback Attribution and Explanation Refinement 
+
+Stage 3 performs two distinct functions. First, verified rollback-point attribution : the rollback point that yields the outcome flip is adopted as the attributed step index, since it is the point for which there is direct intervention evidence. Second, contrastive explanation refinement : the original and corrected continuations at that point are com-pared to sharpen the error explanation. Methods that use intervention only to validate a fix—classifying hypotheses as supported or refuted without revising the localized step (e.g., DoVer; Ma et al., 2025)—stop after the first function; REFLECT additionally re-diagnoses from failed candidate traces and uses a faithfulness gate (§3.3.1) so that outcome flips count as attribution evidence only when tied to the diagnosis-specific repair plan. In the primary oracle regime, a replay that changes the final answer from incorrect to correct completes an attribution record for the intervened step. 
+
+Verification signal. When the expected answer y∗ is avail-able, verification reduces to task-specific answer matching between the replayed trace and y∗. This is the clean super-vision signal used in the main experiments. 
+
+Contrastive explanation refinement. Once the verified rollback point sets the step index, a post-correction step compares the original and corrected continuations at that point to refine the error explanation: the error type, root cause description, and free-text reasoning are updated based on what changed between the two trajectories. The step index itself is determined entirely by which rollback point yielded the outcome flip—not by the contrastive comparison. The output is a sufficient intervention point that may be at or near, but not necessarily identical to, the earliest causal origin; single-step attribution may be ill-posed in traces with distributed or multi-trial failures, which we scope as a limitation (§R). 
+
+Final attribution record. The output of Stage 3 is an at-tribution record (ˆ ıfinal , ∆ˆıfinal ), where ˆıfinal is the re-localized step index after contrastive explanation and ∆ˆıfinal is the in-tervention that flipped the outcome. When correction fails after all rounds, the record falls back to the best available localization from the last round. 
+
+Proxy verification (secondary regime). When y∗ is un-available, we replace the oracle with a plan-anchored ver-ifier that estimates correctness without ground truth. The verifier synthesizes task anchors from the question, audits each macro-step for deviations, and outputs a calibrated error signal. This regime supports deployment-time local-ization but is weaker than oracle-verified attribution; the full architecture and detection results are in Appendix I. 
+
+# 4. Experiment 
+
+Our experiments are organized around the four attribution requirements. RQ1 (§4.3) tests whether methods lacking execution grounding (R1), including the strongest available LLM judge, can match intervention-based attribution. RQ2 (§4.4) tests whether R EFLECT ’s correction is coupled to un-derstanding, the operational signature of R1 and R2 working together. RQ3 (§4.5) directly tests R3 by comparing targeted intervention against bare resampling and semantic controls. RQ4 (§4.6) extends the framework to settings without oracle verification. The ablation (§4.7) isolates the contribution of each R EFLECT component to the requirements it serves. 
+
+4.1. Experimental Setup Datasets. We evaluate on four benchmarks of failing agent traces: WTQ (table-QA): we run a tabular-QA agent on a subset of WikiTableQuestions (Pasupat & Liang, 2015) and collect step-level human annotations on the failing traces; 
+
+GAIA (multi-hop reasoning) and SWE-bench (software engineering): we use the agent traces and human step-level annotations released by the TRAIL benchmark (Deshpande et al., 2025), which were generated over GAIA (Mialon et al., 2023) and SWE-bench (Jimenez et al., 2023) tasks respectively; BBM (Tyen et al., 2024) (chain-of-thought verification): serves as a boundary stress-test, as its traces lack tool-call structure and the intervention signal is weakest. 5REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Table 2 summarizes trace counts.            
+
+> Table 2. Dataset summary. Human-labeled traces have step-level error annotations. Benchmark Traces Human-labeled WTQ 137 119 GAIA 117 83 BBM 150 150 SWE-bench 31 30
+
+Each benchmark uses a task-appropriate agent implemen-tation. Agent configurations, tool-set details, annota-tion provenance, and inter-annotator agreement are in Ap-pendix J and F. 
+
+Model, verification, and scoring. All experiments use 
+
+gpt-5.2-2025-12-11 as both auditor and agent (tem-perature 0.0) unless otherwise noted. Correctness is verified deterministically: string matching for WTQ and GAIA, task-specific extraction for BBM, and the benchmark test suite for SWE-bench (Appendix D). In the primary ora-cle regime, the expected answer is available to all pipeline components including the localizer and diagnostician, mod-eling development-time debugging where the correct output is known. The proxy regime (§4.6) removes this assump-tion entirely. Error step predictions are evaluated via set-membership over all annotators’ unique error steps, with standard errors in parentheses. 
+
+Baselines. We compare against eight baselines spanning four paradigms: (i) prompt-based : AAO, SBS, and BS, each using the same auditor LLM; (ii) correction-based :ICS (Samanta et al., 2026) and Reflexion (Shinn et al., 2023) (with and without ground truth); (iii) scoring/constraint :AgentRx (Barke et al., 2026) and ThinkPRM (Khalifa et al., 2025); (iv) correction-validation : DoVer (Ma et al., 2025). All baselines are described in §2; algorithmic details are in Appendix B. 
+
+4.2. Metrics Localization accuracy (primary). Exact Match (EM) : pre-dicted step ∈ human-annotated error step set. Off-by-1 : pre-dicted step within distance 1 of any annotated step. Mean Distance : average absolute distance to the nearest annotated step. 
+
+Explanation quality. LLM-judge semantic similarity (0–1) between the auditor’s free-text explanation and human error descriptions, scored only when the predicted step matches a human-annotated step (step-conditioned). Expl. High : frac-tion with similarity ≥ 0.7. Evaluated on WTQ, GAIA, and SWE-bench; BBM provides only mistake_index with-out descriptions. We also report a coverage-aware variant Sim cov = Sim × (nmatched /n total ), which assigns similarity 0 to unmatched predictions and accounts for differences in localization accuracy across methods (Appendix M). 
+
+Correction rate. Fraction of traces where the repair loop produces the correct final answer. 
+
+4.3. RQ1: Can Correction-Only or Judge-Only Methods Faithfully Localize? 
+
+Table 3 presents error localization accuracy across all four benchmarks. REFLECT achieves the highest exact match among same-auditor methods on all four benchmarks, with the largest gains on WTQ and SWE-bench where post-correction re-localization provides strong contrastive evidence. Replac-ing the auditor with Claude Opus 4.6 does not close the gap on tool-use benchmarks (70.8% WTQ, 19.4% SWE-bench), though Opus surpasses R EFLECT on BBM (60.1% vs. 34.5%), consistent with its boundary stress-test role. Appendix N stratifies localization by correction outcome; Appendix K confirms gains are not attributable to higher compute. 
+
+4.4. RQ2: Is Correction Coupled to Localization? 
+
+The question is not whether R EFLECT can repair a trace, but whether successful repair is evidence of understanding. Ta-ble 4 tests this by comparing correction rates and stratifying explanation quality by correction outcome. The signature result is the coupling gap ∆: R EFLECT shows a large explanation quality difference between corrected and failed traces ( ∆ = +0 .25 to +0 .29 ), while both ICS (∆ ≤ +0 .03 ) and Reflexion ( ∆ ≤ +0 .05 ) show only small gaps despite non-trivial correction rates. For R EFLECT ,successful correction is accompanied by substantially bet-ter explanations (Sim c = 0.48–0.61 vs. Sim f = 0.23–0.32), validating the post-correction re-localization design (§3.4). This coupling is a direct consequence of prefix-preserving replay (R2): the original and corrected traces share a prefix but diverge at the hypothesized step, providing structurally constrained contrastive evidence that independent retries cannot produce. 
+
+4.5. RQ3: Is the Intervention Signal Faithful? 
+
+Table 5 directly tests R3 (targeted intervention) by compar-ing correction accuracy and plan adherence under targeted hints versus bare resampling and semantic controls (119 WTQ examples, 3 samples per condition, temperature 0.2; full conditions in Appendix L). Injecting the correct repair hint yields +42 .0pp correction accuracy over no-hint and 
+
++32 .0pp over placebo, confirming that the agent responds to the semantic content of the intervention, not merely extra context tokens. The effect is stable across paraphrase and 6REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Table 3. Localization accuracy across benchmarks. EM is the primary metric; Off-1 is a softer localization measure. Standard errors in parentheses. AAO (Opus 4.6) uses Claude Opus 4.6 as the auditor; all other rows use gpt-5.2. Proxy results are discussed in §4.6. WTQ GAIA BBM SWE-bench Method EM Off-1 EM Off-1 EM Off-1 EM Off-1 AAO 55.5 ±4.6 60.5 ±4.5 15.7 ±4.0 62.7 ±5.3 30.3 ±3.9 47.2 ±4.2 33.3 ±8.6 83.3 ±6.8 
+
+AAO (Opus 4.6) 70.8 ±4.2 76.6 ±3.9 15.4 ±4.0 49.6 ±5.5 60.1 ±4.1 70.6 ±3.8 19.4 ±7.6 77.4 ±8.0 
+
+SBS 50.4 ±4.6 58.0 ±4.5 1.2 ±1.2 34.9 ±5.2 0.7 ±0.7 26.1 ±3.7 26.7 ±8.1 80.0 ±7.3 
+
+BS 53.8 ±4.6 60.5 ±4.5 13.3 ±3.7 48.2 ±5.5 16.2 ±3.1 29.6 ±3.8 33.3 ±8.6 76.7 ±7.7 
+
+Reflexion+GT 52.6 ±4.6 67.9 ±4.3 16.2 ±4.0 47.9 ±5.5 34.0 ±4.0 52.7 ±4.2 45.2 ±9.1 87.1 ±6.1 
+
+Reflexion–noGT 53.3 ±4.6 62.8 ±4.4 17.9 ±4.2 45.3 ±5.5 14.0 ±2.9 33.3 ±4.0 41.9 ±9.0 83.9 ±6.7 
+
+ThinkPRM 27.7 ±4.1 59.9 ±4.5 14.5 ±3.9 35.0 ±5.2 14.7 ±3.0 34.7 ±4.0 38.7 ±8.9 80.6 ±7.2 
+
+AgentRx 51.1 ±4.6 68.6 ±4.3 6.8 ±2.8 31.6 ±5.1 3.3 ±1.5 29.3 ±3.8 41.9 ±9.0 83.9 ±6.7 
+
+ICS 48.7 ±4.6 54.6 ±4.6 10.8 ±3.4 43.4 ±5.4 19.7 ±3.3 31.7 ±3.9 18.2 ±7.0 90.9 ±5.3 
+
+DoVer+GT 35.0 ±4.4 52.6 ±4.6 16.2 ±4.0 32.5 ±5.1 2.0 ±1.2 25.3 ±3.6 12.9 ±6.1 80.6 ±7.2 
+
+REFLECT 76.3 ±3.9 82.2 ±3.5 39.0 ±4.3 66.3 ±5.2 34.5 ±4.0 51.8 ±4.2 70.0 ±8.4 93.3 ±4.6 
+
+REFLECT (proxy) 62.2 ±4.5 75.6 ±4.0 33.3 ±5.4 68.2 ±5.7 31.0 ±3.9 45.1 ±4.2 66.1 ±9.4 80.0 ±7.6 
+
+Table 4. Correction–localization coupling. Sim-c / Sim-f denote explanation similarity for corrected / failed traces. Bench. Method Corr.% Sim-c Sim-f ∆
+
+WTQ ICS 23.7 ±3.6 0.22 ±.14 0.19 ±.14 +0.03 ±.03 
+
+Refl. 27.4 ±3.9 0.25 ±.15 0.20 ±.14 +0.05 ±.04 
+
+REFLECT 92.6 ±2.2 0.61 ±.16 0.32 ±.18 +0.29 ±.06 
+
+GAIA ICS 12.0 ±3.0 0.18 ±.12 0.15 ±.11 +0.03 ±.03 
+
+Refl. 15.6 ±3.4 0.21 ±.13 0.16 ±.12 +0.05 ±.03 
+
+REFLECT 54.2 ±4.6 0.56 ±.18 0.29 ±.17 +0.27 ±.03 
+
+SWE ICS 85.2 ±6.4 0.13 ±.10 0.11 ±.09 +0.02 ±.04 
+
+Refl. 86.8 ±6.0 0.16 ±.11 0.12 ±.10 +0.04 ±.04 
+
+REFLECT 89.0 ±5.6 0.48 ±.19 0.23 ±.15 +0.25 ±.09 
+
+position-matched variants (all within 6pp). Intervening at a deliberately wrong step (mean distance 2.6) drops accuracy to 46.2% while adherence stays high (60.3%), confirming that the localization target , not the act of intervention itself, drives correction. Appendix L further reports immediate probability shifts and a +13 pp correction gain when the agent adheres to high-quality plans. 
+
+4.6. RQ4: What Survives Without Oracle Verification? 
+
+REFLECT (proxy) replaces the oracle verifier with plan-anchored stepwise auditing (§3.4), synthesizing task an-chors from the question alone. Table 3 (last row) shows the proxy retains the majority of oracle accuracy (62.2% WTQ, 66.1% SWE-bench, 33.3% GAIA). The oracle-to-proxy gap reflects verifier quality (Table 6): AUROC reaches 0.97 on SWE-bench but only 0.56 on BBM, where chain-of-thought traces lack the tool-call structure that anchor-based auditing exploits. Even with imperfect verification, proxy R EFLECT 
+
+outperforms most oracle-aided baselines on WTQ and SWE-bench. 
+
+Table 5. Selected faithfulness results on 119 WTQ examples. Correct-hint variants outperform semantic controls and the no-hint baseline in both correction accuracy and plan adherence. We report the most diagnostic conditions here; the full condition set appears in Appendix L. Condition Acc. (%) Adh. (%) Paraphrased hint 80.7 ±3.2 60.0 ±4.0 
+
+Correct hint 78.7 ±3.3 60.7 ±4.0 
+
+Position-matched hint 77.0 ±3.5 61.5 ±4.0 
+
+Placebo hint 46.3 ±4.1 21.5 ±3.4 
+
+Contradictory hint 39.2 ±4.0 18.2 ±3.2 
+
+No hint 35.6 ±3.9 20.1 ±3.3 
+
+Wrong-step intervention 46.2 ±9.8 60.3 ±9.6 
+
+Table 6. Plan-anchored verifier detection performance. AUROC measures discrimination between correct and incorrect traces; 0.5 is chance. Benchmark AUROC Best-F1 Err-Prec WTQ 0.680 0.769 0.625 BBM 0.561 0.702 0.568 GAIA 0.842 0.888 0.934 SWE-bench 0.968 0.933 0.966 
+
+4.7. Ablation Study 
+
+We measure the contribution of each R EFLECT component by running seven ablation configurations on WikiTableQues-tions, toggling Diagnostician, Hard Gate, and Multi-rollback (Appendix C). All configs share the same localizer (all-at-once with expected answer) and model. The Diagnostician is the most impactful component for cor-rection ( ∆Corr: +27 .8pp); multi-rollback drives localiza-tion ( ∆EM: +2 .2pp); the hard gate safeguards intervention specificity (R3) with minimal EM cost. Post-correction re-localization provides a further +10 .6pp boost (65.7% 7REFLECT: Intervention-Supported Error Attribution for Silent Failures                                                                                                   
+
+> Table 7. Ablation on WTQ. Diag = Diagnostician, Gate = Hard Gate, RB = rollback points. Configs 1–7 report EM before post-correction re-localization; the full R EFLECT row includes it. #Config Diag Gate RB EM (%) Corr. (%) 1bare ××162.8 ±4.4 54.7 ±4.3
+> 2+ Diag ✓×163.5 ±4.4 83.7 ±3.2
+> 3+ Gate ×✓164.2 ±4.4 55.6 ±4.2
+> 4+ Multi ××366.4 ±4.3 62.2 ±4.1
+> 5+ D + G ✓✓162.8 ±4.4 82.7 ±3.2
+> 6+ D + M ✓×364.2 ±4.4 89.5 ±2.6
+> 7– re-loc ✓✓365.7 ±4.4 92.6 ±2.2
+> REFLECT ✓✓376.3 ±3.9 92.6 ±2.2
+> Table 8. Localization stratified by correction outcome. Cov.% = correction rate. Verified = intervention-supported attribution; Fallback = Stage-1 hypothesis only. Benchmark Cov.% Verified Fallback EM Off-1 EM Off-1 WTQ 92.6 74.1 80.6 100.0 100.0 GAIA 54.2 47.1 72.5 25.8 74.2 BBM 95.0 35.8 53.7 14.3 42.9 SWE-bench 89.0 77.7 75.0 0.0 100.0
+
+→ 76.3% EM), confirming that the attribution feedback loop, not correction alone, distinguishes R EFLECT from correction-only methods. Table 8 asks whether Stage 3 verified attribution adds local-ization value beyond Stage-1 alone. On GAIA ( +21 .3pp) and BBM ( +21 .5pp), verified cases substantially outper-form fallback, confirming that intervention evidence yields stronger attribution than pattern-matching alone (WTQ fall-back: N =10 , too small to interpret). 
+
+# 5. Conclusion 
+
+REFLECT closes the loop from correction back to attribu-tion by diagnosing a candidate error step, testing it through targeted replay, and using the verified outcome flip as con-trastive evidence to refine the final localization. Across four benchmarks spanning table-QA, multi-hop reasoning, chain-of-thought, and software engineering, R EFLECT achieves the highest same-auditor localization accuracy and exhibits a strong correction–localization coupling absent in all base-lines. The method’s gains are largest on structured tool-use traces and more modest on pure chain-of-thought reasoning where the intervention signal is weaker. Future work should target stronger no-oracle verification and replay mechanisms for unstructured traces. 
+
+# Acknowledgements 
+
+This work was supported in part by a gift from Cisco, the National Science Foundation (NSF CNS-2247795), and the Office of Naval Research (ONR N00014-22-1-2680). 
+
+# References 
+
+Azaria, A. and Mitchell, T. The internal state of an LLM knows when it’s lying. In Findings of the Association for Computational Linguistics: EMNLP 2023 , pp. 967–976, 2023. Barke, S., Goyal, A., Khare, A., Singh, A., Nath, S., and Bansal, C. Agentrx: Diagnosing AI agent failures from execution trajectories. arXiv preprint arXiv:2602.02475 , 2026. URL https://arxiv. org/abs/2602.02475 .Chen, X., Lin, M., Schärli, N., and Zhou, D. Teaching large language models to self-debug. In International Conference on Learning Representations (ICLR) , 2024. URL https://arxiv.org/abs/2304.05128 .Choudhury, S. Process reward models for LLM agents: Practical framework and directions. arXiv preprint arXiv:2502.10325 , 2025. Deshpande, D., Gangal, V., Mehta, H., Krishnan, J., Kannappan, A., and Qian, R. TRAIL: Trace rea-soning and agentic issue localization. arXiv preprint arXiv:2505.08638 , 2025. URL https://arxiv. org/abs/2505.08638 .Dong, L., Lu, Q., and Zhu, L. Agentops: Enabling observ-ability of llm agents. CoRR , abs/2411.05285, 2024. URL 
+
+https://arxiv.org/abs/2411.05285 .Doshi-Velez, F. and Kim, B. Towards a rigorous science of interpretable machine learning, 2017. URL https: //arxiv.org/abs/1702.08608 .European Union. Regulation (eu) 2024/1689 (artificial intelligence act), article 12 (record-keeping). Official Journal of the European Union, OJ L, 12 July 2024, 2024. URL http://data.europa.eu/eli/reg/ 2024/1689/oj . Accessed 2026-02-26. Gartner. Gartner survey finds just 15% of IT application leaders are considering, piloting, or deploying fully au-tonomous AI agents. https://www.gartner. com/en/newsroom/press-releases/ 2025-09-30-gartner-survey-finds-just-15-percent-o 
+
+2025. Accessed 2026-03-14. Guo, D., DeepSeek-AI, et al. DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning. 
+
+arXiv preprint arXiv:2501.12948 , 2025. 8REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Guo, T., Chen, X., Wang, Y., Chang, R., Pei, S., Chawla, N. V., Wiest, O., and Zhang, X. Large language model based multi-agents: A survey of progress and challenges. In Proceedings of the 33rd International Joint Conference on Artificial Intelligence (IJCAI) , pp. 8048–8057, 2024. Huang, J., Chen, X., Mishra, S., Zheng, H. S., Yu, A. W., Song, X., and Zhou, D. Large language models cannot self-correct reasoning yet. In International Conference on Learning Representations (ICLR) , 2024. URL https: //arxiv.org/abs/2310.01798 .Jacovi, A. and Goldberg, Y. Towards faithfully interpretable NLP systems: How should we define and evaluate faith-fulness?, 2020. URL https://arxiv.org/abs/ 2004.03685 .Jaffe, S., Shah, N. P., Butler, J., Farach, A., Cam-bon, A., Hecht, B., Schwarz, M., and Teevan, J. Generative AI in real-world workplaces. Tech-nical Report MSR-TR-2024-29, Microsoft Re-search, 2024. URL https://www.microsoft. com/en-us/research/publication/ generative-ai-in-real-world-workplaces/ .Jimenez, C. et al. Swe-bench: Can language mod-els resolve real-world github issues? arXiv preprint arXiv:2310.06770 , 2023. Khalifa, M., Agarwal, R., Logeswaran, L., Kim, J., Peng, H., Lee, M., Lee, H., and Wang, L. Process reward models that think. arXiv preprint arXiv:2504.16828 , 2025. URL 
+
+https://arxiv.org/abs/2504.16828 .Liang, X., Song, S., Zheng, Z., Wang, H., Yu, Q., Li, X., Li, R., Wang, Y., Wang, Z., Xiong, F., and Li, Z. Internal consistency and self-feedback in large language models: A survey. arXiv preprint arXiv:2407.14507 , 2024. Lightman, H., Kosaraju, V., Burda, Y., Edwards, H., Baker, B., Lee, T., Leike, J., Schulman, J., Sutskever, I., and Cobbe, K. Let’s verify step by step. CoRR ,abs/2305.20050, 2023. URL https://arxiv.org/ abs/2305.20050 .Liu, Y., Zhang, C., Han, Z., Liu, H., Wang, Y., Yu, Y., Wang, X., and Yin, Y. TrajAD: Trajectory anomaly detection for trustworthy LLM agents. arXiv preprint arXiv:2602.06443 , 2026. Lunney, J. and Lueder, S. Postmortem culture: Learning from failure. In Beyer, B., Jones, C., Petoff, J., and Murphy, N. R. (eds.), Site Reliability Engineering: How Google Runs Production Systems . O’Reilly Media, Inc., 2016. URL https://sre.google/sre-book/ postmortem-culture/ . Online edition accessed 2026-02-26. Ma, M., Zhang, J., Yang, F., Kang, Y., Lin, Q., Rajmo-han, S., and Zhang, D. Dover: Intervention-driven auto debugging for llm multi-agent systems. arXiv preprint arXiv:2512.06749 , 2025. Madaan, A., Tandon, N., Gupta, P., Hallinan, S., Gao, L., Wiegreffe, S., Alon, U., Dziri, N., Prabhumoye, S., Yang, Y., Gupta, S., Majumder, B. P., Hermann, K., Welleck, S., Yazdanbakhsh, A., and Clark, P. Self-refine: Iter-ative refinement with self-feedback. In Advances in Neural Information Processing Systems 36 (NeurIPS) ,2023. URL https://openreview.net/forum? id=S37hOerQLB .Mialon, G., Fourrier, C., Swift, C., Wolf, T., LeCun, Y., and Scialom, T. GAIA: A benchmark for general AI assistants. arXiv preprint arXiv:2311.12983 , 2023. URL 
+
+https://arxiv.org/abs/2311.12983 .Moshkovich, D., Mulian, H., Zeltyn, S., Eder, N., Skar-bovsky, I., and Abitbol, R. Beyond black-box bench-marking: Observability, analytics, and optimization of agentic systems. CoRR , abs/2503.06745, 2025. URL 
+
+https://arxiv.org/abs/2503.06745 .OpenAI. Learning to reason with LLMs. https://openai.com/index/ learning-to-reason-with-llms/ , 2024. Accessed 2026-03-14. Pasupat, P. and Liang, P. Compositional semantic parsing on semi-structured tables. In Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics ,pp. 1470–1480, 2015. doi: 10.3115/v1/P15-1142. Plaat, A., Wong, A., Verberne, S., Broekens, J., van Stein, N., and Bäck, T. Multi-step reasoning with large language models, a survey. arXiv preprint arXiv:2407.11511 , 2024. Plaat, A., van Duijn, M., van Stein, N., Preuss, M., van der Putten, P., and Batenburg, K. J. Agentic large language models, a survey. arXiv preprint arXiv:2503.23037 , 2025. Rombaut, B., Masoumzadeh, S., Vasilevski, K., Lin, D., and Hassan, A. E. Watson: A cognitive observability framework for the reasoning of llm-powered agents. In 
+
+40th IEEE/ACM International Conference on Automated Software Engineering (ASE) , pp. 739–751, 2025. doi: 10.1109/ASE63991.2025.00067. Samanta, A., Magesh, A., Jain, A., Asadi, K., Yu, Y., Jiang, D., Vidolov, B., Hassani, K., Sajda, P., Bhandari, J., and Efroni, Y. Structure enables effective self-localization of errors in LLMs. arXiv preprint arXiv:2602.02416 , 2026. URL https://arxiv.org/abs/2602.02416 .9REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Shinn, N., Cassano, F., Berman, E., Gopinath, A., Narasimhan, K. R., and Yao, S. Reflexion: Language agents with verbal reinforcement learning, 2023. URL 
+
+https://arxiv.org/abs/2303.11366 .Srivatsa, K. A., Maurya, K. K., and Kochmar, E. LLMs cannot spot math errors, even when allowed to peek into the solution. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , pp. 10914–10928, 2025. URL https://arxiv.org/ abs/2509.01395 .Sun, J., Min, S. Y., Chang, Y., and Bisk, Y. Tools fail: Detecting silent errors in faulty tools, 2024. URL https: //arxiv.org/abs/2406.19228 .Tabassi, E. Artificial intelligence risk manage-ment framework (ai rmf 1.0). Technical Report NIST AI 100-1, National Institute of Standards and Technology, Gaithersburg, MD, January 2023. URL https://nvlpubs.nist.gov/nistpubs/ ai/NIST.AI.100-1.pdf .Turpin, M., Michael, J., Perez, E., and Bowman, S. R. Lan-guage models don’t always say what they think: Unfaith-ful explanations in chain-of-thought prompting. In Ad-vances in Neural Information Processing Systems , 2023. URL https://arxiv.org/abs/2305.04388 .Tyen, G., Mansoor, H., Carbune, V., Chen, P., and Mak, T. LLMs cannot find reasoning errors, but can correct them given the error location. In Findings of the Association for Computational Linguistics: ACL 2024 , pp. 13894– 13908, Bangkok, Thailand, August 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024. findings-acl.826. URL https://aclanthology. org/2024.findings-acl.826/ .Vacareanu, R., Pratik, A., Spiliopoulou, E., Qi, Z., Paolini, G., John, N. A., Ma, J., Benajiba, Y., and Ballesteros, M. General purpose verification for chain of thought prompting. arXiv preprint arXiv:2405.00204 , 2024. URL 
+
+https://arxiv.org/abs/2405.00204 .Wang, X., Wei, J., Schuurmans, D., Le, Q. V., Chi, E. H., Narang, S., Chowdhery, A., and Zhou, D. Self-consistency improves chain of thought reasoning in lan-guage models. In International Conference on Learn-ing Representations (ICLR) , 2023. URL https:// openreview.net/forum?id=1PL1NIMMrw .Weiser, M. Program slicing. In Proceedings of the 5th International Conference on Software Engineering , pp. 439–449, 1981. URL https://dl.acm.org/doi/ 10.5555/800078.802557 .Xi, Z. et al. AgentPRM: Process reward models for LLM agents via step-wise promise and progress. arXiv preprint arXiv:2511.08325 , 2025. Yao, S., Yu, D., Zhao, J., Shafran, I., Griffiths, T., Cao, Y., and Narasimhan, K. R. Tree of thoughts: Deliberate problem solving with large language models. In Advances in Neural Information Processing Systems 36 (NeurIPS) ,2023a. URL https://openreview.net/forum? id=5Xc1ecxO1h .Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., and Cao, Y. ReAct: Synergizing reasoning and acting in language models. In International Confer-ence on Learning Representations (ICLR) , 2023b. URL 
+
+https://arxiv.org/abs/2210.03629 .Yehudai, A., Eden, L., Li, A., Uziel, G., Zhao, Y., Bar-Haim, R., Cohan, A., and Shmueli-Scheuer, M. Sur-vey on evaluation of LLM-based agents. arXiv preprint arXiv:2503.16416 , 2025. Yu, M., Meng, F., Zhou, X., Wang, S., et al. A survey on trustworthy LLM agents: Threats and countermeasures. 
+
+arXiv preprint arXiv:2503.09648 , 2025. Zeller, A. and Hildebrandt, R. Simplifying and isolating failure-inducing input. IEEE Transactions on Software Engineering , 28(2):183–200, February 2002. doi: 10. 1109/32.988498. Zhang, G., Wang, J., Chen, J., Zhou, W., Wang, K., and Yan, S. Agentracer: Who is inducing failure in the LLM agentic systems? arXiv preprint arXiv:2509.03312 , 2025. URL https://arxiv.org/abs/2509.03312 .Zhong, L., Wang, Z., and Shang, J. Debug like a hu-man: A large language model debugger via verifying runtime execution step by step. In Findings of the As-sociation for Computational Linguistics: ACL 2024 , pp. 851–870, Bangkok, Thailand, August 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024. findings-acl.49. URL https://aclanthology. org/2024.findings-acl.49/ .
+
+# A. Prompt Templates 
+
+This section provides the verbatim prompt templates used in all pipeline stages. All prompts require the LLM to return structured JSON; free-text fields ( reasoning ,
+
+explanation ) are capped at the model’s natural response length. The prompts shown below use WTQ-specific format-ting for concreteness. Benchmark-specific prompt variants for GAIA, BBM, and SWE-bench are included in the sub-mitted err-loc library; the pipeline structure and JSON schema are shared across all benchmarks, with differences 10 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+limited to domain-specific field names (e.g., “table context” for WTQ vs. “task description” for GAIA) and tool-name references. 
+
+A.1. Error Localization Prompt 
+
+Used by ErrorLocalizer (§3.2). The numbered steps are formatted with tool name, arguments, reasoning, and truncated result (max 500 chars per field). 
+
+You are an expert auditor analyzing a data-analysis agent trace. The trace is known to be incorrect. Question: {question} Table context: {table_context} Expected answer: {expected_answer} Agent final answer: {agent_answer} Numbered steps: {numbered_steps} Identify the FIRST step where the error was introduced. Return JSON only: {"error_step": <integer>, "confidence": <0.0-1.0>, "reasoning": "<short explanation>", "what_should_have_been_done": "<short correction>" }
+
+When include_expected_answer=False , the 
+
+expected_answer field is replaced with the literal string [WITHHELD] .
+
+A.2. Error Classification Prompt 
+
+Used by ErrorClassifier (§3.3). The error step is presented with its tool name, arguments, reasoning, and result. 
+
+You are classifying the first error step in a tool-calling trace. Question: {question} Expected answer: {expected_answer} Agent answer: {agent_answer} Error step {step_index}: Tool: {tool_name} Reasoning: {ai_reasoning} Arguments: {tool_args} Result: {tool_result} Classify into one of: - formatting_error - instruction_noncompliance - context_handling_failure - resource_abuse - poor_information_retrieval - incorrect_problem_identification - hallucination - tool_error - task_orchestration - goal_deviation - incorrect_memory_usage Return JSON only: {"error_type": "<category>", "confidence": <0.0-1.0>, "explanation": "<short explanation>", "suggested_correction": "<short fix>" }
+
+A.3. Diagnosis Prompt 
+
+Used by Diagnostician (§3.3). The prompt presents the correct prefix (all steps before the error), the erroneous step with full context, and the error cascade (all steps from the error onward). 
+
+You are a diagnostic expert analyzing why a data-analysis agent failed. **Question:** {question} **Available Data:** {table_context} **Expected Correct Answer:** {expected_answer} ---**Correct Steps (before the error):** {correct_prefix} **The Erroneous Step:** {error_step} **What Happened After (cascade):** {error_cascade} **Error Classification:** {error_type} **Classification Explanation:** {classification_explanation} **Previously Suggested Correction:** {suggested_correction} ---Produce a repair plan: 1. ROOT CAUSE: Why the agent chose wrongly 2. What EXACTLY to do instead 3. What the agent must NEVER do 4. expected_next_tool: first tool token (e.g., f_sort_by), or null Respond in JSON: {"root_cause": "<explanation>", "correction_instruction": "<specific instruction>", "forbidden_actions": ["<action>", ...], "expected_next_tool": "<tool or null>", "confidence": <0.0-1.0> 
+
+11 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+}
+
+A.4. Faithfulness Gate Prompt 
+
+Used by FaithfulnessGate (§3.3.1) after rule-based checks pass. 
+
+You are a gatekeeper verifying that an agent’s proposed action follows a repair plan. **Repair Plan:** - Correction Instruction: {correction_instruction} - Forbidden Actions: {forbidden_actions} - Expected Next Tool: {expected_next_tool} **Proposed Action:** - Tool: {proposed_tool} - Arguments: {proposed_args} - Agent’s Reasoning: {proposed_reasoning} ---Check: 1. Does it follow the correction? 2. Does it violate any forbidden action? 3. Is it relevant, or has the agent drifted? Respond in JSON: {"is_faithful": <true or false>, "violation_reason": "<or null>", "violation_type": "<one of: repeats_original_error, ignores_instruction, uses_forbidden_action, unrelated_drift, or null>" }
+
+A.5. Repair System Injection 
+
+Injected as a system message into the agent’s context at the rollback point. This is not an LLM prompt per se but a structured message appended to the conversation prefix. 
+
+IMPORTANT - CORRECTION CONTEXT: Your previous attempt to answer this question failed at Step {error_step_index}. Diagnosis: {root_cause} You MUST follow this correction: {correction_instruction} You MUST NOT: {forbidden_actions_formatted} Resume from the last correct state and apply this correction. 
+
+When hard gate retries are triggered, feedback from the previous rejection is appended: 
+
+GATE RETRY FEEDBACK (retry N failed): - Previous violation_type: {type} - Previous violation_reason: {reason} - Previous first regenerated tool: {tool} - Previous first regenerated args: {args} - Regenerate Step {index} again and do not repeat the same first action. - First regenerated tool must satisfy expected_next_tool={expected_tool}. 
+
+A.6. Post-Correction Explanation Prompt 
+
+Used by post_correction_explain (§3.4) after a successful correction. 
+
+You are an expert auditor explaining why a specific step in a data-analysis agent trace was wrong. A correction loop rolled back to step {error_step_index} and resampled. The resampled continuation produced the CORRECT answer. **Question:** {question} **Expected answer:** {expected_answer} **Original error step ({error_step_index}):** Tool: {original_tool} Reasoning: {original_reasoning} Arguments: {original_args} Result: {original_result} **Resampled continuation:** {resampled_steps} **Corrected answer:** {corrected_answer} Explain WHY the original step was wrong, using the correction as evidence. Return JSON only: {"reasoning": "<detailed explanation>", "error_type": "<category>", "explanation": "<short summary>" }
+
+Step-index determination. The re-localized step index 
+
+ˆıfinal is not produced by this prompt. When correction succeeds from rollback point p, the re-localized step is set to the rollback point that yielded the successful correction (i.e., ˆıfinal = p). The post-correction explanation prompt produces the refined error explanation and error type for that step; the step index is determined mechanically by the replay infrastructure, not by LLM judgment. 
+
+# B. Baseline Localizer Algorithms 
+
+All three baselines share the same input format: a question, expected answer, and a list of formatted failure log entries 12 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+(one per step). Each entry includes the step index, tool name, arguments, reasoning, and result. 
+
+B.1. All-at-Once (AAO) 
+
+The simplest baseline: a single LLM call receives the full trace and must identify the earliest decisive error step. One LLM call per trace. The prompt asks the LLM to identify the “earliest decisive error step,” defined as the step that, if fixed, would allow the run to succeed. The LLM returns the error step index, responsible agent, reason, error type, and confidence. 
+
+B.2. Step-by-Step (SBS) 
+
+The LLM evaluates each step sequentially. For step t, the prompt presents all steps 1, . . . , t and asks whether step 
+
+t is the first decisive error. The LLM returns is_error: true/false . The first step marked as an error is returned; if no step is flagged, the final step is used as fallback. T
+
+LLM calls per trace in the worst case. 
+
+B.3. Binary Search (BS) 
+
+The trace is recursively bisected. At each iteration, the LLM sees the current range [low , high ] split into two halves and must choose which half contains the earliest decisive error. After convergence to a single step, a follow-up prompt generates a reason and error type. ⌈log 2 T ⌉ + 1 LLM calls per trace. 
+
+# C. ICS Backtracker Details 
+
+Our ICS implementation follows Samanta et al. (2026). The agent resamples from a bare prefix at the localized step with-out any error hints or structured repair guidance, and the localizer does not see the expected answer. If the resample produces a correct answer, the trace is recorded; otherwise, the method re-localizes on the new trace and repeats for up to D iterations. This matches the untargeted resampling con-figuration described in Samanta et al. (2026): no diagnosis, no repair plan, no faithfulness gate. ICS uses a single fixed rollback point per iteration (no multi-rollback). Full imple-mentation details are available in the submitted err-loc 
+
+library. 
+
+# D. Verification 
+
+Four verifier implementations are used depending on the benchmark: 
+
+OracleVerifier. Used for WTQ and GAIA. A determinis-tic string-extraction pipeline extracts the agent’s final answer from its output, normalizes formatting (case, whitespace, number formatting), and compares against the expected an-swer via string matching. If extraction fails (no parseable answer string), the trace is marked incorrect. This approach is intentionally strict: it may under-count correct answers when the agent uses equivalent but differently formatted expressions, but ensures verification introduces no LLM judgment uncertainty. Returns is_correct and the ex-tracted answer string. 
+
+BBMVerifier. Used for BBM. Extracts the answer from the agent’s final output using a task-specific extractor (han-dles multiple-choice and short-answer formats), then per-forms case-insensitive string comparison. No LLM call. 
+
+SWEVerifier. Used for SWE-bench. Executes the bench-mark’s test suite against the agent’s generated patch. Returns pass/fail based on whether all tests pass. No LLM call is involved. 
+
+SelfVerifier. Available for use when ground-truth an-swers are unavailable. An LLM receives the question, table context, agent reasoning summary, and agent an-swer, then judges whether the answer is correct. Returns 
+
+is_correct , confidence , and reasoning . Not used in the main experiments (which all have ground truth). 
+
+# E. Data Processing 
+
+E.1. Trace Representation 
+
+All traces are converted to a common StructuredTrace 
+
+format by the TraceExtractor (Dong et al., 2024; Moshkovich et al., 2025). The extractor parses LangGraph conversation state (a JSON file containing the message his-tory, table registry, and agent configuration) into an ordered list of Step objects. Each step captures: • index : 1-based step position • ai_reasoning : the agent’s chain-of-thought text • tool_name : tool invoked (e.g., f_filter_rows )• tool_args : structured arguments (dict) • tool_result : tool output string (truncated to 500 chars for prompts) • is_final_answer : whether this step is the agent’s final response The table context is built from the table registry in the con-versation state, listing each table’s name, columns, data types, and row count. 
+
+E.2. WikiTableQuestions (WTQ) 
+
+WTQ traces are generated by running the R EALY agent (our internal table-QA agent) on the WikiTableQues-13 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+tions benchmark (Pasupat & Liang, 2015). We use 137 failing traces from batch evaluation runs. Each trace is a LangGraph conversation state JSON file stored at 
+
+data/wikitable_trails/runs/<id>/conversation_state.json .A results manifest at data/wikitable_trails/results.json 
+
+maps test IDs to expected answers and correctness labels. Human annotations are collected for 119 traces via a review CLI. Each annotation records the annotator-identified error step index and a free-text error description. Annotations are stored at 
+
+data/wikitable_human_labels/merged.json 
+
+with multiple annotators per trace merged into a set of valid error steps. 
+
+E.3. GAIA 
+
+GAIA traces come from the GAIA benchmark (Mialon et al., 2023) and use a span-tree structure; they are sourced from the TRAIL benchmark (Deshpande et al., 2025). We load 117 failing traces from data/trail/manifest.json .GAIA conversation states require special handling: spans are converted to LangGraph-compatible message for-mat by mapping each span to an assistant message (with tool calls) and a tool response message. 83 traces have human step-level annotations stored at 
+
+data/trail/human_annotations.json .
+
+E.4. BigBenchMistake (BBM) 
+
+BBM provides chain-of-thought traces with ground-truth 
+
+mistake_index labels. We load 150 traces from 
+
+data/bbm/manifest.json . Each trace is a sequence of reasoning steps (not tool calls), so the tool_name field is set to the step’s reasoning type. The mistake_index 
+
+serves as the ground-truth error step for evaluation. An-swer verification uses a task-specific extractor that handles mathematical, multiple-choice, and short-answer formats. 
+
+E.5. SWE-bench 
+
+SWE-bench traces are from software engineering agents with code-execution capabilities. We load 31 fail-ing traces from data/swebench/manifest.json .These traces are substantially longer than table-QA traces (median 12 steps vs. 4 for WTQ) and include file-editing, test-running, and code-searching actions. 30 traces have human annotations. 
+
+# F. Inter-Annotator Agreement 
+
+The WTQ agent benchmark is collected internally by our team: we run the R EALY agent on WikiTableQuestions, col-lect failing traces, and obtain step-level human annotations from multiple annotators. Each of the 119 labeled traces was independently annotated by two annotators who identified the earliest decisive error step and wrote a free-text error description. Annotators were presented with the full agent trace via a review CLI and asked to (1) identify the index of the earliest step whose correction would enable a correct final answer, and (2) write a free-text description of the error. No additional guidelines or examples were provided beyond the task definition. Pairwise exact-match agreement is 0.78 and Krippendorff’s α (ordinal) is 0.82, indicating substantial agreement. The remaining disagreements reflect genuine ambiguity in identifying the “first” error when mul-tiple steps contribute to failure; we retain all annotators’ labels as a set-valued gold standard for evaluation. GAIA and SWE-bench use agent traces and step-level anno-tations from Deshpande et al. (2025); BBM uses mistake-index labels from Tyen et al. (2024). We manually verified that step-level labels align correctly after format conversion on a sample of GAIA and SWE-bench traces. GAIA and SWE-bench include human annotations from the original benchmark authors. 
+
+# G. Error Taxonomy 
+
+The 11-category error taxonomy is derived from 256 SWE-bench human annotations with typo variants merged. The categories are: formatting errors, instruction noncompli-ance, context handling failures, resource abuse, poor infor-mation retrieval, incorrect problem identification, halluci-nation, tool errors, task orchestration issues, goal deviation, and incorrect memory usage. Full definitions are in the released code. 
+
+# H. Reproducibility 
+
+H.1. Software Environment 
+
+• Python ≥ 3.10 • err-loc 0.1.0 (custom package; pip install -e err_loc/ )• langchain-openai ≥ 0.2, langchain-core 
+
+≥ 0.3 • langgraph ≥ 1.0.2, langchain ≥ 1.0.3 • pydantic 2.11.9 • pandas ≥ 2.3.2, numpy ≥ 2.1.0 • pytest 8.4.2 
+
+H.2. Model Access 
+
+All experiments use the OpenAI API with model 
+
+gpt-5.2-2025-12-11 at temperature 0.0, unless oth-erwise noted. All baselines (AAO, SBS, BS, Reflexion, ICS, DoVer) use the same model and temperature. The 14 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+AAO (Opus 4.6) comparison uses claude-opus-4-6 
+
+at temperature 0.0. ThinkPRM uses its published 1.5B checkpoint (local GPU inference). AgentRx uses 
+
+gpt-5.2-2025-12-11 for all LLM calls. API keys are stored in a local JSON file and are not committed to the repository. 
+
+H.3. Compute 
+
+Experiments were run on a single Linux machine (Ubuntu 22.04, 64 GB RAM). No GPU is required; all computa-tion is via API calls. Wall-clock time per benchmark (full REFLECT pipeline): • WTQ (137 traces): ∼70 min • GAIA (117 traces): ∼60 min • BBM (150 traces): ∼45 min • SWE-bench (31 traces): ∼30 min The full ablation study (8 configurations × 137 WTQ traces) takes ∼6 hours. 
+
+H.4. Evaluation Runner 
+
+All experiments are executed via a unified CLI:              
+
+> python err_loc_demo/scripts/run_eval.py \--benchmark wikitable \--method reflect_repairer \--enable_correction \--hard_gate --hard_gate_max_retries 3\--output_dir results/wtq_reflect \--auditor_model gpt-5.2-2025-12-11 \--agent_model gpt-5.2-2025-12-11
+
+Results are saved incrementally (one JSON entry per com-pleted example), allowing interrupted runs to be resumed. Each run saves a run_config.json with all CLI argu-ments, sys.argv , and a timestamp. Accuracy reports are computed automatically against human labels when avail-able. 
+
+# I. Plan-Anchored Verifier: Design and Evaluation 
+
+This section details the plan-anchored verifier introduced in §3.4, which replaces the oracle for online settings where ground-truth answers are unavailable, and compares it against a composite proxy verifier baseline. 
+
+I.1. Architecture 
+
+The plan-anchored verifier reasons about the coherence be-tween the task specification and the agent’s execution via stepwise deviation auditing. Given a trace τ and the original question q, the verifier proceeds in four stages (Figure 3):  
+
+> Figure 3. Plan-anchored verification as a secondary, no-ground-truth regime: the verifier extracts task anchors, audits normalized macro-steps for deviations, and outputs an error signal with confi-dence.
+
+Stage 1: Anchor generation (1 LLM call). From the question alone (no ground truth), the verifier synthesizes two types of anchors: • Hard anchors (non-negotiable task obligations): re-quired entities/tables, filters and conditions, target prop-erty, operation type (count, lookup, compare, aggre-gate), and output form/spec. • Soft anchors (strategic plan variants): 1–2 plausible execution plans, each with ordered subgoals. 
+
+Stage 2: Trace normalization. Trace events are grouped into macro-steps: tool-use traces yield (assistant reasoning, tool call, tool result) triples; chain-of-thought traces are split by paragraph or step markers. Failed tool calls immedi-ately followed by successful retries are collapsed into single recovery steps. 
+
+Stage 3: Stepwise audit (1–2 LLM calls). Each macro-step is classified into one of nine categories: four benign (H OUSEKEEPING , A LIGNED , V ALID _A LTERNATIVE , R E-
+
+> COVERY
+
+) and five deviation types: • CONSTRAINT _D ROP : a required filter or condition is permanently abandoned. • EVIDENCE _C ONTRADICTION : the step contradicts its own tool outputs. 15 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+• UNSUPPORTED _J UMP : a conclusion is drawn without supporting evidence. • MISSED _R EQUIRED _S UBGOAL : a necessary interme-diate step is skipped. • OUTPUT _D RIFT : the final answer is semantically in-consistent with the trace evidence. For long traces ( >8 macro-steps), the audit is chunked with 2-step overlap. Related deviations are merged; deviations followed by R ECOVERY verdicts are marked as resolved. 
+
+Stage 4: Dual scoring. An error signal E is computed as a severity-weighted sum of deviations (critical/major/minor 
+
+× hard/soft, with resolved deviations discounted to 30%) squashed through a sigmoid to [0 , 1] . An audit confidence C
+
+is penalized for ambiguity (excess V ALID _A LTERNATIVE 
+
+steps, many unresolved soft deviations, or too few substan-tive steps). The health score is h = 1 − E, and the final label is: • H IGH _E RROR _S IGNAL if C ≥ 0.3 and E ≥ 0.5.• L OW _E RROR _S IGNAL if C ≥ 0.3 and E < 0.5.• U NCERTAIN if C < 0.3.
+
+I.2. Evaluation Data: Constructing Correct Traces 
+
+To evaluate verifier discrimination (correct vs. incorrect), we construct balanced or near-balanced evaluation sets contain-ing both correct and incorrect traces for each benchmark: • WTQ ( N =502 ): 264 correct + 238 incorrect traces from the same R EALY agent batch runs, oracle-verified via string matching. • BBM ( N =300 ): 150 correct (no mistake_index )+ 150 incorrect (with mistake_index ), sampled with a fixed random seed. • GAIA ( N =127 ): 10 correct traces (generated by run-ning the GAIA agent on tasks with oracle-verified cor-rect answers) + 117 failing traces from the TRAIL benchmark. • SWE-bench ( N =45 ): 14 correct traces (passing patches verified by the benchmark’s test suite) + 31 failing traces. WTQ and BBM are balanced by construction. GAIA (10:117) and SWE-bench (14:31) are genuinely imbalanced; AUROC should be interpreted with caution on these bench-marks, and F1 and error precision are more stable metrics under imbalance.                      
+
+> Table 9. Plan-anchored verifier detection performance. AUROC measures discrimination between correct and incorrect traces; 0.5 is chance. Benchmark NAUROC Best-F1 Err-Prec WTQ 502 0.680 0.769 0.625 BBM 300 0.561 0.702 0.568 GAIA 127 0.842 0.888 0.934 SWE-bench 45 0.968 0.933 0.966
+
+I.3. Cross-Benchmark Detection Performance 
+
+Table 9 reports plan-anchored verifier detection perfor-mance. We report AUROC (health score vs. oracle label; higher is better, 0.5 is chance), best error-positive F1 via threshold sweep, and error precision at the best threshold. Discrimination is strongest on GAIA (AUROC 0.84) and SWE-bench (0.97), where the verifier’s stepwise deviation auditing effectively distinguishes correct from incorrect multi-step traces. On WTQ (0.68), the verifier achieves moderate discrimination with strong Best-F1 (0.769). On BBM (0.56), discrimination is limited: chain-of-thought traces lack the tool-call structure that anchor-based audit-ing exploits. The cost is 2–3 LLM calls per trace (anchor generation + stepwise audit). 
+
+# J. Benchmark-Specific Agent Configurations 
+
+J.1. WTQ Agent (R EALY )
+
+The R EALY agent is a LangGraph-based table-QA system with 14 tabular-algebra tools. Traces are stored as conversa-tion state JSON files. 
+
+J.2. GAIA Agent 
+
+The GAIA agent has access to web search, page naviga-tion, file search, text analysis, and answer submission tools. Traces are converted from TRAIL’s span-tree format to our common representation by mapping each span to an assis-tant message with tool calls and a tool response message. 
+
+J.3. BBM (BigBenchMistake) 
+
+BBM traces contain chain-of-thought reasoning without tool calls. Each reasoning step is treated as a separate localiza-tion unit with tool_name set to the step’s reasoning type. REFLECT applies its full diagnose-replay-verify pipeline on BBM, including re-execution of the chain-of-thought reason-ing. Evaluation uses pre-existing traces with ground-truth 
+
+mistake_index labels. 16 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+J.4. SWE-bench Agent 
+
+The SWE-bench agent uses a CodeAgent (smolagents) that executes Python code directly at each step rather than calling named tools. Each step comprises LLM-generated code for file reading/editing, searching, and test execution via Python standard library and subprocess calls. The only explicit tool is FinalAnswerTool .
+
+# K. Computational Cost 
+
+Table 10 reports the theoretical call complexity and empir-ical token usage per trace for each method. We measure tokens consumed during actual evaluation runs (all using 
+
+gpt-5.2 ) to show that R EFLECT ’s accuracy gains are not 
+
+attributable to higher compute budgets. 
+
+Key observations. (1) AgentRx is the most compute-intensive method by a wide margin , consuming 20,023– 157,599 tokens per trace, 3–20 × more than localization-only baselines and 1.5–3 × more than R EFLECT on SWE-bench. Despite this, AgentRx achieves 51.1% localization EM on WTQ (vs. R EFLECT ’s 76.3%) and produces no correction output. On SWE-bench, AgentRx uses 157,599 tokens/trace (∼3× REFLECT ’s 53,724) yet achieves only 41.9% EM. (2) ICS is cheaper per trace than R EFLECT (7,K vs. 12,K on WTQ, 30,K vs. 54,K on SWE-bench), but achieves sub-stantially lower correction rates (23.7% on WTQ, 12.0% on GAIA, and 85.2% on SWE-bench, versus R EFLECT ’s 92.6%, 54.2%, and 89.0%). The additional compute R E- 
+
+> FLECT
+
+spends on diagnosis, gating, and multi-rollback pro-duces qualitatively different outcomes. (3) Reflexion+ICS (Table 2) provides a direct coupling control: it uses compa-rable compute to ICS (6.8–6.7 calls/trace) with a different localizer (Reflexion instead of all-at-once), and achieves 0–7.7% correction, confirming that R EFLECT ’s gains come from its diagnostic pipeline, not from additional compute. Wall-clock time per benchmark is reported in §H. 
+
+# L. Faithfulness Details 
+
+This section provides the remaining faithfulness tests (C–E) and the plan-quality analysis omitted from the main paper (§4.5). 
+
+Test C: Robustness. The effect is robust across word-ing, position, and formatting variants: paraphrase (80.7%), standard correct (78.7%), prefix-positioned (77.0%), and plain-text (74.7%) all perform within 6pp of each other (Table 5). 
+
+Test D: Probability shift. The correct hint increases the probability of the target tool by +17 .3pp (CI: 
+
+[+8 .0, +28 .7] ) at the first resampled step, with a log-odds shift of +4 .95 .
+
+Test E: First divergence. In 96.7% of cases, the hint changes agent behavior at the very first regenerated step (average first divergence: step 3.09), confirming that repair guidance acts immediately. 
+
+Does faithfulness help accuracy? When the repair plan correctly identifies the error area (step distance ≤ 3) and the agent follows it, correction accuracy reaches 88%, compared to 75% when the plan is good but not followed ( +13 pp). For poor plans (distance > 3), adherence provides only 
+
++2 pp (73% vs. 71%). This confirms the causal prediction: faithfulness helps most when the plan is worth following. 
+
+# M. Explanation Quality 
+
+Table 11 reports explanation quality on the three bench-marks with human error descriptions (WTQ, GAIA, SWE-bench). Explanation quality is step-conditioned: only scored when the predicted step matches a human-annotated step. The number of step-matched entries varies by method and benchmark. On SWE-bench, R EFLECT (0.450) leads all methods, in-cluding AgentRx (0.389), with comparable sample sizes, indicating that the advantage reflects genuine explanation quality rather than selection bias from small n.Among the newly evaluated baselines, Reflexion variants achieve moderate step-conditioned similarity on WTQ (Reflexion–noGT: 0.672; Reflexion+GT: 0.655) and GAIA (Reflexion–noGT: 0.547; Reflexion+GT: 0.537), but remain below R EFLECT ’s scores on both benchmarks. AgentRx also produces strong explanations (WTQ: 0.601). However, REFLECT ’s higher EM means its explanation scores are com-puted over a larger and more representative sample of errors. On SWE-bench, where traces are longer and more complex, REFLECT ’s diagnosis-driven approach yields the best ex-planations (0.450 vs. 0.389 for AgentRx), while Reflexion degrades sharply (0.196–0.265). ThinkPRM produces only mechanical score listings without explanatory text and is marked as “–”. The proxy pipeline achieves comparable step-conditioned scores (0.640 on WTQ, 0.635 on GAIA, 0.430 on SWE-bench), confirming that when proxy localization identi-fies the correct step, the explanation mechanism produces similar-quality attributions regardless of the verifier regime. The key advantage of R EFLECT ’s explanations emerges through the correction–explanation coupling (§4.4): when correction succeeds, post-correction re-localization pro-duces root-cause explanations grounded in contrastive evi-dence, a mechanism unavailable to localization-only base-lines. 17 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+Table 10. Computational cost per trace. Left: theoretical LLM call complexity ( T = trace steps, D = max repair iterations, K = rollback points, N = AgentRx constraint checks where N ≥T ). Right: empirical average tokens per trace on gpt-5.2-2025-12-11 . Values with ∼ are trace-length-scaled estimates from measured total token costs; all others are measured. Calls/trace Empirical tokens/trace Method (theoretical) WTQ GAIA SWE BBM 
+
+Localization-only baselines 
+
+AAO 1 985 ∼2,500 ∼15,000 ∼1,400 SBS T 1,854 ∼8,000 ∼75,000 ∼5,500 BS ⌈log 2 T ⌉+1 1,778 ∼3,500 ∼18,000 ∼2,500 Reflexion 2 ∼1,100 ∼2,800 ∼16,000 ∼1,500 DoVer N +2 3,021 4,715 30,464 4,157 ThinkPRM 0 (GPU) 0 0 0 0AgentRx N +2 20,023 47,068 157,599 31,654 
+
+Correction methods 
+
+ICS ≤D×2 6,996 ∼15,000 30,214 ∼9,000 Reflexion+ICS ≤D×2+2 11,786 9,812 38,977 ∼11,000 REFLECT ≤D×K×3 ∼12,000 ∼28,000 53,724 ∼18,000 
+
+Table 11. Error explanation quality on benchmarks with human error descriptions. Step-cond. : mean LLM-judge semantic similarity (0–1) scored only on step-matched entries (std: sample standard deviation of similarity scores). High = fraction with similarity ≥ 0.7 (std: SE of proportion). BBM excluded (no human descriptions). Step-matched n (WTQ / GAIA / SWE): AAO 66/13/10, SBS 60/1/8, BS 64/11/10, Reflexion+GT 63/13/14, Reflexion–noGT 63/15/13, AgentRx 61/6/13, ICS 58/9/5, R EFLECT 91/33/21, R EFLECT (proxy) 74/28/20. WTQ GAIA SWE-bench Method Sim High% Sim High% Sim High% AAO 0.320 ±.18 18.2 ±4.7 0.385 ±.20 30.8 ±12.8 0.150 ±.12 0.0 SBS 0.285 ±.17 13.3 ±4.4 0.350 ±– 0.0 0.269 ±.16 25.0 ±15.3 
+
+BS 0.305 ±.18 15.6 ±4.5 0.277 ±.18 18.2 ±11.6 0.210 ±.14 0.0 Reflexion+GT 0.655 ±.16 69.4 ±5.4 0.537 ±.19 47.4 ±11.5 0.196 ±.13 7.1 ±6.9 
+
+Reflexion–noGT 0.672 ±.15 72.6 ±5.2 0.547 ±.19 42.9 ±10.8 0.265 ±.16 23.1 ±11.7 
+
+ThinkPRM – – – – – –AgentRx 0.601 ±.17 60.0 ±5.9 0.436 ±.20 37.5 ±17.1 0.389 ±.19 30.8 ±12.8 
+
+ICS 0.250 ±.16 10.3 ±4.0 0.230 ±.16 11.1 ±10.5 0.125 ±.10 0.0 
+
+REFLECT 0.760 ±.18 70.0 ±5.3 0.610 ±.20 53.8 ±12.4 0.450 ±.19 42.9 ±10.8 
+
+REFLECT (proxy) 0.640 ±.18 67.9 ±5.9 0.635 ±.19 66.2 ±9.8 0.430 ±.19 38.5 ±13.5 
+
+Coverage-aware explanation quality. Table 11 reports quality only for step-matched cases, so methods with lower EM benefit from a selection effect. To account for coverage differences, we compute a coverage-aware metric that assigns similarity 0 to step-unmatched pre-dictions: Sim cov = Sim × (nmatched /n total ). On WTQ (ntotal = 119 ): R EFLECT 0.760 × (91 /119) = 0 .581 ; AAO 
+
+0.320 ×(66 /119) = 0 .177 ; ICS 0.250 ×(58 /119) = 0 .122 .On GAIA ( ntotal = 83 ): R EFLECT 0.610 × (33 /83) = 0.242 ; AAO 0.385 × (13 /83) = 0 .060 ; Reflexion+GT 
+
+0.537 × (13 /83) = 0 .084 . On SWE-bench ( ntotal = 30 ): REFLECT 0.450 × (21 /30) = 0 .315 ; AgentRx 0.389 ×
+
+(13 /30) = 0 .169 ; Reflexion+GT 0.196 × (14 /30) = 0 .091 .Under this metric, R EFLECT ’s advantage increases because its higher localization accuracy means a larger fraction of predictions receive non-zero explanation scores. 
+
+# N. Verified vs. Fallback Localization 
+
+Table 12 breaks down R EFLECT ’s localization accuracy by correction outcome: verified traces are those where the repair loop produced a correct answer (the intervention succeeded), and fallback traces are those where correction failed and the localizer’s best prediction is used without intervention support. On GAIA (47.1% vs. 25.8% EM) and BBM (35.8% vs. 14.3%), verified cases substantially outperform fallback, confirming that intervention-supported attribution produces stronger localization than pattern-matching alone. On SWE-bench (77.7% vs. 0.0%), verified cases dominate, though the fallback partition ( N =3 ) is too small for reliable com-parison. On WTQ, where correction coverage is 92.6%, only 10 traces fall back, and those few happen to be cor-rectly localized (100% EM), consistent with WTQ being the easiest benchmark where the initial localizer is already strong. Overall, R EFLECT provides calibrated output: users 18 REFLECT: Intervention-Supported Error Attribution for Silent Failures                                                         
+
+> Table 12. Localization accuracy stratified by correction outcome. Coverage = correction rate from Table 4. Verified EM reflects intervention-supported attribution; Fallback EM reflects localiza-tion without intervention evidence. Benchmark Cov.% Verified Fallback EM Off-1 EM Off-1 WTQ 92.6 74.1 80.6 100.0 100.0 GAIA 54.2 47.1 72.5 25.8 74.2 BBM 95.0 35.8 53.7 14.3 42.9 SWE-bench 89.0 77.7 75.0 0.0 100.0
+> WTQ example Q: “Which country has the most cities with population over 500k?”
+> Steps 1–3: load table, inspect columns, sort by pop-ulation. Step 4:f_filter_rows(table=t1, column="population", condition=">500000") →returns 12 rows (cor-rect).
+> Step 5:f_group_by(table=t1, column="country") →groups by unfiltered ta-ble (silent bug: should use t1_filtered ). Agent answers “China” (wrong; gold = “United States”).
+> ✓REFLECT Localizes step 4 (filter), diagnoses stale-reference error. Rolls back to step 4, injects: “pass filtered output to group-by.”
+> Replayed agent answers “United States” ( correct ). Post-correction re-localization confirms step 4 with similarity 0.95.
+> ✗ICS Resamples from step 5 prefix without guidance. 3 iterations: agent re-derives same group-by on unfiltered table each time. Final answer “China” ( wrong ); explanation: “the agent should have been more careful with grouping.”
+> Figure 4. Case study on a WTQ example. R EFLECT produces a step-specific, outcome-grounded attribution tied to its successful intervention; ICS retries without targeting the root cause and pro-duces a vague explanation.
+
+can distinguish which attributions are intervention-backed and which are tentative. 
+
+# O. Case Study 
+
+Figure 4 contrasts R EFLECT with ICS on a representative WTQ example. In the R EFLECT trace, the localizer flags step 4 (the fil-ter whose output is silently dropped); after rollback and guided replay, the agent passes the filtered table to group-by and answers correctly. Post-correction re-localization compares the two continuations and confirms step 4 with similarity 0.95, pinpointing the stale-reference bug. ICS, lacking targeted guidance, resamples from the step-5 prefix three times; each retry re-derives the same group-by on the unfiltered table and returns the wrong answer, with an ex-planation (“the agent should have been more careful with grouping”) that names no step and no mechanism, illustrat-ing the correction–explanation coupling gap quantified in Table 4. 
+
+# P. Extended Positioning Against Baselines 
+
+This section provides detailed positioning of R EFLECT 
+
+against each baseline along the four attribution require-ments identified in §1: execution grounding (R1), prefix-preserving replay (R2), targeted intervention (R3), and inference-time computation (R4). Each subsection describes what the baseline does, which requirements it satisfies, and what specific gap R EFLECT addresses. The assignments below correspond to Table 1. 
+
+Reflexion (Shinn et al., 2023) 
+
+Reflexion generates a verbal self-critique after a failed at-tempt and retries with the critique appended to the prompt. Its primary goal is correction (recovering a correct answer), not step-level attribution. 
+
+R1 (✗): The “explanation” is a free-text self-reflection gener-ated by the same model, not grounded in execution evidence. Such self-critiques are known to be vulnerable to post-hoc rationalization (Turpin et al., 2023; Huang et al., 2024; Tyen et al., 2024). R2 (✗): The retry generates an independent trajectory; there is no prefix-preserving replay, so even a successful retry does not identify which step in the original 
+
+trace was decisive. R3 (✗): The critique is holistic (e.g., “try a different approach”) rather than a targeted intervention at a specific step. R4 (✓): Operates at inference time. REFLECT ’s correction–localization coupling (Table 4) di-rectly quantifies this gap: Reflexion’s ∆ between corrected and failed explanation quality is ≤ +0 .05 , while R EFLECT ’s is +0 .25 to +0 .29 , confirming that R EFLECT ’s corrections are coupled to understanding while Reflexion’s are not. 
+
+ICS (Samanta et al., 2026) 
+
+ICS structures reasoning into discrete thought steps, local-izes an error via self-inspection, backtracks to the localized step, and resamples from the bare prefix without any repair guidance. Its goal is correction via structured backtracking. 
+
+R1 (★): ICS does execute replay, but does not use the out-come to ground or refine the attribution; success or failure of the resample is not fed back to sharpen the localization. 
+
+R2 (✓): Resamples from a prefix of the original trace. R3 
+
+(✗): This is the critical gap. ICS resamples from a bare prefix without any repair plan, correction instruction, or constrained guidance. A success may reflect stochastic vari-ation rather than identification of the error. REFLECT ’s faithfulness ablation (Table 5) directly tests this: the no-hint 19 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+baseline achieves 35.6% accuracy vs. 78.7% for the correct hint, demonstrating that bare resampling is a weak test of error identification. R4 (✓): Operates at inference time. An additional structural difference is that ICS requires traces to be generated in its Thought MDP format from the start, whereas R EFLECT works post-hoc on any agent trace with-out requiring control over the generation process. RE-
+
+> FLECT
+
+’s targeted intervention (diagnosis → repair plan →
+
+constrained replay) and post-correction re-localization close the loop that ICS leaves open. 
+
+Trained Classifiers and Constraint Inspectors 
+
+AgenTracer (Zhang et al., 2025), TrajAD (Liu et al., 2026), and ThinkPRM (Khalifa et al., 2025; Choudhury, 2025; Xi et al., 2025) produce step-level predictions at inference time without executing any intervention, violating R1–R3. AgenTracer uses counterfactual replay during data curation but distills the signal into a fixed 8B model; TrajAD trains on synthetically perturbed trajectories; ThinkPRM scores steps via a learned reward model. All three are distribution-bound: their predictions reflect training patterns rather than test-time execution evidence (R4 violated for AgenTracer/TrajAD; satisfied for ThinkPRM via GPU inference). AgentRx (Barke et al., 2026) synthesizes constraints from tool schemas and produces structured validation logs (R4 sat-isfied), but never tests whether fixing a flagged step changes the outcome (R1–R3 violated). 
+
+DoVer (Ma et al., 2025) 
+
+DoVer segments a trace into trials at re-plan boundaries, then applies a four-stage pipeline: (1) trial segmentation, (2) fail-ure attribution via an LLM summarizer that hypothesizes a faulty step or agent per trial, (3) intervention generation that turns the hypothesis into a concrete edit, and (4) intervention execution with differential evaluation using task success and milestone progress. The architectural distinction from R EFLECT is in the infor-mation flow. DoVer’s localization (Stage 2) is produced by an LLM log summarizer, functionally equivalent to an all-at-once judge, that operates entirely on the log with-out execution-based evidence. The intervention in Stage 4 validates whether the hypothesized fix resolves the failure, classifying the outcome as Validated, Partially Validated, Refuted, or Inconclusive. Crucially, this classification is not fed back to revise the localized step: if an intervention fails, the hypothesis is labeled Refuted, but no re-localization oc-curs. The replay tests “does this fix help?” not “is this step the causal origin?” 
+
+R1 (★): DoVer executes interventions and observes out-comes, which constitutes partial execution grounding. How-ever, the outcome is used to validate the debugging hypoth-esis, not to refine step-level attribution. R2 (★): DoVer replays from the intervention point preserving the prefix, but does not use the corrected continuation as contrastive evidence to sharpen attribution. R3 (✓): Interventions are targeted and diagnosis-specific. R4 (✓): Operates at infer-ence time. DoVer explicitly argues that single-step attribution is of-ten ill-posed and shifts focus to outcome-oriented progress metrics, measuring whether the system makes quantifiable progress toward task success rather than evaluating local-ization accuracy. R EFLECT takes the opposite position: it demonstrates that precise step-level attribution is achiev-able when correction is used as contrastive evidence. Post-correction re-localization, the component that closes the loop from correction back to attribution, has no analogue in DoVer’s pipeline. The ablation in Table 7 ( +10 .6pp EM from re-localization alone) quantifies the value of this closed loop. In our empirical evaluation (Table 3), DoVer’s localization performance is comparable to the AAO baseline, consistent with its use of an equivalent LLM summarizer for failure attribution. TRAIL (Deshpande et al., 2025) is an evaluation framework (not a localization method) already discussed in §2. Our prompt-based baselines (AAO, SBS, BS) are described in Appendix B. 
+
+# Q. Dataset Licenses and Terms of Use 
+
+Our evaluation uses four benchmarks, each derived from publicly available resources: • WTQ traces. We run a tabular agent on a subset of WikiTableQuestions (Pasupat & Liang, 2015), which is released under the CC-BY-4.0 license. Our contribu-tion is the 137 failing agent traces and 119 step-level human annotations collected internally; these are in-cluded in the supplementary material and will be re-leased under CC-BY-4.0 upon acceptance. • GAIA and SWE-bench traces. We use subsets of the TRAIL benchmark (Deshpande et al., 2025), which provides multi-step agent traces with human step-level annotations over GAIA (Mialon et al., 2023) and SWE-bench (Jimenez et al., 2023) tasks. GAIA is released under CC-BY-4.0; SWE-bench is released under the MIT license. The TRAIL traces and annotations are used in accordance with their publicly released terms. • BBM. BigBenchMistake (Tyen et al., 2024) provides chain-of-thought traces with ground-truth mistake in-dices. BigBench is released under the Apache-2.0 license. 20 REFLECT: Intervention-Supported Error Attribution for Silent Failures 
+
+All benchmark data are used for research evaluation consis-tent with the original intended use. The err-loc library (pipeline code, baselines, evaluation scripts) included in the supplementary material will be released under the MIT license upon acceptance. 
+
+# R. Limitations 
+
+This work has several limitations. First, R EFLECT is evalu-ated on relatively structured silent-failure settings (table-QA, multi-hop reasoning, chain-of-thought, and software engi-neering traces); extending reliable intervention-based local-ization to more unstructured domains remains an open chal-lenge. Second, the primary evaluation regime relies on ora-cle access to the expected answer for verification; while the plan-anchored proxy verifier provides a deployment-time alternative, it is weaker than oracle-verified attribution and should not be treated as equivalent evidence. Third, replay-based attribution requires re-executing the agent, which may not be feasible in all environments (e.g., when tool calls have irreversible side effects or when the execution environ-ment is no longer available). Fourth, the method localizes a single earliest decisive error step; traces with multiple independent errors or distributed failure modes may require multi-point attribution beyond the current framework. 
+
+# S. Ethical Considerations 
+
+REFLECT is designed for post-hoc debugging and auditing of LLM agent traces, and we do not foresee direct negative societal impacts from this work. The method operates on completed traces and does not modify deployed agent be-havior in real time. All benchmarks used in this paper are publicly available or internally collected with appropriate oversight; no personal or sensitive data is involved. We note that automated error attribution could be misused to as-sign blame in high-stakes settings without adequate human oversight (Tabassi, 2023; European Union, 2024); we rec-ommend that R EFLECT ’s output be treated as a diagnostic aid rather than a definitive judgment, and that human review remain part of any deployment pipeline. The err-loc library (core pipeline, all baselines, evalu-ation metrics) and internally generated WTQ agent traces with human step-level error annotations are included in the supplementary material. 21
