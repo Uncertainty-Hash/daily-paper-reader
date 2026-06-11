@@ -1,0 +1,341 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-11T21:42:56.919711+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.07082v2",
+      "source": "arxiv",
+      "title": "On the Geometry of On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) is increasingly used to improve large language model reasoning, but its training dynamics remain poorly understood. We characterize the trajectory of OPD updates in parameter space and compare it with supervised fine-tuning (SFT) and reinforcement learning with verifiable rewards (RLVR). A suite of parameter-space diagnostics consistently places OPD in a relaxed off-principal regime: compared with SFT, its updates affect fewer weights and avoid principal directions more strongly, while compared with RLVR, they remain less tightly constrained. Beyond this static localization, OPD exhibits subspace locking: its cumulative updates rapidly enter a narrow low-dimensional channel. Constraining training to the update subspace formed early in training preserves OPD performance but substantially degrades SFT, indicating that the locked subspace is functionally sufficient for OPD. Control experiments further show that sparsifying the update tokens and shifting rollout generation off-policy preserve the rank dynamics, whereas mixing the OPD objective with RLVR changes them. Overall, these results suggest that OPD is not merely an intermediate point between SFT and RLVR, but induces its own update geometry in parameter space.",
+      "authors": [
+        "Zhennan Shen",
+        "Yanshu Li",
+        "Qingyu Yin",
+        "Chak Tou Leong",
+        "Zhilin Wang",
+        "Yanxu Chen",
+        "Rongduo Han",
+        "Sunbowen Lee",
+        "Yi R. Fung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-05T09:20:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.07082v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "direct theoretical analysis of on-policy distillation dynamics for LLM reasoning",
+      "llm_evidence_cn": "直接分析同策略蒸馏在LLM推理中的训练动力学",
+      "llm_evidence": "直接分析同策略蒸馏在LLM推理中的训练动力学",
+      "canonical_evidence": "直接分析同策略蒸馏在LLM推理中的训练动力学",
+      "llm_tldr_en": "Characterizes OPD update geometry in parameter space, shows subspace locking, and demonstrates that constraining to early subspace preserves performance.",
+      "llm_tldr_cn": "该论文从参数空间几何角度深入分析了同策略蒸馏（OPD）的训练动力学。与SFT和RLVR对比，发现OPD更新影响更少权重、避免主方向，并表现出子空间锁定现象：累积更新快速进入一个低维通道。实验表明将训练限制在早期形成的更新子空间可保持性能。这为理解OPD的行为机制和设计更高效的蒸馏方法提供了理论基础。",
+      "llm_tldr": "该论文从参数空间几何角度深入分析了同策略蒸馏（OPD）的训练动力学。与SFT和RLVR对比，发现OPD更新影响更少权重、避免主方向，并表现出子空间锁定现象：累积更新快速进入一个低维通道。实验表明将训练限制在早期形成的更新子空间可保持性能。这为理解OPD的行为机制和设计更高效的蒸馏方法提供了理论基础。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.10968v2",
+      "source": "arxiv",
+      "title": "Beyond Uniform Token-Level Trust Region in LLM Reinforcement Learning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has become standard for improving LLM reasoning. However, existing PPO-style trust-region mechanisms remain position-agnostic by enforcing uniform thresholds across all tokens independently. This pointwise treatment conflicts with autoregressive generation in two critical ways. First, uniform thresholds ignore autoregressive asymmetry. Early-stage deviations produce compounding sequence-level drift, causing static thresholds to under-regulate early divergence and excessively constrain late-stage exploration. Second, evaluating token-level divergence in isolation overlooks cumulative prefix drift, granting the same divergence allowance regardless of how far the conditioning history has already deviated from the rollout policy. To address this limitation, we propose CPPO (Cumulative Prefix-divergence Policy Optimization), a token-level masking rule that aligns updates with a finite-horizon policy-improvement bound via two coupled mechanisms. First, a position-weighted threshold imposes stricter limits at early positions whose effects persist longer, relaxing constraints for late-stage tokens. Second, a cumulative prefix budget tracks historical deviations, dynamically restricting further token-level deviation to prevent compounding errors along the prefix. Empirically, CPPO enhances training stability and significantly improves reasoning accuracy across various model scales.",
+      "authors": [
+        "Renjie Mao",
+        "Xiangxin Zhou",
+        "Lvfang Tao",
+        "Yixin Ding",
+        "Yu Shi",
+        "Yongguang Lin",
+        "Yuheng Wu",
+        "Honglin Zhu",
+        "Qian Qiu",
+        "Wenxi Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T15:09:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.10968v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "improving RLVR with position-aware token-level trust region",
+      "llm_evidence_cn": "通过位置感知的令牌级信任区域改进基于可验证奖励的强化学习",
+      "llm_evidence": "通过位置感知的令牌级信任区域改进基于可验证奖励的强化学习",
+      "canonical_evidence": "通过位置感知的令牌级信任区域改进基于可验证奖励的强化学习",
+      "llm_tldr_en": "Identifies uniform token-level trust region issues in RLVR and proposes position-aware trust region to improve LLM reasoning.",
+      "llm_tldr_cn": "该论文发现现有基于可验证奖励的强化学习（RLVR）中，统一令牌级信任区域忽略了自回归生成的不对称性和累积前缀漂移。提出位置感知信任区域机制，根据令牌位置和前缀偏离程度动态调整约束，从而更有效地优化LLM推理。实验表明该方法提升了推理性能和训练稳定性。",
+      "llm_tldr": "该论文发现现有基于可验证奖励的强化学习（RLVR）中，统一令牌级信任区域忽略了自回归生成的不对称性和累积前缀漂移。提出位置感知信任区域机制，根据令牌位置和前缀偏离程度动态调整约束，从而更有效地优化LLM推理。实验表明该方法提升了推理性能和训练稳定性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11559v1",
+      "source": "arxiv",
+      "title": "HERO: Hindsight-Enhanced Reflection from Environment Observations for Agentic Self-Distillation",
+      "abstract": "Reinforcement learning typically improves multi-turn agent capabilities through the terminal outcome of the trajectories, which makes it difficult to determine credit assignments for each intermediate turns. Recent on-policy self-distillation methods offer a promising alternative by converting privileged feedback into dense token-level supervision through a self-teacher. Our study is motivated by the unexpected performance degradation observed when naively extending this paradigm to multi-turn settings, which we attribute to a lack of alignment between privileged feedback, such as successful trajectories or terminal outcomes, and the student's current decision context. We introduce HERO, a hindsight-enhanced self-distillation framework that uses next environment observations as locally aligned feedback. After each rollout, HERO reflects on the completed interaction to convert each observation into a compact turn-level diagnosis, that captures actionable feedback about the original action such as its necessity, validity or failure cause. On TauBench and WebShop, HERO improves task success and reduces unnecessary turns over environment-feedback-only self-distillation and GRPO. It is especially effective under limited training turn budgets, where successful rollouts are rare and GRPO provides weak reward-contrast signals.",
+      "authors": [
+        "Haoran Liu",
+        "Yuwei Zhang",
+        "Xiyao Li",
+        "Bohan Lyu",
+        "Jingbo Shang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-10T01:35:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.11559v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "On-policy self-distillation with hindsight reflection for multi-turn agent tasks",
+      "llm_evidence_cn": "基于事后反思的同策略自蒸馏方法用于多轮智能体任务",
+      "llm_evidence": "基于事后反思的同策略自蒸馏方法用于多轮智能体任务",
+      "canonical_evidence": "基于事后反思的同策略自蒸馏方法用于多轮智能体任务",
+      "llm_tldr_en": "Proposes HERO, a hindsight-enhanced self-distillation framework that aligns privileged feedback with student context for multi-turn agentic tasks.",
+      "llm_tldr_cn": "该论文发现将同策略自蒸馏直接扩展到多轮设置会导致性能退化，原因是特权反馈（如成功轨迹）与学生当前决策上下文不匹配。引入HERO框架，通过事后反思将环境观测融入自我教师，生成与学生上下文对齐的密集监督信号。在交互式任务上，HERO显著提升了多轮推理能力。",
+      "llm_tldr": "该论文发现将同策略自蒸馏直接扩展到多轮设置会导致性能退化，原因是特权反馈（如成功轨迹）与学生当前决策上下文不匹配。引入HERO框架，通过事后反思将环境观测融入自我教师，生成与学生上下文对齐的密集监督信号。在交互式任务上，HERO显著提升了多轮推理能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11709v1",
+      "source": "arxiv",
+      "title": "RLCSD: Reinforcement Learning with Contrastive On-Policy Self-Distillation",
+      "abstract": "On-policy self-distillation (OPSD) provides dense, token-level supervision for reasoning models by aligning a model's own distribution with the distribution it produces under privileged context, typically a verified solution. However, we show that the learning signal drawn from this distributional gap concentrates on style tokens rather than task-bearing ones, as the hinted model tends to produce more direct, shorter outputs. We term this pathology \\emph{privilege-induced style drift}, which destabilizes training or causes response length to shrink. To address this, we propose \\textbf{RLCSD} (Reinforcement Learning with Contrastive on-policy Self-Distillation), which mitigates this drift by contrasting the teacher-student gap under a correct hint against that under a wrong hint, suppressing the style shift that conditioning on a hint tends to induce regardless of correctness, and yielding a signal that is more concentrated on task-bearing tokens. Experiments on Qwen3 (1.7B/4B/8B) and Olmo-3-7B-Think across mathematical and logical reasoning show that RLCSD consistently outperforms GRPO and prior OPSD methods. We further show that the contrastive principle is general: it plugs into existing OPSD methods to improve them, and its underlying insight extends to the broader cross-model on-policy distillation setting.",
+      "authors": [
+        "Leyi Pan",
+        "Shuchang Tao",
+        "Yunpeng Zhai",
+        "Lingzhe Zhang",
+        "Zhaoyang Liu",
+        "Bolin Ding",
+        "Aiwei Liu",
+        "Lijie Wen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-10T06:31:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.11709v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes contrastive on-policy self-distillation for reasoning models",
+      "llm_evidence_cn": "提出对比同策略自蒸馏方法以改进推理模型",
+      "llm_evidence": "提出对比同策略自蒸馏方法以改进推理模型",
+      "canonical_evidence": "提出对比同策略自蒸馏方法以改进推理模型",
+      "llm_tldr_en": "Identifies privilege-induced style drift in on-policy self-distillation and proposes RLCSD using contrastive learning to mitigate it, improving reasoning.",
+      "llm_tldr_cn": "同策略自蒸馏（OPSD）为推理模型提供密集的token级监督，但存在特权诱导的风格漂移问题，即学习信号集中在风格token而非任务token上。本文提出RLCSD，通过对比教师-学生在正确提示下的分布差异来减轻风格漂移，稳定训练并提升推理能力。",
+      "llm_tldr": "同策略自蒸馏（OPSD）为推理模型提供密集的token级监督，但存在特权诱导的风格漂移问题，即学习信号集中在风格token而非任务token上。本文提出RLCSD，通过对比教师-学生在正确提示下的分布差异来减轻风格漂移，稳定训练并提升推理能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.07190v1",
+      "source": "arxiv",
+      "title": "From Correctness to Utility: Gain-Based Prefix Evaluation for LLM Reasoning",
+      "abstract": "Reasoning prefixes shape the future trajectory of LLM problem solving, yet existing process reward models usually evaluate them through local step correctness. We argue that correctness is a useful but indirect proxy for the effect we ultimately care about: whether a prefix increases the probability of successful completion. We define this effect as prefix gain, the solve-rate improvement induced by conditioning lightweight student model group on a prefix, and use it to train a Prefix Utility Model (PUM) with a simple pairwise ranking objective. PUM learns outcome-grounded prefix utility and can score both complete trajectories and partial reasoning prefixes. Across Best-of-$N$ selection, beam search, and reinforcement learning on mathematical reasoning, PUM provides a strong prefix-level supervision signal, especially when candidate pools are large, search budgets increase, or rule-based rewards are sparse. We release all data, models, and code at https://zhiqix.github.io/pum-project-page.",
+      "authors": [
+        "Yuhang Zhou",
+        "Yixin Cao",
+        "Guangnan Ye"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-05T11:56:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.07190v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Prefix utility model for process supervision using student model group",
+      "llm_evidence_cn": "使用学生模型组评估前缀效用进行过程监督",
+      "llm_evidence": "使用学生模型组评估前缀效用进行过程监督",
+      "canonical_evidence": "使用学生模型组评估前缀效用进行过程监督",
+      "llm_tldr_en": "Proposes Prefix Utility Model (PUM) that evaluates reasoning prefixes based on their contribution to successful completion, enabling better process supervision.",
+      "llm_tldr_cn": "该论文指出现有过程奖励模型仅依赖局部正确性，忽略了前缀对后续成功的实际贡献。提出前缀效用模型（PUM），通过轻量级学生模型组计算前缀带来的求解率提升，训练一个可评分轨迹和部分前缀的效用模型。在Best-of-N、束搜索和RL上均提升了推理性能。",
+      "llm_tldr": "该论文指出现有过程奖励模型仅依赖局部正确性，忽略了前缀对后续成功的实际贡献。提出前缀效用模型（PUM），通过轻量级学生模型组计算前缀带来的求解率提升，训练一个可评分轨迹和部分前缀的效用模型。在Best-of-N、束搜索和RL上均提升了推理性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08032v1",
+      "source": "arxiv",
+      "title": "Variational Proximal Policy Optimization",
+      "abstract": "Reinforcement Learning from Human Feedback via Proximal Policy Optimization often suffers from policy mode collapse, brittle exploration loops, and distribution drift. This paper introduces Variational Proximal Policy Optimization (\\(\\textsc{VP}_2\\textsc{O}\\)), a particle-based variational inference framework that maps policy optimization to Stein Variational Gradient Descent within a Mixture-of-Experts architecture. By leveraging functional kernels over localized expert prototypes alongside an expert orthogonalization loss, \\(\\textsc{VP}_2\\textsc{O}\\) introduces a geometry-based proximal-control mechanism that can reduce reliance on fixed clipping or KL schedules. Our results on a 33B/4B sparse Mixture-of-Experts model show several improvements across complex reasoning benchmarks, establishing a \\(+\\mathbf{179}\\) ELO gain on Codeforces and a \\(\\mathbf{32\\%}\\) reduction in token count on AIME mathematical reasoning tasks.",
+      "authors": [
+        "Ousmane Amadou Dia"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-06T07:50:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.08032v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Variational PPO for LLM reasoning improvement on MoE",
+      "llm_evidence_cn": "针对大语言模型推理的变分PPO方法",
+      "llm_evidence": "针对大语言模型推理的变分PPO方法",
+      "canonical_evidence": "针对大语言模型推理的变分PPO方法",
+      "llm_tldr_en": "Proposes Variational PPO (VP2O) using Stein variational gradient descent and MoE to improve reasoning stability and performance.",
+      "llm_tldr_cn": "该论文针对PPO在RLHF中的模式坍缩和探索问题，提出了变分近端策略优化（VP2O）框架，将策略优化映射到Stein变分梯度下降中，并利用混合专家架构和专家正交化损失提供几何近端控制。在33B/4B稀疏MoE模型上，VP2O在复杂推理基准上取得了改进。",
+      "llm_tldr": "该论文针对PPO在RLHF中的模式坍缩和探索问题，提出了变分近端策略优化（VP2O）框架，将策略优化映射到Stein变分梯度下降中，并利用混合专家架构和专家正交化损失提供几何近端控制。在33B/4B稀疏MoE模型上，VP2O在复杂推理基准上取得了改进。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08501v1",
+      "source": "arxiv",
+      "title": "Back on Track: Aligning Rewards and States for Reasoning in Diffusion Large Language Models",
+      "abstract": "Reinforcement learning (RL) holds immense promise for enhancing the reasoning capabilities of diffusion large language models (dLLMs). However, progress is fundamentally constrained by a dual misalignment between authentic generation trajectory and the gradient update process: (i) Process-reward misalignment. Sparse, terminal rewards are indiscriminately assigned to all intermediate steps of the generation process, failing to provide discriminative credit assignment. (ii) State-trajectory misalignment. Policy updates are often diverted toward artificial, out-of-trajectory states, squandering gradients on less informative samples. To address these limitations, we introduce Process Aligned Policy Optimization (PAPO), a novel framework that holistically aligns the RL update with the dLLM's generative trajectory via Step-Aware Process Rewards (SPR) that transform sparse terminal rewards into dense, step-wise credit, and Entropy-Guided Historical Re-enactment (EHR) that replays authentic trajectories at high-uncertainty steps. Extensive experiments on four benchmarks demonstrate that PAPO significantly outperforms baselines, achieving gains of up to 4.5% on GSM8K, 4.8% on MATH500, 42.2% on Countdown and 16.1% on Sudoku.",
+      "authors": [
+        "Yawen Shao",
+        "Jie Xiao",
+        "Kai Zhu",
+        "Yu Liu",
+        "Hongchen Luo",
+        "Xueyang Fu",
+        "Yang Cao",
+        "Wei Zhai",
+        "Zheng-Jun Zha"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-07T07:59:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.08501v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "process-aligned policy optimization for reasoning in diffusion LLMs",
+      "llm_evidence_cn": "针对扩散大语言模型推理的过程对齐策略优化",
+      "llm_evidence": "针对扩散大语言模型推理的过程对齐策略优化",
+      "canonical_evidence": "针对扩散大语言模型推理的过程对齐策略优化",
+      "llm_tldr_en": "Proposes PAPO to align process rewards and states in RL for diffusion LLMs, improving reasoning credit assignment.",
+      "llm_tldr_cn": "该论文指出扩散大语言模型在强化学习中面临过程奖励与状态轨迹双重不对齐问题。为此提出过程对齐策略优化（PAPO），通过为中间步骤提供判别性信用分配，并避免向非轨迹状态更新，从而提升推理能力。在推理任务上验证了方法的有效性。",
+      "llm_tldr": "该论文指出扩散大语言模型在强化学习中面临过程奖励与状态轨迹双重不对齐问题。为此提出过程对齐策略优化（PAPO），通过为中间步骤提供判别性信用分配，并避免向非轨迹状态更新，从而提升推理能力。在推理任务上验证了方法的有效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.10346v1",
+      "source": "arxiv",
+      "title": "Reasoning or Memorization? Direction-Aware Diversity Exploration in LLM Reinforcement Learning",
+      "abstract": "Reinforcement learning has become a key paradigm for eliciting reasoning abilities in large language models, where exploration is crucial for discovering effective solution trajectories. Existing exploration methods typically encourage diversity in semantic or gradient spaces, without distinguishing what drives this diversity. A trajectory may appear novel because it follows a new reasoning process, or because it varies memorized patterns and shortcuts. Rewarding both cases equally may steer exploration toward memorization rather than genuine reasoning improvement. In this paper, we propose DiRL, a Direction-Aware Reinforcement Learning framework that anchors exploration to an internal reasoning-memorization direction of the policy. Specifically, DiRL extracts this direction from model representations, constructs direction-weighted gradient features to characterize rollout updates, and shapes rewards to amplify reasoning-aligned exploration while suppressing memorization-aligned variations. DiRL integrates seamlessly into standard Group Relative Policy Optimization (GRPO). Extensive experiments on mathematical and general reasoning benchmarks demonstrate the effectiveness of DiRL, showing significant improvements over various existing exploration methods.",
+      "authors": [
+        "Jiangnan Xia",
+        "Yucheng Shi",
+        "Yu Yang",
+        "Kishan Panaganti",
+        "Zhenwen Liang",
+        "Ninghao Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-09T02:55:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.10346v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "direction-aware diversity exploration in LLM RL for reasoning",
+      "llm_evidence_cn": "大语言模型强化学习中面向推理的方向感知多样性探索方法",
+      "llm_evidence": "大语言模型强化学习中面向推理的方向感知多样性探索方法",
+      "canonical_evidence": "大语言模型强化学习中面向推理的方向感知多样性探索方法",
+      "llm_tldr_en": "Proposes DiRL to distinguish reasoning-driven vs memorization-driven diversity in LLM RL exploration, improving genuine reasoning.",
+      "llm_tldr_cn": "该论文指出大语言模型强化学习的探索多样性可能源于记忆而非真实推理。提出方向感知强化学习框架DiRL，通过内部推理-记忆方向锚定探索，鼓励产生新推理过程而非记忆变体。实验表明该方法能有效提升LLM的推理能力，抑制单纯记忆带来的虚假多样性。",
+      "llm_tldr": "该论文指出大语言模型强化学习的探索多样性可能源于记忆而非真实推理。提出方向感知强化学习框架DiRL，通过内部推理-记忆方向锚定探索，鼓励产生新推理过程而非记忆变体。实验表明该方法能有效提升LLM的推理能力，抑制单纯记忆带来的虚假多样性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
