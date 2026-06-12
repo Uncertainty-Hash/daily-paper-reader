@@ -1,0 +1,339 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-12T21:58:28.664505+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.05606v1",
+      "source": "arxiv",
+      "title": "Cross-Epoch Adaptive Rollout Optimization for RL Post-Training",
+      "abstract": "LLM post-training often relies on reinforcement learning methods that sample multiple rollouts per prompt, yet most existing approaches use a fixed rollout budget for every prompt, despite large differences in the training signal different prompts provide. In this paper, we study adaptive rollout allocation under a fixed global budget and formulate the problem as online resource allocation with prompt-level diminishing returns. Our method, CERO, maintains a Beta posterior over each prompt's success probability and uses the posterior expected Bernoulli variance as a Bayesian estimate of the value of additional rollouts. We use this estimate to construct a concave, saturating utility over cumulative allocations, yielding an objective in which decisions across prompts and epochs are coupled by the global budget. Since the resulting objective is temporally nonseparable, we derive a Fenchel-dual reformulation and update both prompt-level and budget-level dual variables via projected online gradient descent. Under fixed prompt utilities, we prove an $O(\\sqrt{K})$ regret bound against the offline allocation benchmark. Experiments on mathematical-reasoning problems show that CERO consistently outperforms GRPO across multiple open-weight LLMs and benchmarks, demonstrating that adaptive rollout budgeting can improve sample efficiency.",
+      "authors": [
+        "Yiming Zong",
+        "Yige Wang",
+        "Jiashuo Jiang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "math.OC"
+      ],
+      "published": "2026-06-04T02:27:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.05606v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes adaptive rollout allocation for RL post-training, applicable to GRPO-style methods",
+      "llm_evidence_cn": "提出强化学习后训练中的自适应rollout分配策略，适用于GRPO风格方法",
+      "llm_evidence": "提出强化学习后训练中的自适应rollout分配策略，适用于GRPO风格方法",
+      "canonical_evidence": "提出强化学习后训练中的自适应rollout分配策略，适用于GRPO风格方法",
+      "llm_tldr_en": "Formulates adaptive rollout allocation as online resource allocation with diminishing returns, using Bayesian posterior to estimate value of additional rollouts.",
+      "llm_tldr_cn": "该论文针对LLM后训练中固定rollout预算的低效问题，提出CERO（跨时代自适应展开优化）方法。将自适应分配建模为在线资源分配问题，通过Beta后验估计每个提示的成功概率，利用后验期望伯努利方差作为额外rollout价值的贝叶斯指标，进而构建凹递减效用函数，实现跨提示的预算优化分配。实验表明CERO在固定预算下显著提升训练性能。",
+      "llm_tldr": "该论文针对LLM后训练中固定rollout预算的低效问题，提出CERO（跨时代自适应展开优化）方法。将自适应分配建模为在线资源分配问题，通过Beta后验估计每个提示的成功概率，利用后验期望伯努利方差作为额外rollout价值的贝叶斯指标，进而构建凹递减效用函数，实现跨提示的预算优化分配。实验表明CERO在固定预算下显著提升训练性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.05859v1",
+      "source": "arxiv",
+      "title": "TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization",
+      "abstract": "Latent reasoning has emerged as a promising alternative to discrete Chain-of-Thought (CoT) in large language models (LLMs), enabling more expressive reasoning by operating over continuous representations. However, the inherently deterministic nature of continuous representations limits policy exploration in reinforcement learning (RL). To address this, we propose TARPO (Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization), a pure RL framework that adaptively switches between discrete token generation and continuous latent reasoning at each step. TARPO introduces a lightweight action head router that observes the current hidden state and samples a routing decision from a binary mode-selection space, preserving the stochasticity of discrete token sampling from the vocabulary. The LLM backbone and router are jointly optimized end-to-end with a shared group-relative advantage signal. Extensive experiments across Qwen2.5 (from 1.5B to 7B) and Llama-3.1-8B backbones demonstrate that TARPO consistently outperforms existing explicit and latent reasoning RL baselines across diverse benchmarks. Further analysis shows that TARPO learns adaptive token-wise switching behaviors while maintaining stable training dynamics. Our code is available at https://github.com/NKU-LITI/TARPO-master.",
+      "authors": [
+        "Liting Zhang",
+        "Shiwan Zhao",
+        "Xuyang Zhao",
+        "Zichen Xu",
+        "Jianye Wang",
+        "Qicheng Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-04T08:30:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.05859v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL framework switching between discrete and latent reasoning for LLMs",
+      "llm_evidence_cn": "在LLM推理中通过RL自适应切换离散和潜在推理",
+      "llm_evidence": "在LLM推理中通过RL自适应切换离散和潜在推理",
+      "canonical_evidence": "在LLM推理中通过RL自适应切换离散和潜在推理",
+      "llm_tldr_en": "Proposes TARPO, a pure RL framework that adaptively switches between discrete token generation and continuous latent reasoning via a routing policy, improving exploration.",
+      "llm_tldr_cn": "潜在推理虽能连续表示但确定性限制了策略探索。TARPO引入轻量级动作路由头，每步从二进制模式空间中采样决定使用离散生成还是连续潜在推理，保持随机性以促进探索。在多个推理基准上，TARPO提升了推理准确性和探索效率，展示了RL在统一显式与隐式推理方面的潜力。",
+      "llm_tldr": "潜在推理虽能连续表示但确定性限制了策略探索。TARPO引入轻量级动作路由头，每步从二进制模式空间中采样决定使用离散生成还是连续潜在推理，保持随机性以促进探索。在多个推理基准上，TARPO提升了推理准确性和探索效率，展示了RL在统一显式与隐式推理方面的潜力。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.05806v1",
+      "source": "arxiv",
+      "title": "When Tools Fail: Benchmarking Dynamic Replanning and Anomaly Recovery in LLM Agents",
+      "abstract": "Existing benchmarks evaluate Tool-Integrated Reasoning (TIR) in LLMs on idealized ''happy paths'', largely overlooking real-world tool failures. We introduce ToolMaze, a benchmark for dynamic path discovery and error recovery in TIR agents. To separate systematic replanning from blind trial-and-error, ToolMaze adopts a two-dimensional design: DAG-based topological complexity and a $2 \\times 2$ taxonomy of tool perturbations (explicit/implicit, transient/permanent). Evaluations show that perturbations degrade performance across nearly all models, with the sharpest drops under implicit semantic failures. Driven by systemic over-trust in corrupted outputs, Perturbation Recovery Rate (PRR) plummets by around 37\\% in these scenarios, while complex topologies trap agents in futile trial-and-error loops. Crucially, agentic fault-tolerance improves with model scale $3.66\\times$ slower than basic task execution, highlighting dynamic replanning as a distinct bottleneck unaddressed by model scaling or prompting. Data and code are available at https://github.com/Zhudongsheng75/ToolMaze.",
+      "authors": [
+        "Dongsheng Zhu",
+        "Xuchen Ma",
+        "Yucheng Shen",
+        "Xiang Li",
+        "Yukun Zhao",
+        "Shuaiqiang Wang",
+        "Lingyong Yan",
+        "Dawei Yin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-04T07:38:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.05806v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "involves error recovery and failure rollouts in LLM agents, relevant to process supervision",
+      "llm_evidence_cn": "涉及LLM智能体中的错误恢复和失败轨迹，与过程监督相关",
+      "llm_evidence": "涉及LLM智能体中的错误恢复和失败轨迹，与过程监督相关",
+      "canonical_evidence": "涉及LLM智能体中的错误恢复和失败轨迹，与过程监督相关",
+      "llm_tldr_en": "Introduces ToolMaze benchmark for dynamic replanning and error recovery in tool-integrated reasoning, focusing on failure rollouts and anomaly recovery.",
+      "llm_tldr_cn": "本文提出ToolMaze基准，评估LLM智能体在工具故障时的动态重规划与错误恢复能力，重点关注失败轨迹（failure rollouts）和异常恢复。实验发现模型在隐式语义故障下恢复率下降约37%，揭示了当前系统对错误输出的过度信任。",
+      "llm_tldr": "本文提出ToolMaze基准，评估LLM智能体在工具故障时的动态重规划与错误恢复能力，重点关注失败轨迹（failure rollouts）和异常恢复。实验发现模型在隐式语义故障下恢复率下降约37%，揭示了当前系统对错误输出的过度信任。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08779v2",
+      "source": "arxiv",
+      "title": "Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy",
+      "abstract": "Reinforcement Learning (RL) has emerged as a pivotal post-training paradigm, yet it frequently suffers from unpredictable sub-optimum performance or even training collapses. Recent findings attribute these failures to a hidden train-inference discrepancy (or mismatch), stemming from the disparate underlying engines and architecture. We find that the training policy can actively self-correct such a discrepancy when provided with an appropriate learning signal. Then, we further empirically identify a discrepancy tolerance region: within this region, aggressively narrowing the discrepancy can suppress policy exploration and reduce learning efficiency, whereas outside this region, reducing excessive discrepancy improves optimization consistency and raises the achievable local performance ceiling. According to such findings, we formulate this problem as a Discrepancy-Constrained Markov Decision Process (DCMDP), where reward maximization is coupled with a constraint that aligns training-Inference behavior, achieving stable dual-objective optimization. To adaptively balance performance improvement and discrepancy control, we introduce a Lagrangian relaxation mechanism that dynamically adjusts the relative weight of the two objectives according to the current degree of discrepancy violation. This enables stable dual-objective optimization: the policy is allowed to explore freely within the tolerance region, while being guided back when the discrepancy exceeds the safe boundary. Empirically, DCMDP significantly improves the performance of 8B dense model (Qwen-3-8b) and 30B Mixture-of-Expert model (Qwen-3-30bA3b), and enables a heterogeneous training paradigm, where LLMs can be optimized in high-fidelity training setup while being explicitly aligned for low-cost, resource-constrained inference deployment.",
+      "authors": [
+        "Jiashun Liu",
+        "Runze Liu",
+        "Xu Wan",
+        "Jing Liang",
+        "Hongyao Tang",
+        "Ling Pan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-07T18:49:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.08779v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL for LLMs, addresses train-inference discrepancy and self-correction",
+      "llm_evidence_cn": "大语言模型强化学习，解决训练-推理差异与自我纠正",
+      "llm_evidence": "大语言模型强化学习，解决训练-推理差异与自我纠正",
+      "canonical_evidence": "大语言模型强化学习，解决训练-推理差异与自我纠正",
+      "llm_tldr_en": "Reformulates LLM RL by identifying a train-inference discrepancy and introducing self-correction, with a tolerance region for efficient optimization.",
+      "llm_tldr_cn": "针对大语言模型强化学习中隐藏的训练-推理差异问题，提出通过合适的学习信号让策略自我纠正。发现差异容忍区域：区域内收紧差异会抑制探索，区域外则优化更优。该方法提升了RL训练的稳定性和效率，适用于多种RL范式。",
+      "llm_tldr": "针对大语言模型强化学习中隐藏的训练-推理差异问题，提出通过合适的学习信号让策略自我纠正。发现差异容忍区域：区域内收紧差异会抑制探索，区域外则优化更优。该方法提升了RL训练的稳定性和效率，适用于多种RL范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.06080v1",
+      "source": "arxiv",
+      "title": "On Advantage Estimates for Max@K Policy Gradients",
+      "abstract": "Reinforcement learning with verifiable rewards is widely used for post-training reasoning models, but sparse outcome rewards make exploration difficult. A complementary approach is to optimize inference-time objectives such as pass@K and max@K directly, yet existing policy-gradient estimators for these objectives use different signals, baselines, and normalizations, making their relationships unclear. We study this issue through baseline design and advantage centering. Starting from the advantage estimator of a leading method in the field, we show that it is policy-gradient unbiased but yields a non-centered advantage. We then introduce a Leave-Two-Out baseline that preserves policy-gradient unbiasedness while making realized batch advantages exactly centered. The resulting method, MaxPO, has an efficient quadratic-time implementation and integrates naturally into group-based RL for LLM post-training. We further derive the canonical finite-batch advantage for max@K, providing a unified view of existing advantage estimators. Empirically, we verify that the L2O baseline reduces gradient variance and outperforms non-centered alternatives.",
+      "authors": [
+        "Shota Takashiro",
+        "Soichiro Nishimori",
+        "Paavo Parmas",
+        "Yongmin Kim",
+        "Kohsei Matsutani",
+        "Gouki Minegishi",
+        "Yusuke Iwasawa",
+        "Takeshi Kojima",
+        "Yutaka Matsuo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-04T12:16:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.06080v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "studies advantage estimates for policy gradients in RLVR, improving reasoning model training",
+      "llm_evidence_cn": "研究RLVR中策略梯度的优势估计，改进推理模型训练",
+      "llm_evidence": "研究RLVR中策略梯度的优势估计，改进推理模型训练",
+      "canonical_evidence": "研究RLVR中策略梯度的优势估计，改进推理模型训练",
+      "llm_tldr_en": "Analyzes advantage estimators for Max@K policy gradients in RLVR, proposing a Leave-Two-Out baseline that yields centered advantages for stable training.",
+      "llm_tldr_cn": "RLVR中稀疏结果奖励使探索困难，现有Max@K策略梯度估计器基线不统一。本文系统分析优势估计，发现领先方法虽无偏但非中心化，提出留二基线实现批次优势完全中心化，提升训练稳定性和性能。",
+      "llm_tldr": "RLVR中稀疏结果奖励使探索困难，现有Max@K策略梯度估计器基线不统一。本文系统分析优势估计，发现领先方法虽无偏但非中心化，提出留二基线实现批次优势完全中心化，提升训练稳定性和性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08032v1",
+      "source": "arxiv",
+      "title": "Variational Proximal Policy Optimization",
+      "abstract": "Reinforcement Learning from Human Feedback via Proximal Policy Optimization often suffers from policy mode collapse, brittle exploration loops, and distribution drift. This paper introduces Variational Proximal Policy Optimization (\\(\\textsc{VP}_2\\textsc{O}\\)), a particle-based variational inference framework that maps policy optimization to Stein Variational Gradient Descent within a Mixture-of-Experts architecture. By leveraging functional kernels over localized expert prototypes alongside an expert orthogonalization loss, \\(\\textsc{VP}_2\\textsc{O}\\) introduces a geometry-based proximal-control mechanism that can reduce reliance on fixed clipping or KL schedules. Our results on a 33B/4B sparse Mixture-of-Experts model show several improvements across complex reasoning benchmarks, establishing a \\(+\\mathbf{179}\\) ELO gain on Codeforces and a \\(\\mathbf{32\\%}\\) reduction in token count on AIME mathematical reasoning tasks.",
+      "authors": [
+        "Ousmane Amadou Dia"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-06T07:50:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.08032v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Variational PPO for RLHF improving reasoning in LLMs",
+      "llm_evidence_cn": "变分PPO方法改进RLHF，提升大模型推理性能",
+      "llm_evidence": "变分PPO方法改进RLHF，提升大模型推理性能",
+      "canonical_evidence": "变分PPO方法改进RLHF，提升大模型推理性能",
+      "llm_tldr_en": "Introduces VP2O, a variational inference framework for PPO that uses particle-based Stein Variational Gradient Descent to mitigate mode collapse and improve reasoning in MoE LLMs.",
+      "llm_tldr_cn": "基于近端策略优化的RLHF常出现策略模式崩溃和分布漂移。VP2O将策略优化映射为Stein变分梯度下降，在混合专家架构中利用功能核和专家正交化损失实现几何近端控制。在33B/4B稀疏MoE模型上，多个推理基准显著改进，减少了对固定裁剪或KL调度的依赖。该方法为强化学习训练LLM推理提供了更稳定的优化框架。",
+      "llm_tldr": "基于近端策略优化的RLHF常出现策略模式崩溃和分布漂移。VP2O将策略优化映射为Stein变分梯度下降，在混合专家架构中利用功能核和专家正交化损失实现几何近端控制。在33B/4B稀疏MoE模型上，多个推理基准显著改进，减少了对固定裁剪或KL调度的依赖。该方法为强化学习训练LLM推理提供了更稳定的优化框架。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.11770v1",
+      "source": "arxiv",
+      "title": "SVoT: State-aware Visualization-of-Thought for Spatial Reasoning via Reinforcement Learning",
+      "abstract": "Spatial reasoning remains a challenge for Multimodal Large Language Models (MLLMs), as it requires reliable multi-hop inference over both intermediate states and state transitions. Current studies often leave intermediate states unverified and treat state transitions as implicit processes, which limits reliability in multi-hop spatial reasoning. To address this, we propose State-aware Visualization-of-Thought (SVoT), a reinforcement learning framework that generates interleaved, verifiable intermediate states and visualizations. SVoT integrates transition reasoning chains into the generation processes, enabling the model to verify action preconditions and effects through interleaved textual and visual reasoning. We train SVoT via Group Relative Policy Optimization (GRPO), instantiating verification through reward design and evaluating the efficacy of different fine-grained rewards. As existing benchmarks reduce state transitions to single-variable updates, substantially simplifying the problems, we establish five domains by extending classical environments and introducing two novel domains, Pacman and Gather, that require multi-object interactions and numerical reasoning. These domains support systematic evaluation of multi-hop spatial reasoning with quantitative verification of generated intermediate states and transition reasoning. SVoT with transition-aware supervision achieves state-of-the-art performance across the introduced domains, yielding up to a 65% absolute accuracy gain on out-of-distribution test sets.",
+      "authors": [
+        "Chao Lei",
+        "Yanbei Jiang",
+        "Markus Hiller",
+        "Zhijian Zhou",
+        "Xunye Tian",
+        "Krista A. Ehinger",
+        "Nir Lipovetzky"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-10T07:54:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.11770v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses reinforcement learning (likely GRPO) to train visual reasoning in MLLMs, state-aware visualization-of-thought",
+      "llm_evidence_cn": "使用强化学习（可能为GRPO）训练多模态大模型的空间推理，状态感知的可视化思维",
+      "llm_evidence": "使用强化学习（可能为GRPO）训练多模态大模型的空间推理，状态感知的可视化思维",
+      "canonical_evidence": "使用强化学习（可能为GRPO）训练多模态大模型的空间推理，状态感知的可视化思维",
+      "llm_tldr_en": "SVoT trains MLLMs for spatial reasoning via reinforcement learning (GRPO-style) with interleaved verifiable intermediate states and visualizations.",
+      "llm_tldr_cn": "多模态大模型在多跳空间推理中中间状态未验证。SVoT提出状态感知可视化思维框架，通过强化学习（类GRPO）生成可验证的中间状态和可视化，使模型能校验动作前提和效果，显著提升空间推理的可靠性。",
+      "llm_tldr": "多模态大模型在多跳空间推理中中间状态未验证。SVoT提出状态感知可视化思维框架，通过强化学习（类GRPO）生成可验证的中间状态和可视化，使模型能校验动作前提和效果，显著提升空间推理的可靠性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.11918v1",
+      "source": "arxiv",
+      "title": "The Art of Interrogation: Consistency Amplifies Factuality in Spatial Reasoning",
+      "abstract": "Current Large Reasoning Models (LRMs) exhibit remarkable general capabilities but significantly underperform in spatial reasoning tasks. Existing approaches treat this gap as a knowledge deficit, relying on supervised fine-tuning (SFT) to ingest labeled spatial data from external vision sources or synthetic engines. In contrast, we argue that for many tasks, spatial reasoning capabilities are already present in pre-trained LRMs but require alignment through logical coherence under geometric 2D and 3D constraints. In this work, we propose a self-supervised reinforcement learning (RL) framework that targets the internal reasoning process without requiring ground-truth annotations. By formalizing the notion of consistency verifiers -- reward functions that check for geometric and semantic consistency under transformations -- we demonstrate that models can improve their spatial reasoning abilities. We use both image transformations, like flipping, and textual transformations, like swapping the order of objects in the question, and propose a new optimal transport-based RL strategy, OT-GRPO, which is a minimal-matching variant of group relative policy optimization tailored to pairwise verifiers. We show that this label-free consistency training approaches the accuracy of models trained with ground-truth supervision and achieves similar generalization across diverse tasks and data domains.",
+      "authors": [
+        "Theo Uscidda",
+        "Marta Tintore Gazulla",
+        "Maks Ovsjanikov",
+        "Federico Tombari",
+        "Leonidas Guibas"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-10T10:50:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.11918v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses self-supervised RL with consistency verifiers for spatial reasoning, akin to RLVR",
+      "llm_evidence_cn": "使用自监督RL和一致性验证器进行空间推理，类似RLVR方法",
+      "llm_evidence": "使用自监督RL和一致性验证器进行空间推理，类似RLVR方法",
+      "canonical_evidence": "使用自监督RL和一致性验证器进行空间推理，类似RLVR方法",
+      "llm_tldr_en": "Proposes a self-supervised RL framework with consistency verifiers to align spatial reasoning without ground-truth, using logical coherence as reward.",
+      "llm_tldr_cn": "本文提出自监督强化学习框架，利用一致性验证器作为奖励函数，在无标注数据下对齐预训练模型的内部空间推理能力，通过在2D/3D几何约束下保持逻辑一致性，有效提升了空间推理的准确性。",
+      "llm_tldr": "本文提出自监督强化学习框架，利用一致性验证器作为奖励函数，在无标注数据下对齐预训练模型的内部空间推理能力，通过在2D/3D几何约束下保持逻辑一致性，有效提升了空间推理的准确性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

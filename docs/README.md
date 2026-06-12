@@ -6,44 +6,45 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-11
-- 运行时间：2026-06-11 21:47:35 UTC
+- 最新运行日期：2026-06-12
+- 运行时间：2026-06-12 22:05:00 UTC
 - 运行状态：成功
 - 本次总论文数：8
-- 精读区：4
-- 速读区：4
+- 精读区：0
+- 速读区：8
 
 ### 今日简报（AI）
-今日聚焦强化学习策略蒸馏与信任域研究，精读两篇高分论文。最值得关注《On the Geometry of On-Policy Distillation》的几何视角与《Beyond Uniform Token-Level Trust Region in LLM Reinforcement Learning》的信任域改进。建议优先精读这两篇论文以掌握前沿方法论。
-- 详情：[/202606/11/README](/202606/11/README)
+今日速读8篇论文，聚焦强化学习后训练、工具故障恢复与策略梯度优化。最值得关注的是交叉时代自适应 rollout 优化和动态重规划异常恢复两个方向。建议优先精读《Cross-Epoch Adaptive Rollout Optimization》与《When Tools Fail》以提升模型稳定性。
+- 详情：[/202606/12/README](/202606/12/README)
 
 ### 精读区论文标签
-1. [On the Geometry of On-Policy Distillation](/202606/11/2606.07082v2-on-the-geometry-of-on-policy-distillation)  
-   标签：评分：10.0/10、query:opd
-   evidence：直接分析同策略蒸馏在LLM推理中的训练动力学
-2. [Beyond Uniform Token-Level Trust Region in LLM Reinforcement Learning](/202606/11/2606.10968v2-beyond-uniform-token-level-trust-region-in-llm-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：通过位置感知的令牌级信任区域改进基于可验证奖励的强化学习
-3. [HERO: Hindsight-Enhanced Reflection from Environment Observations for Agentic Self-Distillation](/202606/11/2606.11559v1-hero-hindsight-enhanced-reflection-from-environment-observations-for-agentic-self-distillation)  
-   标签：评分：9.0/10、query:opd
-   evidence：基于事后反思的同策略自蒸馏方法用于多轮智能体任务
-4. [RLCSD: Reinforcement Learning with Contrastive On-Policy Self-Distillation](/202606/11/2606.11709v1-rlcsd-reinforcement-learning-with-contrastive-on-policy-self-distillation)  
-   标签：评分：9.0/10、query:opd
-   evidence：提出对比同策略自蒸馏方法以改进推理模型
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [From Correctness to Utility: Gain-Based Prefix Evaluation for LLM Reasoning](/202606/11/2606.07190v1-from-correctness-to-utility-gain-based-prefix-evaluation-for-llm-reasoning)  
+1. [Cross-Epoch Adaptive Rollout Optimization for RL Post-Training](/202606/12/2606.05606v1-cross-epoch-adaptive-rollout-optimization-for-rl-post-training)  
    标签：评分：7.0/10、query:opd
-   evidence：使用学生模型组评估前缀效用进行过程监督
-2. [Back on Track: Aligning Rewards and States for Reasoning in Diffusion Large Language Models](/202606/11/2606.08501v1-back-on-track-aligning-rewards-and-states-for-reasoning-in-diffusion-large-language-models)  
+   evidence：提出强化学习后训练中的自适应rollout分配策略，适用于GRPO风格方法
+2. [When Tools Fail: Benchmarking Dynamic Replanning and Anomaly Recovery in LLM Agents](/202606/12/2606.05806v1-when-tools-fail-benchmarking-dynamic-replanning-and-anomaly-recovery-in-llm-agents)  
    标签：评分：7.0/10、query:opd
-   evidence：针对扩散大语言模型推理的过程对齐策略优化
-3. [Variational Proximal Policy Optimization](/202606/11/2606.08032v1-variational-proximal-policy-optimization)  
+   evidence：涉及LLM智能体中的错误恢复和失败轨迹，与过程监督相关
+3. [On Advantage Estimates for Max@K Policy Gradients](/202606/12/2606.06080v1-on-advantage-estimates-for-maxk-policy-gradients)  
+   标签：评分：7.0/10、query:opd
+   evidence：研究RLVR中策略梯度的优势估计，改进推理模型训练
+4. [Variational Proximal Policy Optimization](/202606/12/2606.08032v1-variational-proximal-policy-optimization)  
+   标签：评分：7.0/10、query:opd
+   evidence：变分PPO方法改进RLHF，提升大模型推理性能
+5. [SVoT: State-aware Visualization-of-Thought for Spatial Reasoning via Reinforcement Learning](/202606/12/2606.11770v1-svot-state-aware-visualization-of-thought-for-spatial-reasoning-via-reinforcement-learning)  
+   标签：评分：7.0/10、query:opd
+   evidence：使用强化学习（可能为GRPO）训练多模态大模型的空间推理，状态感知的可视化思维
+6. [The Art of Interrogation: Consistency Amplifies Factuality in Spatial Reasoning](/202606/12/2606.11918v1-the-art-of-interrogation-consistency-amplifies-factuality-in-spatial-reasoning)  
+   标签：评分：7.0/10、query:opd
+   evidence：使用自监督RL和一致性验证器进行空间推理，类似RLVR方法
+7. [TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization](/202606/12/2606.05859v1-tarpo-token-wise-latent-explicit-reasoning-via-action-routing-policy-optimization)  
    标签：评分：6.0/10、query:opd
-   evidence：针对大语言模型推理的变分PPO方法
-4. [Reasoning or Memorization? Direction-Aware Diversity Exploration in LLM Reinforcement Learning](/202606/11/2606.10346v1-reasoning-or-memorization-direction-aware-diversity-exploration-in-llm-reinforcement-learning)  
+   evidence：在LLM推理中通过RL自适应切换离散和潜在推理
+8. [Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy](/202606/12/2606.08779v2-reformulate-llm-reinforcement-learning-for-efficient-training-under-black-box-discrepancy)  
    标签：评分：6.0/10、query:opd
-   evidence：大语言模型强化学习中面向推理的方向感知多样性探索方法
+   evidence：大语言模型强化学习，解决训练-推理差异与自我纠正
 
 
 <div class="dpr-home-promo-card">
