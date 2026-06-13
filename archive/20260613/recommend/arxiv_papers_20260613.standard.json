@@ -1,0 +1,219 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-13T21:17:57.518848+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.10385v1",
+      "source": "arxiv",
+      "title": "Beyond Absolute Imitation: Anchored Residual Guidance for Privileged On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) has demonstrated strong empirical gains in enhancing complex reasoning in LLMs by aligning a student model with a teacher's predictive distribution over the student's own trajectories. An emerging variant, Privileged OPD, further strengthens this paradigm by employing a self-teacher model augmented with privileged information, such as oracle traces, to mitigate teacher-student capacity gaps while providing dense, answer-directed supervision. However, current methods treat privileged information as a monolithic imitation target, failing to disentangle locally reachable reasoning steps from future-conditioned oracle signals. Consequently, the student is encouraged to match a hindsight-biased distribution that often falls outside its local predictive support. This reachability mismatch incentivizes the student model to skip valid intermediate reasoning in favor of locally unsupported shortcuts. To resolve this, we introduce Anchored Residual On-Policy Distillation (AR-OPD), a dual-view framework that disentangles privileged supervision. Rather than enforcing strict full-view imitation, AR-OPD establishes a locally compatible anchor using a partially privileged teacher, isolating and injecting oracle foresight as a controlled residual to provide destination-directed guidance. Across diverse reasoning tasks, AR-OPD outperforms full privileged OPD by 2.3 points and SFT by 7.9 points. Crucially, this anchored residual mechanism reduces hindsight leakage by 21.7% and mitigates late-stage drift, yielding up to a 7.2-point advantage on challenging long-horizon trajectories exceeding 768 tokens.",
+      "authors": [
+        "Wenhao Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T03:51:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.10385v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Privileged on-policy distillation for LLM reasoning with anchored residual guidance",
+      "llm_evidence_cn": "使用锚定残差引导的特权同策略蒸馏提升LLM推理",
+      "llm_evidence": "使用锚定残差引导的特权同策略蒸馏提升LLM推理",
+      "canonical_evidence": "使用锚定残差引导的特权同策略蒸馏提升LLM推理",
+      "llm_tldr_en": "Proposes Anchored Residual Guidance for Privileged OPD, decoupling locally reachable steps from oracle signals to avoid hindsight bias in LLM reasoning training.",
+      "llm_tldr_cn": "现有特权同策略蒸馏将特权信息作为整体模仿目标，导致学生模型产生事后偏差。本文提出锚定残差引导方法，通过分离局部可达推理步骤与未来导向的预言信号，使学生模型专注于可实现的推理路径。实验表明该方法能有效缓解偏见，提升模型在复杂推理任务上的性能，同策略蒸馏的实践提供了重要改进。",
+      "llm_tldr": "现有特权同策略蒸馏将特权信息作为整体模仿目标，导致学生模型产生事后偏差。本文提出锚定残差引导方法，通过分离局部可达推理步骤与未来导向的预言信号，使学生模型专注于可实现的推理路径。实验表明该方法能有效缓解偏见，提升模型在复杂推理任务上的性能，同策略蒸馏的实践提供了重要改进。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08446v1",
+      "source": "arxiv",
+      "title": "Sparrow: Sparse Rollout for Stable and Efficient Long-context RL of Large Language Models",
+      "abstract": "Despite being powerful, reinforcement learning with verifiable rewards (RLVR) induces extremely long COT, making it computationally expensive. Since RLVR per-step cost is dominated by long-context rollout generation, sparse attention offers a promising way to accelerate dense rollout. However, sparse rollouts require a delicate stability-efficiency tradeoff: overly aggressive sparsity causes collapse, while overly lenient sparsity gives insufficient speedup. In this work, we study this tradeoff through sparse-to-dense actor-policy mismatch. We first observe that sparse rollout collapse is not driven by uniform degradation across tokens: most sparse tokens align perfectly with dense even under aggressive sparsity. Motivated by this, we hypothesize that sparse rollout training remains stable if the lower tail of per-token actor-policy mismatch stays above a critical threshold throughout the trajectory. We introduce a dynamic sparsity schedule that keeps this tail statistic constant during generation and validate our hypothesis. Across Qwen3 thinking-family models, keeping the tail mismatch statistic near a consistent threshold generally enables stable training. We then use a cost model to find the sparsity schedule for maximum speedup under this mismatch threshold, achieving 2.2x, 2.4x, and 2.0x rollout speedups when training Qwen3-1.7B, Qwen3-4B, and Qwen3-8B. Empirically, we show the thresholds generalize to a larger model (Qwen3-14B) and another RL domain (coding). Finally, our analysis naturally motivates DistillSparse: lightweight LoRA-based distillation on sparse rollout lets more aggressive sparsity reach the same sparse-to-dense mismatch threshold, yielding higher speedup.",
+      "authors": [
+        "Yang Zhou",
+        "Ranajoy Sadhukhan",
+        "Zhaofeng Sun",
+        "Zhuoming Chen",
+        "Souvik Kundu",
+        "Saket Dingliwal",
+        "Sai Muralidhar Jayanthi",
+        "Aram Galstyan",
+        "Haizhong Zheng",
+        "Beidi Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-07T04:24:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.08446v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "addresses long-context rollout efficiency in RLVR using sparse attention",
+      "llm_evidence_cn": "使用稀疏注意力解决RLVR中长上下文rollout效率问题",
+      "llm_evidence": "使用稀疏注意力解决RLVR中长上下文rollout效率问题",
+      "canonical_evidence": "使用稀疏注意力解决RLVR中长上下文rollout效率问题",
+      "llm_tldr_en": "Proposes Sparrow, a sparse rollout method for RLVR that stabilizes training and improves efficiency by analyzing sparse-to-dense actor-policy mismatch.",
+      "llm_tldr_cn": "针对RLVR中长思维链导致的计算开销问题，提出Sparrow稀疏rollout方法。通过分析稀疏到密集演员-策略失配现象，发现大多数token在激进稀疏下仍与密集对齐，基于此设计稳定高效的稀疏训练。实验表明在保持性能的同时大幅加速RLVR训练，使长上下文RL更加实用。",
+      "llm_tldr": "针对RLVR中长思维链导致的计算开销问题，提出Sparrow稀疏rollout方法。通过分析稀疏到密集演员-策略失配现象，发现大多数token在激进稀疏下仍与密集对齐，基于此设计稳定高效的稀疏训练。实验表明在保持性能的同时大幅加速RLVR训练，使长上下文RL更加实用。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08656v1",
+      "source": "arxiv",
+      "title": "From Player to Master: Enhancing Test-Time Learning of LLM Agents via Reinforcement Learning over Memory",
+      "abstract": "Large language model (LLM) agents are increasingly deployed in long-running settings where improving through experience at test time becomes important. A common approach is to update an explicit memory after each interaction to guide future decisions. However, most existing methods rely on hand-designed prompting rules, making it difficult to align memory updates with downstream objectives over multi-step horizons consistently. We propose MemoPilot, a plug-in memory copilot that explicitly trains the memory update process to improve a frozen LLM's performance across sequential interactions. We formulate memory updating as a multi-turn decision problem and optimize it end-to-end with multi-turn GRPO. Our training recipe introduces (i) a turn-wise reward signal and (ii) a context-independent, turn-level advantage estimation across rollouts, enabling finer-grained credit assignment and more stable training in multi-turn settings. We evaluate MemoPilot on two testbeds: multi-round Rock-Paper-Scissors (RPS) and Limit Texas Hold'em (LHE). Across both environments, MemoPilot substantially improves test-time learning of a frozen player over strong baselines, ranking first in Elo ratings on both games (1762 on LHE and 1590 on RPS) and outperforming all baseline memory methods and proprietary models, including DeepSeek-V3.2.",
+      "authors": [
+        "Yishuo Cai",
+        "Xingyu Guo",
+        "Xuancheng Huang",
+        "Jinhua Du",
+        "Can Huang",
+        "Wenxuan Huang",
+        "Wenhan Ma",
+        "Yuyang Hu",
+        "Aohan Zeng",
+        "Jie Tang",
+        "Xu Sun"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-07T14:53:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.08656v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses multi-turn GRPO for LLM agent memory optimization",
+      "llm_evidence_cn": "使用多轮GRPO优化LLM智能体记忆",
+      "llm_evidence": "使用多轮GRPO优化LLM智能体记忆",
+      "canonical_evidence": "使用多轮GRPO优化LLM智能体记忆",
+      "llm_tldr_en": "Proposes MemoPilot, training memory update with multi-turn GRPO to improve frozen LLM performance in agent settings.",
+      "llm_tldr_cn": "LLM智能体在长期部署中需要利用经验改进，但现有记忆更新依赖手工提示。本文提出MemoPilot，将记忆更新建模为多轮决策问题，并使用多轮GRPO端到端优化。实验表明该方法能使固定LLM在序列交互中持续提升性能，是对GRPO在智能体学习中的成功应用。",
+      "llm_tldr": "LLM智能体在长期部署中需要利用经验改进，但现有记忆更新依赖手工提示。本文提出MemoPilot，将记忆更新建模为多轮决策问题，并使用多轮GRPO端到端优化。实验表明该方法能使固定LLM在序列交互中持续提升性能，是对GRPO在智能体学习中的成功应用。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.07367v1",
+      "source": "arxiv",
+      "title": "Self-evolving LLM agents with in-distribution Optimization",
+      "abstract": "Large Language Models (LLMs) have recently emerged as powerful controllers for interactive agents in complex environments, yet training them to perform reliable long-horizon decision making remains a fundamental challenge. A key difficulty lies in credit assignment: agents often receive delayed rewards only at the end of episodes. In this paper, we propose Q-Evolve, a self-evolving framework for LLM agents that unifies automatic process-reward labeling and policy learning within a principled in-distribution reinforcement learning paradigm. In each evolving iteration, our method learns an in-distribution critic from a hybrid off-policy dataset that combines expert demonstrations with agent-generated trajectories, stabilizing Bellman backups in sparse-reward settings via a weighted Implicit Q-Learning objective. The learned value function is then used to derive step-wise process rewards through advantage estimation, enabling dense and reliable supervision without environment backtracking or human annotation. Leveraging these signals, we perform behavior-proximal policy optimization that evolves the agent over the data used for process reward labeling, allowing iterative self-improvement without exacerbating distribution shift. We evaluate our method on AlfWorld, WebShop, and ScienceWorld, showing Q-Evolve outperforms strong baselines in sample efficiency, robustness, and overall task performance. Our results demonstrate that stable agent self-evolution is achievable through the co-evolution of process-level supervision and policy, both grounded within a shared in-distribution learning loop.",
+      "authors": [
+        "Yudi Zhang",
+        "Meng Fang",
+        "Zhenfang Chen",
+        "Mykola Pechenizkiy"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-05T15:09:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.07367v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes automatic process-reward labeling and in-distribution RL for agents, relevant to process supervision",
+      "llm_evidence_cn": "提出自动过程奖励标注和分布内强化学习，与过程监督相关",
+      "llm_evidence": "提出自动过程奖励标注和分布内强化学习，与过程监督相关",
+      "canonical_evidence": "提出自动过程奖励标注和分布内强化学习，与过程监督相关",
+      "llm_tldr_en": "Proposes Q-Evolve for LLM agents that unifies automatic process-reward labeling and policy learning via in-distribution RL, improving credit assignment in sparse-reward settings.",
+      "llm_tldr_cn": "LLM代理在长程决策中面临信用分配问题，奖励稀疏。本文提出Q-Evolve框架，自动为轨迹标注过程奖励，并在分布内强化学习范式下联合策略学习。通过混合专家演示和agent生成轨迹，稳定贝尔曼更新。实验证明该方法提升了稀疏奖励环境下的决策性能。",
+      "llm_tldr": "LLM代理在长程决策中面临信用分配问题，奖励稀疏。本文提出Q-Evolve框架，自动为轨迹标注过程奖励，并在分布内强化学习范式下联合策略学习。通过混合专家演示和agent生成轨迹，稳定贝尔曼更新。实验证明该方法提升了稀疏奖励环境下的决策性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08779v1",
+      "source": "arxiv",
+      "title": "Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy",
+      "abstract": "Reinforcement Learning (RL) has emerged as a pivotal post-training paradigm, yet it frequently suffers from unpredictable sub-optimum performance or even training collapses. Recent findings attribute these failures to a hidden train-inference discrepancy (or mismatch), stemming from the disparate underlying engines and architecture. We find that the training policy can actively self-correct such a discrepancy when provided with an appropriate learning signal. Then, we further empirically identify a discrepancy tolerance region: within this region, aggressively narrowing the discrepancy can suppress policy exploration and reduce learning efficiency, whereas outside this region, reducing excessive discrepancy improves optimization consistency and raises the achievable local performance ceiling. According to such findings, we formulate this problem as a Discrepancy-Constrained Markov Decision Process (DCMDP), where reward maximization is coupled with a constraint that aligns training-Inference behavior, achieving stable dual-objective optimization. To adaptively balance performance improvement and discrepancy control, we introduce a Lagrangian relaxation mechanism that dynamically adjusts the relative weight of the two objectives according to the current degree of discrepancy violation. This enables stable dual-objective optimization: the policy is allowed to explore freely within the tolerance region, while being guided back when the discrepancy exceeds the safe boundary. Empirically, DCMDP significantly improves the performance of 8B dense model (Qwen-3-8b) and 30B Mixture-of-Expert model (Qwen-3-30bA3b), and enables a heterogeneous training paradigm, where LLMs can be optimized in high-fidelity training setup while being explicitly aligned for low-cost, resource-constrained inference deployment.",
+      "authors": [
+        "Jiashun Liu",
+        "Runze Liu",
+        "Xu Wan",
+        "Jing Liang",
+        "Hongyao Tang",
+        "Ling Pan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-07T18:49:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.08779v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses train-inference discrepancy in LLM RL with self-correction",
+      "llm_evidence_cn": "处理LLM强化学习中的训练-推理差异，利用自我纠正",
+      "llm_evidence": "处理LLM强化学习中的训练-推理差异，利用自我纠正",
+      "canonical_evidence": "处理LLM强化学习中的训练-推理差异，利用自我纠正",
+      "llm_tldr_en": "Studies train-inference discrepancy in LLM RL, proposes self-correction mechanism and identifies tolerance region for efficient training.",
+      "llm_tldr_cn": "针对LLM强化学习中隐藏的训练-推理差异导致性能不稳定和崩溃的问题，发现策略在适当学习信号下能主动自我纠正差异。进一步识别了差异容忍区域：区域内缩小差异会抑制探索，区域外则改善优化。提出自适应调整策略，提升训练效率和稳定性。",
+      "llm_tldr": "针对LLM强化学习中隐藏的训练-推理差异导致性能不稳定和崩溃的问题，发现策略在适当学习信号下能主动自我纠正差异。进一步识别了差异容忍区域：区域内缩小差异会抑制探索，区域外则改善优化。提出自适应调整策略，提升训练效率和稳定性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

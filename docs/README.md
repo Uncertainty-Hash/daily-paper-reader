@@ -6,45 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-12
-- 运行时间：2026-06-12 22:05:00 UTC
+- 最新运行日期：2026-06-13
+- 运行时间：2026-06-13 21:22:04 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：0
-- 速读区：8
+- 本次总论文数：5
+- 精读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日速读8篇论文，聚焦强化学习后训练、工具故障恢复与策略梯度优化。最值得关注的是交叉时代自适应 rollout 优化和动态重规划异常恢复两个方向。建议优先精读《Cross-Epoch Adaptive Rollout Optimization》与《When Tools Fail》以提升模型稳定性。
-- 详情：[/202606/12/README](/202606/12/README)
+今日精读两篇高分论文，速读两篇，重点关注在线策略蒸馏与长上下文强化学习。最值得看《Beyond Absolute Imitation》提出的锚定残差引导法，以及《Sparrow》中的稀疏展开技术，均突破现有方法瓶颈。建议进一步探索强化学习在长上下文场景下的稳定性与推理效率改进。
+- 详情：[/202606/13/README](/202606/13/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Beyond Absolute Imitation: Anchored Residual Guidance for Privileged On-Policy Distillation](/202606/13/2606.10385v1-beyond-absolute-imitation-anchored-residual-guidance-for-privileged-on-policy-distillation)  
+   标签：评分：9.0/10、query:opd
+   evidence：使用锚定残差引导的特权同策略蒸馏提升LLM推理
+2. [Sparrow: Sparse Rollout for Stable and Efficient Long-context RL of Large Language Models](/202606/13/2606.08446v1-sparrow-sparse-rollout-for-stable-and-efficient-long-context-rl-of-large-language-models)  
+   标签：评分：8.0/10、query:opd
+   evidence：使用稀疏注意力解决RLVR中长上下文rollout效率问题
+3. [From Player to Master: Enhancing Test-Time Learning of LLM Agents via Reinforcement Learning over Memory](/202606/13/2606.08656v1-from-player-to-master-enhancing-test-time-learning-of-llm-agents-via-reinforcement-learning-over-memory)  
+   标签：评分：8.0/10、query:opd
+   evidence：使用多轮GRPO优化LLM智能体记忆
 
 ### 速读区论文标签
-1. [Cross-Epoch Adaptive Rollout Optimization for RL Post-Training](/202606/12/2606.05606v1-cross-epoch-adaptive-rollout-optimization-for-rl-post-training)  
-   标签：评分：7.0/10、query:opd
-   evidence：提出强化学习后训练中的自适应rollout分配策略，适用于GRPO风格方法
-2. [When Tools Fail: Benchmarking Dynamic Replanning and Anomaly Recovery in LLM Agents](/202606/12/2606.05806v1-when-tools-fail-benchmarking-dynamic-replanning-and-anomaly-recovery-in-llm-agents)  
-   标签：评分：7.0/10、query:opd
-   evidence：涉及LLM智能体中的错误恢复和失败轨迹，与过程监督相关
-3. [On Advantage Estimates for Max@K Policy Gradients](/202606/12/2606.06080v1-on-advantage-estimates-for-maxk-policy-gradients)  
-   标签：评分：7.0/10、query:opd
-   evidence：研究RLVR中策略梯度的优势估计，改进推理模型训练
-4. [Variational Proximal Policy Optimization](/202606/12/2606.08032v1-variational-proximal-policy-optimization)  
-   标签：评分：7.0/10、query:opd
-   evidence：变分PPO方法改进RLHF，提升大模型推理性能
-5. [SVoT: State-aware Visualization-of-Thought for Spatial Reasoning via Reinforcement Learning](/202606/12/2606.11770v1-svot-state-aware-visualization-of-thought-for-spatial-reasoning-via-reinforcement-learning)  
-   标签：评分：7.0/10、query:opd
-   evidence：使用强化学习（可能为GRPO）训练多模态大模型的空间推理，状态感知的可视化思维
-6. [The Art of Interrogation: Consistency Amplifies Factuality in Spatial Reasoning](/202606/12/2606.11918v1-the-art-of-interrogation-consistency-amplifies-factuality-in-spatial-reasoning)  
-   标签：评分：7.0/10、query:opd
-   evidence：使用自监督RL和一致性验证器进行空间推理，类似RLVR方法
-7. [TARPO: Token-Wise Latent-Explicit Reasoning via Action-Routing Policy Optimization](/202606/12/2606.05859v1-tarpo-token-wise-latent-explicit-reasoning-via-action-routing-policy-optimization)  
+1. [Self-evolving LLM agents with in-distribution Optimization](/202606/13/2606.07367v1-self-evolving-llm-agents-with-in-distribution-optimization)  
    标签：评分：6.0/10、query:opd
-   evidence：在LLM推理中通过RL自适应切换离散和潜在推理
-8. [Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy](/202606/12/2606.08779v2-reformulate-llm-reinforcement-learning-for-efficient-training-under-black-box-discrepancy)  
+   evidence：提出自动过程奖励标注和分布内强化学习，与过程监督相关
+2. [Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy](/202606/13/2606.08779v1-reformulate-llm-reinforcement-learning-for-efficient-training-under-black-box-discrepancy)  
    标签：评分：6.0/10、query:opd
-   evidence：大语言模型强化学习，解决训练-推理差异与自我纠正
+   evidence：处理LLM强化学习中的训练-推理差异，利用自我纠正
 
 
 <div class="dpr-home-promo-card">
