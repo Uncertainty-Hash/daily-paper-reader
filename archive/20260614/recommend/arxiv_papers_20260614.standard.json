@@ -1,0 +1,226 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-14T20:32:13.111103+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.13106v1",
+      "source": "arxiv",
+      "title": "Demystifying Hidden-State Recurrence: Switchable Latent Reasoning with On-Policy Reinforcement Learning",
+      "abstract": "Latent chain-of-thought compresses reasoning by replacing visible reasoning traces with continuous hidden-state recurrence, but existing formulations are difficult to optimize with standard on-policy reinforcement learning (RL) and hard to interpret causally. Our key insight is that a single pair of explicit boundary tokens can address both issues at once: discrete entry and exit anchors make the latent block compatible with standard on-policy RL, and the same anchors offer a natural foothold for mechanistic analysis. Motivated by this, we propose SWITCH, a switchable latent reasoning framework. The model emits <swi> to enter latent mode and </swi> to exit. Because the boundaries are ordinary discrete tokens, the GRPO policy ratio is well-defined at every decision point. The same anchors also expose the latent steps to direct probing and causal intervention. We train the model with a visible-to-latent curriculum and a Switch-GRPO objective that propagates gradients through recurrent latent computation. SWITCH consistently outperforms prior hidden-state-recurrence latent reasoning approaches at similar scale. Mechanistic analysis through the boundary tokens further reveals three findings: (i) <swi> is a sharply localised, learned switching policy rather than a stylistic artefact; (ii) the latent step it opens performs problem-specific, causally important computation rather than acting as an inert placeholder; and (iii) that computation is concentrated at a single hidden-state transition on entry. Together, these results show that hidden-state-recurrence latent reasoning is both RL-trainable and open to direct mechanistic analysis, including of how on-policy RL itself improves the model from the inside.",
+      "authors": [
+        "Jiayu Yang",
+        "Chao Chen",
+        "Shengen Wu",
+        "Yinhong Liu",
+        "Yuxuan Fan",
+        "Lujundong Li",
+        "Songning Lai",
+        "Chengwei Qin",
+        "Zhijiang Guo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-11T09:33:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.13106v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses GRPO on-policy RL for latent reasoning",
+      "llm_evidence_cn": "采用GRPO在线强化学习优化潜链推理",
+      "llm_evidence": "采用GRPO在线强化学习优化潜链推理",
+      "canonical_evidence": "采用GRPO在线强化学习优化潜链推理",
+      "llm_tldr_en": "Proposes SWITCH, a switchable latent reasoning framework trained with GRPO, enabling on-policy RL for hidden-state chain-of-thought.",
+      "llm_tldr_cn": "针对潜链思维难以用标准在线RL优化的问题，本文提出SWITCH框架，通过在隐藏状态前后添加显式边界token，使潜推理块兼容GRPO等在线策略优化。实验表明该方法能有效训练潜推理模型，并提升可解释性。这项工作直接结合了on-policy RL与推理，属于GRPO相关方法。",
+      "llm_tldr": "针对潜链思维难以用标准在线RL优化的问题，本文提出SWITCH框架，通过在隐藏状态前后添加显式边界token，使潜推理块兼容GRPO等在线策略优化。实验表明该方法能有效训练潜推理模型，并提升可解释性。这项工作直接结合了on-policy RL与推理，属于GRPO相关方法。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.08974v1",
+      "source": "arxiv",
+      "title": "Diverse Thinking Schemata Elicit Better Reasoning in Large Language Models",
+      "abstract": "Large reasoning models (LRMs) have attracted increasing attention for their ability to solve complex mathematical problems by generating extended reasoning chains. In this work, we focus on two critical yet underexplored aspects of the reasoning process: reasoning transitions capturing the distinct transitions between reasoning steps and answer candidates reflecting the variety of solution paths produced by the model. We collectively define these two aspects as thinking schemata. We observe a correlation between the diversity of thinking schemata and model performance, which motivates us to enhance diversity as a means to further improve reasoning potential. To this end, we propose Diverse Schemata Policy Optimization (DiScO), a framework that first endows the model with schemata awareness, then encourages diversity through reinforcement learning, and further promotes diverse reasoning at inference time. Experiments on multiple mathematical reasoning benchmarks demonstrate that DiScO consistently outperforms standard group relative policy optimization. Beyond accuracy, human-annotated analyses show that DiScO substantially improves the model's ability to recover from erroneous initial attempts. Overall, our work suggests the important role that diversity of the thinking schemata plays and points to scaling along the diversity dimension as a promising research direction.",
+      "authors": [
+        "Xinyue Liang",
+        "Yizhe Yang",
+        "Yu Bai",
+        "Bin Xu",
+        "Jiawei Li",
+        "Yang Gao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-08T03:17:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.08974v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes Diverse Schemata Policy Optimization to enhance reasoning diversity",
+      "llm_evidence_cn": "提出多样图式策略优化以增强推理多样性",
+      "llm_evidence": "提出多样图式策略优化以增强推理多样性",
+      "canonical_evidence": "提出多样图式策略优化以增强推理多样性",
+      "llm_tldr_en": "Proposes Diverse Schemata Policy Optimization (DiScO) to enhance reasoning diversity in LLMs, improving performance through varied solution paths.",
+      "llm_tldr_cn": "该论文聚焦大型推理模型的思维图式多样性，提出多样图式策略优化（DiScO）。该方法通过鼓励模型产生多样的推理转换和候选答案，提升了推理的覆盖率和最终性能。实验表明DiScO在数学推理任务上显著优于标准策略优化方法，验证了多样性对推理质量的重要性。",
+      "llm_tldr": "该论文聚焦大型推理模型的思维图式多样性，提出多样图式策略优化（DiScO）。该方法通过鼓励模型产生多样的推理转换和候选答案，提升了推理的覆盖率和最终性能。实验表明DiScO在数学推理任务上显著优于标准策略优化方法，验证了多样性对推理质量的重要性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09124v1",
+      "source": "arxiv",
+      "title": "A Regret Minimization Framework on Preference Learning in Large Language Models",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has enabled progress on reasoning-intensive tasks by relying on task-specific verifiers that provide automated correctness signals. However, many realistic language tasks are difficult to equip with reliable verifiers, motivating a growing reliance on reinforcement learning from human feedback (RLHF). In this setting, we argue that a closer examination of how human feedback should be interpreted is essential. We introduce Regret-based Preference Optimization $(\\textbf{RePO})$, which reframes RLHF through $\\textit{regret minimization}$ rather than reward maximization. Human preferences are often shaped by $\\textit{prospective}$ anticipation of outcomes and $\\textit{counterfactual}$ comparisons to alternative behaviors, rather than by immediate, outcome-independent utility. $\\textbf{RePO}$ captures this structure by modeling preferences as behavior-conditioned assessments of relative suboptimality. Experiments on mathematical reasoning benchmarks and human preference datasets demonstrate consistent performance gains, indicating that $\\textbf{RePO}$ is an effective and human-aligned approach for training large language models.",
+      "authors": [
+        "Suhwan Kim",
+        "Taehyun Cho",
+        "Geon-Hyeong Kim",
+        "Yu Jin Kim",
+        "Youngsoo Jang",
+        "Moontae Lee",
+        "Jungwoo Lee"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-08T07:18:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.09124v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "introduces regret minimization framework for preference learning in LLMs",
+      "llm_evidence_cn": "引入后悔最小化框架用于大语言模型偏好学习",
+      "llm_evidence": "引入后悔最小化框架用于大语言模型偏好学习",
+      "canonical_evidence": "引入后悔最小化框架用于大语言模型偏好学习",
+      "llm_tldr_en": "Proposes Regret-based Preference Optimization (RePO) reframing RLHF as regret minimization, addressing challenges in reward misspecification for LLM reasoning.",
+      "llm_tldr_cn": "该论文指出基于可验证奖励的RLVR在现实任务中难以实施，因而转向RLHF。针对RLHF中奖励错配问题，提出基于后悔的偏好优化（RePO），将偏好学习重新定义为后悔最小化而非奖励最大化。RePO通过考虑前瞻和反事实比较，更准确地建模人类偏好，从而提升了LLM在推理任务上的对齐效果。",
+      "llm_tldr": "该论文指出基于可验证奖励的RLVR在现实任务中难以实施，因而转向RLHF。针对RLHF中奖励错配问题，提出基于后悔的偏好优化（RePO），将偏好学习重新定义为后悔最小化而非奖励最大化。RePO通过考虑前瞻和反事实比较，更准确地建模人类偏好，从而提升了LLM在推理任务上的对齐效果。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13316v1",
+      "source": "arxiv",
+      "title": "ReSum: Synergizing LLM Reasoning and Summarization with Reinforcement Learning",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) is a central technique for improving long-horizon reasoning in Large Language Models (LLMs). However, existing RLVR methods often encourage unnecessarily long reasoning rollouts, which can degrade reasoning coherence and exhaust the available context budget. Existing approaches to long-context organization often depend on external mechanisms to organize rollouts, rather than enabling the model to manage its own reasoning trajectory. To address this limitation, we propose ReSum, a novel RLVR framework that enables LLMs to compress and organize their reasoning trajectories through self-summarization. Our pilot studies show that self-summarization stabilizes generation by lowering token-level entropy, and that introducing a ``summarization'' phrase can substantially mitigate errors propagated from an incorrect rollout prefix. Motivated by these findings, ReSum adopts a summarization-aware adaptive rollout mechanism that contrastively evaluates whether self-summarization benefits the ongoing reasoning process. Specifically, when the model spontaneously triggers self-summarization, ReSum masks the summarization phrase to create a contrastive branch; for non-summarization positions, it instead randomly injects the phrase to create a matched branch. We further design a summarization-aware advantage to enable finer-grained comparison between contrastive rollout trajectories. Extensive experiments show that ReSum improves performance at an average of 4\\% while reducing rollout length by 18.6\\%.",
+      "authors": [
+        "Xucong Wang",
+        "Ziyu Ma",
+        "Yong Wang",
+        "Shidong Yang",
+        "Hailang Huang",
+        "Renda Li",
+        "Pengkun Wang",
+        "Xiangxiang Chu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-11T13:10:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.13316v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RLVR framework for LLM reasoning with self-summarization of rollouts",
+      "llm_evidence_cn": "RLVR框架用于LLM推理，通过自我总结整理推理轨迹",
+      "llm_evidence": "RLVR框架用于LLM推理，通过自我总结整理推理轨迹",
+      "canonical_evidence": "RLVR框架用于LLM推理，通过自我总结整理推理轨迹",
+      "llm_tldr_en": "ReSum introduces self-summarization within RLVR to compress long reasoning rollouts, improving coherence and saving context budget.",
+      "llm_tldr_cn": "现有RLVR方法鼓励长推理轨迹导致冗余和上下文超限。ReSum提出让LLM在学习中自我总结推理过程，压缩轨迹长度同时保持关键信息。初步实验显示该方法能稳定生成、降低困惑度，并提升长链推理的可读性和效率。",
+      "llm_tldr": "现有RLVR方法鼓励长推理轨迹导致冗余和上下文超限。ReSum提出让LLM在学习中自我总结推理过程，压缩轨迹长度同时保持关键信息。初步实验显示该方法能稳定生成、降低困惑度，并提升长链推理的可读性和效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.13680v1",
+      "source": "arxiv",
+      "title": "Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning",
+      "abstract": "Retrieval-augmented generation (RAG) has become a standard mechanism for grounding language models in external knowledge, yet conventional retrieval based on lexical or semantic similarity is poorly suited for complex reasoning tasks: a semantically similar problem may demand an entirely different solution strategy, while a superficially different problem may share the same underlying reasoning pattern. We propose Retrieval-Augmented Reinforcement Fine-Tuning (RA-RFT), a post-training framework that teaches language models to reason by analogy. RA-RFT uses gold-relevance distillation to train a retriever that ranks contexts by expected reasoning benefit rather than semantic overlap, and then fine-tunes the policy model via reinforcement fine-tuning methods with retrieved analogous demonstrations, so the model learns to leverage reasoning traces under verifiable outcome rewards. We further analyze the diversity of retrieved contexts and find that reasoning-aware retrieval surfaces complementary solution strategies that provide distinct reasoning scaffolds for individual problems. Across challenging mathematical reasoning benchmarks, RA-RFT consistently outperforms standard reinforcement fine-tuning methods. For example, it improves AIME 2025 average@32 accuracy by 7.1 and 2.8 points over GRPO for Qwen3-1.7B and Qwen3-4B respectively -- suggesting that reasoning-aware retrieval is a complementary axis of improvement and orthogonal to advances in reward design or training curricula.",
+      "authors": [
+        "Zilin Xiao",
+        "Qi Ma",
+        "Chun-cheng Jason Chen",
+        "Xintao Chen",
+        "Avinash Atreya",
+        "Hanjie Chen",
+        "Vicente Ordonez"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T17:59:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.13680v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Distillation and RL fine-tuning for reasoning analogy",
+      "llm_evidence_cn": "蒸馏和强化学习微调用于类比推理",
+      "llm_evidence": "蒸馏和强化学习微调用于类比推理",
+      "canonical_evidence": "蒸馏和强化学习微调用于类比推理",
+      "llm_tldr_en": "Proposes RA-RFT, a framework using gold-relevance distillation for retriever and RL fine-tuning for LLM reasoning by analogy, combining distillation and RL.",
+      "llm_tldr_cn": "针对复杂推理任务中传统检索依赖语义相似性不足的问题，本文提出检索增强强化微调（RA-RFT）框架。首先使用黄金相关性蒸馏训练检索器，使其按推理效益而非语义相似度排序上下文；然后对策略模型进行强化微调，教会模型通过类比推理。该框架融合了蒸馏和在线RL，提升了推理能力。",
+      "llm_tldr": "针对复杂推理任务中传统检索依赖语义相似性不足的问题，本文提出检索增强强化微调（RA-RFT）框架。首先使用黄金相关性蒸馏训练检索器，使其按推理效益而非语义相似度排序上下文；然后对策略模型进行强化微调，教会模型通过类比推理。该框架融合了蒸馏和在线RL，提升了推理能力。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,35 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-13
-- 运行时间：2026-06-13 21:22:04 UTC
+- 最新运行日期：2026-06-14
+- 运行时间：2026-06-14 20:36:08 UTC
 - 运行状态：成功
 - 本次总论文数：5
-- 精读区：3
-- 速读区：2
+- 精读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今日精读两篇高分论文，速读两篇，重点关注在线策略蒸馏与长上下文强化学习。最值得看《Beyond Absolute Imitation》提出的锚定残差引导法，以及《Sparrow》中的稀疏展开技术，均突破现有方法瓶颈。建议进一步探索强化学习在长上下文场景下的稳定性与推理效率改进。
-- 详情：[/202606/13/README](/202606/13/README)
+今日精读一篇9.0分论文《Demystifying Hidden-State Recurrence: Switchable Latent Reasoning with On-Policy RL》，并速读三篇涉及思维图式、强化学习推理与偏好学习的论文。最值得关注的是可切换潜在推理的强化学习方法与多样思维图式对推理能力的提升。建议优先精读高分论文，并验证多样思维图式在实际推理任务中的效果。
+- 详情：[/202606/14/README](/202606/14/README)
 
 ### 精读区论文标签
-1. [Beyond Absolute Imitation: Anchored Residual Guidance for Privileged On-Policy Distillation](/202606/13/2606.10385v1-beyond-absolute-imitation-anchored-residual-guidance-for-privileged-on-policy-distillation)  
+1. [Demystifying Hidden-State Recurrence: Switchable Latent Reasoning with On-Policy Reinforcement Learning](/202606/14/2606.13106v1-demystifying-hidden-state-recurrence-switchable-latent-reasoning-with-on-policy-reinforcement-learning)  
    标签：评分：9.0/10、query:opd
-   evidence：使用锚定残差引导的特权同策略蒸馏提升LLM推理
-2. [Sparrow: Sparse Rollout for Stable and Efficient Long-context RL of Large Language Models](/202606/13/2606.08446v1-sparrow-sparse-rollout-for-stable-and-efficient-long-context-rl-of-large-language-models)  
-   标签：评分：8.0/10、query:opd
-   evidence：使用稀疏注意力解决RLVR中长上下文rollout效率问题
-3. [From Player to Master: Enhancing Test-Time Learning of LLM Agents via Reinforcement Learning over Memory](/202606/13/2606.08656v1-from-player-to-master-enhancing-test-time-learning-of-llm-agents-via-reinforcement-learning-over-memory)  
-   标签：评分：8.0/10、query:opd
-   evidence：使用多轮GRPO优化LLM智能体记忆
+   evidence：采用GRPO在线强化学习优化潜链推理
 
 ### 速读区论文标签
-1. [Self-evolving LLM agents with in-distribution Optimization](/202606/13/2606.07367v1-self-evolving-llm-agents-with-in-distribution-optimization)  
+1. [Diverse Thinking Schemata Elicit Better Reasoning in Large Language Models](/202606/14/2606.08974v1-diverse-thinking-schemata-elicit-better-reasoning-in-large-language-models)  
+   标签：评分：7.0/10、query:opd
+   evidence：提出多样图式策略优化以增强推理多样性
+2. [ReSum: Synergizing LLM Reasoning and Summarization with Reinforcement Learning](/202606/14/2606.13316v1-resum-synergizing-llm-reasoning-and-summarization-with-reinforcement-learning)  
+   标签：评分：7.0/10、query:opd
+   evidence：RLVR框架用于LLM推理，通过自我总结整理推理轨迹
+3. [A Regret Minimization Framework on Preference Learning in Large Language Models](/202606/14/2606.09124v1-a-regret-minimization-framework-on-preference-learning-in-large-language-models)  
    标签：评分：6.0/10、query:opd
-   evidence：提出自动过程奖励标注和分布内强化学习，与过程监督相关
-2. [Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy](/202606/13/2606.08779v1-reformulate-llm-reinforcement-learning-for-efficient-training-under-black-box-discrepancy)  
+   evidence：引入后悔最小化框架用于大语言模型偏好学习
+4. [Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning](/202606/14/2606.13680v1-learning-to-reason-by-analogy-via-retrieval-augmented-reinforcement-fine-tuning)  
    标签：评分：6.0/10、query:opd
-   evidence：处理LLM强化学习中的训练-推理差异，利用自我纠正
+   evidence：蒸馏和强化学习微调用于类比推理
 
 
 <div class="dpr-home-promo-card">
