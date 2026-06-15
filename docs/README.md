@@ -6,35 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-14
-- 运行时间：2026-06-14 20:36:08 UTC
+- 最新运行日期：2026-06-15
+- 运行时间：2026-06-15 22:55:48 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：1
-- 速读区：4
+- 本次总论文数：7
+- 精读区：2
+- 速读区：5
 
 ### 今日简报（AI）
-今日精读一篇9.0分论文《Demystifying Hidden-State Recurrence: Switchable Latent Reasoning with On-Policy RL》，并速读三篇涉及思维图式、强化学习推理与偏好学习的论文。最值得关注的是可切换潜在推理的强化学习方法与多样思维图式对推理能力的提升。建议优先精读高分论文，并验证多样思维图式在实际推理任务中的效果。
-- 详情：[/202606/14/README](/202606/14/README)
+今天精读聚焦于“Be My Tutor”的在线协同蒸馏与“CORA”的多模态推理对齐，两者分别以满分10分与8分领跑。  
+最值得关注的方向：一是通过同伴反馈实现LLM互信改进，二是用一致性对齐弥合多模态推理的思考-答案差距。  
+建议优先精读“Be My Tutor”理解互蒸馏机制，再结合“CORA”思考如何补全多模态推理的隐性偏差。
+- 详情：[/202606/15/README](/202606/15/README)
 
 ### 精读区论文标签
-1. [Demystifying Hidden-State Recurrence: Switchable Latent Reasoning with On-Policy Reinforcement Learning](/202606/14/2606.13106v1-demystifying-hidden-state-recurrence-switchable-latent-reasoning-with-on-policy-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：采用GRPO在线强化学习优化潜链推理
+1. [Be My Tutor: On-Policy Co-Distillation for Mutual LLM Improvement via Peer Feedback](/202606/15/2606.14368v1-be-my-tutor-on-policy-co-distillation-for-mutual-llm-improvement-via-peer-feedback)  
+   标签：评分：10.0/10、query:opd
+   evidence：同策略共蒸馏，利用同伴反馈实现LLM互改进
+2. [CORA: Analyzing and bridging thinking-answer gap in Multimodal RLVR via Consistency-Oriented Reasoning Alignment](/202606/15/2606.14691v1-cora-analyzing-and-bridging-thinking-answer-gap-in-multimodal-rlvr-via-consistency-oriented-reasoning-alignment)  
+   标签：评分：8.0/10、query:opd
+   evidence：分析并解决多模态RLVR中思考与答案不一致问题使用GRPO
 
 ### 速读区论文标签
-1. [Diverse Thinking Schemata Elicit Better Reasoning in Large Language Models](/202606/14/2606.08974v1-diverse-thinking-schemata-elicit-better-reasoning-in-large-language-models)  
+1. [Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning](/202606/15/2606.13680v1-learning-to-reason-by-analogy-via-retrieval-augmented-reinforcement-fine-tuning)  
    标签：评分：7.0/10、query:opd
-   evidence：提出多样图式策略优化以增强推理多样性
-2. [ReSum: Synergizing LLM Reasoning and Summarization with Reinforcement Learning](/202606/14/2606.13316v1-resum-synergizing-llm-reasoning-and-summarization-with-reinforcement-learning)  
+   evidence：结合检索器蒸馏和强化微调进行类比推理
+2. [Retrospective Progress-Aware Self-Refinement for LLM Agent Training](/202606/15/2606.14302v1-retrospective-progress-aware-self-refinement-for-llm-agent-training)  
    标签：评分：7.0/10、query:opd
-   evidence：RLVR框架用于LLM推理，通过自我总结整理推理轨迹
-3. [A Regret Minimization Framework on Preference Learning in Large Language Models](/202606/14/2606.09124v1-a-regret-minimization-framework-on-preference-learning-in-large-language-models)  
+   evidence：前向-反思滚动范式生成进度信号，用于LLM智能体强化学习
+3. [Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy](/202606/15/2606.08779v1-reformulate-llm-reinforcement-learning-for-efficient-training-under-black-box-discrepancy)  
    标签：评分：6.0/10、query:opd
-   evidence：引入后悔最小化框架用于大语言模型偏好学习
-4. [Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning](/202606/14/2606.13680v1-learning-to-reason-by-analogy-via-retrieval-augmented-reinforcement-fine-tuning)  
+   evidence：处理LLM强化学习中的训练-推理差异
+4. [Architecture-Aware Reinforcement Learning Makes Sliding-Window Attention Competitive in Math Reasoning](/202606/15/2606.11634v1-architecture-aware-reinforcement-learning-makes-sliding-window-attention-competitive-in-math-reasoning)  
    标签：评分：6.0/10、query:opd
-   evidence：蒸馏和强化学习微调用于类比推理
+   evidence：强化学习用于数学推理，属于RLVR相关方法
+5. [Select and Improve: Understanding the Mechanics of Post-Training for Reasoning](/202606/15/2606.13125v1-select-and-improve-understanding-the-mechanics-of-post-training-for-reasoning)  
+   标签：评分：6.0/10、query:opd
+   evidence：揭示RL后训练中策略选择与改进的机制
 
 
 <div class="dpr-home-promo-card">

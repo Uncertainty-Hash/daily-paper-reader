@@ -1,0 +1,307 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T22:52:25.233218+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2606.14368v1",
+      "source": "arxiv",
+      "title": "Be My Tutor: On-Policy Co-Distillation for Mutual LLM Improvement via Peer Feedback",
+      "abstract": "We study multi-domain LLM training in which two models, each stronger in a different domain, co-evolve by tutoring each other through on-policy feedback. Unlike one-way distillation or single-model fine-tuning, our goal is mutual Pareto improvement: each model improves across domains without losing its original strength. To this end, we propose On-Policy Co-Distillation (OPCoD), where each student's self-distillation is conditioned on its own correct rollout and feedback from its peer. To make feedback exchange effective, OPCoD uses cognizance-based gating to decide when to give feedback and feedback anchoring to ground feedback in the problem. On Science Q\\&A tasks, OPCoD consistently outperforms baselines and achieves Pareto improvement across all evaluated domain pairs and students.",
+      "authors": [
+        "Woohyeon Byeon",
+        "Jiwon Jeon",
+        "Jeonghye Kim",
+        "Youngchul Sung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-12T11:55:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.14368v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "on-policy co-distillation with peer feedback for mutual LLM improvement",
+      "llm_evidence_cn": "同策略共蒸馏，利用同伴反馈实现LLM互改进",
+      "llm_evidence": "同策略共蒸馏，利用同伴反馈实现LLM互改进",
+      "canonical_evidence": "同策略共蒸馏，利用同伴反馈实现LLM互改进",
+      "llm_tldr_en": "OPCoD proposes on-policy co-distillation where two LLMs improve each other via correct rollouts and peer feedback, achieving Pareto improvement across domains.",
+      "llm_tldr_cn": "针对单模型微调或单向蒸馏的局限，本文提出同策略共蒸馏（OPCoD）框架，让两个在不同领域有优势的模型通过同策略反馈相互辅导。每个学生的自蒸馏依赖于自身正确轨迹和同伴反馈，并采用认知门控和反馈锚定机制确保有效交流。在科学问答任务上，OPCoD持续优于基线并实现帕累托改进。该方法展示了多方协作蒸馏提升LLM多领域能力的潜力。",
+      "llm_tldr": "针对单模型微调或单向蒸馏的局限，本文提出同策略共蒸馏（OPCoD）框架，让两个在不同领域有优势的模型通过同策略反馈相互辅导。每个学生的自蒸馏依赖于自身正确轨迹和同伴反馈，并采用认知门控和反馈锚定机制确保有效交流。在科学问答任务上，OPCoD持续优于基线并实现帕累托改进。该方法展示了多方协作蒸馏提升LLM多领域能力的潜力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14691v1",
+      "source": "arxiv",
+      "title": "CORA: Analyzing and bridging thinking-answer gap in Multimodal RLVR via Consistency-Oriented Reasoning Alignment",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has successfully elicited the reasoning capabilities of large language models, motivating its extension to multimodal scenarios. Existing methods primarily focus on improving the visual coverage of reasoning traces and mitigating visual hallucinations, but underestimate the semantic inconsistency between the reasoning process and the final answer. In this paper, we delve into thinking-answer inconsistency in RLVR for large vision-language models (LVLMs), showing thorough analyses of rollouts collected throughout Group Relative Policy Optimization (GRPO) training process and post-RLVR evaluation outputs that this issue persists during training and remains present during inference. Motivated by the analysis, we propose Consistency-Oriented Reasoning Alignment (CORA), which introduces thinking-answer semantic consistency into RLVR through a lightweight plug-and-play consistency reward model, and further incorporates Hybrid Reward Advantage Splitting (HRAS) to stably coordinate task and consistency optimization. Extensive experiments across representative multimodal reasoning benchmarks and mainstream LVLMs show that CORA improves task performance while effectively mitigating thinking-answer inconsistency, leading to more faithful reasoning traces.",
+      "authors": [
+        "Jiayue Cao",
+        "Zhicong Lu",
+        "Xuehan Sun",
+        "Wei Jia",
+        "Hongling Zheng",
+        "Changyuan Tian",
+        "Zichuan Lin",
+        "Wenqian Lv",
+        "Nayu Liu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-12T17:54:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.14691v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "analyzes and mitigates thinking-answer inconsistency in multimodal RLVR using GRPO",
+      "llm_evidence_cn": "分析并解决多模态RLVR中思考与答案不一致问题使用GRPO",
+      "llm_evidence": "分析并解决多模态RLVR中思考与答案不一致问题使用GRPO",
+      "canonical_evidence": "分析并解决多模态RLVR中思考与答案不一致问题使用GRPO",
+      "llm_tldr_en": "Identifies thinking-answer inconsistency in multimodal RLVR and proposes CORA, a consistency-oriented alignment method using GRPO, improving answer reliability.",
+      "llm_tldr_cn": "本文针对多模态RLVR中推理过程与最终答案语义不一致的问题展开分析。通过GRPO训练过程中的rollout分析，发现该不一致持续存在。提出CORA方法，利用一致性导向的推理对齐，在保持视觉覆盖的同时缩小思考-答案差距。实验表明CORA在多个多模态推理基准上提升了答案可靠性。",
+      "llm_tldr": "本文针对多模态RLVR中推理过程与最终答案语义不一致的问题展开分析。通过GRPO训练过程中的rollout分析，发现该不一致持续存在。提出CORA方法，利用一致性导向的推理对齐，在保持视觉覆盖的同时缩小思考-答案差距。实验表明CORA在多个多模态推理基准上提升了答案可靠性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.13680v1",
+      "source": "arxiv",
+      "title": "Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning",
+      "abstract": "Retrieval-augmented generation (RAG) has become a standard mechanism for grounding language models in external knowledge, yet conventional retrieval based on lexical or semantic similarity is poorly suited for complex reasoning tasks: a semantically similar problem may demand an entirely different solution strategy, while a superficially different problem may share the same underlying reasoning pattern. We propose Retrieval-Augmented Reinforcement Fine-Tuning (RA-RFT), a post-training framework that teaches language models to reason by analogy. RA-RFT uses gold-relevance distillation to train a retriever that ranks contexts by expected reasoning benefit rather than semantic overlap, and then fine-tunes the policy model via reinforcement fine-tuning methods with retrieved analogous demonstrations, so the model learns to leverage reasoning traces under verifiable outcome rewards. We further analyze the diversity of retrieved contexts and find that reasoning-aware retrieval surfaces complementary solution strategies that provide distinct reasoning scaffolds for individual problems. Across challenging mathematical reasoning benchmarks, RA-RFT consistently outperforms standard reinforcement fine-tuning methods. For example, it improves AIME 2025 average@32 accuracy by 7.1 and 2.8 points over GRPO for Qwen3-1.7B and Qwen3-4B respectively -- suggesting that reasoning-aware retrieval is a complementary axis of improvement and orthogonal to advances in reward design or training curricula.",
+      "authors": [
+        "Zilin Xiao",
+        "Qi Ma",
+        "Chun-cheng Jason Chen",
+        "Xintao Chen",
+        "Avinash Atreya",
+        "Hanjie Chen",
+        "Vicente Ordonez"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T17:59:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.13680v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "combines knowledge distillation for retriever and reinforcement fine-tuning for reasoning by analogy",
+      "llm_evidence_cn": "结合检索器蒸馏和强化微调进行类比推理",
+      "llm_evidence": "结合检索器蒸馏和强化微调进行类比推理",
+      "canonical_evidence": "结合检索器蒸馏和强化微调进行类比推理",
+      "llm_tldr_en": "Proposes RA-RFT that uses gold-relevance distillation to train a retriever and reinforcement fine-tuning to teach LLMs to reason by analogy.",
+      "llm_tldr_cn": "该论文提出检索增强强化微调框架RA-RFT，首先通过黄金相关性蒸馏训练检索器以排序预期推理收益，再通过强化微调优化策略模型。该方法结合了蒸馏和强化学习，用于提升复杂推理任务中的类比推理能力。虽非直接针对on-policy蒸馏或GRPO，但涉及蒸馏和强化学习的结合，与复合主题相关。",
+      "llm_tldr": "该论文提出检索增强强化微调框架RA-RFT，首先通过黄金相关性蒸馏训练检索器以排序预期推理收益，再通过强化微调优化策略模型。该方法结合了蒸馏和强化学习，用于提升复杂推理任务中的类比推理能力。虽非直接针对on-policy蒸馏或GRPO，但涉及蒸馏和强化学习的结合，与复合主题相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08779v1",
+      "source": "arxiv",
+      "title": "Reformulate LLM Reinforcement Learning for Efficient Training under Black-box Discrepancy",
+      "abstract": "Reinforcement Learning (RL) has emerged as a pivotal post-training paradigm, yet it frequently suffers from unpredictable sub-optimum performance or even training collapses. Recent findings attribute these failures to a hidden train-inference discrepancy (or mismatch), stemming from the disparate underlying engines and architecture. We find that the training policy can actively self-correct such a discrepancy when provided with an appropriate learning signal. Then, we further empirically identify a discrepancy tolerance region: within this region, aggressively narrowing the discrepancy can suppress policy exploration and reduce learning efficiency, whereas outside this region, reducing excessive discrepancy improves optimization consistency and raises the achievable local performance ceiling. According to such findings, we formulate this problem as a Discrepancy-Constrained Markov Decision Process (DCMDP), where reward maximization is coupled with a constraint that aligns training-Inference behavior, achieving stable dual-objective optimization. To adaptively balance performance improvement and discrepancy control, we introduce a Lagrangian relaxation mechanism that dynamically adjusts the relative weight of the two objectives according to the current degree of discrepancy violation. This enables stable dual-objective optimization: the policy is allowed to explore freely within the tolerance region, while being guided back when the discrepancy exceeds the safe boundary. Empirically, DCMDP significantly improves the performance of 8B dense model (Qwen-3-8b) and 30B Mixture-of-Expert model (Qwen-3-30bA3b), and enables a heterogeneous training paradigm, where LLMs can be optimized in high-fidelity training setup while being explicitly aligned for low-cost, resource-constrained inference deployment.",
+      "authors": [
+        "Jiashun Liu",
+        "Runze Liu",
+        "Xu Wan",
+        "Jing Liang",
+        "Hongyao Tang",
+        "Ling Pan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-07T18:49:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.08779v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses train-inference discrepancy in LLM RL",
+      "llm_evidence_cn": "处理LLM强化学习中的训练-推理差异",
+      "llm_evidence": "处理LLM强化学习中的训练-推理差异",
+      "canonical_evidence": "处理LLM强化学习中的训练-推理差异",
+      "llm_tldr_en": "Identifies train-inference discrepancy in LLM RL and proposes self-correction with a discrepancy tolerance region for efficient training.",
+      "llm_tldr_cn": "针对LLM强化学习因训练-推理差异导致性能不佳或训练崩溃的问题，发现策略可主动自校正并提供合适学习信号，并识别出一个差异容忍区域：在区域内过度缩小差异会抑制探索，区域外减少差异可改善优化。提出相应方法提升训练效率。",
+      "llm_tldr": "针对LLM强化学习因训练-推理差异导致性能不佳或训练崩溃的问题，发现策略可主动自校正并提供合适学习信号，并识别出一个差异容忍区域：在区域内过度缩小差异会抑制探索，区域外减少差异可改善优化。提出相应方法提升训练效率。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14302v1",
+      "source": "arxiv",
+      "title": "Retrospective Progress-Aware Self-Refinement for LLM Agent Training",
+      "abstract": "LLM-based agents trained with reinforcement learning optimize step-wise action prediction but lack metacognitive awareness of task progress, inducing a gap that hinders long-horizon scaling. A pilot study reveals that online progress prompting hurts performance while retrospective demonstrations help, yet this capability cannot emerge from outcome-reward training alone. We present RePro, Retrospective Progress-Aware Training, a framework that trains agents to self-generate progress signals via a forward-then-reflect rollout paradigm: the agent executes actions online, then retrospectively reassesses its step-wise progress given the completed trajectory and known outcome. RePro initializes with a Retrospection Warmup that teaches reflection format from minimal external demonstrations, then further trains through RePro-PO with a composite reward that produces self-generated signals without continuous external supervision. Experiments on WebShop, ALFWorld, and Sokoban show that RePro enhances the Qwen family's performance, with up to $12\\%$ absolute success rate gains.",
+      "authors": [
+        "Xinbei Ma",
+        "Congmin Zheng",
+        "Jiyang Qiu",
+        "Jiale Hong",
+        "Yao Yao",
+        "Xiangmou Qu",
+        "Jiaxin Yin",
+        "Xingyu Lou",
+        "Jun Wang",
+        "Weiwen Liu",
+        "Weinan Zhang",
+        "Zhuosheng Zhang",
+        "Hai Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-12T09:38:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.14302v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "retrospective progress-aware training with forward-then-reflect rollout paradigm",
+      "llm_evidence_cn": "前向-反思滚动范式生成进度信号，用于LLM智能体强化学习",
+      "llm_evidence": "前向-反思滚动范式生成进度信号，用于LLM智能体强化学习",
+      "canonical_evidence": "前向-反思滚动范式生成进度信号，用于LLM智能体强化学习",
+      "llm_tldr_en": "RePro trains LLM agents to self-generate progress signals via a forward-then-reflect rollout, improving long-horizon task scaling.",
+      "llm_tldr_cn": "基于强化学习的LLM智能体缺乏任务进度元认知，阻碍长时扩展。本文提出RePro框架，采用前向执行后反思的滚动范式：智能体先在线执行动作，然后基于完整轨迹和已知结果回顾性评估逐步进度。该方法通过回顾热身初始化模仿学习反思格式。实验表明回顾性演示比在线进度提示更有效，展示了自我生成进度信号的价值。",
+      "llm_tldr": "基于强化学习的LLM智能体缺乏任务进度元认知，阻碍长时扩展。本文提出RePro框架，采用前向执行后反思的滚动范式：智能体先在线执行动作，然后基于完整轨迹和已知结果回顾性评估逐步进度。该方法通过回顾热身初始化模仿学习反思格式。实验表明回顾性演示比在线进度提示更有效，展示了自我生成进度信号的价值。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.11634v1",
+      "source": "arxiv",
+      "title": "Architecture-Aware Reinforcement Learning Makes Sliding-Window Attention Competitive in Math Reasoning",
+      "abstract": "The rapid progress of reasoning and agentic large language models (LLMs) has increased the demand for long-context inference, but self-attention (SA) scales quadratically with context length.   To address this, we study SWARR (Sliding-Window Attention with Reinforced Adaptation for Math Reasoning), a practical recipe for adapting SWA models to mathematical reasoning. SWARR has two stages: (1) efficient conversion from a pretrained SA model to SWA with supervised fine-tuning (SFT), which avoids pretraining a new base model, and (2) policy adaptation with reinforcement learning (RL).   We find that SWA still underperforms SA after SFT, and we hypothesize that this gap is caused in part by a data-architecture mismatch: most SFT data are prepared for SA models and may contain long-range dependencies that are difficult for SWA to model. Because on-policy RL optimizes self-generated trajectories under the SWA constraint, it can adapt trajectories to better match SWA.   Experiments on mathematical reasoning benchmarks show that this recipe substantially narrows the gap between SWA and SA, recovering much of the accuracy lost during SWA conversion while preserving the efficiency benefits of linear-complexity attention. Our central contribution is the empirical finding that RL changes the conclusion one would draw from conversion and SFT alone about SWA's viability for math reasoning.",
+      "authors": [
+        "Kai Liu",
+        "Peijie Dong",
+        "Xinchen Xie",
+        "Jianfei Gao",
+        "Qipeng Guo",
+        "Xiaowen Chu",
+        "Shaoting Zhang",
+        "Kai Chen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-10T03:56:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.11634v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for math reasoning, RLVR family",
+      "llm_evidence_cn": "强化学习用于数学推理，属于RLVR相关方法",
+      "llm_evidence": "强化学习用于数学推理，属于RLVR相关方法",
+      "canonical_evidence": "强化学习用于数学推理，属于RLVR相关方法",
+      "llm_tldr_en": "Proposes SWARR, a two-stage recipe combining SFT and RL to adapt sliding-window attention for math reasoning, showing RL can close the gap with self-attention.",
+      "llm_tldr_cn": "该论文针对滑动窗口注意力（SWA）在数学推理中性能不足的问题，提出SWARR方法，先通过监督微调从自注意力模型高效转换，再使用强化学习进行策略适应。实验表明，强化学习能够弥补SWA与自注意力之间的性能差距，使SWA在数学推理中具有竞争力。该工作展示了强化学习在适配高效注意力架构方面的潜力。",
+      "llm_tldr": "该论文针对滑动窗口注意力（SWA）在数学推理中性能不足的问题，提出SWARR方法，先通过监督微调从自注意力模型高效转换，再使用强化学习进行策略适应。实验表明，强化学习能够弥补SWA与自注意力之间的性能差距，使SWA在数学推理中具有竞争力。该工作展示了强化学习在适配高效注意力架构方面的潜力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13125v1",
+      "source": "arxiv",
+      "title": "Select and Improve: Understanding the Mechanics of Post-Training for Reasoning",
+      "abstract": "Reinforcement learning has rapidly emerged as a key component in the training of reasoning and coding models, yet it remains poorly understood from a mechanistic perspective. We study how and through what underlying processes capabilities are acquired or enhanced via reinforcement learning post-training. Our analysis, based on controlled math reasoning experiments with Qwen-2.5-1.5B, reveals two core mechanisms: strategy selection and strategy improvement. Our results highlight the role of SFT data and reinforcement learning data in activating these mechanisms, in particular showing how supervising the model on diverse reasoning strategies can enable strategy selection and how increasing difficulty in reinforcement learning data can enable strategy improvement. Taken together, our results provide mechanistic insight into RL training and suggest practical interventions to continue scaling reasoning capabilities.",
+      "authors": [
+        "Akshay Krishnamurthy",
+        "Audrey Huang",
+        "Nived Rajaraman"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T09:51:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.13125v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "mechanistic analysis of RL post-training for reasoning revealing strategy selection and improvement",
+      "llm_evidence_cn": "揭示RL后训练中策略选择与改进的机制",
+      "llm_evidence": "揭示RL后训练中策略选择与改进的机制",
+      "canonical_evidence": "揭示RL后训练中策略选择与改进的机制",
+      "llm_tldr_en": "Reveals two core mechanisms (strategy selection and improvement) in RL post-training for reasoning through controlled experiments, highlighting data roles.",
+      "llm_tldr_cn": "本文通过控制实验研究RL后训练如何提升推理能力。发现两种核心机制：策略选择（从SFT数据学习多样策略）和策略改进（通过增加RL训练难度提升现有策略质量）。分析表明SFT数据策略多样性和RL数据难度是关键因素。该发现为更有效的推理后训练提供了设计指导。",
+      "llm_tldr": "本文通过控制实验研究RL后训练如何提升推理能力。发现两种核心机制：策略选择（从SFT数据学习多样策略）和策略改进（通过增加RL训练难度提升现有策略质量）。分析表明SFT数据策略多样性和RL数据难度是关键因素。该发现为更有效的推理后训练提供了设计指导。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
