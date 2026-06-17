@@ -1,0 +1,1061 @@
+Title: Dynamic Rollout Editing for Reducing Overthinking in RL-Trained Reasoning Models
+
+URL Source: https://arxiv.org/pdf/2606.17890v1
+
+Published Time: Wed, 17 Jun 2026 01:11:27 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+## Dynamic Rollout Editing for Reducing Overthinking in RL-Trained Reasoning Models 
+
+Zihao Wei 1,2 , Wenjie Shi, Liang Pang 1*, Jingcheng Deng 1,2 , Shicheng Xu 1,2 , Shasha Guo 1,Zenghao Duan 1,2 , Jiahao Liu , Jingang Wang , Huawei Shen 1, Xueqi Cheng 11Institute of Computing Technology, Chinese Academy of Sciences, Beijing, China 
+
+> 2
+
+University of Chinese Academy of Sciences, Beijing, China 
+
+{weizihao22z, pangliang}@ict.ac.cn shiwj09@163.com 
+
+Abstract 
+
+Long-form chain-of-thought reasoning can im-prove LLM performance on complex tasks, but models often continue generating unnec-essary reasoning after a correct answer has emerged. We refer to this behavior as over-thinking. We study this phenomenon from the perspective of GRPO-style reinforcement learning (RL) post-training, framing it as a training-time credit-assignment problem rather than merely a decoding-time stopping problem. In rollouts sampled at the onset of GRPO train-ing, we observe that successful trajectories can exhibit a slightly higher degree of overthink-ing than unsuccessful trajectories for the same prompts. This early imbalance provides a start-ing point for an undesirable feedback loop: be-cause GRPO assigns sequence-level credit, it cannot distinguish the solution-reaching prefix from the unnecessary continuation that length-ens a successful trajectory. Both receive pos-itive update signal, allowing the initial imbal-ance to grow into more severe overthinking during training. To address this issue, we in-troduce Dynamic Rollout Editing (DRE), a training-time intervention for successful trajec-tories that continue thinking after answer emer-gence. DRE preserves the accepted verified prefix, edits the remaining thinking, and prefers the edited trajectory within the same RL group, weakening the preference signal for unneces-sary thinking without penalizing the reasoning needed to reach the answer. Experiments across diverse tasks show the effectiveness of DRE. 
+
+1 Introduction 
+
+Large language models (LLMs) have substantially improved reasoning performance by generating long-form chain-of-thought processes before pro-ducing final responses (Guo et al., 2025; Yang et al., 2025; Meituan LongCat Team, 2025). This paradigm is central to reinforcement learning post-
+
+> *Corresponding author.
+
+Figure 1: Schematic view of training-time overthinking. (a) Vanilla GRPO attaches positive credit to successful trajectories with greater overthinking. (b) Dynamic roll-out editing prefers verified shorter edits, reducing the association between success and overthinking. 
+
+training, where models explore reasoning trajecto-ries and learn from outcome feedback. However, longer thinking is not always better: generation length and answer quality are not monotonically re-lated (Ghosal et al., 2025; Han et al., 2026). Once a correct answer has appeared, further thinking can increase inference cost and may even move the model away from the correct solution, a phe-nomenon commonly described as overthinking (Sui et al., 2025; Wang et al., 2025). Existing work on overthinking largely treats it as a problem of controlling reasoning length: decid-ing when the model should stop or how its think-ing process can be shortened without hurting ac-curacy. Studies of reasoning dynamics identify boundaries such as the reasoning completion point, where useful reasoning gives way to unnecessary thinking (Wu et al., 2026; Su et al., 2025; Wei et al., 2025). Building on this view, early-exit de-coding, RL-based stopping controllers, and length-oriented regularization aim to reduce excessive gen-eration (Yang et al., 2026; Dai et al., 2026; Kimi Team, 2025). While useful, these methods mainly intervene after the policy has learned its reason-ing behavior. They leave open how reinforcement learning may reinforce overthinking after a correct answer is already verifiable. 1
+
+> arXiv:2606.17890v1 [cs.CL] 16 Jun 2026
+
+We study this issue in Group Relative Policy Optimization (GRPO) (Shao et al., 2024), a widely used post-training method for reasoning models. GRPO assigns sequence-level rewards and updates the policy using group-relative advantages. This design improves task success, but can also create a credit-assignment problem: a successful trajectory may contain both thinking that leads to the correct answer and unnecessary thinking after the answer has emerged. Since the same positive advantage is applied to the trajectory as a whole, GRPO does not distinguish the reasoning prefix that leads to the verified answer from the later overthinking that only lengthens the trajectory. To examine this credit-assignment problem, we make answer emergence observable through a parser-verifier analysis. For each trajectory, we identify the first point at which a correct answer can be extracted and externally verified, allowing us to compare behavior before and after answer emer-gence. In rollouts sampled early in GRPO training, successful trajectories already show a slight ten-dency to contain more overthinking after answer emergence than unsuccessful trajectories sampled for the same prompts. This initial asymmetry can be amplified by sequence-level updates: when un-necessary thinking is part of a successful trajectory, GRPO may reinforce it together with the think-ing that leads to the answer. As training improves task success, this coupled credit can make over-thinking after answer emergence more persistent, including redundant checking, answer revisits, and repeated verification. This observation motivates a different intervention. Rather than only stopping a trained model earlier, we aim to change the training signal so that task success is less coupled with over-thinking after answer emergence. A simple length penalty may suppress useful thinking, while penal-izing an entire successful trajectory may weaken the prefix needed to solve the problem. An ef-fective intervention should preserve the verified thinking prefix while reducing the preference sig-nal assigned to subsequent overthinking. In this work, we introduce dynamic rollout edit-ing (DRE), a training-time intervention for success-ful trajectories that contain overthinking after an-swer emergence. Figure 1 contrasts vanilla GRPO with DRE: vanilla GRPO can reinforce success-ful trajectories that include overthinking after an-swer emergence, whereas DRE shifts preference toward verified shorter counterparts. For a success-ful trajectory with overthinking after answer emer-gence, DRE constructs an edited counterpart that preserves the verified prefix up to a conservative boundary and replaces the subsequent overthinking. The edited trajectory is then preferred within the same GRPO group, allowing the model to retain a positive training signal for reaching the correct answer while weakening the association between success and overthinking. We further introduce two complementary training strategies: prefix masking avoids directly penalizing the shared verified prefix, while GClip provides a learning signal for edited tokens near the edit point. 
+
+Contributions. (1) We identify overthinking after answer emergence as a training-time credit-assignment problem in GRPO-style post-training. Our analysis shows that sequence-level advantages can mix credit between reasoning that leads to the answer and unnecessary thinking after answer emergence. (2) We propose DRE, a training-time intervention that weakens the association between task success and unnecessary thinking after answer emergence. DRE assigns a higher preference to shorter edited counterparts within the same GRPO group while preserving the verified reasoning pre-fix that reaches the answer. (3) We demonstrate the broad effectiveness of DRE across mathemat-ical reasoning, science QA, and code generation. DRE reduces thinking length while preserving task performance, mainly after answer emergence. 
+
+2 Overthinking After Answer Emergence 
+
+To examine this phenomenon, this section first for-mulates the generation process and defines answer emergence as the earliest point at which a verified answer can be extracted from a trajectory. This point provides a concrete boundary for analysis: tokens before it may be needed to reach the an-swer, whereas tokens after it allow us to measure overthinking once the answer has already appeared. We then present preliminary observations showing that, for the same prompts, successful rollouts often contain more overthinking after answer emergence than unsuccessful rollouts. Finally, we analyze how GRPO can reinforce this behavior: because rewards are assigned at the sequence level, the up-date does not explicitly distinguish reasoning that leads to the answer from overthinking that follows it when both occur in a successful trajectory. 210 30 50 70 90 110 130 150                    
+
+> Training step
+> 10%
+> 15%
+> 20%
+> 25%
+> 30%
+> Accuracy
+> (a) AIME24 Accuracy
+> 10 30 50 70 90 110 130 150
+> Training step
+> 0
+> 5
+> 10
+> 15
+> 20
+> 25
+> 30
+> 35
+> 40
+> Mean marker hits
+> (b) Verification Markers
+> Pre-khits
+> Post-khits
+> 10 30 50 70 90 110 130 150
+> Training step
+> 2
+> 3
+> 4
+> 5
+> 6
+> 7
+> 8
+> Mean revisit count
+> (c) Answer Revisits After First Answer
+> Correct trajectories
+> Incorrect trajectories
+
+Figure 2: Behavioral evidence from an R1-Zero-like GRPO run of Qwen3-4B-Base. (a) AIME24 accuracy improves during training. (b) Verification and checking keywords increase both before and after answer emergence. (c) For same prompts, successful rollouts show more answer revisits than unsuccessful rollouts. 
+
+2.1 Problem Formulation 
+
+We formalize overthinking after answer emergence in terms of thinking trajectories. Given a prompt 
+
+x, the model generates a thinking process t fol-lowed by a content process y. We model this generation process as πθ(t, y | x) = πθ(t |
+
+x)πθ(y | x, t ). The resulting trajectory is denoted as τ = ( x, <think> t </think> y).For each trajectory, we split the thinking process into sentences and scan sentence prefixes from left to right. At each prefix, a parser extracts a can-didate answer, and a verifier checks whether the candidate is correct for the given prompt. We de-fine k⋆(τ ) as the first sentence index whose prefix passes this verification check. If no prefix contains a verified answer, we set k⋆(τ ) = Kt(τ ), where 
+
+Kt(τ ) is the number of thinking sentences in τ .Thus, k⋆(τ ) marks the earliest sentence-level point at which a correct answer becomes verifiable in the thinking process. We use this point as an analysis boundary for measuring overthinking after answer emergence, without assuming that every subsequent token is redundant. 
+
+2.2 Preliminary Observations Setting. We train Qwen3-4B-Base with GRPO following the DeepSeek-R1-Zero (Guo et al., 2025) setting, using only rule-based rewards for answer correctness and format. This setup allows us to examine whether overthinking after answer emer-gence increases during RL training. For each rollout in which a verified answer ap-pears, k⋆(τ ) denotes the first sentence index at which the prefix contains that answer. We count keywords related to verification and checking in the sentences before and after k⋆(τ ). Keywords in sentences before k⋆(τ ) may reflect useful checking before the answer is reached, whereas keywords in sentences after k⋆(τ ) serve as indicators of pos-sible overthinking, since the model continues to check or verify after the answer has already ap-peared. We then examine whether both quantities increase during training. To compare successful and unsuccessful roll-outs for the same prompt, we use answer revisits as a rollout-level measure, because unsuccessful rollouts may not contain a valid k⋆(τ ). For each rollout with an extractable final answer, we count how often that answer is repeated after its first oc-currence, and compare this count across rollouts sampled for the same prompt. 
+
+Observation: RL training improves accuracy while amplifying overthinking behaviors such as answer repetition and redundant verification. 
+
+Figure 2 (a) illustrates the accuracy gain during training. Figure 2 (b) shows that verification and checking keywords increase both before and after 
+
+k⋆(τ ). The increase before k⋆(τ ) is consistent with more useful checking before the verified answer appears. The increase after k⋆(τ ) suggests more unnecessary overthinking after the answer has al-ready emerged. Figure 2 (c) presents a similar pat-tern within GRPO sampling groups: for the same prompt, successful rollouts repeat their extracted answers more often than unsuccessful rollouts. A qualitative example in Appendix 7 illustrates this pattern. At an earlier training step, the model still requires additional thinking to reach the correct an-swer; at a later step, it reaches the verified answer but continues with an additional verification step. These observations motivate the analysis below: sequence-level credit can conflate the thinking that leads to answer emergence with subsequent over-thinking, thereby reinforcing the latter when it is associated with positive advantage. 32.3 Analysis of Overthinking under GRPO 
+
+Under GRPO, each prompt is paired with multi-ple sampled trajectories. The complete output re-ceives a reward, which is normalized within the sampled group to form a group-relative advantage 
+
+A(τ ). The argument below is not the literal clipped GRPO estimator used in training. Instead, it is an unclipped first-order approximation for analysis, evaluated at or near θold , that suppresses policy-ratio, clipping, and content-process terms in or-der to isolate where the scalar group advantage is broadcast. For readability, we describe the broad-cast effect at the sentence level, while the training objective is applied at the token level. Let ψs(τ ) = ∇θ log πθ(ts | x, t <s ) denote the score term for the s-th thinking sentence. Let Zt(τ )
+
+denote the number of unmasked thinking units in this simplified sentence-level view. Write Eold for expectation under τ ∼ πθold , and abbreviate k⋆(τ )
+
+and Kt(τ ) as k⋆ and Kt inside the display. For trajectories with no verified thinking prefix, our convention k⋆(τ ) = Kt(τ ) only makes the post-boundary sum empty; it should not be interpreted as answer emergence at the final sentence. A first-order thinking-component approximation can be written as 
+
+gapprox (θ) = Eold 
+
+ A(τ )
+
+Zt(τ ) C(τ )
+
+
+
+,C(τ ) = X
+
+> s≤k⋆
+
+ψs(τ ) + X
+
+> k⋆<s ≤Kt
+
+ψs(τ ). (1) Equation (1) shows the credit-broadcasting path-way: the same group-relative advantage multiplies score terms before and after the first verified an-swer boundary. This does not mean that every post-k⋆ token is necessarily reinforced. Rather, when post-answer continuation is correlated with positive advantage, continuation after k⋆ can in-herit the same positive training signal as reasoning that may be needed to expose the verified answer. The matched-prompt evidence above supports this condition: successful rollouts contain more answer revisits and more post-answer checking behavior. Because Zt(τ ) token-normalizes the rollout loss, this analysis concerns the direction of broadcast credit rather than gradient magnitude as post-k⋆
+
+continuation length increases. This analysis suggests two intervention princi-ples. First, the verified prefix before the editable boundary should be preserved, as it may contain reasoning needed to expose the answer. Second, the preference signal should target overthinking af-ter a conservative boundary, rather than penalize total thinking length uniformly. 
+
+3 Dynamic Rollout Editing 
+
+The analysis in Section 2 motivates our interven-tion: when overthinking after a verified answer is correlated with positive advantage, trajectory-level rewards can reinforce it through the same gradient signal. We address this issue with dynamic roll-out editing , which constructs an edited counterpart for an overthinking rollout within the same GRPO group and assigns higher preference to the accepted edit than to the original. The edit preserves the veri-fied prefix, ends the thinking process at an accepted editable boundary, and reduces preference for over-thinking beyond that boundary. 
+
+3.1 Edited Rollout Synthesis 
+
+For each rollout, dynamic rollout editing searches near answer emergence for an editable boundary, proposes a trajectory that stops thinking there, and accepts it only if both prefix verification and regenerated-content verification succeed. Accepted edits preserve the verified prefix, remove later thinking, and regenerate the content process; failed edits fall back to an unedited copy. 
+
+Editable Boundary Identification. The answer-emergence boundary k⋆ marks the earliest prefix from which the parser-verifier extracts the correct answer, but it is not necessarily a safe edit point: the answer may appear inside an unfinished calculation, provisional statement, or incomplete final-answer pattern. We therefore use k⋆ as the starting point for prefix verification, not as the edit point itself. Starting from k⋆, we append \nFinal Answer 
+
+to each candidate sentence prefix and let the policy generate a verified-answer closure. The first prefix whose closure exposes the same verified answer and reaches </think> is accepted as the editable boundary ˆk.
+
+Boundary-Based Rollout Synthesis. Given ˆk,the edit preserves thinking through ˆk, removes the original overthinking after ˆk, appends the verified answer closure, and regenerates the content process. We keep the edited trajectory only when the regen-erated content exposes the same verified answer. Otherwise, the method falls back to an unedited copy. Accepted edits therefore remove overthink-ing after ˆk without modifying the accepted verified 4a Original rollout                                                                                                                         
+
+> bPrefix verification
+> Candidate thinking prefixes
+> c1 ...80 +56 =136 .Let me double-check...
+> c2 ...is correct. The answer is 136 .Iam...
+> k-hat ...confident the answer is 136 .
+> APPEND CUE
+> Final Answer
+> Generated closure
+> 0? Wait, no, hold on... ×
+> \boxed{136} Wait, let me recalculate... ×
+> \boxed{136}</think> ✓ACCEPT K-HAT
+> cEdited rollout
+> dRL training
+> k*: first verified answer emergence Preserved prefix through k-hat Masked by Prefix Masking Clipping range (GClip)
+> PROMPT X
+> What is 17 ×8?
+> ⟨ THINK ⟩ THINKING BEFORE K*
+> 17 ×8=(10 ×8) +(7 ×8) =80 +56 =136 .
+> OVERTHINKING AFTER ANSWER EMERGENCE
+> Let me verify: 17 ×8=136. Yes, 136 is correct ... </think>
+> CONTENT Y
+> \boxed{136}
+> PROMPT X
+> What is 17 ×8? Let me verify: 17 ×8=136. Yes, 136 is correct. Iam confident. ⟨/think⟩ REMOVED
+> VERIFIED ANSWER CLOSURE
+> Final Answer \boxed{136}</think>
+> CONTENT Y
+> \boxed{136}
+> −Original rollout
+> (baseline)
+> ✓Edited rollout
+> (preferred)
+> 17 ×8=(10 ×8) +(7 ×8) =136. Let me verify: 17 ×8=CONTENT Y
+> \boxed{136}
+
+→                   
+
+> 17 ×8=(10 ×8) +(7 ×8) =136 ... conf Let me ver REMOVED VERIFIED CONTENT Y
+> \boxed{136}
+> Prefix Masking
+> Exclude shared prefix from original-branch loss
+
+→
+
+> GClip
+> Clipped forward value;
+> straight-through gradient
+
+→                      
+
+> Policy Update
+> Apply GRPO update to model policy π
+> Expanded GRPO group
+> ⟨ THINK ⟩ VERIFIED PREFIX TO K-HAT
+> 17 ×8=(10 ×8) +(7 ×8) =80 +56 =136 ... confident the answer is 136 .
+
+Figure 3: Overview of dynamic rollout editing. After k⋆ marks answer emergence, prefix verification selects an editable boundary ˆk. The accepted edit preserves the thinking process through ˆk, removes the subsequent overthinking, appends a verified final answer, and regenerates the content process. The expanded GRPO group assigns higher preference to accepted verified edits than to verified originals or unedited copies. Prefix masking prevents the shared verified prefix on the original branch from receiving direct negative credit, while GClip preserves learning signal for the preferred edited suffix. 
+
+prefix. Figure 3 summarizes boundary identifica-tion, rollout synthesis, and training with edited roll-outs. Appendix H shows a concrete accepted edit in this prefix-preserving form. 
+
+3.2 Edited Rollout Scoring 
+
+The scoring rule turns accepted edits into prefer-ences within the group. For each sampled original trajectory τi, the GRPO group contains one auxil-iary trajectory: the accepted edit ˜τi when both pre-fix verification and verification of the regenerated content succeed, and an unedited copy otherwise. Let V (ρ) = 1 indicate that the content process of trajectory ρ is verified, and let E(ρ) = 1 indicate that ρ is an accepted edit. The scoring rule is a shaped preference score for the expanded GRPO group, not a calibrated task reward. It encodes an additional preference among verified trajectories: when an accepted edit preserves the verified an-swer while removing continuation after ˆk, the edit should be preferred over the original continuation. 
+
+q(ρ) = 
+
+
+
+1, V (ρ) = 1 and E(ρ) = 1 ,
+
+0, V (ρ) = 1 and E(ρ) = 0 ,
+
+−1, V (ρ) = 0 .
+
+(2) Thus, accepted verified edits are ranked above veri-fied originals or unedited copies, which are in turn ranked above unverified trajectories. The prefer-ence between an accepted edit and a verified origi-nal is not a claim that the edit is more correct; both pass the verifier. It is reward shaping that adds a training preference for stopping after a conser-vative verified boundary. Because the scores are normalized within the group to form advantages, their absolute scale is not calibrated; what matters is the induced within-group ranking and spacing. When the original is also verified, the edit iso-lates the preference for removing post-boundary continuation while preserving the same verified answer. When the original is not verified but the edit is accepted, the edit is best interpreted as cor-recting answer drift after a verified prefix. This case changes both correctness and length, whereas verified-original edits isolate the preference for re-moving post-boundary continuation. 
+
+3.3 Training with Edited Rollouts 
+
+This shaped preference changes the GRPO training signal without redefining task correctness: it weak-ens positive credit for the original thinking after the verified answer boundary. For accepted edit pairs, this preference reversal creates two optimization issues during training, i.e. ,
+
+(1) Negative credit on the shared prefix. The original trajectory receives a lower preference score even though it shares the verified prefix with the edited trajectory. Without a safeguard, the resulting lower advantage would be applied to the entire orig-inal trajectory, including both the accepted verified 5prefix and the overthinking after ˆk.
+
+(2) Upper clipping on edited tokens. The edited suffix begins with the verified final answer string and regenerated content rather than the origi-nal rollout continuation. These positively preferred tokens can have low probability under the old pol-icy near ˆk, so ordinary clipping can remove the ascent signal where the edit needs to be learned. 
+
+Prefix Masking for Preserving the Verified Pre-fix. For an accepted pair (τ, ˜τ ), the original and edited trajectories share the same generated prefix through ˆk. After this prefix, the edited rollout be-gins the verified final answer string, whereas the original keeps thinking after ˆk. Prefix masking applies only to the original trajectory: it excludes the generated tokens in this shared prefix from that trajectory’s GRPO loss, while keeping unit weight on tokens after the divergence. The edited trajec-tory and all other trajectories keep unit weights. Thus, negative relative credit from the original tar-gets its post-ˆk continuation rather than the accepted verified prefix shared with the edit. 
+
+GClip for Learning from Edited Rollouts. 
+
+GClip handles the second issue by using a clipped ratio operator with a custom backward pass for edited tokens. Accepted edits are synthetic con-tinuations constructed after rollout sampling, so the expanded-group objective should be read as a GRPO-style preference surrogate over original and edited trajectories rather than as an unbiased on-policy GRPO estimator. We retain the ratio to πθold 
+
+to keep the forward surrogate clipped and to mea-sure compatibility with the old policy. Because the edited suffix no longer follows the original rollout path, its early tokens can have very low old-policy probability near ˆk. Positively preferred edited to-kens can then hit the upper clip boundary quickly, causing ordinary clipping to remove the ascent sig-nal where the edit needs to be learned. For generated tokens z1, . . . , z m, let the token-level policy ratio be 
+
+rs(θ) ≜ πθ(zs | x, z <s )
+
+πθold (zs | x, z <s ) . (3) For any scalar ratio r > 0 and clip bounds 0 < ℓ < u, GClip has the same forward scalar value as the ordinary clipped ratio, but it changes the backward pass through a stop-gradient construction: 
+
+GClip( r; ℓ, u ) ≜ sg  clip( r, ℓ, u ) · r
+
+sg( r) . (4) Here sg( ·) denotes the stop-gradient operator. GClip should therefore be understood as a straight-through clipped-ratio operator: it preserves the clipped forward surrogate value while replacing the zero-gradient behavior of the ordinary clipped branch outside the clipping interval. In the training objective below, GClip replaces the clipped-ratio term in the GRPO-style surrogate. Theorem 1 for-malizes this straight-through derivative. 
+
+Overall Training Objective. Let A(ρ) be the group-relative advantage obtained by normaliz-ing the scores in Equation (2) within the ex-panded GRPO group, and write GClip ϵ(r) =GClip( r; 1 − ϵ, 1 + ϵ). We integrate GClip into GRPO by replacing the clipped-ratio term with 
+
+GClip ϵ, giving the token-level surrogate 
+
+ℓs(θ; ρ) = − min 
+
+
+
+rs(θ)A(ρ),
+
+GClip ϵ(rs(θ)) A(ρ)
+
+
+
+.
+
+(5) For accepted edited suffixes, the main saturation case is A(ρ) > 0 with rs > 1 + ϵ: ordinary clipping would remove the ascent signal on the clipped branch. GClip keeps the same clipped for-ward value while supplying a straight-through back-ward signal, so preferred edited tokens can still be learned. This should be read as an optimization surrogate rather than a formal PPO trust-region guarantee; Appendix E gives the full derivative analysis, including the lower-side saturation case. For an original trajectory paired with an accepted edit, ws(ρ) = 0 on generated tokens in the shared prefix through ˆk and ws(ρ) = 1 otherwise. For its edited counterpart and all other trajectories, 
+
+ws(ρ) = 1 at every generated token. The rollout loss is 
+
+L(θ; ρ) = 
+
+P 
+
+> s
+
+ws(ρ)ℓs(θ; ρ)
+
+P 
+
+> s
+
+ws(ρ) . (6) This objective targets post-ˆk thinking continuation in accepted edited pairs while preventing the lower-scored original branch from directly penalizing the shared verified prefix. 
+
+4 Experiments 
+
+4.1 Experimental Setups Benchmarks. We conduct experiments on di-verse benchmarks spanning mathematical reason-ing, science QA, and code generation: AIME24, 6Method AIME24 AIME25 AIME26 GPQA-D LCB-V6 Average Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ TE ↑
+
+Based on Qwen3-4B-Thinking-2507 
+
+Raw Model 18923 (100.0%) 81.87 21510 (100.0%) 79.79 20789 (100.0%) 77.71 8091 (100.0%) 65.47 17722 (100.0%) 54.26 17407 (100.0%) 71.82 4.13 GRPO 18322 (96.8%) 81.17 20930 (97.3%) 80.83 20284 (97.6%) 76.67 7826 (96.7%) 65.26 16333 (92.2%) 53.64 16739 (96.2%) 71.51 4.27 GRPO + LP 19323 (102.1%) 79.50 21059 (97.9%) 77.08 20302 (97.7%) 75.62 7906 (97.7%) 66.60 16663 (94.0%) 53.57 17051 (98.0%) 70.47 4.13 S-GRPO 19797 (104.6%) 80.00 22298 (103.7%) 79.17 21304 (102.5%) 78.33 8435 (104.3%) 65.59 18460 (104.2%) 54.14 18059 (103.7%) 71.45 3.96 
+
+DRE 13092 (69.2%) 81.87 14882 (69.2%) 80.54 14431 (69.4%) 79.37 5689 (70.3%) 65.67 14630 (82.6%) 53.79 12545 (72.1%) 72.25 5.76 
+
+Based on Qwen3-8B 
+
+Raw Model 13988 (100.0%) 75.42 17336 (100.0%) 68.75 15862 (100.0%) 66.67 8683 (100.0%) 59.34 12177 (100.0%) 47.93 13609 (100.0%) 63.62 4.67 GRPO 13773 (98.5%) 75.62 16801 (96.9%) 64.79 15581 (98.2%) 65.21 8474 (97.6%) 60.61 12197 (100.2%) 49.50 13365 (98.2%) 63.15 4.73 GRPO + LP 12968 (92.7%) 74.17 16919 (97.6%) 66.04 15107 (95.2%) 63.96 8159 (94.0%) 60.10 11995 (98.5%) 48.64 13030 (95.7%) 62.58 4.80 S-GRPO 16133 (115.3%) 74.17 18090 (104.3%) 65.83 17707 (111.6%) 62.50 9660 (111.3%) 59.79 12293 (101.0%) 48.86 14777 (108.6%) 62.23 4.21 
+
+DRE 10163 (72.7%) 75.83 13448 (77.6%) 66.67 11381 (71.8%) 66.87 6658 (76.7%) 60.98 11210 (92.1%) 48.93 10572 (77.7%) 63.86 6.04 
+
+Based on Qwen3-30B-A3B-Thinking-2507 
+
+Raw Model 15299 (100.0%) 88.12 18095 (100.0%) 85.62 16985 (100.0%) 88.96 6922 (100.0%) 76.45 15559 (100.0%) 64.64 14572 (100.0%) 80.76 5.54 GRPO 13784 (90.1%) 88.75 15600 (86.2%) 81.87 15158 (89.2%) 84.58 6236 (90.1%) 74.68 15413 (99.1%) 63.43 13238 (90.8%) 78.66 5.94 GRPO + LP 14374 (94.0%) 88.96 16206 (89.6%) 82.71 16039 (94.4%) 85.00 6435 (93.0%) 75.00 15494 (99.6%) 63.93 13710 (94.1%) 79.12 5.77 S-GRPO 15821 (103.4%) 88.33 20501 (113.3%) 81.67 19133 (112.6%) 85.00 7000 (101.1%) 74.68 17028 (109.4%) 64.79 15897 (109.1%) 78.89 4.96 
+
+DRE 10407 (68.0%) 88.54 13040 (72.1%) 83.54 12153 (71.6%) 86.46 5318 (76.8%) 75.51 13977 (89.8%) 64.86 10979 (75.3%) 79.78 7.27 
+
+Table 1: Main comparison across three Qwen3 reasoning models. Percentages in parentheses report thinking-token use relative to the Raw Model under the same base model and benchmark. The best result is shown in bold .
+
+AIME25, and AIME26 (Mathematical Associa-tion of America, 2026) for math, GPQA Diamond (GPQA-D) (Rein et al., 2024) for graduate-level sci-ence QA, and LiveCodeBench V6 (LCB-V6) (Jain et al., 2025) for code. 
+
+Metrics. We report accuracy (Acc), mean think-ing tokens (Think Tok.), and token efficiency (TE). 
+
+Acc indicates task performance, and Think Tok. 
+
+measures the average length of the generated think-ing process. We also report token efficiency ( TE )to summarize the accuracy–token tradeoff, defined as TE = 1000 · Acc /L t, where Acc and Lt denote the average accuracy and thinking-token count over the benchmarks in the table. More details are pro-vided in Appendix B. 
+
+Baselines. We evaluate Dynamic Rollout Editing (DRE) on three Qwen3 reasoning models: Qwen3-4B-Thinking-2507, Qwen3-8B, and Qwen3-30B-A3B-Thinking-2507 (Yang et al., 2025). For each backbone, Raw Model denotes the corresponding original Qwen3 model without further training. We compare DRE with Raw Model, GRPO (Shao et al., 2024), GRPO + LP (Kimi Team, 2025), and S-GRPO (Dai et al., 2026). All trainable methods are trained on DAPO-Math-17k (Yu et al., 2025). 
+
+4.2 Main Results 
+
+As shown in Table 1, we make four empirical ob-servations: (1) DRE substantially reduces think-ing tokens while preserving benchmark accu-racy. Among methods with complete LCB-V6 results, DRE has the lowest five-benchmark av-erage thinking length and the highest token effi-ciency in every model block, using only 72.1%, 77.7%, and 75.3% of Raw Model thinking tokens on the three backbones. On Qwen3-4B-Thinking-2507 and Qwen3-8B, this reduction is accompanied by higher average accuracy than both Raw Model and GRPO. On Qwen3-30B-A3B-Thinking-2507, where all trained variants trail Raw Model, DRE stays closest to Raw Model in accuracy while using the fewest thinking tokens among trained methods. The largest-model result should therefore be read as stronger length control with competitive accuracy, rather than as a uniform accuracy gain. (2) The reduction is not confined to the math training distribution. Although all trainable methods use DAPO-Math-17k, DRE shortens thinking across held-out AIME evaluations, GPQA-D, and out-of-domain LCB-V6. Relative to GRPO, DRE uses fewer thinking tokens on all nine AIME model– benchmark rows, all three GPQA-D rows, and all three LCB-V6 rows. Its accuracy also matches or exceeds GRPO on seven AIME rows, improves GPQA-D accuracy in each model block, and stays within 0.6 accuracy points of the best completed method on LCB-V6. This cross-benchmark pattern is consistent with reducing redundant post-solution continuation rather than only pruning math-specific thinking. (3) Generic length pressure does not reproduce the same pattern. GRPO + LP some-times shortens thinking relative to GRPO, but it remains longer than DRE on the five-benchmark av-erage and yields less stable accuracy. This contrast is consistent with the design difference: DRE edits after the verified solution boundary while preserv-70 10 20 30 40 50 60                 
+
+> Training step
+> 2.5
+> 5.0
+> 7.5
+> 10.0
+> 12.5
+> Answer revisits
+> Original positive
+> Original negative
+> Edited positive
+> (a) Rollout edit comparison
+> 020 40 60 80 100
+> Training step
+> 2000
+> 4000
+> 6000
+> 8000
+> 10000
+> Tokens
+> (b) Thinking and k
+> Total thinking
+> Before k
+> Post-kgap
+> 020 40 60 80 100
+> Training step
+> 4
+> 6
+> 8
+> 10
+> 12
+> Answer revisits
+> (c) Method revisits
+> GRPO S-GRPO GRPO + LP DRE
+
+Figure 4: Evaluation on selected AIME24 samples across training steps. Colors and markers indicate different methods. In panel (b), solid curves show total thinking length, dashed curves show thinking up to k⋆, and the shaded region highlights the reduction after k⋆ under DRE. (a) Edited positive trajectories contain fewer answer revisits than their original counterparts. (b) DRE reduces thinking mainly after k⋆. (c) Answer revisits decrease more substantially under DRE than under the baselines. 
+
+ing the solution-reaching prefix, whereas a length penalty does not distinguish necessary thinking from redundant continuation. (4) The edited pref-erence signal covers most sampled trajectories. 
+
+During DRE training, the edit-and-verify procedure accepted edits for 87.20% of sampled trajectories, and the remaining 12.80% used the conservative unedited fallback. Among accepted edits, 99.40% preserved verifier correctness after content regener-ation. Thus the preference term in Equation (2) is supported by most sampled rollouts, rather than by a small exceptional subset. 
+
+4.3 Overthinking Analysis 
+
+We next examine whether the reduction in thinking length occurs mainly after answer emergence. Fig-ure 4 evaluates selected AIME24 samples across training steps. Panel (a) compares original posi-tive trajectories, original negative trajectories, and edited positive trajectories. Original positive tra-jectories show more answer revisits than original negative trajectories, whereas edited positive tra-jectories contain fewer revisits than their original counterparts and become the group with the fewest revisits during training. Panel (b) shows that DRE reduces total thinking length much more than think-ing before k⋆, indicating that most of the reduction occurs after answer emergence. Panel (c) shows the same trend at the method level: answer revisits decrease more under DRE than under the baselines. In contrast, GRPO + LP leaves these measures largely unchanged, suggesting that the effect is not explained by a generic preference for shorter tra-jectories. Appendix J provides a complementary semantic-space visualization of the same interven-tion effect, and Appendix C reports ablations that remove each component individually. 
+
+5 Related Work 
+
+Prior work reduces overthinking by controlling reasoning length during post-training, shortening inference-time generation, or explicitly deciding when to stop (Sui et al., 2025; Wang et al., 2025). Post-training methods often use short or variable-length thinking supervision, length rewards or penalties, or latent reasoning schemes (Yu et al., 2024; Kimi Team, 2025; Aggarwal and Welleck, 2025; Hao et al., 2025). Inference-time methods instead shorten an already trained policy through prompts, decoding controls, early-exit signals, or stopping controllers (Yang et al., 2026; Dai et al., 2026; Wei et al., 2025). Our work is complemen-tary: we analyze how GRPO-style credit assign-ment can reinforce overthinking after answer emer-gence, and use dynamic rollout editing to preserve necessary reasoning while reducing preference for unnecessary thinking after the answer becomes ver-ifiable. Appendix A gives a fuller discussion. 
+
+6 Conclusion 
+
+We study why RL-trained reasoning models con-tinue thinking after a correct answer has already emerged. Our analysis suggests that, in GRPO-style training, successful rollouts can contain more overthinking than unsuccessful rollouts sampled for the same prompts, and sequence-level rewards may assign positive credit to both reaching the an-swer and overthinking after it. In this work, we 8propose DRE, which prefers verified shorter trajec-tories within the same RL group while preserving the reasoning prefix that reaches the answer. Exper-iments on diverse benchmarks covering mathemat-ical reasoning, science QA, and code generation validate the effectiveness of DRE. The results show that DRE reduces thinking length while preserving overall task performance, and that this reduction occurs mainly after answer emergence. 
+
+Limitations 
+
+RL training in this work is conducted only on DAPO-Math-17K (Yu et al., 2025), a dataset of math problems with verifiable answers. This set-ting supports reliable identification of answer emer-gence, which is required by dynamic rollout editing, but it also limits the diversity of training signals used to learn shorter reasoning behavior. Although the resulting model reduces thinking tokens on out-of-domain code-generation benchmarks, the gains are smaller than those observed on math tasks. Ex-tending dynamic rollout editing to more diverse verifiable RL training data remains an important di-rection for improving and assessing token savings across domains. 
+
+Ethical Considerations 
+
+This work aims to reduce overthinking after answer emergence in RL-trained reasoning models. The main potential benefit is improved inference effi-ciency, which can lower compute cost and associ-ated resource use. Since shorter thinking processes may not be equally suitable for all tasks, deploy-ments should be preceded by evaluation in the in-tended target domain, especially when additional verification steps are important for reliability. 
+
+References 
+
+Pranjal Aggarwal and Sean Welleck. 2025. L1: con-trolling how long A reasoning model thinks with reinforcement learning. In Second Conference on Language Modeling .Jeffrey Cheng and Benjamin Van Durme. 2024. Com-pressed chain of thought: Efficient reasoning through dense representations. CoRR , abs/2412.13171. Muzhi Dai, Chenxu Yang, and Qingyi Si. 2026. S-grpo: Early exit via reinforcement learning in reasoning models. Advances in Neural Information Processing Systems , 38:48178–48204. Soumya Suvra Ghosal, Souradip Chakraborty, Avinash Reddy, Yifu Lu, Mengdi Wang, Dinesh Manocha, Furong Huang, Mohammad Ghavamzadeh, and Am-rit Singh Bedi. 2025. Does thinking more always help? mirage of test-time scaling in reasoning mod-els. In Advances in Neural Information Processing Systems , volume 38. Daya Guo, Dejian Yang, Haowei Zhang, and 1 oth-ers. 2025. DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. Nature ,645(8081):633–638. Formal journal version of arXiv:2501.12948. Jinyi Han, Ying Huang, Ying Liao, Haiquan Zhao, Zis-hang Jiang, Xinyi Wang, Xikun Lu, Guanghao Zhou, Sihang Jiang, Jiaqing Liang, Weikang Zhou, Zeye Sun, Fei Yu, and Yanghua Xiao. 2026. Your mod-els have thought enough: Training large reasoning models to stop overthinking. In The Fourteenth In-ternational Conference on Learning Representations, ICLR 2026 . OpenReview.net. Tingxu Han, Zhenting Wang, Chunrong Fang, Shiyu Zhao, Shiqing Ma, and Zhenyu Chen. 2025. Token-budget-aware LLM reasoning. In Findings of the As-sociation for Computational Linguistics: ACL 2025 ,pages 24842–24855, Vienna, Austria. Association for Computational Linguistics. Shibo Hao, Sainbayar Sukhbaatar, DiJia Su, Xian Li, Zhiting Hu, Jason E. Weston, and Yuandong Tian. 2025. Training large language models to reason in a continuous latent space. In Second Conference on Language Modeling .Jiameng Huang, Baijiong Lin, Guhao Feng, Jierun Chen, Di He, and Lu Hou. 2026a. Efficient reasoning for large reasoning language models via certainty-guided reflection suppression. In Proceedings of the AAAI Conference on Artificial Intelligence , vol-ume 40, pages 31176–31184. Zixuan Huang, Xin Xia, Yuxi Ren, Jianbin Zheng, Xuanda Wang, Zhixia Zhang, Hongyan Xie, Songshi Liang, Zehao Chen, Xuefeng Xiao, Fuzhen Zhuang, Jianxin Li, Yikun Ban, and Deqing Wang. 2026b. Does your reasoning model implicitly know when to stop thinking? CoRR , abs/2602.08354. Naman Jain, King Han, Alex Gu, Wen-Ding Li, Fanjia Yan, Tianjun Zhang, Sida Wang, Armando Solar-Lezama, Koushik Sen, and Ion Stoica. 2025. Live-CodeBench: Holistic and contamination free evalua-tion of large language models for code. In The Thir-teenth International Conference on Learning Repre-sentations, ICLR 2025, Singapore, April 24-28, 2025 .OpenReview.net. Yu Kang, Xianghui Sun, Liangyu Chen, and Wei Zou. 2025. C3oT: Generating shorter chain-of-thought without compromising effectiveness. In AAAI-25, Sponsored by the Association for the Advancement of Artificial Intelligence, February 25 - March 4, 2025, Philadelphia, PA, USA , pages 24312–24320. AAAI Press. 
+
+9Kimi Team. 2025. Kimi k1.5: Scaling reinforcement learning with LLMs. CoRR , abs/2501.12599. Ayeong Lee, Ethan Che, and Tianyi Peng. 2025. How well do LLMs compress their own chain-of-thought? A token complexity approach. CoRR ,abs/2503.01141. Xin Liu and Lu Wang. 2025. Answer convergence as a signal for early stopping in reasoning. In Proceed-ings of the 2025 Conference on Empirical Methods in Natural Language Processing , pages 17896–17907, Suzhou, China. Association for Computational Lin-guistics. Haotian Luo, Li Shen, Haiying He, Yibo Wang, Shi-wei Liu, Wei Li, Naiqiang Tan, Xiaochun Cao, and Dacheng Tao. 2025. O1-Pruner: Length-harmonizing fine-tuning for O1-Like reasoning prun-ing. CoRR , abs/2501.12570. Xinyin Ma, Guangnian Wan, Runpeng Yu, Gongfan Fang, and Xinchao Wang. 2025. CoT-Valve: Length-compressible chain-of-thought tuning. In Proceed-ings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Pa-pers) , pages 6025–6035, Vienna, Austria. Associa-tion for Computational Linguistics. Mathematical Association of America. 2026. MAA invitational competitions. Meituan LongCat Team. 2025. Introducing LongCat-Flash-Thinking: A technical report. CoRR ,abs/2509.18883. Niklas Muennighoff, Zitong Yang, Weijia Shi, Xi-ang Lisa Li, Li Fei-Fei, Hannaneh Hajishirzi, Luke Zettlemoyer, Percy Liang, Emmanuel J. Candès, and Tatsunori Hashimoto. 2025. s1: Simple test-time scaling. CoRR , abs/2501.19393. OpenAI. 2025. gpt-oss-120b & gpt-oss-20b model card. 
+
+Preprint , arXiv:2508.10925. Keqin Peng, Liang Ding, Yuanxin Ouyang, Meng Fang, and Dacheng Tao. 2025. Revisiting overthinking in long chain-of-thought from the perspective of self-doubt. CoRR , abs/2505.23480. Xiao Pu, Michael Saxon, Wenyue Hua, and William Yang Wang. 2025. THOUGHTTERMI-NATOR: benchmarking, calibrating, and mitigat-ing overthinking in reasoning models. CoRR ,abs/2504.13367. David Rein, Betty Li Hou, Asa Cooper Stickland, Jack-son Petty, Richard Yuanzhe Pang, Julien Dirani, Ju-lian Michael, and Samuel R. Bowman. 2024. GPQA: A graduate-level google-proof Q&A benchmark. In 
+
+First Conference on Language Modeling .Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, Y. K. Li, Y. Wu, and Daya Guo. 2024. DeepSeekMath: Pushing the limits of mathemat-ical reasoning in open language models. CoRR ,abs/2402.03300. Zhenyi Shen, Hanqi Yan, Linhai Zhang, Zhanghao Hu, Yali Du, and Yulan He. 2025. CODI: compress-ing chain-of-thought into continuous space via self-distillation. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Process-ing , pages 677–693, Suzhou, China. Association for Computational Linguistics. Jinyan Su, Jennifer Healey, Preslav Nakov, and Claire Cardie. 2025. Between underthinking and overthink-ing: An empirical study of reasoning length and cor-rectness in LLMs. CoRR , abs/2505.00127. Yang Sui, Yu-Neng Chuang, Guanchu Wang, Jiamu Zhang, Tianyi Zhang, Jiayi Yuan, Hongyi Liu, An-drew Wen, Shaochen Zhong, Na Zou, Hanjie Chen, and Xia Hu. 2025. Stop overthinking: A survey on efficient reasoning for large language models. Trans. Mach. Learn. Res. , 2025. Renliang Sun, Wei Cheng, Dawei Li, Haifeng Chen, and Wei Wang. 2025. Stop when enough: Adap-tive early-stopping for chain-of-thought reasoning. 
+
+CoRR , abs/2510.10103. Rui Wang, Hongru Wang, Boyang Xue, Jianhui Pang, Shudong Liu, Yi Chen, Jiahao Qiu, Derek Fai Wong, Heng Ji, and Kam-Fai Wong. 2025. Harnessing the reasoning economy: A survey of efficient reasoning for large language models. CoRR , abs/2503.24377. Zihao Wei, Liang Pang, Jiahao Liu, Wenjie Shi, Jingcheng Deng, Shicheng Xu, Zenghao Duan, Fei Sun, Huawei Shen, and Xueqi Cheng. 2025. The evolution of thought: Tracking LLM over-thinking via reasoning dynamics analysis. CoRR ,abs/2508.17627. Yuyang Wu, Yifei Wang, Ziyu Ye, Tianqi Du, Stefanie Jegelka, and Yisen Wang. 2026. When more is less: Understanding chain-of-thought length in LLMs. In 
+
+The Fourteenth International Conference on Learn-ing Representations, ICLR 2026 . OpenReview.net. Heming Xia, Chak Tou Leong, Wenjie Wang, Yongqi Li, and Wenjie Li. 2025. TokenSkip: Controllable chain-of-thought compression in LLMs. In Proceedings of the 2025 Conference on Empirical Methods in Natu-ral Language Processing , pages 3351–3363, Suzhou, China. Association for Computational Linguistics. An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, Chujie Zheng, Day-iheng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao Ge, Haoran Wei, Huan Lin, Jialong Tang, and 41 others. 2025. Qwen3 technical report. Preprint ,arXiv:2505.09388. Chenxu Yang, Qingyi Si, Yongjie Duan, Zheliang Zhu, Chenyu Zhu, Qiaowei Li, Minghui Chen, Zheng Lin, and Weiping Wang. 2026. Dynamic early exit in reasoning models. In The Fourteenth International Conference on Learning Representations, ICLR 2026 .OpenReview.net. 
+
+10 Ping Yu, Jing Xu, Jason Weston, and Ilia Kulikov. 2024. Distilling System 2 into System 1. CoRR ,abs/2407.06023. Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xi-aochen Zuo, Yu Yue, Weinan Dai, Tiantian Fan, Gao-hong Liu, Juncai Liu, Lingjun Liu, Xin Liu, Haibin Lin, Zhiqi Lin, Bole Ma, Guangming Sheng, Yux-uan Tong, Chi Zhang, Mofan Zhang, and 17 others. 2025. DAPO: an open-source LLM reinforcement learning system at scale. In Advances in Neural Information Processing Systems , volume 38, pages 113222–113244. Curran Associates, Inc. 
+
+A Related Work 
+
+We organize related work according to the stage at which prior methods intervene to control reasoning length: during post-training, at inference through prompting or decoding, or via explicit early-exit mechanisms. This organization follows recent tax-onomies of efficient reasoning (Sui et al., 2025; Wang et al., 2025). 
+
+Post-training methods. Training-time ap-proaches control reasoning length by modifying supervision signals, reward functions, or the latent reasoning space. Representative directions include supervised fine-tuning with variable-length chain-of-thought data (Yu et al., 2024; Kang et al., 2025; Xia et al., 2025; Ma et al., 2025), RL objectives with explicit length rewards or penalties (Kimi Team, 2025; Luo et al., 2025; Aggarwal and Welleck, 2025), and latent-space reasoning schemes (Hao et al., 2025; Cheng and Durme, 2024; Shen et al., 2025). The proposed method also intervenes during post-training, but differs in mechanism: rather than globally rewarding concise reasoning or requiring short chain-of-thought supervision, it edits high-reward RL rollouts at the point where a verified solution first appears. 
+
+Prompt-based methods. Prompting strategies elicit shorter or more disciplined chains of thought by instructing the model to be concise, decisive, or self-monitoring (Han et al., 2025; Muennighoff et al., 2025; Lee et al., 2025; OpenAI, 2025; Kang et al., 2025; Peng et al., 2025; Huang et al., 2026a). These methods are appealing because they require no retraining, but they tend to be brittle: their ef-fectiveness depends heavily on prompt wording, and a single prompting policy often generalizes poorly across tasks with different reasoning depths or answer formats. 
+
+Early-exit methods. Early-exit approaches inter-vene directly in the generation process by termi-nating reasoning once the model appears to have reached a solution. Some methods rely on exter-nal monitors or additional training, such as auxil-iary classifiers (Liu and Wang, 2025), bandit con-trollers (Sun et al., 2025), difficulty estimators (Pu et al., 2025), RL-based stopping policies such as S-GRPO (Dai et al., 2026), or self-aware guided sam-pling as in SAGE-RL (Huang et al., 2026b). Others pursue lower-overhead stopping rules based on in-trinsic model signals, such as DEER (Yang et al., 2026), or are motivated by reasoning-dynamics analyses that characterize an instance-specific post-convergence regime via a reasoning completion point (Wei et al., 2025). The present work is com-plementary to this line of research: rather than stopping generation through a controller or sam-pling rule, it edits sampled rollouts after verified answer emergence and trains against the later con-tinuation. 
+
+B Experimental Details 
+
+Training data and rollout sampling. All training-time variants are trained on DAPO-Math-17k (Yu et al., 2025). During training, we use a maximum generation length of 28,000 tokens. Each optimization step uses a batch size of 64 prompts, and each prompt contributes an effec-tive group of 8 trajectories or candidates for group-relative normalization. For GRPO and GRPO + LP, these are 8 sampled rollouts. For DRE, we sample 4 original rollouts and construct 4 auxiliary coun-terparts; each auxiliary trajectory is an accepted edit when both prefix verification and verification of the regenerated content process succeed, and an unedited copy otherwise. For S-GRPO, we sam-ple 1 rollout and construct 8 candidates from that rollout following its stopping-policy construction. 
+
+Training horizon and checkpoint selection. 
+
+For DRE, we select the first checkpoint whose validation-set mean full thinking length is shorter than the raw model’s validation-set mean k⋆ to-ken position. This stopping rule selects the point at which the trained model’s complete thinking process has become shorter than the raw model’s answer-emergence boundary on the validation set. For the other trained methods, we train to 100 opti-mization steps and report the step-100 checkpoint. In S-GRPO runs that collapse before step 100 on a training set, we instead report the last checkpoint 11 before collapse and do not use post-collapse check-points. 
+
+Optimization hyperparameters. We do not use a KL penalty in any training variant, i.e., the KL co-efficient is set to zero. For ordinary clipped GRPO objectives, including the GRPO, GRPO + LP, S-GRPO, and Standard Clip settings, we use asym-metric ratio clipping with lower-side ϵ↓ = 0 .20 
+
+and upper-side ϵ↑ = 0 .28 , corresponding to ratio bounds [0 .80 , 1.28] . For GClip in DRE and the GClip-based ablations, we use ϵ↓ = ϵ↑ = 0 .10 ,corresponding to ratio bounds [0 .90 , 1.10] .
+
+GRPO + LP length reward. GRPO + LP is a length-penalty baseline following the group-relative length reward used in Kimi k1.5 (Kimi Team, 2025). Within each sampled group, let 
+
+r(x, y i, y ⋆) ∈ { 0, 1} be the rule-based correctness indicator for response yi, let len( i) be its generated length, and let min _len and max _len be the mini-mum and maximum generated lengths in the same group. If max _len = min _len , we set λi = 0 .Otherwise, we set 
+
+λi = 0 .5 − len( i) − min _len max _len − min _len ,
+
+and define the auxiliary length reward as 
+
+rlen (i) = 
+
+(
+
+λi, r(x, y i, y ⋆) = 1 ,
+
+min(0 , λ i), r(x, y i, y ⋆) = 0 .
+
+Thus shorter correct responses receive larger auxil-iary reward, while incorrect responses receive no positive length bonus. 
+
+Evaluation protocol. At evaluation time, we use temperature 0.6 for all benchmarks. Unless other-wise noted, for AIME (AIME I and II combined for each year), we sample 16 responses per prob-lem with a maximum generation length of 81,920 tokens. For GPQA-D, we sample 8 responses per problem with a maximum generation length of 32,768 tokens. For LCB-V6, we sample 8 re-sponses per problem with a maximum generation length of 81,920 tokens. For Qwen3-8B, we use a 40,960-token generation cap for all benchmarks due to our serving and evaluation configuration. A small number of method–benchmark runs use fewer completed evaluation samples because of time constraints. We report Acc as per-sample ac-curacy over completed sampled responses. Think Tok. is the mean number of generated tokens in-side the delimited thinking process, counted be-tween the first <think> marker and the first sub-sequent </think> marker. If </think> is ab-sent, we count generated tokens after <think> 
+
+until the generation stops or reaches the maximum generation length. Truncated outputs are scored as generated, without repair or regeneration. For mechanism-facing analyses, we additionally track mean k⋆, answer revisits after k⋆, and old-policy token probabilities on accepted edited suffixes after 
+
+ˆk.
+
+Token efficiency. In Table 1, TE denotes token efficiency: 
+
+TE = 1000 · Acc 
+
+Lt
+
+,
+
+where Acc is the average accuracy in percentage points and Lt is the average thinking-token count over the benchmarks included in the table. TE can be read as accuracy points per 1,000 thinking tokens, so larger values indicate a better accuracy– token tradeoff. 
+
+C Ablations 
+
+We report leave-one-out ablations evaluated on selected AIME24 samples across training steps. The Full Method combines prefix verification, boundary-based editing, prefix masking, and GClip. 
+
+No Prefix Verification removes the prefix-closure check while retaining the final regenerated-content correctness check. No Prefix Masking removes the pair-local mask that excludes the original branch’s direct loss on the shared thinking prefix. Standard Clip replaces GClip with ordinary clipping near the edited boundary and in the early edited suf-fix. These ablations test whether each safeguard is needed to reduce overthinking while preserving task performance. Figure 5 reports accuracy, total thinking length, thinking before k⋆, and content process length. The ablations show distinct failure modes. With-out prefix verification, accuracy declines while content length increases, suggesting that some ac-cepted prefixes are not yet ready to expose the verified solution and the regenerated content pro-cess must complete reasoning that should have re-mained in thinking. Without prefix masking, think-ing before k⋆ drops the most and accuracy later de-grades, consistent with negative credit leaking into the shared verified prefix. With Standard Clip , total 12 10 20 30 40 50 60 
+
+> Training step
+> 72%
+> 74%
+> 76%
+> 78%
+> 80%
+> 82%
+> Accuracy
+
+(a) Accuracy      
+
+> 10 20 30 40 50 60
+> Training step
+> 12000
+> 14000
+> 16000
+> 18000
+> 20000
+> Tokens
+
+(b) Total thinking      
+
+> 10 20 30 40 50 60
+> Training step
+> 2500
+> 3000
+> 3500
+> Tokens
+
+(c) Thinking before k     
+
+> 10 20 30 40 50 60
+> Training step
+> 1000
+> 1100
+> 1200
+> Tokens
+
+(d) Content length    
+
+> No Prefix Verification Standard Clip No Prefix Masking Full Method
+
+Figure 5: Leave-one-out ablations evaluated on selected AIME24 samples across training steps. The Full Method 
+
+maintains accuracy while reducing total thinking and keeping content process length stable. (a) Accuracy. (b) Total thinking. (c) Thinking before k⋆. (d) Content process length. 
+
+thinking declines more slowly than under the Full Method , consistent with ordinary clipping weak-ening the intended ascent signal near the edited boundary; Appendix F gives a representative old-policy mismatch example. Overall, the ablation results support combining prefix verification, pre-fix masking, and GClip. 
+
+D Supplementary Early-Exit Comparison 
+
+Table 2 situates DRE against two training-free inference-time stopping baselines, DEER (Yang et al., 2026) and RCPD (Wei et al., 2025). We re-port this supplementary comparison on AIME24, AIME25, AIME26, and GPQA-D, where we ran both early-exit baselines under the same evaluation pipeline. LCB-V6 is omitted from this table be-cause we did not validate RCPD under the same LCB-V6 protocol. The Average columns are there-fore computed over these four benchmarks and should be interpreted within this supplementary comparison, rather than compared directly with the five-benchmark averages in Table 1. 13 Backbone Method AIME24 AIME25 AIME26 GPQA-D Average Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑ Think Tok. ↓ Acc ↑                                                                                                                                    
+
+> Qwen3-4B-Thinking-2507 Raw Model 18923 81.87 21510 79.79 20789 77.71 8091 65.47 17328 76.21 Qwen3-4B-Thinking-2507 DEER 18620 80.74 20651 77.41 19219 78.52 7914 66.72 16601 75.85 Qwen3-4B-Thinking-2507 RCPD 14384 79.37 16049 78.33 16916 76.04 7265 66.04 13653 74.95 Qwen3-4B-Thinking-2507 DRE 13092 81.87 14882 80.54 14431 79.37 5689 65.67 12024 76.86 Qwen3-8B Raw Model 13988 75.42 17336 68.75 15862 66.67 8683 59.34 13967 67.55 Qwen3-8B DEER 12219 72.08 14695 64.17 14324 59.26 8138 60.98 12344 64.12 Qwen3-8B RCPD 12952 74.79 15332 64.79 14857 62.50 7330 59.85 12618 65.48 Qwen3-8B DRE 10163 75.83 13448 66.67 11381 66.87 6658 60.98 10413 67.59 Qwen3-30B-A3B-Thinking-2507 Raw Model 15299 88.12 18095 85.62 16985 88.96 6922 76.45 14325 84.79 Qwen3-30B-A3B-Thinking-2507 DEER 14405 87.78 18090 84.08 17707 86.29 6528 75.47 14183 83.40 Qwen3-30B-A3B-Thinking-2507 RCPD 13831 87.08 15231 83.54 15741 85.83 6021 74.94 12706 82.85 Qwen3-30B-A3B-Thinking-2507 DRE 10407 88.54 13040 83.54 12153 86.46 5318 75.51 10230 83.51
+
+Table 2: Supplementary comparison with Raw Model, training-free early-exit methods, and DRE on the shared evaluation set. Average is computed over AIME24, AIME25, AIME26, and GPQA-D. 
+
+E GClip as a Straight-Through Clipped-Ratio Operator 
+
+This appendix formalizes the straight-through prop-erty of GClip used in Section 3.3. Throughout, let 
+
+0 < ℓ < u and define 
+
+GClip( x; ℓ, u ) ≜ sg  clip( x, ℓ, u ) · x
+
+sg( x) ,
+
+for any policy ratio x > 0. Here sg denotes stop-gradient: it leaves the forward value unchanged but blocks gradients through its argument. 
+
+Theorem 1 (GClip identity and straight-through derivative) . Let s(x) = GClip( x; ℓ, u ). In the for-ward pass, 
+
+s(x) = clip( x, ℓ, u ).
+
+Under automatic differentiation with stop-gradient, the scalar derivative with respect to x is 
+
+Dsg s(x) = clip( x, ℓ, u )
+
+x = clip 
+
+
+
+1, ℓx , ux
+
+
+
+,
+
+or equivalently, 
+
+Dsg s(x) = 
+
+
+
+ℓ/x, 0 < x < ℓ, 
+
+1, ℓ ≤ x ≤ u, u/x, x > u. 
+
+Consequently, let x = xθ be a policy ratio that depends on the model parameters, and let L(θ) = 
+
+−A s (xθ) denote the clipped branch of a token-level loss for a positively preferred token, where 
+
+A > 0 is treated as constant during differentiation. If xθ > u , then 
+
+∇sg 
+
+θ L(θ) = −A uxθ
+
+∇θxθ,
+
+which is non-zero whenever ∇θxθ̸ = 0 . By con-trast, the standard clipped branch 
+
+Lclip (θ) = −A clip( xθ, ℓ, u )
+
+has zero automatic-differentiation gradient for 
+
+xθ > u . Thus GClip leaves the clipped forward scalar value unchanged while replacing the or-dinary clipped branch with a nonzero straight-through gradient in this selected saturation case. Moreover, for every interior point x0 ∈ (ℓ, u ),
+
+s(x0) = x0 and Dsg s(x0) = 1 .
+
+Therefore, inside the clipping interval, this token-level branch has the same first-order direction as the unclipped branch. Proof. Forward value. Fix any x > 0. Since sg 
+
+leaves the forward value unchanged, the first factor equals clip( x, ℓ, u ) in the forward pass. The second factor satisfies x
+
+sg( x) = 1 
+
+in the forward pass because the denominator has the same numerical value as x. Therefore 
+
+s(x) = sg  clip( x, ℓ, u ) · x
+
+sg( x) = clip( x, ℓ, u ),
+
+which proves the first claim. 
+
+Surrogate derivative. For the derivative, the stop-gradient operator treats both sg  clip( x, ℓ, u ) and 
+
+sg( x) as constants during backpropagation. Hence the derivative of the clipped factor itself is not used, including at the ordinary nondifferentiable points 
+
+x = ℓ and x = u. We have 
+
+Dsg s(x) = sg  clip( x, ℓ, u ) · Dsg 
+
+ x
+
+sg( x)
+
+
+
+= clip( x, ℓ, u ) · 1
+
+x
+
+= clip( x, ℓ, u )
+
+x .
+
+14 Because x > 0, this is equivalently 
+
+Dsg s(x) = 
+
+
+
+ℓ/x, 0 < x < ℓ, 
+
+1, ℓ ≤ x ≤ u, u/x, x > u, 
+
+and also Dsg s(x) = clip(1 , ℓ/x, u/x ).
+
+Upper-side saturation. Let x = xθ, let L(θ) = 
+
+−A s (xθ) with A > 0 treated as constant during differentiation, and suppose xθ > u . The derivative identity gives 
+
+Dsg s(xθ) = uxθ
+
+.
+
+By the chain rule, 
+
+∇sg  
+
+> θ
+
+L(θ) = −A D sg s(xθ) ∇θxθ = −A uxθ
+
+∇θxθ.
+
+Since A > 0, u > 0, and xθ > u , this gradi-ent is non-zero whenever ∇θxθ̸ = 0 . For com-parison, the standard clipped branch Lclip (θ) = 
+
+−A clip( xθ, ℓ, u ) is constant in xθ on the region 
+
+xθ > u , so its automatic-differentiation gradient is zero there. This proves that GClip preserves a straight-through signal after upper-side clip satura-tion. 
+
+Interior agreement. Now let x0 ∈ (ℓ, u ). Be-cause x0 lies strictly inside the clipping interval, 
+
+clip( x0, ℓ, u ) = x0. The forward identity from the first claim gives 
+
+s(x0) = clip( x0, ℓ, u ) = x0.
+
+The derivative identity from the second claim gives 
+
+Dsg s(x0) = clip( x0, ℓ, u )
+
+x0
+
+= x0
+
+x0
+
+= 1 .
+
+Thus GClip agrees exactly with the unclipped map to first order at every interior point of the clipping interval. The proof is complete. 
+
+Corollary 1 (Selected branches in the clipped sur-rogate) . Let 
+
+ϕA(x) = − min( xA, GClip( x; ℓ, u )A)
+
+be the token-level loss branch used in Equation (5) ,with A treated as constant during differentiation and away from branch-tie points. If A > 0 and 
+
+x > u , the clipped branch is selected and 
+
+∇sg  
+
+> θ
+
+ϕA(xθ) = −A uxθ
+
+∇θxθ.
+
+If A < 0 and 0 < x < ℓ , the clipped branch is also selected and 
+
+∇sg  
+
+> θ
+
+ϕA(xθ) = −A ℓxθ
+
+∇θxθ.
+
+Therefore, Equation (5) preserves nonzero straight-through signal in the upper-side positive-advantage case and in the lower-side negative-advantage case. The first case supports learning positively preferred edited suffixes; the second case continues to penal-ize lower-ranked tokens whose ratios have moved below the lower clip bound. Proof. This follows directly from the branch se-lected by the minimum and the derivative identity 
+
+Dsg GClip( x; ℓ, u ) = clip( x, ℓ, u )/x . Thus GClip leaves the clipped forward scalar value unchanged while replacing the ordinary clipped branch with a nonzero straight-through gradient in the saturation cases selected by the surrogate. 
+
+F Edited-Suffix Distribution Mismatch 
+
+The Standard Clip ablation in Appendix C is moti-vated by the local distribution mismatch introduced when an accepted training-time edit replaces the original continuation after the accepted editable boundary ˆk. The edited suffix no longer follows the sampled trajectory under πθold , so its early to-kens can receive low old-policy probability near the boundary. Figure 6 shows a representative ac-cepted pair over the first 80 suffix positions; the shaded cue region starts at ˆk and includes the in-serted final-answer cue. The original suffix remains on the original sampled trajectory, whereas the edited suffix begins with the verified final-answer string that closes the thinking process, followed by the regenerated content process. This mismatch can make positively preferred edited tokens more likely to enter upper-side clip saturation once their current-policy probability increases, which is the case where GClip preserves straight-through learn-ing signal. This mismatch also clarifies the status of the ob-jective. The edited suffix is deliberately introduced as a verified synthetic alternative to the original continuation. Consequently, the edited-trajectory update should not be read as satisfying the usual on-policy sampling assumptions behind PPO-style clipping. Instead, DRE uses the clipped-ratio form as a bounded forward surrogate for a preference constructed from verifier-accepted edits. 15 20 0 20 40 60 80 
+
+> Relative token position to edited boundary
+> 0.0
+> 0.5
+> 1.0
+> Old-policy token probability
+> Shared prefix
+> Original suffix
+> Edited suffix
+> Cue region
+
+Figure 6: Representative old-policy probability mis-match near an accepted editable boundary. The shaded cue region starts at the accepted boundary and includes the inserted final-answer cue. After the shared thinking prefix, the edited suffix often receives low old-policy probability near the boundary and over early edited-suffix tokens, while the original suffix remains on the original sampled trajectory. 
+
+G Representative Rollouts Across Training 
+
+Figure 7 shows a single prompt across early, mid-dle, and late training steps from the same GRPO training run discussed in Section 2. The example illustrates the contrast between thinking before and after answer emergence in Figure 2. Thinking be-fore answer emergence can be useful: the middle training step fixes the early training step’s failure to convert “3 hours and 24 minutes” into minutes before boxing the answer. Thinking after answer emergence can become overthinking: the late train-ing step already boxes the correct answer, then en-ters an additional verification block and boxes the same answer again. To keep the appendix compact, we show only the final portion of each response after the shared algebraic setup. 
+
+H Representative Accepted Edit 
+
+Figure 8 shows an accepted edit from the rollout-editing data used for the method-facing analyses. The example is chosen to make the edit operation visible: the two trajectories share a long thinking prefix, diverge after the accepted editable boundary 
+
+ˆk, and the edited branch closes the thinking process with the verified answer before regenerating the content process. The left branch is the lower-scored original continuation, and the right branch is the preferred accepted edit. 
+
+I Case Study: DRE Reduces Post-Solution Continuation 
+
+Figure 9 presents a paired AIME24 example com-paring the Raw Model and the DRE-trained model on the same prompt. Once the verified answer emerges, the Raw Model continues to reflect on and re-check the exposed value, producing a long post-solution continuation. In contrast, the DRE-trained model closes the thinking process shortly after deriving the same value. 
+
+J Semantic Dynamics Under DRE 
+
+Figure 10 gives a representative semantic-space analysis of the same target behavior. Following the reasoning-dynamics analysis of LLM overthink-ing (Wei et al., 2025), we examine whether DRE shortens post-solution continuation after answer emergence without erasing thinking that may be needed before the answer-emergence boundary k⋆.For each thinking prefix k, we force the thinking process to stop at that prefix, sample content con-tinuations, embed the sampled content processes, and average them into a prefix-level centroid ek.The left panel projects these centroids into a shared two-dimensional PCA space for visualization only. The right panel reports the high-dimensional se-mantic residual 1 − cos( ek, ¯e≥k⋆ ), where ¯e≥k⋆ is the centroid of the post-k⋆ prefix embeddings for the corresponding trajectory. The original model continues through a longer sequence of prefix states and moves within a broad post-k⋆ semantic neighborhood. In contrast, the DRE-trained model reaches a compact region over a shorter prefix range. Because each residual curve uses its own post-k⋆ centroid, the residual values should be read as within-trajectory concentration rather than distances to a shared semantic target. This qualitative analysis is consistent with the main evidence in Section 4: DRE reduces continuation after answer emergence while preserving pre-k⋆
+
+reasoning that may be needed to expose the verified answer. 
+
+K Declaration of AI Use 
+
+Writing assistance. Following the ACL policy on AI writing assistance, we disclose that Chat-GPT was used only for language polishing during manuscript preparation. Its use was limited to edit-ing author-written text for grammar, clarity, and readability. It was not used to develop the method, 16 design experiments, formulate scientific claims, in-terpret results, or produce experimental data. The authors reviewed all AI-assisted edits and remain responsible for the final manuscript. 
+
+Experimental context. The Qwen3-family mod-els and DeepSeek-R1-style RL setup discussed in this work are part of the research subject and experimental context. These models and settings were not used as writing assistants for drafting the manuscript. 17 Prompt. Every morning Aya goes for a 9-kilometer-long walk and stops at a coffee shop afterwards. When she walks at a constant speed of s kilometers per hour, the walk takes her 4 hours, including t minutes spent in the coffee shop. When she walks s + 2 kilometers per hour, the walk takes her 2 hours and 24 minutes, including t minutes spent in the coffee shop. Suppose Aya walks at s + 1/2 kilometers per hour. Find the number of minutes the walk takes her, including the t minutes spent in the coffee shop. 
+
+The three excerpts are taken directly from stored model outputs; [earlier steps omitted] marks omitted prefix text, and line breaks are adjusted for layout. 
+
+Early Training Step 
+
+[earlier steps omitted] 
+
+Using the first equation: 
+
+92.5 + t
+
+60 = 4 3.6 + t
+
+60 = 4 
+
+t
+
+60 = 0 .4
+
+t = 24 minutes 
+
+Step 5: Calculate the total time when Aya walks at s + 12 = 3 km/h. 
+
+Total time = 93 + 24 60 = 3 + 0 .4= 3 .4 hours Convert 0.4 hours to minutes: 
+
+0.4 × 60 = 24 minutes So, the total time is 3 hours and 24 minutes. 
+
+Final Answer: 
+
+344 
+
+Middle Training Step 
+
+[earlier steps omitted] 
+
+Given s = 2 .5 km/h, 
+
+s + 12 = 2 .5 + 0 .5 = 3 km/h First, find the walking time at 3 km/h for 9 km: 
+
+Tw = 93 = 3 hours Then, the total time including coffee shop time: 
+
+T = Tw + t = 3 + 0 .4 = 3 .4 hours Convert 3.4 hours to hours and minutes: 
+
+0.4 hours = 0 .4 × 60 = 24 minutes So, 
+
+T = 3 hours and 24 minutes But the problem asks for the number of minutes. So, convert 3 hours and 24 minutes to minutes: 
+
+3 × 60 + 24 = 180 + 24 = 204 minutes 
+
+Final Answer: 
+
+204 
+
+Late Training Step 
+
+[earlier steps omitted] 
+
+Thus, the final answer is: 
+
+204 
+
+Wait, let’s ensure all steps are accurate. 
+
+Verification 
+
+Given: 1. 9 
+
+> s
+
++ t 
+
+> 60
+
+= 4 (1) 2.  
+
+> 9
+> s+2
+
++ t 
+
+> 60
+
+= 2 .4 (2) Found: s = 2 .5 km/h, t = 24 
+
+minutes For third scenario: • Speed: s + 12 = 2 .5 + 0 .5 = 3 
+
+km/h • Time walking: 93 = 3 hours • Time in coffee shop: t = 24 
+
+minutes = 0 .4 hours • Total time: 3 + 0 .4 = 3 .4
+
+hours • Convert to minutes: 
+
+3.4 × 60 = 204 minutes Everything seems consistent. Therefore, the answer is: 
+
+204 
+
+Figure 7: Single-prompt rollout progression across training. Each panel is an abridged excerpt from the stored model output at that training step; omitted text is marked explicitly, and the remaining wording is unchanged apart from markdown-to-L ATEX formatting. The early training step reaches the correct verbal conclusion but boxes 344 ,showing that thinking before the final answer has not yet completed the required format conversion. The middle training step completes the needed conversion before boxing 204 . The late training step boxes 204 and then continues into an additional verification block before boxing the same answer again. This example complements Figure 2: thinking before k⋆ can improve correctness, while thinking after k⋆ can become overthinking attached to successful trajectories. 
+
+18 Shared thinking prefix through ˆk. [earlier thinking omitted] The step-by-step sum with the verified an values gives 450, so I think that’s the answer. Just to make 100% sure, let’s compute the sum again in a different order. Starting from n = 11 down to n = 1 , the alternating sum gives 450 again after the n = 3 , n = 2 , and n = 1 terms. Yes! Same result. So regardless of the order, we get 450. 
+
+# ▼ accepted editable boundary ˆk
+
+# ▼
+
+Original continuation after ˆk
+
+I think that’s solid. The key was not getting confused by the initial simplification, computing the first few 
+
+an correctly, finding the pattern for the minima at the median, deriving the formulas, verifying with multiple methods, then carefully summing with the correct signs. The problem says “for a positive integer n,” so n starts at 1, which we did, and the sum is from n = 1 to 11, which we covered. I don’t see any mistakes in the an values or the summa-tion now, so I think the answer is 450. 
+
+</think> 
+
+To solve the problem, we begin by simplifying the func-tion: 
+
+fn(x) = 
+
+> n
+
+X
+
+> i=1
+
+|x − i|
+
+!2
+
+−
+
+> n
+
+X
+
+> i=1
+
+(x − i)2.
+
+Accepted edit Final Answer 
+
+450 
+
+</think> 
+
+To solve the problem, we begin by analyzing the func-tion: 
+
+fn(x) = 
+
+> n
+
+X
+
+> i=1
+
+|x − i|
+
+!2
+
+−
+
+> n
+
+X
+
+> i=1
+
+(x − i)2.
+
+This expression simplifies significantly because |x −
+
+i|2 = ( x − i)2. Expanding the square gives 
+
+fn(x) = 2 X
+
+> 1≤i<j ≤n
+
+|x − i|| x − j|.
+
+Figure 8: A concrete accepted edit produced by dynamic rollout editing. The shared thinking prefix is preserved through the accepted editable boundary ˆk. The original branch continues with additional post-answer checking, while the accepted edit closes the thinking process with the verified answer and regenerates the content process. During training, the accepted edit is preferred over the original continuation, and prefix masking prevents the lower-scored original branch from directly penalizing the shared prefix. 
+
+19 Prompt. Jen picks 4 distinct numbers from {1, . . . , 10 }, and 4 numbers are randomly chosen from the same set. She wins a prize if at least two of her numbers are among the chosen numbers, and wins the grand prize if all four match. If the conditional probability of the grand prize given any prize is m/n , find m + n.
+
+The panels summarize the same sample slot in the stored Raw Model and DRE outputs. The long repeated checks are compressed, and notation and line breaks are normalized for layout.               
+
+> Model Verified answer Thinking length Thinking after answer emergence Raw Model 116 22 ,808 chars ≈12 ,200 chars DRE-trained 116 7,238 chars 32 chars
+
+Raw Model: Long Post-Answer Checking 
+
+Answer emergence. 
+
+N≥2 = 42
+
+!
+
+62
+
+!
+
++ 43
+
+!
+
+61
+
+!
+
++ 44
+
+!
+
+= 90 + 24 + 1 = 115 ,
+
+Pr(grand | prize) = 1115 ,m + n = 116 .
+
+“m + n = 116 ? Wait, but wait, wait a second, is this correct?” 
+
+> The Raw Model then continues for over twelve thousand characters. It reopens the interpretation of “at least two,” recomputes the match counts, checks small examples and lottery variants, and repeatedly returns to the same value.
+
+Late continuation. 
+
+42
+
+!
+
+62
+
+!
+
+= 90 , 43
+
+!
+
+61
+
+!
+
+= 24 , 44
+
+!
+
+= 1 .
+
+“So the answer should be 1 + 115 = 116 .” 
+
+116 
+
+DRE-Trained Model: Immediate Closure 
+
+Near the end of thinking. 
+
+For exactly k matches, choose k numbers from Jen’s ticket and 4 − k from the other six numbers. 
+
+42
+
+!
+
+62
+
+!
+
+= 90 , 43
+
+!
+
+61
+
+!
+
+= 24 , 44
+
+!
+
+= 1 .N≥2 = 90 + 24 + 1 = 115 .
+
+Only 1 of these 115 cases is the grand prize, so 
+
+Pr(grand | prize) = 1115 .m = 1 , n = 115 , m + n = 116 .
+
+Final Answer 
+
+116 
+
+</think>                 
+
+> The number of prize-winning draws is 90 + 24 + 1 = 115 , and only 1of these draws is the grand prize. Hence
+> P(Grand Prize |Prize ) = 1115 .
+> Thus, m= 1 ,n= 115 , and m+n= 116 .
+> 116
+
+Figure 9: Paired Raw Model and DRE-trained outputs for an AIME24 prompt where both models reach the verified answer 116 . The Raw Model exposes the final requested value and then continues with an extended post-answer checking phase, including repeated reinterpretation and consistency checks. The DRE-trained model performs the necessary counting calculation and closes the thinking process almost immediately after answer emergence. This qualitative case illustrates the intended effect of DRE: reducing overthinking after answer emergence without changing a correct final answer. 
+
+20 0.15 0.10 0.05 0.00 0.05 0.10 0.15 
+
+> Latent Dimension 2
+> 0.10
+> 0.05
+> 0.00
+> 0.05
+> 0.10
+> Latent Dimension 1
+
+(a) Semantic Trajectory      
+
+> 1
+> 126
+> 250
+> 6
+> 52
+> 97
+> Original model (k=1-250)
+> DRE-trained model (k=6-97)
+> k
+> 50 100 150 200 250
+> Thinking prefix index k
+> 0.00
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> Semantic residual
+
+(b) Semantic Residual  
+
+> Original model
+> DRE-trained model
+> kmarker
+
+Figure 10: Supplementary representative semantic-dynamics analysis for the original model and the DRE-trained model. (a) Prefix-level content centroids are projected with a shared PCA basis; color intensity encodes the thinking prefix index k separately for each trajectory. The red marker indicates the answer-emergence boundary k⋆ for the original model, and the shaded region summarizes the original model’s post-k⋆ neighborhood. (b) Semantic residual is computed in the original embedding space as distance to each trajectory’s own post-k⋆ centroid, so it measures within-trajectory concentration rather than distance to a shared target. The DRE-trained trajectory covers fewer prefix states and reaches a low-residual region within its shorter prefix range, while the original model continues with post-k⋆ semantic movement. 
+
+21
