@@ -1,0 +1,426 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-18T22:07:41.416626+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.18810v1",
+      "source": "arxiv",
+      "title": "Learning from Own Solutions: Self-Conditioned Credit Assignment for Reinforcement Learning with Verifiable Rewards",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has driven substantial progress in training LLMs for reasoning tasks, but representative methods such as GRPO assign uniform credit across all tokens, wasting gradient on routine tokens while under-crediting pivotal reasoning steps. Existing token-level credit assignment methods require resources beyond the model's own rollouts. GRPO variants rely on process reward models or ground-truth answers. Knowledge distillation assigns credit through per-token divergence but requires external teachers (On-Policy Distillation) or privileged information (On-Policy Self Distillation). However, these dependencies limit applicability in the pure RLVR setting. We observe that conditioning the model on its own verified trajectories induces a measurable per-token KL divergence between the original and conditioned distributions, and prove that distilling from a self-teacher constructed by verified trajectories leads to infeasible weighted-average solutions when multiple verified trajectories exist. We propose SC-GRPO (Self-Conditioned GRPO), which uses KL divergence mentioned before as a multiplicative weight on GRPO gradients. Across five benchmarks spanning math, code, and agentic tasks, SC-GRPO consistently outperforms 8.1% over GRPO and 5.9% over DAPO with stronger OOD performance. Moreover, SC-GRPO achieves higher performance than OPD.",
+      "authors": [
+        "Yingyu Shan",
+        "Yuhang Guo",
+        "Zihao Cheng",
+        "Zeming Liu",
+        "Xiangrong Zhu",
+        "Xinyi Wang",
+        "Jiashu Yao",
+        "Wei Lin",
+        "Hongru Wang",
+        "Heyan Huang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T08:26:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.18810v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes self-conditioned credit assignment for RLVR, directly matches RLVR and mentions on-policy distillation",
+      "llm_evidence_cn": "提出自条件信用分配用于RLVR，直接匹配RLVR并提及同策略蒸馏",
+      "llm_evidence": "提出自条件信用分配用于RLVR，直接匹配RLVR并提及同策略蒸馏",
+      "canonical_evidence": "提出自条件信用分配用于RLVR，直接匹配RLVR并提及同策略蒸馏",
+      "llm_tldr_en": "Self-conditioned credit assignment improves token-level credit in RLVR without external teachers, using the model's own solutions to assign per-token advantages.",
+      "llm_tldr_cn": "现有RLVR方法（如GRPO）对token均匀分配信用，浪费梯度；而token级信用分配依赖外部模型（如过程奖励模型或教师蒸馏）。本文提出自条件信用分配，利用模型自身的解决方案作为条件，为每个token分配优势，无需外部资源。在数学推理任务上提升了样本效率和最终性能。",
+      "llm_tldr": "现有RLVR方法（如GRPO）对token均匀分配信用，浪费梯度；而token级信用分配依赖外部模型（如过程奖励模型或教师蒸馏）。本文提出自条件信用分配，利用模型自身的解决方案作为条件，为每个token分配优势，无需外部资源。在数学推理任务上提升了样本效率和最终性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18844v1",
+      "source": "arxiv",
+      "title": "Learning from Your Own Mistakes: Constructing Learnable Micro-Reflective Trajectories for Self-Distillation",
+      "abstract": "Self-distillation improves reasoning in large language models by using the model's own rollouts as training signal, typically through implicit logit-level alignment that minimizes KL divergence toward a privileged target distribution. However, because this supervision is generated via uncontrolled sampling, it provides no diagnostic insight into the model's specific errors or corrective guidance for its individual failure patterns. Consequently, the model learns to imitate a privileged distribution rather than receiving fine-grained corrections that pinpoint where and why its reasoning fails. In this paper, we propose Trajectory-Augmented Policy Optimization (TAPO), which advances self-distillation from implicit distributional alignment to explicit trajectory construction. During RL training, the model produces both correct and incorrect rollouts to the same query, and TAPO leverages this contrastive structure to construct micro-reflective corrections, new training trajectories that retain the model's erroneous reasoning up to the point of failure, then insert a natural-language diagnosis and corrected reasoning guided by a correct reference from the same sampling group. Since each trajectory is anchored in the learner's own prefix and solutions, the corrective signal preserves the model's on-policy distribution to a greater extent than the position-wise alignment imposed by KL-based methods. To integrate these trajectories, TAPO introduces difficulty-aware candidate selection at the model's capability boundary and decoupled advantage estimation to prevent gradient contamination. Experiments on AIME 2024, AIME 2025, and HMMT 2025 show that TAPO achieves consistent improvements over GRPO under the same number of training steps. Further analysis demonstrates that TAPO strengthens both first-pass reasoning and error-correction effectiveness.",
+      "authors": [
+        "Zhilin Huang",
+        "Hang Gao",
+        "Ziqiang Dong",
+        "Yuan Chen",
+        "Yifeng Luo",
+        "Chujun Qin",
+        "Jingyi Wang",
+        "Yang Yang",
+        "Guanjun Jiang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-17T09:24:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.18844v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-distillation using own rollouts for reasoning improvement",
+      "llm_evidence_cn": "利用自身rollout进行自蒸馏以改进推理",
+      "llm_evidence": "利用自身rollout进行自蒸馏以改进推理",
+      "canonical_evidence": "利用自身rollout进行自蒸馏以改进推理",
+      "llm_tldr_en": "Proposes Trajectory-Augmented Policy Optimization (TAPO) to construct learnable micro-reflective trajectories for fine-grained self-distillation, improving LLM reasoning by correcting individual failure patterns.",
+      "llm_tldr_cn": "针对现有自蒸馏方法缺乏诊断性错误纠正的问题，提出轨迹增强策略优化（TAPO）方法，通过构建可学习的微反思轨迹，为模型提供针对个体失败模式的细粒度纠正信号，从而提升大语言模型的推理能力。实验表明，该方法在多个推理基准上优于传统的KL散度自蒸馏方法，为从自身错误中学习提供了新范式。",
+      "llm_tldr": "针对现有自蒸馏方法缺乏诊断性错误纠正的问题，提出轨迹增强策略优化（TAPO）方法，通过构建可学习的微反思轨迹，为模型提供针对个体失败模式的细粒度纠正信号，从而提升大语言模型的推理能力。实验表明，该方法在多个推理基准上优于传统的KL散度自蒸馏方法，为从自身错误中学习提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19120v1",
+      "source": "arxiv",
+      "title": "Seeing Before Reasoning: Decoupling Perception and Reasoning for Shortcut-Resilient Multimodal On-Policy Self-Distillation",
+      "abstract": "On-policy self-distillation (OPSD) trains a model on its own rollouts and uses a frozen copy to provide dense token-level targets conditioned on a reference target. This works well for LLM reasoning, but a direct extension to multimodal large language models (MLLMs) can create a shortcut: the privileged target may guide tokens mainly based on the text reference target rather than the image. We propose ViGOS, a visually grounded OPSD framework for MLLM post-training. The student first writes a visual description and then reasons toward the final answer. For valid rollouts, an image-only perception teacher supervises the description, while a privileged reasoning teacher supervises the reasoning and final answer on the same student prefix. A reference teacher is used only for invalid rollouts to recover the output format. Across general vision-language, expert reasoning, visual math, spatial grounding, and visual-language-prior benchmarks, ViGOS keeps the main benefits of OPSD and improves image-grounded behavior in shortcut-prone settings.",
+      "authors": [
+        "Sihan Wang",
+        "Xiyao Liu",
+        "Lianqing Liu",
+        "Zhi Han"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-06-17T14:33:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.19120v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes on-policy self-distillation for MLLM reasoning",
+      "llm_evidence_cn": "提出面向多模态LLM推理的在线自蒸馏方法",
+      "llm_evidence": "提出面向多模态LLM推理的在线自蒸馏方法",
+      "canonical_evidence": "提出面向多模态LLM推理的在线自蒸馏方法",
+      "llm_tldr_en": "Proposes ViGOS, a visually grounded on-policy self-distillation framework that decouples perception and reasoning to avoid shortcut in MLLM post-training.",
+      "llm_tldr_cn": "在线自蒸馏(OPSD)在LLM推理中效果良好，但直接扩展到多模态LLM时存在捷径：特权目标主要基于文本参考而非图像。本文提出ViGOS框架，学生先写视觉描述再推理，用纯图像感知教师监督描述，用特权推理教师监督推理和答案部分，从而抑制捷径，实现鲁棒的多模态在线自蒸馏。",
+      "llm_tldr": "在线自蒸馏(OPSD)在LLM推理中效果良好，但直接扩展到多模态LLM时存在捷径：特权目标主要基于文本参考而非图像。本文提出ViGOS框架，学生先写视觉描述再推理，用纯图像感知教师监督描述，用特权推理教师监督推理和答案部分，从而抑制捷径，实现鲁棒的多模态在线自蒸馏。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19236v1",
+      "source": "arxiv",
+      "title": "STARE: Surprisal-Guided Token-Level Advantage Reweighting for Policy Entropy Stability",
+      "abstract": "Reinforcement Learning with Verifiable Rewards algorithms like GRPO have emerged as the dominant post-training paradigm for complex reasoning in LLMs, yet commonly suffer from policy entropy collapse during training. We conduct a first-order gradient analysis of token-level entropy dynamics under GRPO and identify a token-level credit assignment mismatch: the per-token entropy variation decomposes into the product of the trajectory-level advantage and an entropy sensitivity function over the next-token distribution, yielding an advantage-surprisal four-quadrant structure and a near-criticality property. Motivated by it, we propose STARE (Surprisal-guided Token-level Advantage Reweighting for policy Entropy stability), which identifies entropy-critical token subsets via batch-internal surprisal quantiles, selectively reweights their effective advantages, and incorporates a target-entropy closed-loop gate for stable entropy regulation. Across model scales from 1.5B to 32B and three task families (Short CoT, Long CoT, and Multi-Turn Tool Use), STARE sustains stable RL training over thousands of steps while maintaining policy entropy within the target band. On AIME24 and AIME25, STARE outperforms DAPO and other competitive baselines by 4%-8% in average accuracy, with reflection tokens and response length growing in tandem, indicating sustained exploration-exploitation balance that further unlocks RL training potential.Code is available at https://github.com/hp-luo/STARE.",
+      "authors": [
+        "Haipeng Luo",
+        "Qingfeng Sun",
+        "Songli Wu",
+        "Can Xu",
+        "Wenfeng Deng",
+        "Han Hu",
+        "Yansong Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-17T16:13:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.19236v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "improves GRPO by token-level advantage reweighting for entropy stability",
+      "llm_evidence_cn": "通过令牌级优势重加权改进GRPO，稳定策略熵",
+      "llm_evidence": "通过令牌级优势重加权改进GRPO，稳定策略熵",
+      "canonical_evidence": "通过令牌级优势重加权改进GRPO，稳定策略熵",
+      "llm_tldr_en": "Analyzes entropy collapse in GRPO and proposes STARE with surprisal-guided token-level advantage reweighting to stabilize policy entropy.",
+      "llm_tldr_cn": "基于GRPO的强化学习训练常导致策略熵坍塌，影响探索。本文通过一阶梯度分析揭示令牌级熵动态，提出STARE方法，利用惊喜度引导的令牌级优势重加权来稳定策略熵。在多个推理任务上，STARE保持策略多样性的同时提升最终性能，为GRPO类方法提供了稳定的训练改进。",
+      "llm_tldr": "基于GRPO的强化学习训练常导致策略熵坍塌，影响探索。本文通过一阶梯度分析揭示令牌级熵动态，提出STARE方法，利用惊喜度引导的令牌级优势重加权来稳定策略熵。在多个推理任务上，STARE保持策略多样性的同时提升最终性能，为GRPO类方法提供了稳定的训练改进。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17524v1",
+      "source": "arxiv",
+      "title": "Learning to Refine Hidden States for Reliable LLM Reasoning",
+      "abstract": "Large language models show strong reasoning ability, but their internal reasoning process can remain unstable in complex multi-step settings, where early hidden-state errors may propagate to incorrect predictions. We propose ReLAR, a reinforcement-guided latent refinement framework that iteratively updates hidden representations before decoding. ReLAR maintains a compact latent reasoning state and uses learned depth and action controllers to adaptively determine both the number and direction of refinement steps. The controllers are trained with a policy gradient objective based on step-wise likelihood improvement, enabling efficient input-dependent reasoning without explicit chain-of-thought generation. Experiments on medical, mathematical, multi-hop reasoning, and open-ended generation benchmarks show that ReLAR improves accuracy, generation quality, and reasoning stability with substantially lower inference overhead than explicit reasoning baselines.",
+      "authors": [
+        "Chia-Hsuan Hsu",
+        "Jui-Ming Yao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-16T05:03:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.17524v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reinforcement-guided latent refinement with policy gradient for reliable LLM reasoning",
+      "llm_evidence_cn": "使用策略梯度的强化引导隐状态精炼，提升LLM推理可靠性",
+      "llm_evidence": "使用策略梯度的强化引导隐状态精炼，提升LLM推理可靠性",
+      "canonical_evidence": "使用策略梯度的强化引导隐状态精炼，提升LLM推理可靠性",
+      "llm_tldr_en": "Proposes ReLAR, a reinforcement-guided framework that iteratively refines hidden states before decoding using a policy gradient objective based on step-wise likelihood improvement, enabling efficient and reliable LLM reasoning without explicit CoT.",
+      "llm_tldr_cn": "该论文针对LLM在多步推理中隐状态错误累积导致不稳定的问题，提出了ReLAR框架，利用策略梯度目标（基于逐步似然改进）自适应地精炼隐状态表示，无需生成显式思维链。实验在医疗、数学等多跳推理任务上验证了有效性，表明强化信号可引导隐状态纠错，提升推理可靠性。",
+      "llm_tldr": "该论文针对LLM在多步推理中隐状态错误累积导致不稳定的问题，提出了ReLAR框架，利用策略梯度目标（基于逐步似然改进）自适应地精炼隐状态表示，无需生成显式思维链。实验在医疗、数学等多跳推理任务上验证了有效性，表明强化信号可引导隐状态纠错，提升推理可靠性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18954v1",
+      "source": "arxiv",
+      "title": "GraphPO: Graph-based Policy Optimization for Reasoning Models",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has become a standard paradigm for enhancing the capability of large reasoning models. RLVR typically samples responses independently and optimizes the policy using from final answers. This paradigm has two limitations. First, independently responses often contain similar intermediate reasoning steps, causing redundant exploration and wasted computation. Second, sparse final-answer rewards make it hard to identify useful steps. Tree-based methods partly address this problem by sharing prefixes and comparing branches from the same prefix to provide fine-grained signals. However, tree branches are still expanded independently. When different branches reach similar reasoning states, they cannot share information and repeat similar exploration. Moreover, tree-based methods ignore such dispersion and only perform local comparisons within separate branches, which can lead to higher variance in advantage estimation. To address this challenge, we propose GraphPO (Graph-based Policy Optimization), a novel RL framework that represents rollouts as a directed acyclic graph, with reasoning steps as edges and semantic states summarized from the reasoning paths as nodes. GraphPO merges semantically equivalent reasoning paths into equivalence classes, allowing them to share suffixes and reallocating budget away from redundant expansions to diverse exploration. Furthermore, we assign efficiency advantages to incoming edges and correctness advantages to outgoing edges, thereby improving inference efficiency while deriving process supervision from outcome. Theory shows that GraphPO reduces advantage-estimation variance and enhances reasoning efficiency. Experiments on three LLMs across reasoning and agentic search benchmarks show that GraphPO consistently outperforms chain- and tree-based baselines with the same token budgets or response budgets.",
+      "authors": [
+        "Yuliang Zhan",
+        "Xinyu Tang",
+        "Jian Li",
+        "Dandan Zheng",
+        "Weilong Chai",
+        "Jingdong Chen",
+        "Jun Zhou",
+        "Ge Wu",
+        "Wenyue Tang",
+        "Hao Sun"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-17T11:37:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.18954v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "graph-based policy optimization for reasoning models under RLVR",
+      "llm_evidence_cn": "基于图的策略优化用于RLVR推理模型",
+      "llm_evidence": "基于图的策略优化用于RLVR推理模型",
+      "canonical_evidence": "基于图的策略优化用于RLVR推理模型",
+      "llm_tldr_en": "Proposes GraphPO to share reasoning states across trajectories via graph structure, overcoming redundant exploration and sparse rewards in RLVR.",
+      "llm_tldr_cn": "RLVR中独立采样导致冗余探索，且最终奖励稀疏难以识别有效步骤。本文提出GraphPO，将推理轨迹构建为图结构，共享中间状态并提供细粒度比较信号。实验表明，GraphPO在数学推理任务上显著提升了样本效率和准确率，为RLVR提供了结构化的优化新范式。",
+      "llm_tldr": "RLVR中独立采样导致冗余探索，且最终奖励稀疏难以识别有效步骤。本文提出GraphPO，将推理轨迹构建为图结构，共享中间状态并提供细粒度比较信号。实验表明，GraphPO在数学推理任务上显著提升了样本效率和准确率，为RLVR提供了结构化的优化新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19327v1",
+      "source": "arxiv",
+      "title": "Rethinking Reward Supervision: Rubric-Conditioned Self-Distillation",
+      "abstract": "Post-training of reasoning language models is commonly driven by supervised distillation and reinforcement learning with verifiable rewards. Distillation often relies on chain-of-thought annotations that are expensive to obtain and may themselves be noisy, incomplete, or partially incorrect; even when the final solution is correct, an imperfect rationale can interfere with learning. Reinforcement learning with verified rewards, on the other hand, typically compresses evaluative feedback into a scalar signal, obscuring which aspects of a response should be improved. We propose \\textbf{Rubric-Conditioned Self-Distillation}, a framework that incorporates rubrics as structured, fine-grained feedback for on-policy self-distillation. Our method conditions the teacher model on criterion-level rubrics and uses it to provide token-level guidance on the student's own sampled trajectories. This design avoids treating a single reference rationale as the sole supervision target. Instead, rubrics specify what a strong response should satisfy, enabling more fine-grained credit assignment over the reasoning process than scalar reward optimization. We instantiate this framework with a two-stage pipeline that first learns to generate task-specific rubrics and then trains a rubric-guided reasoner. We evaluate on a diverse suite of science reasoning benchmarks and results show that rubric-conditioned self-distillation effectively converts rubric-level criteria into token-level guidance over the reasoning process, surpassing GRPO by 1.0 points and OPSD by 0.9 points on average.",
+      "authors": [
+        "Siyi Gu",
+        "Jialin Chen",
+        "Sophia Zhou",
+        "Arman Cohan",
+        "Rex Ying"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-17T17:54:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.19327v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "rubric-conditioned self-distillation for reasoning language models",
+      "llm_evidence_cn": "基于评分标准的自蒸馏方法用于推理语言模型",
+      "llm_evidence": "基于评分标准的自蒸馏方法用于推理语言模型",
+      "canonical_evidence": "基于评分标准的自蒸馏方法用于推理语言模型",
+      "llm_tldr_en": "Proposes Rubric-Conditioned Self-Distillation, using structured rubrics as fine-grained feedback for on-policy self-distillation, improving reasoning.",
+      "llm_tldr_cn": "蒸馏依赖昂贵且可能有噪声的思维链标注，RLVR则压缩反馈为标量信号。本文提出基于评分标准的自蒸馏框架，将结构化评分标准作为细粒度反馈条件化教师模型，在自我蒸馏过程中提供定向改进信号。在数学推理任务上，该方法优于传统蒸馏和RLVR，为结合自蒸馏和奖励反馈提供了新思路。",
+      "llm_tldr": "蒸馏依赖昂贵且可能有噪声的思维链标注，RLVR则压缩反馈为标量信号。本文提出基于评分标准的自蒸馏框架，将结构化评分标准作为细粒度反馈条件化教师模型，在自我蒸馏过程中提供定向改进信号。在数学推理任务上，该方法优于传统蒸馏和RLVR，为结合自蒸馏和奖励反馈提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.13680v1",
+      "source": "arxiv",
+      "title": "Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning",
+      "abstract": "Retrieval-augmented generation (RAG) has become a standard mechanism for grounding language models in external knowledge, yet conventional retrieval based on lexical or semantic similarity is poorly suited for complex reasoning tasks: a semantically similar problem may demand an entirely different solution strategy, while a superficially different problem may share the same underlying reasoning pattern. We propose Retrieval-Augmented Reinforcement Fine-Tuning (RA-RFT), a post-training framework that teaches language models to reason by analogy. RA-RFT uses gold-relevance distillation to train a retriever that ranks contexts by expected reasoning benefit rather than semantic overlap, and then fine-tunes the policy model via reinforcement fine-tuning methods with retrieved analogous demonstrations, so the model learns to leverage reasoning traces under verifiable outcome rewards. We further analyze the diversity of retrieved contexts and find that reasoning-aware retrieval surfaces complementary solution strategies that provide distinct reasoning scaffolds for individual problems. Across challenging mathematical reasoning benchmarks, RA-RFT consistently outperforms standard reinforcement fine-tuning methods. For example, it improves AIME 2025 average@32 accuracy by 7.1 and 2.8 points over GRPO for Qwen3-1.7B and Qwen3-4B respectively -- suggesting that reasoning-aware retrieval is a complementary axis of improvement and orthogonal to advances in reward design or training curricula.",
+      "authors": [
+        "Zilin Xiao",
+        "Qi Ma",
+        "Chun-cheng Jason Chen",
+        "Xintao Chen",
+        "Avinash Atreya",
+        "Hanjie Chen",
+        "Vicente Ordonez"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T17:59:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.13680v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses reinforcement fine-tuning with retrieval for reasoning by analogy",
+      "llm_evidence_cn": "使用检索增强的强化微调进行类比推理",
+      "llm_evidence": "使用检索增强的强化微调进行类比推理",
+      "canonical_evidence": "使用检索增强的强化微调进行类比推理",
+      "llm_tldr_en": "Proposes RA-RFT, a post-training framework that uses gold-relevance distillation for retrieval and reinforcement fine-tuning for analogical reasoning.",
+      "llm_tldr_cn": "针对传统检索方法对复杂推理任务不适用的问题，提出检索增强强化微调（RA-RFT）框架。通过金相关蒸馏训练检索器，使其按推理益处而非语义相似度排序上下文，再通过强化微调训练策略模型进行类比推理。实验表明，该方法在数学推理等任务上优于标准RAG和直接微调，实现了检索与推理的深度结合。",
+      "llm_tldr": "针对传统检索方法对复杂推理任务不适用的问题，提出检索增强强化微调（RA-RFT）框架。通过金相关蒸馏训练检索器，使其按推理益处而非语义相似度排序上下文，再通过强化微调训练策略模型进行类比推理。实验表明，该方法在数学推理等任务上优于标准RAG和直接微调，实现了检索与推理的深度结合。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16111v1",
+      "source": "arxiv",
+      "title": "Towards Pareto-Optimal Tool-Integrated Agents with Pareto Ranking Policy Optimization",
+      "abstract": "Recent advances in tool-integrated language agents have significantly improved their ability to solve complex reasoning tasks. However, existing alignment methods predominantly focus on maximizing task accuracy, while overlooking auxiliary objectives such as tool-use efficiency, which are essential for practical deployment. To address this gap, we introduce ParetoPO, a two-stage multi-objective optimization framework for aligning tool-using large language models (LLMs) under competing objectives. In the first stage, ParetoPO leverages hypervolume-guided dynamic scalarization to adapt reward weights based on global Pareto frontier progress. In the second stage, it replaces scalarized learning signals with Pareto-ranking-based advantage computation, promoting nondominated trajectories through dominance-aware credit assignment. This design enables fine-grained, action-level optimization across multiple conflicting objectives. Experimental results on mathematic reasoning and multi-hop QA tasks show that ParetoPO consistently discovers policies with superior accuracy-efficiency trade-offs compared to static and heuristic baselines.",
+      "authors": [
+        "Junyi Li",
+        "Xiaowei Qian",
+        "Yingyi Zhang",
+        "Wenlin Zhang",
+        "Guojing Li",
+        "Sheng Zhang",
+        "Xiao Han",
+        "Yichao Wang",
+        "Xiangyu Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-15T01:58:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.16111v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-objective policy optimization for LLM reasoning, intersecting with RLVR methods",
+      "llm_evidence_cn": "多目标策略优化用于LLM推理，与RLVR方法交叉",
+      "llm_evidence": "多目标策略优化用于LLM推理，与RLVR方法交叉",
+      "canonical_evidence": "多目标策略优化用于LLM推理，与RLVR方法交叉",
+      "llm_tldr_en": "Proposes ParetoPO, a multi-objective optimization framework for tool-integrated LLMs, using Pareto-ranking-based advantage to enhance reasoning and efficiency.",
+      "llm_tldr_cn": "针对工具集成语言代理的推理任务，现有对齐方法只关注准确率而忽视效率。本文提出ParetoPO，一个两阶段多目标优化框架，先通过超体积引导动态标量化调整奖励权重，再采用帕累托排序优势进行策略优化。实验表明该方法在推理准确率和工具使用效率上均取得帕累托最优，为RLVR场景下的多目标对齐提供了新思路。",
+      "llm_tldr": "针对工具集成语言代理的推理任务，现有对齐方法只关注准确率而忽视效率。本文提出ParetoPO，一个两阶段多目标优化框架，先通过超体积引导动态标量化调整奖励权重，再采用帕累托排序优势进行策略优化。实验表明该方法在推理准确率和工具使用效率上均取得帕累托最优，为RLVR场景下的多目标对齐提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.17024v1",
+      "source": "arxiv",
+      "title": "ExpRL: Exploratory RL for LLM Mid-Training",
+      "abstract": "Sparse reward reinforcement learning (RL) has become a standard tool for improving LLM reasoning, but its success depends critically on the coverage present in the base model. In practice, models are often primed for RL through \\emph{mid-training} on curated reasoning traces that teach useful primitive skills such as decomposition, verification, or self-correction. Although effective, this strategy requires manually specifying what the model should learn, and it remains unclear whether such primitive coverage is enough for much harder problems, which require combining these skills into broader solution strategies. We study a more automated approach: \\emph{RL-based mid-training} using large corpora of human-written question-answer data. Rather than treating reference solutions as targets to imitate, our method, ExpRL, uses them as \\emph{reward scaffolds}: references are hidden from the policy and used only to construct problem-specific grading rubrics for judging on-policy reasoning traces. The policy samples from the original problem prompt, while an LLM judge compares the sampled reasoning trace against the reference solution and assigns outcome-level or process-level dense rewards. This lets ExpRL reinforce partial progress, useful intermediate reductions, and productive reasoning behaviors that sparse final-answer rewards often fail to upweight. On challenging math reasoning tasks, ExpRL yields stronger RL priming than SFT, sparse-reward GRPO, and self-distillation, and provides a better initialization for subsequent sparse-reward RL. Additional mixed-domain experiments further suggest that ExpRL can extend beyond the original math-only setting.",
+      "authors": [
+        "Violet Xiang",
+        "Amrith Setlur",
+        "Chase Blagden",
+        "Nick Haber",
+        "Aviral Kumar"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-15T17:50:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.17024v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "exploratory RL for LLM mid-training using question-answer data, improving reasoning",
+      "llm_evidence_cn": "使用问答数据对LLM进行探索性RL中训练以提升推理能力",
+      "llm_evidence": "使用问答数据对LLM进行探索性RL中训练以提升推理能力",
+      "canonical_evidence": "使用问答数据对LLM进行探索性RL中训练以提升推理能力",
+      "llm_tldr_en": "Proposes ExpRL, an automated RL-based mid-training approach for LLMs that uses exploratory reinforcement learning on large-scale QA corpora to teach primitive reasoning skills, outperforming manual curation for harder problems.",
+      "llm_tldr_cn": "该论文针对LLM中训练依赖人工标注推理轨迹的局限，提出ExpRL方法，自动利用大规模问答数据通过探索式强化学习训练模型，使模型自主学会分解、验证等推理技能。实验表明，在复杂问题上ExpRL优于手工策划的轨迹，自动RL中训练是可扩展的推理增强方案。",
+      "llm_tldr": "该论文针对LLM中训练依赖人工标注推理轨迹的局限，提出ExpRL方法，自动利用大规模问答数据通过探索式强化学习训练模型，使模型自主学会分解、验证等推理技能。实验表明，在复杂问题上ExpRL优于手工策划的轨迹，自动RL中训练是可扩展的推理增强方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
