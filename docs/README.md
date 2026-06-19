@@ -6,50 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-18
-- 运行时间：2026-06-18 22:13:58 UTC
+- 最新运行日期：2026-06-19
+- 运行时间：2026-06-19 21:32:24 UTC
 - 运行状态：成功
-- 本次总论文数：10
-- 精读区：6
-- 速读区：4
+- 本次总论文数：7
+- 精读区：4
+- 速读区：3
 
 ### 今日简报（AI）
-今日精选6篇强化学习与自我改进研究，核心方向聚焦自条件化信用分配与可学习微反射轨迹蒸馏。最值得关注的是两篇9分论文，探讨如何从自身解与错误中学习，以及一份8分论文重新定义奖励监督。建议读者优先精读高评分工作，深入理解自蒸馏与检索增强强化微调方法在可验证奖励场景下的创新应用。
-- 详情：[/202606/18/README](/202606/18/README)
+1. 今日聚焦多智能体对话蒸馏与LLM推理优化，精选2篇9.0分精读及3篇速读。  
+2. 最值得看：策略蒸馏与课程回合级引导（多智能体对话），以及从token级分布偏差提升推理能力（超越熵方法）。  
+3. 建议优先阅读两篇精读，了解如何通过教师-学生蒸馏和分布偏差校正改进大模型对话与推理效能。
+- 详情：[/202606/19/README](/202606/19/README)
 
 ### 精读区论文标签
-1. [Learning from Own Solutions: Self-Conditioned Credit Assignment for Reinforcement Learning with Verifiable Rewards](/202606/18/2606.18810v1-learning-from-own-solutions-self-conditioned-credit-assignment-for-reinforcement-learning-with-verifiable-rewards)  
+1. [On-Policy Distillation with Curriculum Turn-level Guidance for Multi-turn Agents](/202606/19/2606.15912v1-on-policy-distillation-with-curriculum-turn-level-guidance-for-multi-turn-agents)  
    标签：评分：9.0/10、query:opd
-   evidence：提出自条件信用分配用于RLVR，直接匹配RLVR并提及同策略蒸馏
-2. [Learning from Your Own Mistakes: Constructing Learnable Micro-Reflective Trajectories for Self-Distillation](/202606/18/2606.18844v1-learning-from-your-own-mistakes-constructing-learnable-micro-reflective-trajectories-for-self-distillation)  
+   evidence：提出引导式同策略蒸馏解决多轮智能体中教师分布失配问题
+2. [Beyond Entropy: Learning from Token-Level Distributional Deviations for LLM Reasoning](/202606/19/2606.19771v1-beyond-entropy-learning-from-token-level-distributional-deviations-for-llm-reasoning)  
    标签：评分：9.0/10、query:opd
-   evidence：利用自身rollout进行自蒸馏以改进推理
-3. [Seeing Before Reasoning: Decoupling Perception and Reasoning for Shortcut-Resilient Multimodal On-Policy Self-Distillation](/202606/18/2606.19120v1-seeing-before-reasoning-decoupling-perception-and-reasoning-for-shortcut-resilient-multimodal-on-policy-self-distillation)  
+   evidence：针对LLM推理中RLVR的标记级分布偏差学习
+3. [VIMPO: Value-Implicit Policy Optimization for LLMs](/202606/19/2606.20008v1-vimpo-value-implicit-policy-optimization-for-llms)  
    标签：评分：9.0/10、query:opd
-   evidence：提出面向多模态LLM推理的在线自蒸馏方法
-4. [STARE: Surprisal-Guided Token-Level Advantage Reweighting for Policy Entropy Stability](/202606/18/2606.19236v1-stare-surprisal-guided-token-level-advantage-reweighting-for-policy-entropy-stability)  
-   标签：评分：9.0/10、query:opd
-   evidence：通过令牌级优势重加权改进GRPO，稳定策略熵
-5. [Learning to Refine Hidden States for Reliable LLM Reasoning](/202606/18/2606.17524v1-learning-to-refine-hidden-states-for-reliable-llm-reasoning)  
+   evidence：面向LLM的无评论家价值隐式策略优化，直接改进GRPO类方法
+4. [Process-Verified Reinforcement Learning for Theorem Proving via Lean](/202606/19/2606.20068v1-process-verified-reinforcement-learning-for-theorem-proving-via-lean)  
    标签：评分：8.0/10、query:opd
-   evidence：使用策略梯度的强化引导隐状态精炼，提升LLM推理可靠性
-6. [GraphPO: Graph-based Policy Optimization for Reasoning Models](/202606/18/2606.18954v1-graphpo-graph-based-policy-optimization-for-reasoning-models)  
-   标签：评分：8.0/10、query:opd
-   evidence：基于图的策略优化用于RLVR推理模型
+   evidence：使用Lean证明助手提供的细粒度策略级反馈作为过程监督信号
 
 ### 速读区论文标签
-1. [Rethinking Reward Supervision: Rubric-Conditioned Self-Distillation](/202606/18/2606.19327v1-rethinking-reward-supervision-rubric-conditioned-self-distillation)  
-   标签：评分：8.0/10、query:opd
-   evidence：基于评分标准的自蒸馏方法用于推理语言模型
-2. [Learning to Reason by Analogy via Retrieval-Augmented Reinforcement Fine-Tuning](/202606/18/2606.13680v1-learning-to-reason-by-analogy-via-retrieval-augmented-reinforcement-fine-tuning)  
+1. [Manifold Bandits: Bayesian Curriculum Learning over the Latent Geometry of Large Language Models](/202606/19/2606.19750v1-manifold-bandits-bayesian-curriculum-learning-over-the-latent-geometry-of-large-language-models)  
    标签：评分：7.0/10、query:opd
-   evidence：使用检索增强的强化微调进行类比推理
-3. [ExpRL: Exploratory RL for LLM Mid-Training](/202606/18/2606.17024v1-exprl-exploratory-rl-for-llm-mid-training)  
+   evidence：基于潜在几何的课程学习提升RL推理效率
+2. [ADaPT: Token-Level Decoupling for Efficient Large Reasoning Models](/202606/19/2606.19919v1-adapt-token-level-decoupling-for-efficient-large-reasoning-models)  
    标签：评分：7.0/10、query:opd
-   evidence：使用问答数据对LLM进行探索性RL中训练以提升推理能力
-4. [Towards Pareto-Optimal Tool-Integrated Agents with Pareto Ranking Policy Optimization](/202606/18/2606.16111v1-towards-pareto-optimal-tool-integrated-agents-with-pareto-ranking-policy-optimization)  
+   evidence：令牌级解耦效率与正确性信号以优化推理模型
+3. [SuCo: Sufficiency-guided Continuous Adaptive Reasoning](/202606/19/2606.17687v1-suco-sufficiency-guided-continuous-adaptive-reasoning)  
    标签：评分：6.0/10、query:opd
-   evidence：多目标策略优化用于LLM推理，与RLVR方法交叉
+   evidence：基于充分性准则自适应推理缩短思维链
 
 
 <div class="dpr-home-promo-card">

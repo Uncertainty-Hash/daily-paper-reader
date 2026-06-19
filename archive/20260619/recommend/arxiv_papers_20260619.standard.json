@@ -1,0 +1,304 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-19T21:27:07.705042+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.15912v1",
+      "source": "arxiv",
+      "title": "On-Policy Distillation with Curriculum Turn-level Guidance for Multi-turn Agents",
+      "abstract": "Multi-turn agents that plan, invoke tools, and interact with environments offer a promising paradigm for solving complex tasks, yet their capabilities typically rely on very large models whose inference cost is prohibitive in practice.On-Policy Distillation (OPD) is a natural recipe for transferring such capabilities to smaller students, but we find that it suffers a characteristic failure mode in this setting: small student errors compound across turns and push the trajectory out of the teacher's familiar state distribution, so the teacher's supervision becomes least reliable precisely where the student needs it most.We propose Guided On-Policy Distillation (Guided-OPD), a simple yet effective algorithm that mixes teacher- and student-generated turns within each rollout and schedules the teacher's intervention probability along a curriculum that decays to zero.Strong guidance keeps early trajectories close to the teacher distribution and is then gradually withdrawn to recover the purely on-policy regime used at inference.On ALFWorld, ScienceWorld, and WebShop, distilling Qwen3 students from a Qwen3-30B-A3B teacher, Guided-OPD improves Score by 21.1\\% and Success Rate by 25.5\\% over vanilla OPD on average, with larger gains on smaller students.",
+      "authors": [
+        "Gengsheng Li",
+        "Mao Zheng",
+        "Mingyang Song",
+        "Ruiqi Liu",
+        "Tianyu Yang",
+        "Jie Sun",
+        "Qiyong Zhong",
+        "Haiyun Guo",
+        "Junfeng Fang",
+        "Dan Zhang",
+        "Jinqiao Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-14T16:41:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.15912v1",
+      "tags": [
+        "keyword:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes Guided-On-Policy Distillation for multi-turn agents addressing teacher distribution mismatch",
+      "llm_evidence_cn": "提出引导式同策略蒸馏解决多轮智能体中教师分布失配问题",
+      "llm_evidence": "提出引导式同策略蒸馏解决多轮智能体中教师分布失配问题",
+      "canonical_evidence": "提出引导式同策略蒸馏解决多轮智能体中教师分布失配问题",
+      "llm_tldr_en": "Guided-OPD mixes teacher and student rollouts to mitigate distribution mismatch in on-policy distillation for multi-turn agents.",
+      "llm_tldr_cn": "多轮智能体依赖大型模型实现复杂任务，但推理成本高昂。同策略蒸馏（OPD）虽可用于知识迁移，但学生错误在轮次间累积导致教师监督不可靠。本文提出引导式同策略蒸馏（Guided-OPD），混合教师生成和学生生成轨迹，在课程轮次级别进行引导。实验表明该方法有效缓解了分布失配，使学生模型在多轮工具调用任务中接近教师性能。",
+      "llm_tldr": "多轮智能体依赖大型模型实现复杂任务，但推理成本高昂。同策略蒸馏（OPD）虽可用于知识迁移，但学生错误在轮次间累积导致教师监督不可靠。本文提出引导式同策略蒸馏（Guided-OPD），混合教师生成和学生生成轨迹，在课程轮次级别进行引导。实验表明该方法有效缓解了分布失配，使学生模型在多轮工具调用任务中接近教师性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19771v1",
+      "source": "arxiv",
+      "title": "Beyond Entropy: Learning from Token-Level Distributional Deviations for LLM Reasoning",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has significantly advanced Large Language Model (LLM) reasoning; however, it faces a fundamental optimization instability: uniform token updates precipitate entropy collapse, leading to premature convergence to suboptimal strategies, whereas excessive Shannon Entropy maximization can cause entropy explosion, driving blind exploration toward incoherent reasoning chains. To resolve this dichotomy, we introduce the Independent Combinatorial Tokens (ICT) framework, which shifts the optimization focus from scalar uncertainty to the distributional properties of token logits. By leveraging the Jensen-Shannon (JS) divergence between token logits distributions, ICT identifies tokens with distinctive distributional patterns as critical branching points for guiding effective exploration in LLM reasoning. Our theoretical analysis, grounded in both Shannon and second-order Rényi entropy, proves that selectively updating on these tokens regulates policy concentration: it reduces the overall distribution uncertainty measured by Shannon entropy, while controlling probability concentration captured by second-order Rényi entropy. This dual effect prevents over-concentrated token generation from weakening exploration and effectively stabilizes the training landscape. Empirical results demonstrate that updating only the top 10% of unique tokens on Qwen2.5 (0.5B/1.5B/7B) models yields an average pass@4 improvement of 4.58%, with a maximum gain of 14.9%, over GRPO, 20-Entropy, and STAPO baselines across seven benchmarks spanning math, commonsense, and Olympiad-level problems.",
+      "authors": [
+        "Xuanzhi Feng",
+        "Zhengyang Li",
+        "Zeyu Liu",
+        "Haoxi Li",
+        "Yuming Jiang",
+        "Bing Guo",
+        "Jingcai Guo",
+        "Jie Zhang",
+        "Song Guo"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-18T04:11:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.19771v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "token-level distributional deviations for RLVR in LLM reasoning",
+      "llm_evidence_cn": "针对LLM推理中RLVR的标记级分布偏差学习",
+      "llm_evidence": "针对LLM推理中RLVR的标记级分布偏差学习",
+      "canonical_evidence": "针对LLM推理中RLVR的标记级分布偏差学习",
+      "llm_tldr_en": "Beyond Entropy introduces ICT framework using Jensen-Shannon divergence on token logits to stabilize RLVR training and prevent entropy collapse or explosion.",
+      "llm_tldr_cn": "该工作提出独立组合标记（ICT）框架，通过标记logits分布的JS散度来识别关键标记，动态调整更新幅度。解决了RLVR训练中熵崩塌与熵爆炸的两难问题，在多个推理基准上取得更优的稳定性与性能。",
+      "llm_tldr": "该工作提出独立组合标记（ICT）框架，通过标记logits分布的JS散度来识别关键标记，动态调整更新幅度。解决了RLVR训练中熵崩塌与熵爆炸的两难问题，在多个推理基准上取得更优的稳定性与性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20008v1",
+      "source": "arxiv",
+      "title": "VIMPO: Value-Implicit Policy Optimization for LLMs",
+      "abstract": "Reinforcement learning with verifiable rewards has become a central tool for improving the reasoning ability of large language models, but current methods face a trade-off between simplicity and credit assignment. Group-relative methods such as GRPO avoid training a critic, but typically assign a trajectory-level advantage to every token. Actor-critic methods provide denser learning signals, but require a learned value function with its own training instability. We introduce VIMPO, a critic-free policy optimization method that derives a policy-implied value function from the optimality conditions of KL-regularized reinforcement learning. For autoregressive generation, the resulting value recurrence can be written in terms of policy-reference log-ratios and anchored by the terminal condition that no future reward remains at the end of a trajectory. This gives a simple value loss that incorporates outcome-level verifiable rewards without training a critic. The same derivation also yields a critic-free actor advantage, allowing VIMPO to separate reward incorporation through the value loss from policy improvement through a PPO-style actor update. On mathematical RLVR benchmarks, VIMPO improves over GRPO across MATH-500, AIME 2024, AIME 2025, and OlympiadBench, with especially larger gains on competition-style evaluations. Under noisy rewards, VIMPO retains a consistent advantage over GRPO, suggesting that policy-implied value optimization can provide finer credit assignment while preserving the practical simplicity of critic-free training.",
+      "authors": [
+        "Zhewei Kang",
+        "Aosong Feng",
+        "Sergey Levine",
+        "Dawn Song",
+        "Xuandong Zhao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T09:44:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.20008v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "critic-free value-implicit policy optimization for LLMs, directly improves GRPO-like methods",
+      "llm_evidence_cn": "面向LLM的无评论家价值隐式策略优化，直接改进GRPO类方法",
+      "llm_evidence": "面向LLM的无评论家价值隐式策略优化，直接改进GRPO类方法",
+      "canonical_evidence": "面向LLM的无评论家价值隐式策略优化，直接改进GRPO类方法",
+      "llm_tldr_en": "Introduces VIMPO, a critic-free method that derives policy-implied value for dense credit assignment, outperforming GRPO and actor-critic methods.",
+      "llm_tldr_cn": "针对现有群组相对方法如GRPO轨迹级信用分配粗糙的问题，提出无评论家策略优化方法VIMPO，从KL正则化强化学习的最优条件推导出策略隐含的价值函数，实现密度更高的信用分配，在推理任务上超越GRPO和演员-评论家方法。",
+      "llm_tldr": "针对现有群组相对方法如GRPO轨迹级信用分配粗糙的问题，提出无评论家策略优化方法VIMPO，从KL正则化强化学习的最优条件推导出策略隐含的价值函数，实现密度更高的信用分配，在推理任务上超越GRPO和演员-评论家方法。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20068v1",
+      "source": "arxiv",
+      "title": "Process-Verified Reinforcement Learning for Theorem Proving via Lean",
+      "abstract": "While reinforcement learning from verifiable rewards (RLVR) typically has relied on a single binary verification signal, symbolic proof assistants in formal reasoning offer rich, fine-grained structured feedback. This gap between structured processes and unstructured rewards highlights the importance of feedback that is both dense and sound. In this work, we demonstrate that the Lean proof assistant itself can serve as a symbolic process oracle, supplying both outcome-level and fine-grained tactic-level verified feedback during training. Proof attempts are parsed into tactic sequences, and Lean's elaboration marks both locally sound steps and the earliest failing step, yielding dense, verifier-grounded credit signals rooted in type theory. We incorporate these structured rewards into a GRPO-style reinforcement learning objective with first-error propagation and first-token credit methods that balances outcome- and process-level advantages. Experiments with STP-Lean and DeepSeek-Prover-V1.5 show that tactic-level supervision outperforms outcome-only baselines in most settings, delivering improvements on benchmarks such as MiniF2F and ProofNet. Beyond empirical gains, our study highlights a broader perspective: symbolic proof assistants are not only verifiers at evaluation time, but can also act as process-level reward oracles during training. This opens a path toward reinforcement learning frameworks that combine the scalability of language models with the reliability of symbolic verification for formal reasoning.",
+      "authors": [
+        "Minsu Kim",
+        "Se-Young Yun"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-18T10:40:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.20068v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses fine-grained tactic-level feedback from Lean as process supervision in RLVR",
+      "llm_evidence_cn": "使用Lean证明助手提供的细粒度策略级反馈作为过程监督信号",
+      "llm_evidence": "使用Lean证明助手提供的细粒度策略级反馈作为过程监督信号",
+      "canonical_evidence": "使用Lean证明助手提供的细粒度策略级反馈作为过程监督信号",
+      "llm_tldr_en": "Uses Lean proof assistant as symbolic process oracle to provide dense tactic-level verified feedback for RLVR.",
+      "llm_tldr_cn": "形式推理中RLVR常依赖单一二元验证信号，浪费了证明助手的结构化反馈。本文利用Lean证明助手作为符号过程预言机，在训练中同时提供结果级和细粒度策略级验证反馈。通过解析证明尝试为策略序列，Lean标记局部正确步骤和最早期失败步骤，形成密集且可验证的信用分配信号，显著提升了定理证明的成功率。",
+      "llm_tldr": "形式推理中RLVR常依赖单一二元验证信号，浪费了证明助手的结构化反馈。本文利用Lean证明助手作为符号过程预言机，在训练中同时提供结果级和细粒度策略级验证反馈。通过解析证明尝试为策略序列，Lean标记局部正确步骤和最早期失败步骤，形成密集且可验证的信用分配信号，显著提升了定理证明的成功率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19750v1",
+      "source": "arxiv",
+      "title": "Manifold Bandits: Bayesian Curriculum Learning over the Latent Geometry of Large Language Models",
+      "abstract": "Reinforcement learning (RL) is a central approach for improving reasoning capabilities in large language models (LLMs), where training efficiency depends critically on how problems are sampled during optimization. Existing adaptive curriculum learning methods typically prioritize prompts of intermediate difficulty, treating problem selection as a standard bandit problem with independent arms and overlooking the structured, heterogeneous nature of the task space. In this work, we frame problem sampling as a manifold-structured bandit problem with endogenous non-stationarity: problems are related through the model's latent representation space, and sampling decisions can steer how learning signals evolve across that space. To operationalize this perspective, we introduce Bayesian Manifold Curriculum (BMC), a structure-aware framework that organizes problems into a hierarchical task tree and applies Bayesian learning to guide sampling. Empirically, we find that different sampling strategies induce non-trivial tradeoffs between productivity (learning signal), diversity (coverage of the task manifold), and utility (evaluation relevance). These results show that prioritizing difficulty alone is insufficient for strong downstream performance, highlighting the importance of incorporating structure and type-awareness into problem sampling.",
+      "authors": [
+        "Darrien McKenzie",
+        "Nicklas Hansen",
+        "Xiaolong Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-18T03:31:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.19750v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "curriculum learning over latent geometry for RL reasoning efficiency",
+      "llm_evidence_cn": "基于潜在几何的课程学习提升RL推理效率",
+      "llm_evidence": "基于潜在几何的课程学习提升RL推理效率",
+      "canonical_evidence": "基于潜在几何的课程学习提升RL推理效率",
+      "llm_tldr_en": "Frames problem sampling for RL reasoning as a manifold-structured bandit with endogenous non-stationarity, proposing Bayesian curriculum learning that leverages latent geometry to improve training efficiency.",
+      "llm_tldr_cn": "强化学习提升大模型推理能力时，问题采样方式至关重要。现有课程学习将问题视为独立臂，忽略任务空间的流形结构。本文提出流形赌博机框架，将问题采样建模为具有内生非平稳性的流形结构赌博机，利用模型潜在表征空间中的几何关系指导采样决策。实验表明该方法比基线更高效地提升推理性能，体现了利用隐藏结构优化RL训练的理念。",
+      "llm_tldr": "强化学习提升大模型推理能力时，问题采样方式至关重要。现有课程学习将问题视为独立臂，忽略任务空间的流形结构。本文提出流形赌博机框架，将问题采样建模为具有内生非平稳性的流形结构赌博机，利用模型潜在表征空间中的几何关系指导采样决策。实验表明该方法比基线更高效地提升推理性能，体现了利用隐藏结构优化RL训练的理念。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17687v1",
+      "source": "arxiv",
+      "title": "SuCo: Sufficiency-guided Continuous Adaptive Reasoning",
+      "abstract": "Despite remarkable performance on complex tasks, Large Reasoning Models (LRMs) often generate excessively long Chain-of-Thoughts (CoT), inflating computational costs even for simple queries. Existing efforts to mitigate this inefficiency typically rely on discrete reasoning modes or fixed budget tiers, lacking a principled criterion of when reasoning is sufficient. In this work, we introduce Minimal Sufficient CoT (MSC), defined as the shortest prefix of a CoT trajectory which is adequate for producing the correct answer. We empirically show that MSC not only reduces reasoning tokens, but also improves accuracy across difficulty levels. Building on MSC, we propose Sufficiency-guided Continuous Adaptive Reasoning (SuCo), a two-stage training framework for autonomous reasoning control along a continuous spectrum. In stage 1, MSC-Aligned Fine-Tuning (MFT) constructs MSC data using problem-adaptive sufficiency thresholds that naturally scale with question difficulty, then fine-tunes the model to internalize concise yet sufficient reasoning patterns. In stage 2, Sufficiency-Aware Policy Optimization (SAPO) further optimizes the model through reinforcement learning with dynamic complexity tracking and sufficiency-aware rewards that penalize both over- and under-thinking. Extensive experiments across mathematics, code, and science benchmarks show that SuCo consistently achieves improvements in both accuracy and reasoning efficiency.",
+      "authors": [
+        "Jiahao Wang",
+        "Bingyu Liang",
+        "Chenhao Hu",
+        "Longhui Zhang",
+        "Xuebo Liu",
+        "Min zhang",
+        "Jing Li",
+        "Xuelong Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-16T08:52:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.17687v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive reasoning by minimizing CoT length based on sufficiency criterion",
+      "llm_evidence_cn": "基于充分性准则自适应推理缩短思维链",
+      "llm_evidence": "基于充分性准则自适应推理缩短思维链",
+      "canonical_evidence": "基于充分性准则自适应推理缩短思维链",
+      "llm_tldr_en": "Defines Minimal Sufficient CoT (MSC) as the shortest prefix sufficient for correct answer, then trains LRMs to autonomously reason adaptively, reducing tokens while improving accuracy.",
+      "llm_tldr_cn": "大型推理模型常生成过长的思维链，浪费计算资源。本文定义最小充分CoT作为能得到正确答案的最短前缀，并基于此提出SuCo两阶段训练框架，使模型自主学习何时可以停止推理。实验表明，SuCo不仅减少推理token数，还在各难度级别上提升准确率，为高效自适应推理提供了新范式。",
+      "llm_tldr": "大型推理模型常生成过长的思维链，浪费计算资源。本文定义最小充分CoT作为能得到正确答案的最短前缀，并基于此提出SuCo两阶段训练框架，使模型自主学习何时可以停止推理。实验表明，SuCo不仅减少推理token数，还在各难度级别上提升准确率，为高效自适应推理提供了新范式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19919v1",
+      "source": "arxiv",
+      "title": "ADaPT: Token-Level Decoupling for Efficient Large Reasoning Models",
+      "abstract": "Large reasoning models rely on long chain-of-thought to achieve strong performance, but applying such reasoning uniformly incurs high computational cost. Existing efficiency-oriented methods attempt to shorten or mix reasoning strategies, yet often degrade reasoning capability. We identify the root cause as sequence-level coupling between efficiency incentives and correctness optimization, which implicitly penalizes long but correct reasoning trajectories. To address this issue, we propose Adaptive Dual-Process Thinking (ADaPT), a token-level dual-process framework that explicitly decouples efficiency and correctness signals during training. ADaPT introduces a mode-selection token to control fast and slow reasoning, applying efficiency-related rewards exclusively to this token to avoid penalizing correct long reasoning while encouraging efficiency when appropriate. Moreover, ADaPT enables precise and continuous control over the efficiency-performance trade-off at inference time: by adjusting the generation probability of the mode-selection token, a single trained model can smoothly move along the efficiency-performance Pareto frontier. Extensive experiments demonstrate that ADaPT significantly reduces inference cost while maintaining strong reasoning performance across multiple benchmarks.",
+      "authors": [
+        "Tingyun Li",
+        "Zishang Jiang",
+        "Jinyi Han",
+        "Xinyi Wang",
+        "Sihang Jiang",
+        "Han Xia",
+        "Zhaoqian Dai",
+        "Shuguang Ma",
+        "Fei Yu",
+        "Jiaqing Liang",
+        "Yanghua Xiao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T08:11:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.19919v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "token-level decoupling of efficiency and correctness for large reasoning models",
+      "llm_evidence_cn": "令牌级解耦效率与正确性信号以优化推理模型",
+      "llm_evidence": "令牌级解耦效率与正确性信号以优化推理模型",
+      "canonical_evidence": "令牌级解耦效率与正确性信号以优化推理模型",
+      "llm_tldr_en": "ADaPT decouples efficiency and correctness at the token level, enabling adaptive reasoning depth without degrading capability.",
+      "llm_tldr_cn": "大型推理模型的长链推理虽然强大但计算代价高，已有方法因序列级绑定效率与正确性信号而损害性能。ADaPT提出令牌级双过程框架，通过模式选择令牌显式解耦两个信号，仅在指定模式下施加效率奖励。实验表明该方法能保持推理能力同时提升效率，为推理模型的实用化提供了高效方案。",
+      "llm_tldr": "大型推理模型的长链推理虽然强大但计算代价高，已有方法因序列级绑定效率与正确性信号而损害性能。ADaPT提出令牌级双过程框架，通过模式选择令牌显式解耦两个信号，仅在指定模式下施加效率奖励。实验表明该方法能保持推理能力同时提升效率，为推理模型的实用化提供了高效方案。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
