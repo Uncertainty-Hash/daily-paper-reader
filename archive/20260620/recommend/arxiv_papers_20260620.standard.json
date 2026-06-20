@@ -1,0 +1,149 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-20T21:32:02.378023+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.19659v1",
+      "source": "arxiv",
+      "title": "SAGE-OPD: Selective Agent-Guided Intervention for Multi-Turn On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) improves student models by training them on trajectories induced by their own policy, making it a promising approach for mitigating exposure bias in agent training. However, most OPD studies focus on single-turn settings, while realistic LLM agents interact with environments over multiple turns. In this regime, early errors can alter future observations and compound across the trajectory, and standard dense token-level OPD becomes brittle, as it may over-penalize semantically valid alternatives, reinforce local degeneracies such as repeated actions, and propagate unreliable teacher supervision on off-distribution histories. We propose SAGE-OPD, a verifier-free selective intervention framework specifically designed for multi-turn OPD. Instead of applying teacher supervision uniformly across all turns, SAGE-OPD first observes environment feedback and uses teacher judgment to decide whether each student response should be skipped or intervened on. To further address compounding errors, SAGE-OPD weights token-level distillation by teacher confidence, reducing the influence of uncertain teacher distributions on corrupted or ambiguous histories. Finally, SAGE-OPD applies loss normalization to preserve the overall loss scale of standard OPD while retaining selective turn-level weighting. Experiments on agent tasks show that SAGE-OPD consistently improves over baselines, achieving up to a 13.3% relative improvement in ALFWorld unseen success rate over standard OPD. Ablation studies further demonstrate that turn-level intervention, teacher confidence weighting, and loss normalization provide complementary benefits. Our results suggest that effective multi-turn OPD should remain on-policy, but teacher supervision should be selectively allocated to turns where intervention is necessary and reliable.",
+      "authors": [
+        "Yuhang Zhou",
+        "Lizhu Zhang",
+        "Yifan Wu",
+        "Mingyi Wang",
+        "Bo Peng",
+        "Jiayi Liu",
+        "Xiangjun Fan",
+        "Zhuokai Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-17T23:58:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.19659v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Proposes SAGE-OPD for multi-turn on-policy distillation",
+      "llm_evidence_cn": "提出SAGE-OPD用于多轮同策略蒸馏",
+      "llm_evidence": "提出SAGE-OPD用于多轮同策略蒸馏",
+      "canonical_evidence": "提出SAGE-OPD用于多轮同策略蒸馏",
+      "llm_tldr_en": "Introduces SAGE-OPD, a selective intervention framework for multi-turn OPD that prevents error compounding and teacher failure.",
+      "llm_tldr_cn": "该论文针对多轮智能体场景中同策略蒸馏（OPD）的误差累积和教师监督失效问题，提出SAGE-OPD框架，通过选择性干预机制避免标准密集令牌级OPD的缺陷。实验表明该方法在多轮环境下显著提升了学生模型性能。",
+      "llm_tldr": "该论文针对多轮智能体场景中同策略蒸馏（OPD）的误差累积和教师监督失效问题，提出SAGE-OPD框架，通过选择性干预机制避免标准密集令牌级OPD的缺陷。实验表明该方法在多轮环境下显著提升了学生模型性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14961v1",
+      "source": "arxiv",
+      "title": "CoRA: Confidence-Rationale Alignment for Reliable Chain-of-Thought Reasoning",
+      "abstract": "Chain-of-thought (CoT) reasoning can improve LLM performance, but high answer confidence may be misleading when the accompanying CoT rationale is plausible yet incomplete or poorly supported. We study confidence--rationale alignment: whether a model's confidence in its committed answer is justified by its generated rationale. We introduce a GRPO-based reinforcement learning framework that jointly rewards answer correctness, committed-answer probability, and rubric-based rationale support, where the rubric assesses grounding, coherence, task match, and connection to the selected answer without revealing the gold answer to the judge. Across MedQA, MathQA, and OpenBookQA using three open-weight LLMs, our method reduces the confidence--rationale alignment error by up to 26.51% compared with untuned checkpoints, SFT, and correctness-only GRPO, while maintaining competitive accuracy and often improving calibration. These results show that reliable CoT reasoning requires not only confident answers, but rationales that substantively support them.",
+      "authors": [
+        "Juming Xiong",
+        "Weixin Liu",
+        "Kevin Guo",
+        "Congning Ni",
+        "Junchao Zhu",
+        "Chongyu Qu",
+        "Chao Yan",
+        "Katherine Brown",
+        "Avinash Baidya",
+        "Xiang Gao",
+        "Bradley Malin",
+        "Zhijun Yin"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-12T21:10:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.14961v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "GRPO-based RL framework for LLM reasoning",
+      "llm_evidence_cn": "基于GRPO的强化学习框架用于大语言模型推理",
+      "llm_evidence": "基于GRPO的强化学习框架用于大语言模型推理",
+      "canonical_evidence": "基于GRPO的强化学习框架用于大语言模型推理",
+      "llm_tldr_en": "Proposes CoRA, a GRPO-based RL method that jointly rewards answer correctness, confidence, and rubric-based rationale support to improve CoT reasoning alignment.",
+      "llm_tldr_cn": "该论文提出CoRA框架，通过基于GRPO的强化学习联合奖励答案正确性、置信度和基于模块的理由支持，减少大语言模型在思维链推理中的置信度与理由不匹配问题。在MedQA、MathQA等数据集上的实验表明，该方法有效提高了推理可靠性。",
+      "llm_tldr": "该论文提出CoRA框架，通过基于GRPO的强化学习联合奖励答案正确性、置信度和基于模块的理由支持，减少大语言模型在思维链推理中的置信度与理由不匹配问题。在MedQA、MathQA等数据集上的实验表明，该方法有效提高了推理可靠性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19818v1",
+      "source": "arxiv",
+      "title": "Uncertainty-Aware Reward Modeling for Stable RLHF",
+      "abstract": "Reinforcement learning from human feedback (RLHF) aligns large language models by training reward models on preference data and optimizing policies to maximize predicted rewards. However, this pipeline faces two fundamental challenges: (1) reward models cannot signal when their predictions are unreliable, since they usually act as deterministic point estimators; and (2) modern group-based policy optimization can amplify unreliable reward signals, as exemplified by GRPO's uniform treatment of rewards during advantage computation. As policies explore increasingly diverse responses, these two limitations create a critical vulnerability: unreliable reward estimates may be granted disproportionate influence, triggering severe reward hacking. We propose Uncertainty-Aware Reward Modeling (UARM), which equips reward models with calibrated uncertainty via quantile-based conformal prediction and reweights GRPO advantages through heteroscedastic variance decomposition. Experiments across HelpSteer, UltraFeedback, and PKU-SafeRLHF demonstrate that UARM significantly improves reward model calibration, reduces reward hacking, and enhances downstream alignment quality compared to standard GRPO and uncertainty-agnostic baselines.",
+      "authors": [
+        "Licheng Pan",
+        "Haocheng Yang",
+        "Haoxuan Li",
+        "Yichen Sun",
+        "Yunsheng Lu",
+        "Shijian Wang",
+        "Lei Shen",
+        "Yuan Lu",
+        "Zhixuan Chu",
+        "Hao Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T05:46:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.19818v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Addresses GRPO's uniform reward treatment via uncertainty-aware modeling",
+      "llm_evidence_cn": "通过不确定性感知建模解决GRPO的均匀奖励处理问题",
+      "llm_evidence": "通过不确定性感知建模解决GRPO的均匀奖励处理问题",
+      "canonical_evidence": "通过不确定性感知建模解决GRPO的均匀奖励处理问题",
+      "llm_tldr_en": "Proposes uncertainty-aware reward modeling to mitigate reward hacking in group-based policy optimization like GRPO.",
+      "llm_tldr_cn": "该论文指出GRPO等群组策略优化中均匀处理奖励可能导致奖励黑客攻击，提出不确定性感知奖励模型来识别不可靠预测。该方法与GRPO结合可提高强化学习稳定性，为基于验证奖励的推理优化提供关键支持。",
+      "llm_tldr": "该论文指出GRPO等群组策略优化中均匀处理奖励可能导致奖励黑客攻击，提出不确定性感知奖励模型来识别不可靠预测。该方法与GRPO结合可提高强化学习稳定性，为基于验证奖励的推理优化提供关键支持。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-20",
+  "date": "2026-06-20",
+  "generated_at": "2026-06-20T21:34:30",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/20/2606.19659v1-sage-opd-selective-agent-guided-intervention-for-multi-turn-on-policy-distillation",
+      "section": "deep",
+      "title_en": "SAGE-OPD: Selective Agent-Guided Intervention for Multi-Turn On-Policy Distillation",
+      "authors": "Yuhang Zhou, Lizhu Zhang, Yifan Wu, Mingyi Wang, Bo Peng, Jiayi Liu, Xiangjun Fan, Zhuokai Zhao",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.19659v1",
+      "score": "10.0",
+      "evidence": "提出SAGE-OPD用于多轮同策略蒸馏",
+      "tldr": "多轮交互中，标准在线蒸馏因过早错误累积和过度惩罚合理变体而失效。SAGE-OPD通过环境反馈和教师判断选择性干预学生响应，再以教师置信度加权蒸馏、损失归一化，避免退化。在ALFWorld等任务上，相比标准OPD最高提升13.3%未知成功率。证明多轮在线蒸馏应选择性分配教师监督。",
+      "tags": "query:opd",
+      "abstract_en": "On-policy distillation (OPD) improves student models by training them on trajectories induced by their own policy, making it a promising approach for mitigating exposure bias in agent training. However, most OPD studies focus on single-turn settings, while realistic LLM agents interact with environments over multiple turns. In this regime, early errors can alter future observations and compound across the trajectory, and standard dense token-level OPD becomes brittle, as it may over-penalize semantically valid alternatives, reinforce local degeneracies such as repeated actions, and propagate unreliable teacher supervision on off-distribution histories. We propose SAGE-OPD, a verifier-free selective intervention framework specifically designed for multi-turn OPD. Instead of applying teacher supervision uniformly across all turns, SAGE-OPD first observes environment feedback and uses teacher judgment to decide whether each student response should be skipped or intervened on. To further address compounding errors, SAGE-OPD weights token-level distillation by teacher confidence, reducing the influence of uncertain teacher distributions on corrupted or ambiguous histories. Finally, SAGE-OPD applies loss normalization to preserve the overall loss scale of standard OPD while retaining selective turn-level weighting. Experiments on agent tasks show that SAGE-OPD consistently improves over baselines, achieving up to a 13.3% relative improvement in ALFWorld unseen success rate over standard OPD. Ablation studies further demonstrate that turn-level intervention, teacher confidence weighting, and loss normalization provide complementary benefits. Our results suggest that effective multi-turn OPD should remain on-policy, but teacher supervision should be selectively allocated to turns where intervention is necessary and reliable.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/20/2606.14961v1-cora-confidence-rationale-alignment-for-reliable-chain-of-thought-reasoning",
+      "section": "deep",
+      "title_en": "CoRA: Confidence-Rationale Alignment for Reliable Chain-of-Thought Reasoning",
+      "authors": "Juming Xiong, Weixin Liu, Kevin Guo, Congning Ni, Junchao Zhu, Chongyu Qu, Chao Yan, Katherine Brown, Avinash Baidya, Xiang Gao, Bradley Malin, Zhijun Yin",
+      "date": "2026-06-12",
+      "pdf": "https://arxiv.org/pdf/2606.14961v1",
+      "score": "8.0",
+      "evidence": "基于GRPO的强化学习框架用于大语言模型推理",
+      "tldr": "链式思维推理中，高自信答案常伴随不充分理由，导致误导。CoRA框架基于GRPO强化学习，联合优化答案正确性、提交概率和理由支持度（评估理由的扎实性、连贯性、任务匹配和与答案连接）。在三个问答数据集和三个开源LLM上，对齐误差降低26.51%，同时保持准确率并改善校准。结果表明可靠推理需自信答案与实质理由共同支撑。",
+      "tags": "query:opd",
+      "abstract_en": "Chain-of-thought (CoT) reasoning can improve LLM performance, but high answer confidence may be misleading when the accompanying CoT rationale is plausible yet incomplete or poorly supported. We study confidence--rationale alignment: whether a model's confidence in its committed answer is justified by its generated rationale. We introduce a GRPO-based reinforcement learning framework that jointly rewards answer correctness, committed-answer probability, and rubric-based rationale support, where the rubric assesses grounding, coherence, task match, and connection to the selected answer without revealing the gold answer to the judge. Across MedQA, MathQA, and OpenBookQA using three open-weight LLMs, our method reduces the confidence--rationale alignment error by up to 26.51% compared with untuned checkpoints, SFT, and correctness-only GRPO, while maintaining competitive accuracy and often improving calibration. These results show that reliable CoT reasoning requires not only confident answers, but rationales that substantively support them.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/20/2606.19818v1-uncertainty-aware-reward-modeling-for-stable-rlhf",
+      "section": "quick",
+      "title_en": "Uncertainty-Aware Reward Modeling for Stable RLHF",
+      "authors": "Licheng Pan, Haocheng Yang, Haoxuan Li, Yichen Sun, Yunsheng Lu, Shijian Wang, Lei Shen, Yuan Lu, Zhixuan Chu, Hao Wang",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.19818v1",
+      "score": "7.0",
+      "evidence": "通过不确定性感知建模解决GRPO的均匀奖励处理问题",
+      "tldr": "针对RLHF中奖励模型无法指示预测可靠性及GRPO统一处理优势可能放大不可靠信号的问题，提出UARM，通过分位数共形预测量化奖励不确定性，并利用异方差方差分解重加权GRPO优势。实验表明UARM显著提升奖励模型校准度、减少奖励攻击并改进下游对齐质量。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning from human feedback (RLHF) aligns large language models by training reward models on preference data and optimizing policies to maximize predicted rewards. However, this pipeline faces two fundamental challenges: (1) reward models cannot signal when their predictions are unreliable, since they usually act as deterministic point estimators; and (2) modern group-based policy optimization can amplify unreliable reward signals, as exemplified by GRPO's uniform treatment of rewards during advantage computation. As policies explore increasingly diverse responses, these two limitations create a critical vulnerability: unreliable reward estimates may be granted disproportionate influence, triggering severe reward hacking. We propose Uncertainty-Aware Reward Modeling (UARM), which equips reward models with calibrated uncertainty via quantile-based conformal prediction and reweights GRPO advantages through heteroscedastic variance decomposition. Experiments across HelpSteer, UltraFeedback, and PKU-SafeRLHF demonstrate that UARM significantly improves reward model calibration, reduces reward hacking, and enhances downstream alignment quality compared to standard GRPO and uncertainty-agnostic baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
