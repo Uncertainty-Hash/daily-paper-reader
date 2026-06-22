@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-06-22 <!--dpr-date:20260622-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/22/2606.15917v1-reinforcement-learning-for-llm-based-event-forecasting" data-sidebar-item="{&quot;title&quot;: &quot;Reinforcement Learning for LLM-based Event Forecasting&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2606.15917v1-reinforcement-learning-for-llm-based-event-forecasting&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;opd&quot;}], &quot;evidence&quot;: &quot;明确使用组相对策略优化（GRPO）微调大语言模型&quot;}">Reinforcement Learning for LLM-based Event Forecasting</a>
   * 2026-06-20 <!--dpr-date:20260620-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/20/2606.19659v1-sage-opd-selective-agent-guided-intervention-for-multi-turn-on-policy-distillation" data-sidebar-item="{&quot;title&quot;: &quot;SAGE-OPD: Selective Agent-Guided Intervention for Multi-Turn On-Policy Distillation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2606.19659v1-sage-opd-selective-agent-guided-intervention-for-multi-turn-on-policy-distillation&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;opd&quot;}], &quot;evidence&quot;: &quot;提出SAGE-OPD用于多轮同策略蒸馏&quot;}">SAGE-OPD: Selective Agent-Guided Intervention for Multi-Turn On-Policy Distillation</a>
