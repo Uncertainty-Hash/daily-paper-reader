@@ -1,0 +1,1117 @@
+Title: ReNIO: Reweighting Negative Trajectory Importance for LLM On-Policy Distillation
+
+URL Source: https://arxiv.org/pdf/2606.23104v1
+
+Published Time: Tue, 23 Jun 2026 02:56:52 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+## ReNIO: Reweighting Negative Trajectory Importance for LLM On-Policy Distillation 
+
+Chen Lin 1 Kedi Chen 1,2 Wei Zhang 1,2 *1East China Normal University 2Shanghai Innovation Institute Shanghai, China 
+
+{clin,kdchen}@stu.ecnu.edu.cn zhangwei.thu2011@gmail.com 
+
+Abstract 
+
+On-policy distillation (OPD) improves LLM reasoning by training a student model on its own generated outputs, but standard OPD treats all student-generated outputs (SGOs) equally regardless of their informativeness. We observe a consistent asymmetry in con-trolled filtering experiments: in both OPD and on-policy self distillation (OPSD), train-ing only on incorrect SGOs outperforms train-ing only on correct ones. Our further anal-ysis suggests that models trained on correct-only SGOs tend to generate shorter reason-ing traces and show weaker reflection behav-ior, while incorrect SGOs better preserve ex-ploratory reasoning near the model’s capabil-ity boundary. To exploit this signal without requiring full answer-containing rollouts, we introduce ReNIO, which Re weights Negative trajectory Importance for LLM On-policy dis-tillation. By using the student-to-teacher prob-ability ratio, ReNIO identifies pivotal tokens leading to wrong reasoning traces and aggre-gates their information into a normalized sam-ple weight, inherently assigning larger weights to likely negative trajectories without observ-ing the correctness of final-answer. Since Re-NIO only uses prefix-conditioned token proba-bilities, it preserves OPD’s prefix training ad-vantage over full-rollout reinforcement learn-ing. Across both mathematical reasoning and code generation tasks, ReNIO improves both OPD and OPSD, with representative rel-ative gains of up to 8.90% for Qwen3-1.7B and 10 .00% for R1-Distill-Qwen-7B on math-ematical reasoning benchmarks. Code repo: https://github.com/BDML-lab/ReNIO. 
+
+1 Introduction 
+
+Reinforcement learning (RL) and on-policy dis-tillation (OPD) are becoming two mainstream paradigms for post-training large language mod-els (LLMs) on reasoning tasks (Ke et al., 2026; 
+
+> *Corresponding author.
+
+Chen et al., 2026). RL methods sample on-policy reasoning trajectories and update the model accord-ing to externally returned rewards (Yu et al., 2025; Bai et al., 2025; Shao et al., 2024; DeepSeek-AI et al., 2025). OPD, in contrast, trains on student-generated outputs (SGOs) by aligning the student’s token-level distributions with teacher distributions along the same sampled trajectories (Lu and Lab, 2025; Agarwal et al., 2023). This gives OPD a more dense supervision signal: while RL typically receives sparse sequence-level rewards and must address credit assignment over long trajectories, OPD can provide token-wise feedback at every vis-ited prefix. OPD also has a substantial training-cost advan-tage because it can learn from short SGO prefixes instead of full answer-containing rollouts with just little performance degradation (Zhang et al., 2026; Zhao et al., 2026). In comparison, reinforcement learning for reasoning tasks must observe the final answer of an on-policy reasoning trajectory before assigning a reward (Wen et al., 2025). For difficult reasoning problems, obtaining this answer may require generating very long trajectories, which makes RL substantially more expensive in genera-tion, memory, and training time. These two advantages make OPD attractive for efficient reasoning post-training, but they also shift the bottleneck from obtaining supervision to de-ciding which student-generated prefixes deserve more training emphasis. Standard OPD and on-policy self distillation(OPSD)(Zhao et al., 2026) assign equal training weight to all SGOs, even though on-policy trajectories can differ greatly in how much useful learning signal they contain. Our controlled filtering experiments reveal a counterin-tuitive but consistent asymmetry: under both OPD and on-policy self-distillation (OPSD) (Zhao et al., 2026), training only on incorrect SGOs consistently outperforms training only on correct SGOs. Fur-ther behavioral analysis shows that correct-only 1
+
+> arXiv:2606.23104v1 [cs.LG] 22 Jun 2026
+
+training tends to produce shorter responses with fewer reflection-style markers, whereas incorrect-only training better preserves exploratory and self-corrective reasoning. These findings suggest that negative trajectories can expose valuable process-level correction signals for the student’s own failure modes, and may therefore play a more important role in OPD. Hence, it’s important to emphasize incorrect trajectories during OPD. The challenge is to em-phasize informative negative trajectories without observing whether the final answer is correct. A direct correctness-based weighting rule would re-quire rolling out each SGO until the answer ap-pears, which would remove the short-prefix effi-ciency that makes OPD attractive. Moreover, the useful signal in an incorrect SGO is usually local-ized: a trajectory often becomes wrong because a few pivotal tokens steer the reasoning toward a wrong branch, while many surrounding tokens re-main routine continuations. Therefore, an effective weighting signal should be prefix-computable. We propose ReNIO, a sample-level reweighting method that emphasizes negative trajectories using only prefix-conditioned teacher and student prob-abilities. ReNIO identifies pivotal tokens by the student-to-teacher probability ratio: when the stu-dent assigns high probability to a token that the teacher assigns low probability, this ratio serves as prefix-computable evidence for a student-preferred but teacher-rejected branching decision. ReNIO se-lects such high-ratio tokens with a fixed threshold, aggregates their clipped log ratios by a geometric mean, and normalizes the resulting weights within each batch. The resulting objective redistributes training emphasis toward SGOs that contain strong corrective signals while preserving OPD’s ability to train on truncated prefixes. Our contributions are summarized as follows: • We identify a negative-trajectory asymmetry in OPD and OPSD: incorrect SGOs can be more useful than correct SGOs for improving reasoning performance. • We introduce ReNIO, a prefix-computable sample reweighting method that uses student-to-teacher log ratios to emphasize likely negative, high-information trajectories with-out final-answer labels, thereby preserving the short-prefix training advantage of on-policy distillation without additional rollout or reward-labeling cost. • We show that ReNIO improves both OPD and OPSD across mathematical reasoning and code generation tasks, with representative rel-ative gains of up to 8.90% for Qwen3-1.7B and 10 .00% for R1-Distill-Qwen-7B on math-ematical reasoning benchmarks. 
+
+2 Preliminary Analysis of On-Policy Distillation 
+
+We conduct controlled studies to understand which SGOs provide more useful OPD supervision. The results reveal two observations that motivate Re-NIO’s weighting strategy. 
+
+2.1 Incorrect-only Training Outperforms Correct-only Training 
+
+A natural expectation is that correct SGOs should be the most useful training examples, since they contain successful reasoning paths from the stu-dent’s own policy. Motivated by findings in rein-forcement learning (Zhu et al., 2025), we test this assumption on Qwen3-1.7B (Yang et al., 2025) by training OPD and OPSD variants using only correct or only incorrect SGOs. Additional setup details are provided in Appendix C. Figure 1a 1b shows that incorrect-only training consistently outperforms correct-only training un-der both OPD and OPSD. Under OPD, the gains are +3 .60 , +3 .89 , and +2 .59 Avg@12 points on AIME24, AIME25, and the benchmark average, respectively; under OPSD, the corresponding gains are +1 .94 , +3 .34 , and +2 .50 points. Thus, correct and incorrect SGOs are not interchangeable, moti-vating a closer look at their inference-time effects. 
+
+2.2 Length Patterns Suggest Different Training Roles 
+
+To explain this gap, we evaluate the result-ing models and record two inference-time statis-tics: average response length and the number of reflection-style markers. Following prior analy-ses of uncertainty and reasoning traces (Kim et al., 2026a,b), we use the marker set {“but”, “wait”, “hmm”, “perhaps”, “maybe”, “actually”, “seems”, “might”, “likely”, “check”, “alternatively”, “how-ever”, “though”, “again”}. Figure 1c 1d shows AIME24 results; AIME25 and HMMT25 results are in Appendix E. Models trained on incorrect-only SGOs con-sistently generate longer responses than models trained on correct-only SGOs. Since length alone 2AIME24 AIME25 HMMT25 Avg 
+
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> 60
+> 70
+> Avg@12 (%)  54.2
+> 38.9
+> 27.8
+> 40.3
+> 57.8
+> 42.8
+> 28.1
+> 42.9
+> +3.60
+> +3.89
+> +0.28
+> +2.59
+> OPD
+> Correct only
+> Incorrect only
+
+(a) Correct-only vs. incorrect-only training under OPD. AIME24 AIME25 HMMT25 Avg 
+
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> 60
+> 70
+> Avg@12 (%)  53.9
+> 39.4
+> 23.9
+> 39.1
+> 55.8
+> 42.8
+> 26.1
+> 41.6
+> +1.94
+> +3.34
+> +2.22
+> +2.50
+> OPSD
+> Correct only
+> Incorrect only
+
+(b) Correct-only vs. incorrect-only training under OPSD. 0 20 40 60 80 100 
+
+> Training Step
+> 18
+> 19
+> 20
+> 21
+> 22
+> Length (k tokens)  OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect
+
+(c) Average response length on AIME24. 0 20 40 60 80 100 
+
+> Training Step
+> 350
+> 400
+> 450
+> Count
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect
+
+(d) Average reflection-style marker count on AIME24. 
+
+Figure 1: Motivation analysis for correct-only versus incorrect-only on-policy distillation. Left two panels: Avg@12 (%) under OPD and OPSD, where incorrect-only training consistently outperforms correct-only training across mathematical reasoning benchmarks. Right two panels: inference-time behavior on AIME24, where incorrect-only training produces longer responses and more reflection-style markers. 
+
+may reflect routine derivation rather than cau-tious reasoning, we also compare marker counts: incorrect-only training produces more reflection-style markers, indicating more frequent checking, revision, and alternative exploration. These results suggest that correct-only train-ing mainly consolidates behavior the student al-ready performs successfully, but may also make the model overly confident and less exploratory. 
+
+Incorrect-only training exposes failed but struc-tured attempts from the current policy, helping 
+
+preserve cautious reasoning behavior . This in-terpretation is consistent with prior links between reasoning length, reflection markers, and robust-ness (Kim et al., 2026a). Standard OPD and OPSD nevertheless weight all trajectories equally. Our analysis suggests that trajectories exposing stronger student–teacher devi-ations deserve more emphasis, directly motivating ReNIO’s sample-level weighting strategy. 
+
+3 Methodology 
+
+Figure 2 summarizes ReNIO. We first formal-ize the on-policy distillation setup (Section 3.1), then describe three design components: a prefix-computable student–teacher log-ratio signal for SGO quality (Section 3.2), fixed-threshold key-token selection (Section 3.3), and geometric-mean aggregation into a normalized sample weight (Sec-tion 3.4). Finally, we integrate the weight into the distillation objective (Section 3.5). 
+
+3.1 Problem Setup 
+
+Consider a student policy πS and a teacher policy 
+
+πT . Given a prompt x sampled from the training prompt distribution D, on-policy distillation first samples a student-generated output (SGO) y =(y1, . . . , y n) ∼ πS (·| x), and then asks the teacher to provide token-level supervision on the same student-visited prefixes. For a model M ∈ { S, T },we write 
+
+ptM (v) = πM (v|x, y <t ) (1) for the next-token distribution at position t. We also use πM (y|x) as shorthand for the collection of prefix-conditioned distributions {ptM }nt=1 along the sampled SGO, rather than only the probability of the completed sequence. Standard OPD trains the student by matching its prefix-conditioned distributions to the teacher’s distributions on every sampled SGO. We define the sequence-level distillation divergence along y as the sum of token-level divergences over all visited prefixes: 
+
+D(πS (y|x)∥πT (y|x)) = 
+
+nX
+
+t=1 
+
+d(ptS , p tT ), (2) where d(·, ·) is the distribution divergence, like FKLD, RKLD. Thus, D does not denote a single di-vergence between two completed-sequence proba-bilities; it denotes the accumulated teacher–student discrepancy along the sampled SGO prefixes. The unweighted on-policy objective is therefore 
+
+LOPD = Ex∼D, y ∼πS (·| x)
+
+D(πS (y|x)∥πT (y|x)) .
+
+(3) In this objective, every SGO contributes equally even though Section 2 shows that different SGOs can affect learning in substantially different ways. 
+
+3.2 Finding an Information Signal for SGO Quality 
+
+The central challenge is to identify high-value SGOs without using their final answers. Section 2 suggests that incorrect SGOs can play a distinct 31 Student-Teacher Log Ratio 
+
+Student-Generated Trajectory(SGO) 
+
+5 + 3 12 ^2 =... 
+
+Student conditional probability 
+
+Teacher conditional probability 
+
+... 
+
+...      
+
+> 0.90 0.90 0.90 0.70 0.80 0.90
+
+...      
+
+> 0.10 0.90 0.90 0.01 0.70 0.90
+
+Student-Teacher Log Ratio 
+
+2.1 0.0 0.0 4.2 0.1 0.0 ... ... 
+
+Output: Token log ratio 
+
+2 Key Token Information Selection 
+
+2.1 4.2 ... ... 
+
+Threshold-based Selection 
+
+> Select tokens with
+
+Outlier Clipping 
+
+> Clip the selected log-ratio to ( ,c] (c=3,for example)
+
+2.1 4.2 2.1 3.0 
+
+Output: Clipped key token log ratio set 
+
+),|( <ttS yxyP   
+
+> ),|(
+> ),|(
+> log =<
+> <
+> ttT
+> ttS
+> tyxyP
+> yxyP
+> d
+> τdt>
+> τ
+
+3 Information Aggregation 
+
+Mean of log ratio, with batch normalization 
+
+Output: Final sample weight (example)   
+
+> exp{ ( +) / 2 }
+
+2.1 3.0 
+
+> Batch-Level Normalization
+> 1.5
+
+),|( <ttT yxyP
+
+... 
+
+... 
+
+0.0 0.0 0.0 0.0  
+
+> }{td
+
+(a) Overall pipeline of ReNIO. ... She has 9 * 2 = << << 9 * 2 = 18 >> ANS             
+
+> ... She has 13 *2=<< 13 *226 =>>
+> ...
+> ...
+
+SGO                           
+
+> 0.67 0.76 0.21 0.00 1.00 0.99 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+> 0.74 0.36 0.78 0.13 0.98 0.96 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+> Teacher
+> Student
+
+(b) An example about how the pivotal tokens leading to a wrong trajectory, and teacher/student probilities on these tokens. 
+
+Figure 2: Overview of the proposed ReNIO.Phase I computes the student–teacher log ratio along the SGO; Phase II selects pivotal tokens with a fixed threshold; Phase III aggregates selected log ratios into a normalized sample-level weight. 
+
+and useful role in OPD, but directly weighting tra-jectories by correctness would require complete answer-containing rollouts. ReNIO therefore looks for a prefix-computable signal that indicates when a student trajectory is likely to contain an informative failure. The signal should focus on branching decisions rather than all tokens. A reasoning trajectory usu-ally becomes wrong after a small number of lo-cal choices redirect an otherwise plausible solution path. In Figure 2b, for example, the student chooses “13” at a critical step. Because this token is sam-pled from the student policy, it has relatively high probability under πS (·| x, y <t ); because it moves the solution away from the teacher-preferred path, it has low probability under πT (·| x, y <t ). Such key tokens therefore have a large student-to-teacher probability ratio. After the wrong branch is taken, later tokens are conditioned on the same mistaken prefix, so teacher–student disagreement may shrink again. We therefore use the student-to-teacher ra-tio to locate the local decisions where the student is confident and the teacher rejects the sampled choice. 
+
+Token-level importance score. For each sam-pled token yt in an SGO, we define the student-to-teacher ratio 
+
+rt = πS (yt | x, y <t )
+
+πT (yt | x, y <t ) , (4) and its log form 
+
+ℓt = log rt
+
+= log πS (yt|x, y <t ) − log πT (yt|x, y <t ). (5) A large rt means that the sampled token is much more likely under the student than under the teacher. We treat high-ratio tokens as pivotal tokens : local decisions where the SGO departs from the teacher-preferred reasoning direction. 4(a) OPD   
+
+> (b) OPSD
+> Figure 3: Distribution of token-level log ratios ℓton SGOs in the Qwen3 mathematical reasoning setting. Both OPD and OPSD exhibit long-tailed distributions: most tokens have small log ratios, while a small number of tokens exhibit large student–teacher disagreement.
+
+The log ratio also has an optimization inter-pretation. Under a prefix-level reverse-KL ob-jective KL( ptS ∥ptT ), the effective gradient weight of a student-sampled token is log πS (yt|x, y <t ) −
+
+log πT (yt|x, y <t ) = ℓt up to a removable base-line (Appendix A). Thus, ℓt is both a disagreement signal and a token-level corrective weight. Re-NIO uses this prefix-computable token signal as evidence for sample-level SGO importance, pre-serving OPD’s ability to train on truncated prefixes without observing the final answer. 
+
+3.3 Selecting Key Tokens from Long-Tailed Log Ratios 
+
+The previous section shows that pivotal tokens should have large student-to-teacher ratios. Next step is to identify these tokens within a SGO. Figure 3 shows the empirical distribution of ℓt in the Qwen3 mathematical reasoning setting. Under both OPD and OPSD, the distribution is strongly long-tailed: most tokens have ℓt really close to zero, which means student and teacher align well on most tokens in SGO, while only a small subset has much larger values. This pattern matches the intuition from Section 3.2: key tokens are really rare, but when they appear, the student-to-teacher ratio is large. This long-tailed structure motivates a simple fixed-threshold rule. ReNIO keeps a token as key token if its log ratio exceeds τ , thus result in a key token set: 
+
+K(x, y ) =  t ℓt > τ , (6) This rule removes the large mass of low-ratio to-kens and retains the rare high-ratio tokens used to estimate SGO importance. 
+
+3.4 From Key Tokens to Sample Weight 
+
+After selecting K(x, y ) for each SGO, we aggre-gate its token-level information into to get the final SGO weight. 
+
+Geometric-mean aggregation. We use a geo-metric mean , equivalently averaging log student-teacher ratios and then exponentiating: 
+
+w(x, y ) = 
+
+ Y
+
+> t∈K (x,y )
+
+πS (yt|xi, y <t )
+
+πT (yt|xi, y <t )
+
+
+
+> 1/|K (x,y )|
+
+= exp( 1
+
+|K (x, y )|
+
+X
+
+> t∈K (x,y )
+
+log πS (yt|xi, y <t )
+
+πT (yt|xi, y <t ) )= exp( 1
+
+|K (x, y )|
+
+X
+
+> t∈K (x,y )
+
+log rt)
+
+(7) when K(x, y ) = ∅, we will set w(x, y ) = 1 .
+
+Batch-level normalization. To keep the overall gradient scale unchanged, we normalize weights within each batch: 
+
+ˆw(x, y ) = w(x, y )¯wB
+
+, ¯wB = 1
+
+B
+
+> B
+
+X
+
+> i=1
+
+w(xi, y i),
+
+(8) where B is the batch size. The mean weight in each batch is therefore 1, so ReNIO redistributes emphasis across SGOs without changing the aver-age update scale. The complete weighting procedure is summa-rized in Algorithm 1 in Appendix B. 
+
+3.5 Weighted On-Policy Distillation Objective 
+
+Finally we apply sample weights calculated by Re-NIO to Equation 3. The final objective is 
+
+LReNIO =Ex∼D,y ∼πS (·| x)
+
+[ ˆ w(x, y )D(πS (y|x)|| πT (y|x))] (9) Since ˆw(x, y ) uses only prefix-conditioned token probabilities and does not require the final answer, ReNIO remains compatible with truncated-prefix training and preserves the efficiency advantage of OPD over reward-based RL methods. 5Model Math Tasks Coding Tasks AIME24 AIME25 HMMT25 Avg HumanEval+ MBPP+ Avg Qwen3-1.7B 51.33 36.00 23.33 36.89 73.63 57.21 65.42 w/ GRPO 49.44 38.61 23.61 37.22 74.84 65.87 70.36 w/ OPSD 53.06 41.94 27.50 40.83 74.85 62.43 68.64 w/ OPSD+ReNIO 57.78 +8.90% 42.78 +2.00% 27.78 +1.02% 42.78 +4.77% 77.90 +4.07% 
+
+63.16 
+
+> +1.17%
+
+70.53 +2.75% 
+
+Qwen3-4B 74.44 65.28 42.22 60.65 86.74 77.31 82.03 w/ GRPO 73.89 67.78 42.22 61.30 86.28 77.78 82.03 w/ OPSD 75.56 68.89 43.33 62.59 86.43 77.78 82.11 w/ OPSD+ReNIO 75.83 +0.36% 69.17 +0.41% 46.67 +7.71% 63.89 +2.08% 87.04 +0.71% 78.31 +0.68% 82.68 +0.69% 
+
+Qwen3-8B 74.17 71.67 44.72 63.52 85.52 77.84 81.68 w/ GRPO 78.33 69.44 44.72 64.16 87.20 78.51 82.86 
+
+w/ OPSD 75.28 71.39 45.56 64.08 86.59 77.05 81.82 w/ OPSD+ReNIO 78.06 
+
+> +3.69%
+
+71.11 
+
+> -0.39%
+
+47.50 +4.26% 65.56 +2.31% 88.41 +2.10% 
+
+77.31 
+
+> +0.34%
+
+82.86 +1.27% 
+
+R1-Distill-Qwen-1.5B 27.78 22.78 14.44 21.67 49.09 41.07 45.08 w/ GRPO 31.67 24.17 13.89 23.24 49.24 41.47 45.36 w/ OPSD 26.66 23.89 13.06 21.20 50.46 40.87 45.67 w/ OPSD+ReNIO 28.61 
+
+> +7.31%
+
+24.44 +2.30% 15.28 +17.00% 
+
+22.78 
+
+> +7.45%
+
+50.30 
+
+> -0.32%
+
+42.13 +3.08% 46.22 +1.20% 
+
+R1-Distill-Qwen-7B 56.11 40.83 25.56 40.83 73.17 58.73 65.95 w/ GRPO 54.17 40.83 24.17 39.72 74.70 58.27 66.49 w/ OPSD 55.56 38.89 24.61 39.69 73.93 59.26 66.60 w/ OPSD+ReNIO 55.83 
+
+> +0.49%
+
+42.78 +10.00% 26.11 +6.09% 41.57 +4.74% 74.85 +1.24% 59.39 +0.22% 67.12 +0.78% 
+
+Table 1: Results of methods that do not require an additional teacher model. Math Tasks : AIME24, AIME25, and HMMT25 (Avg@12). Coding Tasks : HumanEval+ and MBPP+ (Avg@4). Bold denotes the best result per column within each model block. Subscripts on ReNIO rows report relative changes over the corresponding non-ReNIO row. 
+
+4 Experiments 
+
+4.1 Experimental Setup Models and distillation settings. We evaluate ReNIO on two model families: Qwen3 (Yang et al., 2025) and DeepSeek-R1-Distill-Qwen (DeepSeek-AI, 2025). We study both teacher-based OPD and teacher-free OPSD. For OPD, we use Qwen3-1.7B and DeepSeek-R1-Distill-Qwen-1.5B as students, with Qwen3-8B and DeepSeek-R1-Distill-Qwen-7B as the corresponding teachers. For OPSD, we evaluate Qwen3-1.7B, Qwen3-4B, Qwen3-8B, DeepSeek-R1-Distill-Qwen-1.5B, and DeepSeek-R1-Distill-Qwen-7B. 
+
+Tasks and training data. We evaluate ReNIO on two task domains: mathematical reasoning and code generation. For mathematical reason-ing, we follow the data construction protocol of OPSD (Zhao et al., 2026) and use the same math training data for fair comparison. For code genera-tion, we sample 30k coding-related examples from OpenThoughts (Guha et al., 2025). 
+
+Evaluation. We evaluate mathematical reason-ing on AIME2024 (Zhang and Math-AI, 2024), AIME2025 (Zhang and Math-AI, 2025), and HMMT2025 (Dekoninck et al., 2026), reporting the average pass@ 12 (Avg@12) across the three bench-marks. Using evalplus(Liu et al., 2023), we eval-uate code generation on HumanEval+ (Liu et al., 2023) and MBPP+ (Liu et al., 2023), reporting av-erage pass@ 4 (Avg@4).For OPSD and OPD, we evaluate checkpoints every 25 steps up to 100 steps and report the best score. For GRPO, we report the peak performance within 300 training steps. 
+
+Implementation details. Following previous work(Zhao et al., 2026), for OPSD, we fix the teacher parameters to the initial model parameters and use full-vocabulary logit distillation and LoRA for all experiments. We set the maximum gener-ation length to 1024 for Qwen3 OPD and OPSD training and 2048 for DeepSeek-R1-Distill-Qwen OPD and OPSD training; thus, training uses only SGO prefixes. Detailed information is provided in Appendix C. 6Model Math Tasks Coding Tasks AIME24 AIME25 HMMT25 Avg HumanEval+ MBPP+ Avg 
+
+Teacher: Qwen3-8B 
+
+Qwen3-1.7B 51.33 36.00 23.33 36.89 73.63 57.21 65.42 w/ OPD 54.44 39.16 27.50 40.37 74.40 62.43 68.42 w/ OPD+ReNIO 54.72 +0.51% 43.06 +9.96% 28.33 +3.02% 42.04 +4.14% 75.00 +0.81% 63.56 +1.81% 69.28 +1.26% 
+
+Teacher: DS-R1-Qwen-7B 
+
+DS-R1-Qwen-1.5B 27.78 22.78 14.44 21.67 49.09 41.07 45.08 w/ OPD 28.89 23.06 14.44 22.13 50.15 41.14 45.65 w/ OPD+ReNIO 29.72 +2.87% 23.89 +3.60% 16.67 +15.44% 23.43 +5.87% 50.91 +1.52% 41.20 +0.15% 46.06 +0.90% 
+
+Table 2: Results of methods that require an additional teacher model. OPSD 1024     
+
+> OPSD 1024+ReNIO
+> OPSD 4096
+> OPSD 4096+ReNIO
+> OPD 1024
+> OPD 1024+ReNIO
+> OPD 4096
+> OPD 4096+ReNIO
+> GRPO
+> 0
+> 5
+> 10
+> 15
+> 20
+> 25
+> 30
+> Avg Time per Step (s)
+> 4.61 4.59
+> 12.40 12.13
+> 4.99 5.00
+> 12.10 11.56
+> 29.90
+
+Figure 4: Training-time comparison between GRPO and prefix-based on-policy distillation on Qwen3-1.7B mathematical reasoning. 
+
+4.2 Main Results 
+
+Tables 1 and 2 report the main results on mathemat-ical reasoning and code generation. ReNIO consis-tently improves the corresponding OPD or OPSD baseline across all model blocks in terms of average performance: for OPSD, DS-R1-Qwen-7B obtains a 10.00% relative improvement on AIME25; for OPD, DS-R1-Qwen-1.5B obtains a 15.44% relative improvement on HMMT25, showing that reweight-ing negative on-policy trajectories is beneficial for both teacher-free self-distillation and teacher-based distillation. Meanwhile, for DS-R1-Qwen-1.5B, standard OPSD slightly decreases the math average com-pared with the base model, while OPSD+ReNIO improves over both OPSD and the base model on all three math benchmarks. This suggests that Re-NIO not only improves average performance, but also stabilizes on-policy self-distillation when the unweighted OPSD signal is noisy. 
+
+4.3 Effective and Efficient Training from Short SGO Prefixes 
+
+The ability to train on short SGO prefixes is a cen-tral practical advantage of OPD and OPSD. Unlike GRPO, which must generate a complete trajectory before assigning a reward, prefix-based distillation can apply dense teacher supervision before the final answer appears. Figure 4 shows the resulting cost difference: OPD and OPSD with 1024-token pre-fixes are substantially cheaper than GRPO, while extending the prefix length from 1024 to 4096, which usually covers the final answer in this setting, nearly triples the training time. Table 3 shows that this efficiency does not re-quire a large loss in effectiveness. Without ReNIO, 1024-token OPSD even outperforms 4096-token OPSD on average (40.83 vs. 38.70), and increasing OPD from 1024 to 4096 tokens improves the aver-age only modestly (40.37 to 41.38). ReNIO further improves average performance under both prefix lengths: OPSD gains 1.95 points at 1024 tokens and 1.86 points at 4096 tokens, while OPD gains 1.67 and 0.93 points, respectively. Because ReNIO computes weights from prefix-conditioned student and teacher probabilities, these gains do not require answer-containing rollouts. These results therefore support two conclusions: short prefixes already provide effective OPD supervision, and ReNIO preserves this low-cost regime while improving it. 4.4 Ablation Studies 
+
+All ablations in this subsection are conducted on Qwen3-1.7B under OPD, using Qwen3-8B as the teacher. We study the three components used to construct the final ReNIO weight: key-token se-lection, log-ratio clipping, and batch-wise weight normalization. Detailed hyperparameter ablation 7Method AIME24 AIME25 HMMT25 Avg OPSD(1024) 53.06 41.94 27.50 40.83 /w ReNIO 57.78 42.78 27.78 42.78                         
+
+> OPSD(4096) 53.33 37.22 25.56 38.70 /w ReNIO 53.33 43.06 25.28 40.56 OPD(1024) 54.44 39.16 27.50 40.37 /w ReNIO 54.72 43.06 28.33 42.04 OPD(4096) 56.11 42.20 25.83 41.38 /w ReNIO 56.39 41.94 28.61 42.31
+
+Table 3: Effect of SGO prefix length on Qwen3-1.7B OPSD and OPD mathematical reasoning perfor-mance. Scores are Avg@ 12 over AIME24, AIME25, and HMMT25. 1024 and 4096 denote the maximum training-prefix length; 4096 can almost cover the final answer of an SGO in our setting.                           
+
+> Method Key Clip Norm A24 A25 H25 Avg OPD No No No 54.44 39.16 27.50 40.37 ReNIO Yes Yes Yes 54.72 43.06 28.33 42.04
+> w/o clipping Yes No Yes 53.61 42.22 24.44 40.09 w/o threshold No Yes Yes 55.28 41.94 25.28 40.83 w/o batch norm Yes Yes No 51.94 41.39 25.28 39.54
+
+Table 4: Component ablation of ReNIO under OPD on Qwen3-1.7B mathematical reasoning. “Key” de-notes threshold-based key-token selection, “Clip” de-notes log-ratio clipping, and “Norm” denotes batch-wise weight normalization. Scores are Avg@ 12 on AIME24, AIME25, and HMMT25. 
+
+studies are provided in Appendix D.3. Table 4 shows that the full pipeline gives the best average score, improving OPD from 40.37 to 42.04. Removing clipping reduces the average to 40.09, indicating that unbounded token ratios can make the sample weight unstable. Key-token selection is also important. As shown in Figure 3, most SGO tokens are already well matched by the student and teacher, so their ratios are close to 1. If these routine tokens are aggre-gated together with truly high-disagreement tokens, they dilute the signal from pivotal decisions. Con-sistently, removing threshold-based selection still improves over OPD but only reaches 40.83, below the full ReNIO result. Batch-wise normalization has the largest effect among the ablations. Without it, the average drops to 39.54. This is expected because ReNIO’s sam-ple weights directly scale the distillation loss and therefore the gradient magnitude; without normal-ization, the effective objective scale can vary across batches and destabilize training. 
+
+5 Related Work 
+
+Classical knowledge distillation transfers teacher behavior to a student on fixed data or teacher-generated targets (Hinton et al., 2015), but this of-fline setting can suffer from exposure bias in LLM post-training. On-policy distillation reduces this mismatch by sampling trajectories from the student policy and applying teacher supervision on the vis-ited prefixes (Agarwal et al., 2024, 2023; Lu and Lab, 2025; Gu et al., 2023). Recent OPD studies cover self-distillation (Zhao et al., 2026; Shenfeld et al., 2026; Hubotter et al., 2026; Kujanpää et al., 2024; Ye et al., 2026; Stein et al., 2026), mech-anism analysis (Kim et al., 2026a; Zhang et al., 2026; Li et al., 2026; Yang et al., 2026), training stabilization (Ko et al., 2026), and better use of student-generated outputs (Xu et al., 2024; Ko et al., 2025; Lyu et al., 2025; Peng et al., 2025). Clos-est to our work, some methods reweight tokens or samples in OPD (Wen et al., 2025; Zheng et al., 2026; Hou et al., 2026), but their weighting or cali-bration signals require knowing whether an SGO reaches the correct answer. ReNIO instead com-putes sample weights from prefix-conditioned stu-dent and teacher probabilities, preserving OPD’s short-prefix advantage while emphasizing likely negative trajectories. 
+
+6 Conclusion 
+
+This paper shows that incorrect SGOs can pro-vide especially useful supervision for on-policy distillation, motivating a training strategy that em-phasizes negative trajectories without observing final-answer correctness. We propose ReNIO, a prefix-computable reweighting method that identi-fies pivotal tokens through student-to-teacher log ratios and aggregates them into normalized sample weights. Because ReNIO does not require the an-swer of an SGO for weighting, it preserves OPD’s advantage over RL by allowing training on SGO prefixes. Across mathematical reasoning and code generation tasks, ReNIO improves both OPD and OPSD while preserving short-prefix training. 
+
+Limitations 
+
+We evaluate ReNIO across multiple model fami-lies and task domains, showing consistent gains on mathematical reasoning and code generation. However, due to hardware constraints, we have not verified its effectiveness on larger-scale models. 8References 
+
+Rishabh Agarwal, Nino Vieillard, Piotr Stanczyk, Sabela Ramos, Matthieu Geist, and Olivier Bachem. 2024. On-policy distillation of language models: Learning from self-generated mistakes. In Proceed-ings of the 12th International Conference on Learn-ing Representations .Rishabh Agarwal, Nino Vieillard, Yongchao Zhou, Piotr Sta´ nczyk, Sabela Ramos, Matthieu Geist, and Olivier Bachem. 2023. On-policy distillation of language models: Learning from self-generated mistakes. In 
+
+International Conference on Learning Representa-tions .Kimi Team Yifan Bai, Yiping Bao, Guanduo Chen, Jia-hao Chen, Ningxin Chen, Ruijue Chen, Yanru Chen, Yuankun Chen, Yutian Chen, Zhuofu Chen, Jialei Cui, Haochen Ding, Meng xiao Dong, Angang Du, Chen-zhuang Du, Dikang Du, Yulun Du, Yu Fan, Yichen Feng, and 149 others. 2025. Kimi k2: Open agentic intelligence. Kedi Chen, Dezhao Ruan, Yuhao Dan, Yaoting Wang, Siyu Yan, Xuecheng Wu, Yinqi Zhang, Qin Chen, Jie Zhou, Liang He, Biqing Qi, Linyang Li, Qipeng Guo, Xiaoming Shi, and Wei Zhang. 2026. A survey of inductive reasoning for large language models. 
+
+Preprint , arXiv:2510.10182. DeepSeek-AI. 2025. Deepseek-r1: Incentivizing rea-soning capability in llms via reinforcement learning. 
+
+Preprint , arXiv:2501.12948. DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Jun-Mei Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiaoling Bi, Xiaokang Zhang, Xingkai Yu, Yu Wu, Z. F. Wu, Zhibin Gou, Zhihong Shao, Zhuoshu Li, Ziyi Gao, and 179 others. 2025. Deepseek-r1 incentivizes reasoning in llms through reinforcement learning. Nature , 645:633 – 638. Jasper Dekoninck, Nikola Jovanovi´ c, Tim Gehrunger, Kári Rögnvaldsson, Ivo Petrov, Chenhao Sun, and Martin Vechev. 2026. Beyond benchmarks: Math-arena as an evaluation platform for mathematics with llms. Yuxian Gu, Li Dong, Furu Wei, and Minlie Huang. 2023. Minillm: On-policy distillation of large language models. Etash Kumar Guha, Ryan Marten, Sedrick Scott Keh, Negin Raoof, Georgios Smyrnis, Hritik Bansal, Mar-ianna Nezhurina, Jean-Pierre Mercat, Trung Vu, Za-yne Sprague, Ashima Suvarna, Ben Feuer, Liangyu Chen, Zaid Khan, Eric Frankel, Sachin Grover, Car-oline Choi, Niklas Muennighoff, Shiye Su, and 31 others. 2025. Openthoughts: Data recipes for reason-ing models. ArXiv , abs/2506.04178. Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 2015. Distilling the knowledge in a neural network. In 
+
+NIPS Deep Learning and Representation Learning Workshop .Wenjin Hou, Shangpin Peng, Weinong Wang, Zheng Ruan, Yue Zhang, Zhenglin Zhou, Mingqi Gao, Yifei Chen, Kaiqi Wang, Hongming Yang, Chengquan Zhang, Zhuotao Tian, Han Hu, Yi Yang, Fei Wu, and Hehe Fan. 2026. Uni-opd: Unifying on-policy distillation with a dual-perspective recipe. Preprint ,arXiv:2605.03677. Jonas Hubotter, Frederike Lubeck, Lejs Deen Behric, Anton Baumann, Marco Bagatella, Daniel Marta, Ido Hakimi, Idan Shenfeld, Thomas Kleine Buen-ing, Carlos Guestrin, and Andreas Krause. 2026. Reinforcement learning via self-distillation. ArXiv ,abs/2601.20802. Zixuan Ke, Fangkai Jiao, Yifei Ming, Xuan-Phi Nguyen, Austin Xu, Do Xuan Long, Minzhi Li, Chengwei Qin, Peifeng Wang, Silvio Savarese, Caiming Xiong, and Shafiq Joty. 2026. A survey of frontiers in llm reasoning: Inference scaling, learning to reason, and agentic systems. Preprint , arXiv:2504.09037. Jeonghye Kim, Xufang Luo, Minbeom Kim, Sangmook Lee, Dohyung Kim, Jiwon Jeon, Dongsheng Li, and Yuqing Yang. 2026a. Why does self-distillation (sometimes) degrade the reasoning capability of llms? Jeonghye Kim, Xufang Luo, Minbeom Kim, Sangmook Lee, Dongsheng Li, and Yuqing Yang. 2026b. Un-derstanding reasoning in llms through strategic infor-mation allocation under uncertainty. Jongwoo Ko, Sara Abdali, Young Jin Kim, Tianyi Chen, and Pashmina Cameron. 2026. Scaling reasoning efficiently via relaxed on-policy distillation. Jongwoo Ko, Tianyi Chen, Sungnyun Kim, Tianyu Ding, Luming Liang, Ilya Zharkov, and Se-Young Yun. 2025. Distillm-2: A contrastive approach boosts the distillation of llms. arXiv preprint arXiv:2503.07067 .Jongwoo Ko, Sungnyun Kim, Tianyi Chen, and Se-Young Yun. Distillm: Towards streamlined distilla-tion for large language models. In Forty-first Interna-tional Conference on Machine Learning .Kalle Kujanpää, Pekka Marttinen, Harri Valpola, and Alexander Ilin. 2024. Efficient knowledge injection in llms via self-distillation. Trans. Mach. Learn. Res. ,2025. Yaxuan Li, Yuxin Zuo, Bingxiang He, Jinqian Zhang, Chaojun Xiao, Cheng Qian, Tianyu Yu, Huan-ang Gao, Wenkai Yang, Zhiyuan Liu, and Ning Ding. 2026. Rethinking on-policy distillation of large lan-guage models: Phenomenology, mechanism, and recipe. arXiv preprint arXiv:2604.13016 .Jiawei Liu, Chunqiu Steven Xia, Yuyao Wang, and Ling-ming Zhang. 2023. Is your code generated by chat-GPT really correct? rigorous evaluation of large lan-guage models for code generation. In Thirty-seventh Conference on Neural Information Processing Sys-tems .
+
+9Ilya Loshchilov and Frank Hutter. 2019. Decoupled weight decay regularization. In International Confer-ence on Learning Representations .Kevin Lu and Thinking Machines Lab. 2025. On-policy distillation. Thinking Machines Lab: Con-nectionism . Https://thinkingmachines.ai/blog/on-policy-distillation. Yuanjie Lyu, Chengyu Wang, Jun Huang, and Tong Xu. 2025. From correction to mastery: Reinforced distillation of large language model agents. ArXiv ,abs/2509.14257. Jingyu Peng, Maolin Wang, Hengyi Cai, Yuchen Li, Kai Zhang, Shuaiqiang Wang, Dawei Yin, and Xi-angyu Zhao. 2025. Adaswitch: Balancing explo-ration and guidance in knowledge distillation via adaptive switching. Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Mingchuan Zhang, Y.K. Li, Y. Wu, and Daya Guo. 2024. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. Idan Shenfeld, Mehul Damani, Jonas Hübotter, and Pulkit Agrawal. 2026. Self-distillation enables con-tinual learning. ArXiv , abs/2601.19897. Alex Stein, Furong Huang, and Tom Goldstein. 2026. Gates: Self-distillation under privileged context with consensus gating. ArXiv , abs/2602.20574. Xumeng Wen, Zihan Liu, Shun Zheng, Zhijian Xu, Shengyu Ye, Zhirong Wu, Xiao Liang, Yang Wang, Junjie Li, Ziming Miao, Jiang Bian, and Mao Yang. 2025. Reinforcement learning with verifiable re-wards implicitly incentivizes correct reasoning in base llms. ArXiv , abs/2506.14245. Wenda Xu, Rujun Han, Zifeng Wang, Long T. Le, Dhruv Madeka, Lei Li, William Yang Wang, Rishabh Agar-wal, Chen-Yu Lee, and Tomas Pfister. 2024. Specu-lative knowledge distillation: Bridging the teacher-student gap through interleaved sampling. ArXiv ,abs/2410.11325. An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, Chujie Zheng, Dayi-heng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao Ge, Haoran Wei, Huan Lin, Jialong Tang, and 41 others. 2025. Qwen3 technical report. Wenkai Yang, Weijie Liu, Ruobing Xie, Kai Yang, Saiy-ong Yang, and Yankai Lin. 2026. Learning beyond teacher: Generalized on-policy distillation with re-ward extrapolation. ArXiv , abs/2602.12125. Tianzhu Ye, Li Dong, Xun Wu, Shaohan Huang, and Furu Wei. 2026. On-policy context distillation for language models. ArXiv , abs/2602.12275. Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Tiantian Fan, Gaohong Liu, Lingjun Liu, Xin Liu, Haibin Lin, Zhiqi Lin, Bole Ma, Guangming Sheng, Yuxuan Tong, Chi Zhang, Mofan Zhang, Wang Zhang, Hang Zhu, and 16 oth-ers. 2025. Dapo: An open-source llm reinforcement learning system at scale. ArXiv , abs/2503.14476. Dan Zhang, Zhuohan Yang, Sepehr Janghorbani, Jiaqi Han, Andrew Ressler, Qi Qian, Gabriel D. Lyng, Sarthak S. Batra, and Richard E. Tillman. 2026. Fast and effective on-policy distillation from reasoning prefixes. Manuscript .Yifan Zhang and Team Math-AI. 2024. American invi-tational mathematics examination (aime) 2024. Yifan Zhang and Team Math-AI. 2025. American invi-tational mathematics examination (aime) 2025. Siyan Zhao, Zhihui Xie, Mengchen Liu, Jing Huang, Guan Pang, Feiyu Chen, and Aditya Grover. 2026. Self-distilled reasoner: On-policy self-distillation for large language models. ArXiv , abs/2601.18734. Binbin Zheng, Xing Ma, Yiheng Liang, Jingqing Ruan, Xiaoliang Fu, Kepeng Lin, Benchang Zhu, Ke Zeng, and Xunliang Cai. 2026. Scope: Signal-calibrated on-policy distillation enhancement with dual-path adaptive weighting. Preprint , arXiv:2604.10688. Xinyu Zhu, Mengzhou Xia, Zhepei Wei, Wei-Lin Chen, Danqi Chen, and Yu Meng. 2025. The surprising effectiveness of negative reinforcement in llm reason-ing. ArXiv , abs/2506.01347. 
+
+A Reverse-KL Gradient Interpretation of the Student–Teacher Ratio 
+
+This appendix derives why the student-to-teacher log ratio used by ReNIO can be interpreted as a token-level gradient weight under reverse-KL distil-lation. Consider one fixed prefix (x, y <t ) and write the student and teacher next-token distributions as 
+
+pS (v) and pT (v). The reverse-KL objective at this prefix is 
+
+LRKL = KL( pS ∥pT )= X
+
+> v
+
+pS (v) log pS (v) − log pT (v).
+
+(10) Let zu be the student logit for token u, so that 
+
+pS (v) = softmax( z)v. Differentiating Eq. 10 with respect to zu gives 
+
+∂LRKL 
+
+∂z u
+
+= X
+
+> v
+
+∂p S (v)
+
+∂z u
+
+ log pS (v) − log pT (v) + 1 .
+
+(11) 10 Using the softmax derivative ∂p S (v)/∂z u =
+
+pS (v)( I[v = u] − pS (u)) , we obtain 
+
+∂LRKL 
+
+∂z u
+
+= pS (u) log pS (u) − log pT (u) + 1 
+
+− pS (u) X
+
+> v
+
+pS (v) log pS (v) − log pT (v) + 1 .
+
+(12) The second term is shared across all vocabulary tokens at the same prefix and acts as a distribution-level baseline. The token-specific part is therefore controlled by log pS (u) − log pT (u) + 1 = 1 + log pS (u)  
+
+> pT(u)
+
+. Equivalently, the same result can be written in score-function form: 
+
+∇θLRKL = Ev∼pS
+
+(log pS (v) − log pT (v) + 1) 
+
+· ∇ θ log pS (v).
+
+(13) Because Ev∼pS [∇θ log pS (v)] = ∇θ
+
+P 
+
+> v
+
+pS (v) = 0, the constant +1 is a removable baseline. There-fore, 
+
+∇θLRKL = Ev∼pS
+
+(log pS (v) − log pT (v)) 
+
+· ∇ θ log pS (v),
+
+(14) so the effective token-level weight is exactly the student-to-teacher log ratio. For an on-policy SGO, the observed token yt
+
+is sampled from the student distribution. Substi-tuting v = yt into Eq. 14 shows that the sampled token’s effective reverse-KL gradient contribution is weighted by 
+
+ℓt = log pS (yt | x, y <t )
+
+pT (yt | x, y <t ) . (15) Thus, tokens that the student assigns much higher probability than the teacher receive larger reverse-KL corrective emphasis. ReNIO uses this same log-ratio term as token-level evidence for identifying pivotal decisions and then aggregates the selected evidence into a normalized sample-level weight. 
+
+B ReNIO Algorithm 
+
+Algorithm 1 ReNIO Algorithm for On-Policy Dis-tillation 
+
+INPUT: Student S, teacher T , on-policy batch 
+
+B = {(xi, y i)}Bi=1 , threshold τ , clip bounds 
+
+ϵmin , ϵ max 
+
+OUTPUT: Normalized sample weights { ˆwi}Bi=1  
+
+> 1:
+
+for each sample (xi, y i) ∈ B do  
+
+> 2:
+
+Phase I: Student-Teacher Log Ratio  
+
+> 3:
+
+for each token position t = 1 , . . . , |yi| do  
+
+> 4:
+
+ℓt ← log pS (yt | xi, y <t ) − log pT (yt |
+
+xi, y <t ) 
+
+> 5:
+
+end for  
+
+> 6:
+
+Phase II: Key Token Information Selec-tion  
+
+> 7:
+
+Ki ← ∅  
+
+> 8:
+
+for each token position t = 1 , . . . , |yi| do  
+
+> 9:
+
+if ℓt > τ then  
+
+> 10:
+
+Ki ← K i ∪ { t} 
+
+> 11:
+
+end if  
+
+> 12:
+
+end for  
+
+> 13:
+
+Phase III: Token Information Aggrega-tion  
+
+> 14:
+
+if Ki̸ = ∅ then  
+
+> 15:
+
+¯ℓi ← 1
+
+> |K i|
+
+P 
+
+> t∈K i
+
+clip( ℓt, ϵ min , ϵ max ) 
+
+> 16:
+
+wi ← exp( ¯ℓi) 
+
+> 17:
+
+else  
+
+> 18:
+
+wi ← 1 {no pivotal token found}  
+
+> 19:
+
+end if  
+
+> 20:
+
+end for  
+
+> 21:
+
+¯wB ← 1
+
+> B
+
+PBi=1 wi 
+
+> 22:
+
+for i = 1 , . . . , B do  
+
+> 23:
+
+ˆwi ← wi / ¯wB 
+
+> 24:
+
+end for  
+
+> 25:
+
+return { ˆwi}Bi=1 
+
+C Detailed Experimental Setup 
+
+Here we list the detailed hyperparameter values for each setting in Section 4. We provide the train-ing and evaluation configurations for GRPO, OPD, OPSD experiments in Tables 5, 6, 7. Following the settings in OPSD (Zhao et al., 2026), for Qwen3 series models’ OPD and OPSD training, we ap-ply Thinking-Mode-off student/Thinking-Mode-on teacher, and for their evaluation, we apply Thinking-Mode on. All experiments are applied on 4 H200 GPUs with gradient checkpointing and Flash Attention 2. We utilize the AdamW optimizer(Loshchilov and 11 Hutter, 2019) and bfloat16 precision for all training runs.And we apply full-vocabulary logit distillation for all OPD and OPSD experiments.                             
+
+> Parameter GRPO OPD OPSD Learning rate 5e-6 5e-6 5e-6 Effective batch size 32 32 32 LoRA rank ( r)64 64 64 LoRA alpha ( α)128 128 128 LoRA target modules q proj, k proj, v proj, o proj, gate proj, up proj, down proj Max completion length 16000 1024 1024 Number of generations per prompt 811Sampling temperature 1.2 1.1 1.1 Training steps 300 100 100
+
+Table 5: Training configuration for Qwen3 series mod-els.                             
+
+> Parameter GRPO OPD OPSD Learning rate 1e-6 1e-6 1e-6 Effective batch size 32 32 32 LoRA rank ( r)64 64 64 LoRA alpha ( α)128 128 128 LoRA target modules q proj, k proj, v proj, o proj, gate proj, up proj, down proj Max completion length 16000 2048 2048 Number of generations per prompt 811Sampling temperature 1.2 1.1 1.1 Training steps 300 100 100
+
+Table 6: Training configuration for DS-Distill-Qwen series models.                   
+
+> Parameter Math Coding Max New Tokens 38912 38912 Thinking Mode Enabled Enabled Temperature 1.0 1.0 Top-p 0.95 0.95 Top-k -1 -1 Min-p 0.0 0.0 Presence Penalty 0.0 0.0 Samples per Prompt 12 4
+
+Table 7: Evaluation configuration 
+
+Additionally, for experiments conducted in Sec-tion 2, We keep most training and evaluation set-tings the same as those in Tables 5 and 7, except for the maximum completion length. Since we need 
+
+> (a) OPD
+> (b) OPSD
+
+Figure 5: Relationship between ReNIO sample weight and teacher entropy on Qwen3-1.7B. 
+
+the final output to identify whether the SGO is cor-rect, we must roll out the whole trajectory. For Qwen3-1.7B with Thinking Mode off, a genera-tion length of 4096 is enough to generate the final answer; hence, we set the maximum generation length to 4096 for experiments in Section 2. 
+
+D Additional Analyses and Discussions 
+
+D.1 Teacher Confidence on High-Weight Trajectories 
+
+A natural concern for ReNIO is that it may overweight low-quality SGOs produced by train– inference mismatch. If such trajectories fall outside the teacher’s reliable region, their supervision could be weak or misleading. We examine this issue on Qwen3-1.7B using teacher entropy as a proxy for confidence: lower entropy indicates sharper and more reliable token-level guidance. Figure 5 shows that higher ReNIO weights cor-relate with lower teacher entropy in both OPD and OPSD. This inverse relationship indicates that Re-NIO does not primarily amplify trajectories for which the teacher distribution becomes uncertain. Instead, ReNIO assigns larger weights to SGOs where the student departs from the teacher but the teacher can still provide a sharp correction signal. This pattern is plausible because current student models are already capable enough that an incor-rect trajectory does not necessarily collapse into incoherent reasoning. As illustrated in Figure 2b, 12 the student chooses the wrong pivotal token “13”, yet the subsequent reasoning still follows a struc-tured path conditioned on that mistaken branch. Such trajectories remain within a region where the teacher can recognize the local error with high con-fidence: the student assigns high probability to the sampled token, while the teacher assigns it low probability, producing a large student-to-teacher ratio and therefore a large ReNIO weight. The opposite case explains the low-weight, high-entropy region in Figure 5. If a student trajectory is far outside the teacher’s reliable reasoning distri-bution, the teacher distribution becomes flatter and less decisive. In that case, the denominator in the student-to-teacher ratio is no longer sharply sup-pressed for a particular wrong token, so the ratio may become smaller rather than larger. Extremely erroneous trajectories therefore receive small Re-NIO weights and are not strongly amplified. Over-all, the negative correlation between ReNIO weight and teacher entropy supports the intended behav-ior of the method: high weights correspond to student errors on which the teacher remains confident enough to give clear supervision. This further validates the Rationality of ReNIO. D.2 Additional Discussion on ReNIO Weighting 
+
+To further examine the design of ReNIO, we com-pare it with two alternative weighting strategies under Qwen3-1.7B OPSD. The first variant uses the same student-to-teacher ratio signal as ReNIO but applies the resulting weights directly to token losses instead of aggregating them into a sample-level weight. The second variant keeps ReNIO’s sample-level weighting form but reverses the in-formation signal, using the teacher-to-student ratio instead of the student-to-teacher ratio.                         
+
+> Method AIME24 AIME25 HMMT25 Avg Base 51.33 36.00 23.33 36.89 OPSD 53.06 41.94 27.50 40.83 /w ReNIO 57.78 42.78 27.78 42.78
+> /w T/S sample weighting 55.28 40.00 29.44 41.57 /w S/T token weighting 54.72 40.28 25.83 40.28
+
+Table 8: Comparison of alternative weighting strate-gies under Qwen3-1.7B OPSD. Scores are Avg@ 12 on AIME24, AIME25, and HMMT25. S/T token weight-ing applies student-to-teacher ratio weights at the token level; T/S sample weighting keeps sample-level aggre-gation but uses the reverse teacher-to-student ratio. 
+
+Table 8 shows that directly applying the S/T sig-nal at the token level is ineffective: its average score is even lower than the OPSD baseline. This indi-cates that the S/T ratio should not be used to rescale every token loss independently; instead, it is more useful after being aggregated into a sample-level signal, as in ReNIO. The T/S sample-weighting variant improves over OPSD, but still underper-forms ReNIO by 1.21 points. A likely explanation is that high T/S ratios emphasize tokens that the teacher assigns high probability but the student as-signs low probability; such tokens may occur more often in correct or teacher-aligned SGOs, giving larger weights to trajectories that are not the main source of the negative-trajectory signal identified in Section 2. This supports ReNIO’s design choice of using S/T ratios to emphasize likely negative, high-information SGOs. 
+
+D.3 Additional Ablation Studies 
+
+We vary the two main hyperparameters: the clip-ping bound and the key-token threshold on OPD on Qwen3-1.7B. Figure 6 summarizes the per-benchmark results across the three mathematical reasoning benchmarks. A small clipping bound suppresses useful dis-agreement, while a loose bound gives too much influence to extreme ratios; the best average is ob-tained at a clipping bound of 3.0. For key-token selection, a low threshold admits routine tokens and dilutes the signal, whereas a high threshold dis-cards informative disagreements; the best average is obtained at a threshold of 0.8. Together, these results support the design of ReNIO: it emphasizes salient student–teacher disagreements while keep-ing sample weights numerically stable. 
+
+E Additional Experimental Results 
+
+Here we provide the full experimental results for Section 2.2, as shown in Figures 7 and 8. 13 Base 
+
+> OPD
+> clip=2.0
+> clip=2.5
+> clip=3.0
+
+47.5 
+
+50.0 
+
+52.5 
+
+55.0 
+
+57.5 
+
+60.0 
+
+> Avg@12 (%)
+
+51.3 
+
+54.4 54.7 
+
+56.4 
+
+54.7 
+
+AIME24 
+
+> Base
+> OPD
+> clip=2.0
+> clip=2.5
+> clip=3.0
+
+35 
+
+40 
+
+45 
+
+> Avg@12 (%)
+
+36.0 
+
+39.2 
+
+41.7 
+
+40.0 
+
+43.1 
+
+AIME25 
+
+> Base
+> OPD
+> clip=2.0
+> clip=2.5
+> clip=3.0
+
+20.0 
+
+22.5 
+
+25.0 
+
+27.5 
+
+30.0 
+
+32.5 
+
+> Avg@12 (%)
+
+23.3 
+
+27.5 27.2 27.8 28.3 
+
+HMMT25 
+
+> Base
+> OPD
+> clip=2.0
+> clip=2.5
+> clip=3.0
+
+35.0 
+
+37.5 
+
+40.0 
+
+42.5 
+
+45.0 
+
+> Avg@12 (%)
+
+36.9 
+
+40.4 41.2 41.4 42.0 
+
+Average (a) Effect of the clipping bound on OPD. The threshold is fixed to 0.8. Base 
+
+> OPD
+> thr=0.6
+> thr=0.8
+> thr=1.0
+
+47.5 
+
+50.0 
+
+52.5 
+
+55.0 
+
+57.5 
+
+60.0 
+
+> Avg@12 (%)
+
+51.3 
+
+54.4 
+
+56.9 
+
+54.7 53.6 
+
+AIME24 
+
+> Base
+> OPD
+> thr=0.6
+> thr=0.8
+> thr=1.0
+
+35 
+
+40 
+
+45 
+
+> Avg@12 (%)
+
+36.0 
+
+39.2 
+
+42.5 43.1 42.2 
+
+AIME25 
+
+> Base
+> OPD
+> thr=0.6
+> thr=0.8
+> thr=1.0
+
+20.0 
+
+22.5 
+
+25.0 
+
+27.5 
+
+30.0 
+
+32.5 
+
+> Avg@12 (%)
+
+23.3 
+
+27.5 
+
+24.7 
+
+28.3 
+
+27.2 
+
+HMMT25 
+
+> Base
+> OPD
+> thr=0.6
+> thr=0.8
+> thr=1.0
+
+35.0 
+
+37.5 
+
+40.0 
+
+42.5 
+
+45.0 
+
+> Avg@12 (%)
+
+36.9 
+
+40.4 41.4 42.0 41.0 
+
+Average 
+
+(b) Effect of the key-token threshold on OPD. The clipping bound is fixed to 3.0. 
+
+Figure 6: Per-benchmark hyperparameter ablation results for ReNIO under OPD on Qwen3-1.7B mathematical reasoning. 0 20 40 60 80 100 
+
+Training Step 
+
+> 18
+> 19
+> 20
+> 21
+> 22
+> Average Response Length (k tokens)
+
+Response Length on AIME24      
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect 020 40 60 80 100
+
+Training Step 
+
+> 18
+> 19
+> 20
+> 21
+> 22
+> 23
+> Average Response Length (k tokens)
+
+Response Length on AIME25      
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect 020 40 60 80 100
+
+Training Step 
+
+> 19.0
+> 19.5
+> 20.0
+> 20.5
+> 21.0
+> 21.5
+> 22.0
+> 22.5
+> Average Response Length (k tokens)
+
+Response Length on HMMT25 
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect
+
+Figure 7: Average response length of correct versus incorrect on-policy trajectories during training on AIME24 (left), AIME25 (middle), and HMMT25 (right). Incorrect trajectories are consistently longer, and the gap widens over training steps, indicating that incorrect trajectories accumulate more deviation tokens. 0 20 40 60 80 100 
+
+Training Step 
+
+> 320
+> 340
+> 360
+> 380
+> 400
+> 420
+> 440
+> 460
+> Avg Epistemic Markers Count
+
+Epistemic Markers on AIME24      
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect 020 40 60 80 100
+
+Training Step 
+
+> 380
+> 400
+> 420
+> 440
+> 460
+> 480
+> 500
+> Avg Epistemic Markers Count
+
+Epistemic Markers on AIME25      
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect 020 40 60 80 100
+
+Training Step 
+
+> 375
+> 400
+> 425
+> 450
+> 475
+> 500
+> 525
+> 550
+> Avg Epistemic Markers Count
+
+Epistemic Markers on HMMT25 
+
+> OPSD Correct
+> OPSD Incorrect
+> OPD Correct
+> OPD Incorrect
+
+Figure 8: Average count of Epistemic Markers of correct versus incorrect on-policy trajectories during training on AIME24 (left), AIME25 (middle), and HMMT25 (right). 
+
+14 F Qualitative Comparison 
+
+Question: Find the number of triples of nonnegative integers (a, b, c ) satisfying a + b + c = 300 and 
+
+a2b + a2c + b2a + b2c + c2a + c2b = 6 ,000 ,000 .
+
+Ground-truth answer: 601 
+
+[GRPO] 
+
+<think> Okay, so I need to find the number of triples of nonnegative integers (a, b, c ) satisfy 
+
+a2b + a2c + b2a + b2c + c2a + c2b = 6 ,000 ,000 
+
+...So that simplifies the second equation to: a2(300 − a) + b2(300 − b) + c2(300 − c) = 6 ,000 ,000 
+
+this is satisfied for any (100 , x, 200 − x), which is 201 solutions. Therefore, the answer is 201. 
+
+</think> 
+
+Wrong answer: 201 
+
+Error. This response only counts the family with a = 100 . It misses the symmetric families where b = 100 or c = 100 , so it undercounts the ordered triples. 
+
+[OPD] 
+
+<think> Okay, so I need to find the number of triples of nonnegative integers (a, b, c) such that a + b + c = 300... the actual number of ordered triples where exactly one variable is 100 and the other two sum to 200 is: 201 total unordered (b, c ) pairs that result in b + c = 200 ... ...If we consider all ordered triples where one variable is 100 and the other two are nonnegative integers summing to 200, then the number of such ordered triples is 3 * 201. Because for each of the three positions where the 100 can be placed, and for each such position, there are 201 ordered pairs (b, c). Hence, there are 3 ∗ 201 = 603 ordered triples .
+
+</think> 
+
+Wrong answer: 603 
+
+Error. This response counts all three symmetric families but does not remove their overlap. The triple (100 , 100 , 100) 
+
+appears in all three families, so it is counted three times instead of once. 
+
+[OPD+ReNIO] 
+
+<think> Okay, so I need to find the number of triples of nonnegative integers (a, b, c) such that a + b + c = 300 and... Therefore, the number of solutions is the number of nonnegative integer solutions to b + c = 200 , which is 201 (from b = 0 
+
+to b = 200 ). ...for each of the three positions where 100 can be, and for each of the 201 possible pairs (b, c ), there are 3 positions for 100. But wait, if we fix a = 100 , then b + c = 200 , which gives 201 solutions. Similarly, if we fix b = 100 , then a + c = 200 ,giving another 201 solutions, and similarly for c = 100 , giving another 201 solutions. This would lead to 3 ∗ 201 = 603 solutions. ... Alternatively, since each of the three sets ( a = 100 , b = 100 , c = 100 ) includes the triple (100 , 100 , 100) once. Therefore, the total number of distinct ordered triples is 3 ∗ 201 − 2 = 603 − 2 = 601 .Therefore, the number of triples is 601. 
+
+</think> 
+
+Correct answer: 601 
+
+Correct. This response preserves both necessary steps: it uses symmetry to count all ordered placements of 100 , and it applies overlap correction to avoid double counting. 
+
+Figure 9: Qualitative comparison on one mathematical counting problem. GRPO finds a valid family but misses symmetric placements; OPD handles symmetry but misses duplicate removal; OPD+ReNIO gives the correct answer by preserving both steps. 
+
+15
