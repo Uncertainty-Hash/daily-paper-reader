@@ -6,52 +6,52 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-24
-- 运行时间：2026-06-24 21:54:02 UTC
+- 最新运行日期：2026-06-25
+- 运行时间：2026-06-25 21:36:20 UTC
 - 运行状态：成功
 - 本次总论文数：10
-- 精读区：5
-- 速读区：5
+- 精读区：6
+- 速读区：4
 
 ### 今日简报（AI）
-今日精选：两篇满分论文深入剖析策略蒸馏的位置偏差与异步性，另有材料推理、搜索聚合与混合智能体记忆推理等前沿探索。  
-最值得关注精读论文《On the Position Bias of On-Policy Distillation》与《AsyncOPD: How Stale Can On-Policy Distillation Be?》，揭示策略蒸馏中的核心问题与优化空间。  
-建议优先精读上述两篇满分论文，再根据兴趣速读《Mat-Pref》等材料推理论文，可加深对策略蒸馏与可验证奖励训练的理解。
-- 详情：[/202606/24/README](/202606/24/README)
+1. 今日完成10篇论文筛选，精读6篇，重点推荐《ExTra》与《Semantic Consistency Policy Optimization》两篇9分力作。  
+2. 最值得关注的方向：强化学习在LLM中的探索轨迹优化与语义一致性策略，以及基于策略的安全对齐方法。  
+3. 建议普通读者先看精读论文理解LLM强化学习的最新改进，再浏览速读中关于输出多样性和安全对齐的补充观点。
+- 详情：[/202606/25/README](/202606/25/README)
 
 ### 精读区论文标签
-1. [On the Position Bias of On-Policy Distillation](/202606/24/2606.22600v2-on-the-position-bias-of-on-policy-distillation)  
-   标签：评分：10.0/10、query:opd
-   evidence：同策略蒸馏的位置偏差分析与解决方案
-2. [AsyncOPD: How Stale Can On-Policy Distillation Be?](/202606/24/2606.24143v1-asyncopd-how-stale-can-on-policy-distillation-be)  
-   标签：评分：10.0/10、query:opd
-   evidence：面向LLM后训练的在线策略蒸馏，研究异步OPD中的陈旧性问题
-3. [Beyond Trajectory Imitation: Strategy-Guided Policy Optimization for LLM Reasoning](/202606/24/2606.24064v1-beyond-trajectory-imitation-strategy-guided-policy-optimization-for-llm-reasoning)  
+1. [ExTra: Exploratory Trajectory Optimization for Language Model Reinforcement Learning](/202606/25/2606.24994v1-extra-exploratory-trajectory-optimization-for-language-model-reinforcement-learning)  
    标签：评分：9.0/10、query:opd
-   evidence：策略蒸馏替代轨迹模仿用于提升大语言模型推理
-4. [Blockwise Policy-Drift Gating for On-Policy Distillation](/202606/24/2606.24084v1-blockwise-policy-drift-gating-for-on-policy-distillation)  
+   evidence：与GRPO兼容的探索性轨迹优化用于RLVR
+2. [Semantic Consistency Policy Optimization for Reinforcement Learning of LLM Agents](/202606/25/2606.25852v1-semantic-consistency-policy-optimization-for-reinforcement-learning-of-llm-agents)  
    标签：评分：9.0/10、query:opd
-   evidence：通过逐块策略漂移门控改进同策略蒸馏
-5. [Group-Graph Policy Optimization for Long-Horizon Agentic Reinforcement Learning](/202606/24/2606.22995v1-group-graph-policy-optimization-for-long-horizon-agentic-reinforcement-learning)  
+   evidence：利用失败轨迹并从成功同伴中恢复步骤级信用
+3. [SPIRAL: Learning to Search and Aggregate](/202606/25/2606.23595v1-spiral-learning-to-search-and-aggregate)  
    标签：评分：8.0/10、query:opd
-   evidence：针对LLM的基于组的强化学习与步骤级信用分配
+   evidence：引入强化学习训练并行推理与聚合，直接关联RLVR方法
+4. [V-Zero: Answer-Label-Free On-Policy Distillation with Contrastive Evidence Gating for Fine-Grained Visual Reasoning](/202606/25/2606.25319v1-v-zero-answer-label-free-on-policy-distillation-with-contrastive-evidence-gating-for-fine-grained-visual-reasoning)  
+   标签：评分：8.0/10、query:opd
+   evidence：多模态大语言模型中用于视觉推理的同策略蒸馏
+5. [Learning with a Single Rollout via Monte Carlo Pass@k Critic](/202606/25/2606.25451v1-learning-with-a-single-rollout-via-monte-carlo-passk-critic)  
+   标签：评分：8.0/10、query:opd
+   evidence：通过单rollout PPO和token级信用改进GRPO
+6. [Neglected Free Lunch from Post-training: Progress Advantage for LLM Agents](/202606/25/2606.26080v1-neglected-free-lunch-from-post-training-progress-advantage-for-llm-agents)  
+   标签：评分：8.0/10、query:opd
+   evidence：从RL后训练推导进度优势用于过程监督，直接关联主题
 
 ### 速读区论文标签
-1. [Mat-Pref: Verifiable-Reward Training Improves Compositional Reasoning in Inorganic Materials](/202606/24/2606.21830v1-mat-pref-verifiable-reward-training-improves-compositional-reasoning-in-inorganic-materials)  
+1. [On-Policy Self-Distillation with Sampled Demonstrations Reduces Output Diversity](/202606/25/2606.26091v1-on-policy-self-distillation-with-sampled-demonstrations-reduces-output-diversity)  
+   标签：评分：8.0/10、query:opd
+   evidence：直接研究大语言模型的同策略自蒸馏，揭示了多样性降低和pass@k曲线平坦化
+2. [PolicyAlign: Direct Policy-Based Safety Alignment for Large Language Models](/202606/25/2606.25442v1-policyalign-direct-policy-based-safety-alignment-for-large-language-models)  
    标签：评分：7.0/10、query:opd
-   evidence：基于可验证奖励的强化学习用于组合推理
-2. [SPIRAL: Learning to Search and Aggregate](/202606/24/2606.23595v1-spiral-learning-to-search-and-aggregate)  
-   标签：评分：7.0/10、query:opd
-   evidence：强化学习框架训练语言模型使用顺序、并行和聚合推理原语
-3. [ReM-MoA: Reasoning Memory Sustains Mixture-of-Agents Scaling](/202606/24/2606.24437v1-rem-moa-reasoning-memory-sustains-mixture-of-agents-scaling)  
-   标签：评分：7.0/10、query:opd
-   evidence：利用成功和失败推理轨迹进行路由和多样性保持
-4. [Learning at the Right Pace: Adaptive Data Scheduling Improves LLM Reinforcement Learning](/202606/24/2606.22305v1-learning-at-the-right-pace-adaptive-data-scheduling-improves-llm-reinforcement-learning)  
+   evidence：利用同策略自蒸馏进行大语言模型对齐
+3. [Manifold Bandits: Bayesian Curriculum Learning over the Latent Geometry of Large Language Models](/202606/25/2606.19750v1-manifold-bandits-bayesian-curriculum-learning-over-the-latent-geometry-of-large-language-models)  
    标签：评分：6.0/10、query:opd
-   evidence：自适应数据调度用于LLM强化学习后训练，可应用于GRPO
-5. [Scaling Laws for Task-Specific LLM Distillation](/202606/24/2606.24747v1-scaling-laws-for-task-specific-llm-distillation)  
+   evidence：面向LLM推理效率的强化学习课程学习
+4. [Why Multi-Step Tool-Use Reinforcement Learning Collapses and How Supervisory Signals Fix It](/202606/25/2606.26027v1-why-multi-step-tool-use-reinforcement-learning-collapses-and-how-supervisory-signals-fix-it)  
    标签：评分：6.0/10、query:opd
-   evidence：研究LLM蒸馏的缩放法则，与同策略蒸馏方法相关
+   evidence：分析工具使用RL中的崩溃并使用监督信号（包括失败展开）进行修复
 
 
 <div class="dpr-home-promo-card">

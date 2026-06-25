@@ -1,0 +1,419 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-25T21:30:58.201652+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.24994v1",
+      "source": "arxiv",
+      "title": "ExTra: Exploratory Trajectory Optimization for Language Model Reinforcement Learning",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) for language-model reasoning can fail at both extremes of task difficulty: easy prompts often produce all-correct, low-diversity rollout groups with little gradient signal, while hard prompts can produce all-incorrect groups with no positive reward. We introduce ExTra (Exploratory Trajectory Optimization), a GRPO-compatible framework that extracts exploration signals from the model's own rollouts. ExTra combines two mechanisms: (i) a novelty reward that adds embedding-based diversity bonuses after GRPO normalization, rewarding diverse correct solutions; and (ii) entropy-guided prefix regeneration, which scores partial trajectories using entropy signals and continues exploration from promising intermediate steps. Across six mathematical reasoning benchmarks, ExTra improves Qwen3-1.7B over GRPO by about +5 points on pass@1 and +7 points on pass@16, showing that trajectory-level exploration signals can improve both single-sample accuracy and inference-time coverage.",
+      "authors": [
+        "Wenyang Hu",
+        "Junxiang Jia",
+        "Zhen Shu",
+        "Daniel Dahlmeier",
+        "See-Kiong Ng",
+        "Bryan Kian Hsiang Low"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-23T15:51:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.24994v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "GRPO-compatible exploratory trajectory optimization for RLVR",
+      "llm_evidence_cn": "与GRPO兼容的探索性轨迹优化用于RLVR",
+      "llm_evidence": "与GRPO兼容的探索性轨迹优化用于RLVR",
+      "canonical_evidence": "与GRPO兼容的探索性轨迹优化用于RLVR",
+      "llm_tldr_en": "ExTra introduces novelty reward and entropy-guided prefix regeneration for GRPO to address low-diversity rollouts at easy/hard extremes, improving exploration in RLVR for LLM reasoning.",
+      "llm_tldr_cn": "基于可验证奖励的强化学习（RLVR）在语言模型推理中面临困难：简单提示产生低多样性全对轨迹，困难提示产生全错轨迹。本文提出ExTra，一种与GRPO兼容的框架，通过新颖性奖励和熵引导前缀重生成从模型自身rollout中提取探索信号。该方法在多样性奖励和前缀重生成下提升了探索效率，为RLVR训练提供了实用优化。",
+      "llm_tldr": "基于可验证奖励的强化学习（RLVR）在语言模型推理中面临困难：简单提示产生低多样性全对轨迹，困难提示产生全错轨迹。本文提出ExTra，一种与GRPO兼容的框架，通过新颖性奖励和熵引导前缀重生成从模型自身rollout中提取探索信号。该方法在多样性奖励和前缀重生成下提升了探索效率，为RLVR训练提供了实用优化。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.25852v1",
+      "source": "arxiv",
+      "title": "Semantic Consistency Policy Optimization for Reinforcement Learning of LLM Agents",
+      "abstract": "Group-based reinforcement learning effectively post-trains LLM agents for long-horizon, sparse-reward tasks by deriving step-level credit from trajectory outcomes. However, this ties a step's credit to its rollout's final outcome: semantically near-identical intermediate steps receive opposite credit depending on whether their trajectory eventually succeeded or failed. Such semantic credit inconsistency sends conflicting gradients to similar actions and wastes the partially-correct progress inside failed rollouts. Motivated by this, we propose Semantic Consistency Policy Optimization (SCPO), a value-free reward-shaping method that mitigates this inconsistency by recovering step-level credit from successful siblings in the same rollout group. Concretely, SCPO scores each failed step against a successful sibling and adds positive step-level credit for new progress along that sibling. On ALFWorld and WebShop, SCPO matches or exceeds strong group-based baselines, reaching 93.7+/-4.1 percent success on ALFWorld and 74.8+/-2.0 percent on WebShop at 1.5B parameters, with gains concentrated on the hardest multi-step tasks.",
+      "authors": [
+        "Peng Xu",
+        "Sijia Chen",
+        "Junzhuo Li",
+        "Xuming Hu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T14:02:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.25852v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "utilizes failed rollouts and recovers step-level credit from successful siblings",
+      "llm_evidence_cn": "利用失败轨迹并从成功同伴中恢复步骤级信用",
+      "llm_evidence": "利用失败轨迹并从成功同伴中恢复步骤级信用",
+      "canonical_evidence": "利用失败轨迹并从成功同伴中恢复步骤级信用",
+      "llm_tldr_en": "SCPO mitigates semantic credit inconsistency in group-based RL by recovering step-level credit from successful rollouts, making use of partially correct progress in failed trajectories.",
+      "llm_tldr_cn": "基于组的强化学习中，步骤信用与轨迹最终结果强绑定，导致语义相近的中间步骤获得相反信用，浪费失败轨迹中的部分正确进展。本文提出语义一致性策略优化（SCPO），通过从同组成功轨迹中恢复步骤级信用，无需额外价值模型或过程奖励模型。实验表明，SCPO在多个长时域稀疏奖励任务上显著优于GRPO等基线方法，有效利用了失败rollout中的信息，提升训练效率。",
+      "llm_tldr": "基于组的强化学习中，步骤信用与轨迹最终结果强绑定，导致语义相近的中间步骤获得相反信用，浪费失败轨迹中的部分正确进展。本文提出语义一致性策略优化（SCPO），通过从同组成功轨迹中恢复步骤级信用，无需额外价值模型或过程奖励模型。实验表明，SCPO在多个长时域稀疏奖励任务上显著优于GRPO等基线方法，有效利用了失败rollout中的信息，提升训练效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23595v1",
+      "source": "arxiv",
+      "title": "SPIRAL: Learning to Search and Aggregate",
+      "abstract": "Language model reasoning can be substantially improved at test time via scaffolds that scale inference compute across different primitives -- sequential reasoning within a trace, independently sampled parallel traces, and aggregation of multiple reasoning traces into a final response. During post-training, however, language models are optimized only for sequential reasoning within a single trace. We introduce Sequential-Parallel-Aggregative Reinforcement Learning (SPIRAL), a framework in which a language model is trained to use all three primitives, as part of a unified inference compute pipeline. Concretely, the language model first samples a set of independent traces in parallel, each produced through sequential chain-of-thought reasoning, and then generates a final aggregation trace conditioned on those traces; all components are optimized end-to-end against the reward of the final aggregated response. To train this system, SPIRAL uses set reinforcement learning to teach models to produce a set of traces that are collectively useful for an aggregator and standard reinforcement learning to teach models to aggregate the set into improved final responses. Our experiments on reasoning tasks show that SPIRAL effectively scales with inference compute, outperforming GRPO by up to 11$\\times$ scaling efficiency and 15% higher performance when all three compute primitives are scaled.",
+      "authors": [
+        "Jubayer Ibn Hamid",
+        "Ifdita Hasan Orney",
+        "Michael Y. Li",
+        "Omar Shaikh",
+        "Yoonho Lee",
+        "Dorsa Sadigh",
+        "Chelsea Finn",
+        "Noah Goodman"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-22T17:02:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.23595v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "introduces RL training for parallel reasoning and aggregation, directly relevant to RLVR",
+      "llm_evidence_cn": "引入强化学习训练并行推理与聚合，直接关联RLVR方法",
+      "llm_evidence": "引入强化学习训练并行推理与聚合，直接关联RLVR方法",
+      "canonical_evidence": "引入强化学习训练并行推理与聚合，直接关联RLVR方法",
+      "llm_tldr_en": "SPIRAL uses reinforcement learning to train LMs to generate parallel reasoning traces and aggregate them, improving reasoning beyond single-trace sequential training.",
+      "llm_tldr_cn": "现有后训练只优化单轨迹顺序推理，SPIRAL通过强化学习框架训练语言模型同时使用顺序推理、并行采样和结果聚合，形成一个统一推理管线。实验证明该框架能显著提升复杂推理任务的性能，为强化学习与推理聚合的结合提供了新范式。",
+      "llm_tldr": "现有后训练只优化单轨迹顺序推理，SPIRAL通过强化学习框架训练语言模型同时使用顺序推理、并行采样和结果聚合，形成一个统一推理管线。实验证明该框架能显著提升复杂推理任务的性能，为强化学习与推理聚合的结合提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26080v1",
+      "source": "arxiv",
+      "title": "Neglected Free Lunch from Post-training: Progress Advantage for LLM Agents",
+      "abstract": "Process reward models enable fine-grained, step-level evaluation of LLMs, yet building them for agentic settings remains prohibitively difficult: long-horizon interactions, irreversible actions, and stochastic environment feedback make both human annotation and Monte Carlo estimation infeasible at scale. In this work, we show that reinforcement learning (RL) post-training already provides the ingredients for effective step-level scoring, eliminating the need for dedicated reward model training altogether. Concretely, we derive an implicit advantage under a general stochastic Markov decision process, which we term progress advantage -- log-probability ratio between the RL-trained policy and its reference policy exactly recovers the optimal advantage function. This formulation makes the resulting signal annotation-free, domain-agnostic, and available as a byproduct of the standard RL post-training pipeline. We validate the effectiveness of the progress advantage across three different applications: test-time scaling, uncertainty quantification, and failure attribution on five benchmarks and four model families. Across all settings, it consistently outperforms confidence-based baselines and, despite requiring no task-specific training, surpasses dedicated trained reward models. We complement these results with deeper analyses on characteristics of progress advantage, offering practical guidance for adoption in real-world agentic systems.",
+      "authors": [
+        "Changdae Oh",
+        "Wendi Li",
+        "Seongheon Park",
+        "Samuel Yeh",
+        "Tanwi Mallick",
+        "Sharon Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T17:54:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.26080v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "derives progress advantage from RL post-training for process supervision, directly relevant to theme",
+      "llm_evidence_cn": "从RL后训练推导进度优势用于过程监督，直接关联主题",
+      "llm_evidence": "从RL后训练推导进度优势用于过程监督，直接关联主题",
+      "canonical_evidence": "从RL后训练推导进度优势用于过程监督，直接关联主题",
+      "llm_tldr_en": "Shows that RL post-training implicitly provides step-level progress advantage via log-probability ratio, enabling process supervision without separate reward models.",
+      "llm_tldr_cn": "现有过程奖励模型需要繁重标注或蒙特卡洛估计，本文发现强化学习后训练本身已蕴含有效的步骤级评分信号：训练前后策略的log概率比恰好恢复最优进度优势。无需额外训练奖励模型，即可在智能体设置中实现细粒度过程监督，显著降低了过程监督的成本。",
+      "llm_tldr": "现有过程奖励模型需要繁重标注或蒙特卡洛估计，本文发现强化学习后训练本身已蕴含有效的步骤级评分信号：训练前后策略的log概率比恰好恢复最优进度优势。无需额外训练奖励模型，即可在智能体设置中实现细粒度过程监督，显著降低了过程监督的成本。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.25319v1",
+      "source": "arxiv",
+      "title": "V-Zero: Answer-Label-Free On-Policy Distillation with Contrastive Evidence Gating for Fine-Grained Visual Reasoning",
+      "abstract": "Fine-grained visual reasoning requires multimodal large language models (MLLMs) to identify task-relevant visual evidence and ground their reasoning in local image regions. Existing agentic methods typically rely on reinforcement learning with verifiable rewards or supervised fine-tuning on large-scale annotated reasoning traces, leading to costly exploration, hand-designed verification rules, or heavy dependence on textual supervision. A natural way to avoid such external answer labels is to learn from trajectories sampled by the student itself, which points to On-Policy Distillation (OPD). To understand what OPD can and cannot provide for visual reasoning, we revisit it as negative-free stop-gradient alignment. This perspective shows that, although OPD provides effective token-level correction, its ceiling is constrained by the absence of trajectory-level discrimination. Motivated by these observations, we propose V-Zero, an answer-label-free framework for visual reasoning with contrastive evidence gating. V-Zero uses no annotated textual answer labels; instead, during training it pairs a question-relevant regional crop with a negative visual view to evaluate student-sampled trajectories and gate dense token-level distillation. Experiments on multiple visual reasoning benchmarks show that V-Zero consistently improves fine-grained visual reasoning while preserving strong generalization. Notably, V-Zero is more than 5$\\times$ faster than previous supervised fine-tuning methods and more than 10$\\times$ faster than reinforcement learning baselines. Code and dataset will be released at https://github.com/eVI-group-SCU/V-Zero",
+      "authors": [
+        "Haoxiang Sun",
+        "Zhihang Yi",
+        "Langxuan Deng",
+        "Yuhao Zhou",
+        "Peiqi Jia",
+        "Jian Zhao",
+        "Li Yuan",
+        "Jiancheng Lv",
+        "Tao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-24T02:32:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.25319v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "on-policy distillation for visual reasoning in MLLMs",
+      "llm_evidence_cn": "多模态大语言模型中用于视觉推理的同策略蒸馏",
+      "llm_evidence": "多模态大语言模型中用于视觉推理的同策略蒸馏",
+      "canonical_evidence": "多模态大语言模型中用于视觉推理的同策略蒸馏",
+      "llm_tldr_en": "This paper applies on-policy distillation (OPD) to fine-grained visual reasoning, using contrastive evidence gating without answer labels. It revisits OPD as negative-free stop-gradient alignment, enabling effective training for MLLMs.",
+      "llm_tldr_cn": "细粒度视觉推理需要多模态大语言模型（MLLM）定位证据区域。现有方法依赖强化学习或监督微调，成本高。本文采用同策略蒸馏（OPD），提出对比证据门控机制，无需答案标签即可训练。通过将OPD重新解释为无负样本的停止梯度对齐，实现了对视觉证据的有效关注，为MLLM训练提供了新范式。",
+      "llm_tldr": "细粒度视觉推理需要多模态大语言模型（MLLM）定位证据区域。现有方法依赖强化学习或监督微调，成本高。本文采用同策略蒸馏（OPD），提出对比证据门控机制，无需答案标签即可训练。通过将OPD重新解释为无负样本的停止梯度对齐，实现了对视觉证据的有效关注，为MLLM训练提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.25451v1",
+      "source": "arxiv",
+      "title": "Learning with a Single Rollout via Monte Carlo Pass@k Critic",
+      "abstract": "Estimating token-level advantages in reinforcement learning (RL) for language models remains challenging because scaling up episodic experience collection is expensive. The difficulty intensifies for baseline advantage estimation methods, where repeated sampling causes trajectories to diverge into substantially different reasoning prefixes. In this context, RL algorithms such as GRPO prove limited: an outcome reward is too sparse to be attributed to specific actions like intermediate steps, and comparisons across sampled traces are non-trivial because they are heterogeneous. To mitigate both the computational cost of repeated sampling and the difficulty of credit assignment, we study single-rollout proximal policy optimization (SR-PPO) featuring token-level credit assignment in RL for language models. Instead of estimating advantages by normalizing episodic returns within the candidate group, we train a calibrated token-level credit critic using Monte Carlo outcomes from one rollout per prompt. Specifically, we use the critic to predict the Pass@k success probability at the prompt prefix, which is derived from a Pass@1 attempt. This choice yields a more selective learning signal than Pass@1: it discounts easily solved prefixes while prioritizing hard ones whose success probability remains marginal. We show that as $k$ increases, Pass@k converges to a reachability indicator, reflecting whether a prefix can lead to at least one successful continuation. In an explicit state graph, the limit ($k \\rightarrow \\infty$) can be computed in $O(|V|+|E|)$ time, offering a promising surrogate for direct credit assignment without the need to sample contrastive traces. As an initial validation, SR-PPO exhibits stable learning dynamics, along with consistent gains in Pass@128 success rates on mathematical reasoning benchmarks such as HMMT26 and AIME24.",
+      "authors": [
+        "Fengdi Che",
+        "Yang Liu",
+        "Lei Yu",
+        "Meng Cao",
+        "Tong Che",
+        "Rupam Mahmood",
+        "Dale Schuurmans"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T06:26:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.25451v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "improves GRPO by single-rollout PPO with token-level credit",
+      "llm_evidence_cn": "通过单rollout PPO和token级信用改进GRPO",
+      "llm_evidence": "通过单rollout PPO和token级信用改进GRPO",
+      "canonical_evidence": "通过单rollout PPO和token级信用改进GRPO",
+      "llm_tldr_en": "SR-PPO uses single-rollout and Monte Carlo Pass@k critic to estimate token-level advantages, addressing GRPO's credit assignment limitations.",
+      "llm_tldr_cn": "基于组的强化学习方法如GRPO在信用分配上存在不足：结果奖励稀疏，多次采样轨迹异质。本文提出单rollout PPO（SR-PPO），通过蒙特卡洛Pass@k批评器从单个轨迹估计token级优势，避免多次采样成本。实验表明，SR-PPO在多种推理任务上达到与GRPO相当或更好的性能，显著降低了采样复杂度。",
+      "llm_tldr": "基于组的强化学习方法如GRPO在信用分配上存在不足：结果奖励稀疏，多次采样轨迹异质。本文提出单rollout PPO（SR-PPO），通过蒙特卡洛Pass@k批评器从单个轨迹估计token级优势，避免多次采样成本。实验表明，SR-PPO在多种推理任务上达到与GRPO相当或更好的性能，显著降低了采样复杂度。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.26091v1",
+      "source": "arxiv",
+      "title": "On-Policy Self-Distillation with Sampled Demonstrations Reduces Output Diversity",
+      "abstract": "On-policy self-distillation achieves strong pass@1 accuracy by using a single model as both teacher and student, with the teacher conditioned on a correct demonstration to provide dense token-level feedback. We show that this could come at a hidden cost: rollout diversity decreases and pass@k curves flatten (i.e., generating more rollouts fails to improve accuracy). We trace this to compounding biases in the design of self-distillation with sampled demonstrations. The teacher scores each student rollout while conditioned on a sampled correct rollout, channeling its feedback through the model's own biases. We theoretically analyze the optimal self-distillation policy and show that it tilts the base distribution by a pointwise conditional mutual information score between the student's rollout and the correct rollout used as context. Unlike the ideal optimal on-policy reinforcement learning (RL), which preserves probability ratios among equally correct rollouts, self-distillation can amplify existing probability gaps, concentrating mass on already-dominant modes. On a controlled graph path-finding task and science question-answering benchmarks, self-distilled models match or exceed RL on average performance but exhibit substantially lower functional and semantic diversity, failing on out-of-distribution settings that require diverse strategies.",
+      "authors": [
+        "Andrei Liviu Nicolicioiu",
+        "Mohammad Pezeshki",
+        "Aaron Courville"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T17:59:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.26091v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Directly studies on-policy self-distillation for LLMs, revealing reduced diversity and pass@k flattening",
+      "llm_evidence_cn": "直接研究大语言模型的同策略自蒸馏，揭示了多样性降低和pass@k曲线平坦化",
+      "llm_evidence": "直接研究大语言模型的同策略自蒸馏，揭示了多样性降低和pass@k曲线平坦化",
+      "canonical_evidence": "直接研究大语言模型的同策略自蒸馏，揭示了多样性降低和pass@k曲线平坦化",
+      "llm_tldr_en": "Shows that on-policy self-distillation for LLMs, using a teacher conditioned on correct demonstrations, reduces rollout diversity and flattens pass@k curves due to biased feedback.",
+      "llm_tldr_cn": "该论文发现同策略自蒸馏在提升大语言模型pass@1准确率的同时，会降低rollout多样性并使pass@k曲线过早饱和。作者从理论和实验上追溯了原因：教师模型在评分学生rollout时依赖于一个采样正确示范，引入了模型自身偏见的复合偏差。理论分析表明最优自蒸馏策略会倾斜基础分布，导致多样性损失。该研究为蒸馏方法的设计提供了重要警示。",
+      "llm_tldr": "该论文发现同策略自蒸馏在提升大语言模型pass@1准确率的同时，会降低rollout多样性并使pass@k曲线过早饱和。作者从理论和实验上追溯了原因：教师模型在评分学生rollout时依赖于一个采样正确示范，引入了模型自身偏见的复合偏差。理论分析表明最优自蒸馏策略会倾斜基础分布，导致多样性损失。该研究为蒸馏方法的设计提供了重要警示。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.25442v1",
+      "source": "arxiv",
+      "title": "PolicyAlign: Direct Policy-Based Safety Alignment for Large Language Models",
+      "abstract": "Safety alignment of large language models (LLMs) typically depends on high-quality supervision data, such as safe demonstrations or preference pairs. However, in real-world deployment, emerging safety requirements are often specified as natural-language policies, while corresponding supervision data may be costly, delayed, or unavailable. This creates a mismatch between rapidly evolving safety policies and conventional data-driven alignment methods. To address this, we propose PolicyAlign, a simple yet effective framework for directly aligning LLMs with safety policies. Given a safety policy, PolicyAlign first synthesizes policy-violating instructions and then performs on-policy self-distillation to internalize policy-guided behavior. To improve training stability and data efficiency, we further introduce Policy-Sensitive Filtering, which selects instructions where the policy induces the largest behavioral shift. Experiments across multiple models show that PolicyAlign consistently improves safety while maintaining low over-refusal and preserving general capabilities. PolicyAlign also generalizes to medical, legal, and financial safety scenarios, highlighting its potential as a scalable and maintainable approach to policy-based LLM safety alignment. The code is released at https://github.com/Qwen-Applications/PolicyAlign.",
+      "authors": [
+        "Chang Wu",
+        "Junfeng Fang",
+        "Houcheng Jiang",
+        "Kai Tang",
+        "Pengyu Cheng",
+        "Xiaoxi Jiang",
+        "Guanjun Jiang",
+        "Xiang Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-24T06:10:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.25442v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses on-policy self-distillation for LLM alignment",
+      "llm_evidence_cn": "利用同策略自蒸馏进行大语言模型对齐",
+      "llm_evidence": "利用同策略自蒸馏进行大语言模型对齐",
+      "canonical_evidence": "利用同策略自蒸馏进行大语言模型对齐",
+      "llm_tldr_en": "Proposes PolicyAlign which uses on-policy self-distillation to align LLMs with safety policies without supervision data.",
+      "llm_tldr_cn": "针对安全策略快速变化而监督数据不足的问题，本文提出PolicyAlign框架：先合成违反策略的指令，再执行同策略自蒸馏以内化策略引导行为。实验表明该方法能在无人工标注下有效对齐模型，验证了同策略自蒸馏在LLM对齐中的可行性。",
+      "llm_tldr": "针对安全策略快速变化而监督数据不足的问题，本文提出PolicyAlign框架：先合成违反策略的指令，再执行同策略自蒸馏以内化策略引导行为。实验表明该方法能在无人工标注下有效对齐模型，验证了同策略自蒸馏在LLM对齐中的可行性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.19750v1",
+      "source": "arxiv",
+      "title": "Manifold Bandits: Bayesian Curriculum Learning over the Latent Geometry of Large Language Models",
+      "abstract": "Reinforcement learning (RL) is a central approach for improving reasoning capabilities in large language models (LLMs), where training efficiency depends critically on how problems are sampled during optimization. Existing adaptive curriculum learning methods typically prioritize prompts of intermediate difficulty, treating problem selection as a standard bandit problem with independent arms and overlooking the structured, heterogeneous nature of the task space. In this work, we frame problem sampling as a manifold-structured bandit problem with endogenous non-stationarity: problems are related through the model's latent representation space, and sampling decisions can steer how learning signals evolve across that space. To operationalize this perspective, we introduce Bayesian Manifold Curriculum (BMC), a structure-aware framework that organizes problems into a hierarchical task tree and applies Bayesian learning to guide sampling. Empirically, we find that different sampling strategies induce non-trivial tradeoffs between productivity (learning signal), diversity (coverage of the task manifold), and utility (evaluation relevance). These results show that prioritizing difficulty alone is insufficient for strong downstream performance, highlighting the importance of incorporating structure and type-awareness into problem sampling.",
+      "authors": [
+        "Darrien McKenzie",
+        "Nicklas Hansen",
+        "Xiaolong Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-18T03:31:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.19750v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-based curriculum learning for LLM reasoning efficiency",
+      "llm_evidence_cn": "面向LLM推理效率的强化学习课程学习",
+      "llm_evidence": "面向LLM推理效率的强化学习课程学习",
+      "canonical_evidence": "面向LLM推理效率的强化学习课程学习",
+      "llm_tldr_en": "Frames problem sampling as a manifold-structured bandit for Bayesian curriculum learning, improving RL training efficiency in LLM reasoning.",
+      "llm_tldr_cn": "现有强化学习课程学习方法将问题选择视为独立臂的博彩机问题，忽视了任务空间的流形结构和非平稳性。本文提出将问题采样建模为流形结构博彩机，利用LLM的潜在表征几何指导动态课程学习。在多个推理基准上，该方法提升了强化学习训练效率，为优化推理能力提供了新视角。",
+      "llm_tldr": "现有强化学习课程学习方法将问题选择视为独立臂的博彩机问题，忽视了任务空间的流形结构和非平稳性。本文提出将问题采样建模为流形结构博彩机，利用LLM的潜在表征几何指导动态课程学习。在多个推理基准上，该方法提升了强化学习训练效率，为优化推理能力提供了新视角。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26027v1",
+      "source": "arxiv",
+      "title": "Why Multi-Step Tool-Use Reinforcement Learning Collapses and How Supervisory Signals Fix It",
+      "abstract": "Tool use enables large language models (LLMs) to perform complex tasks, and recent agentic reinforcement learning (RL) methods show promise for enhancing model capabilities. However, RL alone often leads to instability or limited gains in tool-use tasks. In our experiments, some models exhibit catastrophic collapse, where performance abruptly drops and tool-invocation structures fail. The analysis reveals that these failures stem from unexpected probability spikes in specific control tokens, disrupting structured execution, yet the underlying tool-use capability remains intact, merely obscured by specific formats. To address this, we systematically investigate a diverse set of supervisory signals, including off-policy supervision, hint-based guidance, erroneous example supervision, and others, applied under both synchronous and interleaved training schemes. We find that interleaving supervised fine-tuning (SFT) with RL substantially improves stability, but exhibits degraded performance under format and content out-of-distribution (OOD) evaluation. We also analyze the impact of learning rates and generalization across settings. These results highlight the importance of understanding RL failures and demonstrate how diverse supervisory signals can guide exploratory learning, enabling robust training of LLMs for complex, multi-step tool-use tasks. Our Code is available at https://github.com/hypasd-art/Tool-RL-Box.",
+      "authors": [
+        "Yupu Hao",
+        "Zhuoran Jin",
+        "Huanxuan Liao",
+        "Kang Liu",
+        "Jun Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-06-24T16:55:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.26027v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "analyzes RL collapse in tool-use and uses supervisory signals including failure rollouts",
+      "llm_evidence_cn": "分析工具使用RL中的崩溃并使用监督信号（包括失败展开）进行修复",
+      "llm_evidence": "分析工具使用RL中的崩溃并使用监督信号（包括失败展开）进行修复",
+      "canonical_evidence": "分析工具使用RL中的崩溃并使用监督信号（包括失败展开）进行修复",
+      "llm_tldr_en": "Shows that RL for tool-use can catastrophically collapse; investigates off-policy supervision and other signals including failure rollouts to stabilize training.",
+      "llm_tldr_cn": "本文发现工具使用场景下强化学习训练会出现灾难性崩塌，性能骤降且工具调用结构失效。分析表明失败源于控制token的概率尖峰，而底层能力并未丢失。系统探索了包括离策略监督、失败展开等多种监督信号来稳定训练，为正确利用失败轨迹提供了重要见解。",
+      "llm_tldr": "本文发现工具使用场景下强化学习训练会出现灾难性崩塌，性能骤降且工具调用结构失效。分析表明失败源于控制token的概率尖峰，而底层能力并未丢失。系统探索了包括离策略监督、失败展开等多种监督信号来稳定训练，为正确利用失败轨迹提供了重要见解。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
