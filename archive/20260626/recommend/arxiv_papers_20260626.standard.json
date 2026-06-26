@@ -1,0 +1,289 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T22:01:27.438521+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.22938v1",
+      "source": "arxiv",
+      "title": "Provable Benefits of RLVR over SFT for Reasoning Models: Learning to Backtrack Efficiently",
+      "abstract": "Recent advances in large language models (LLMs) have demonstrated that reinforcement fine-tuning of pretrained base models can lead to significant gains in reasoning performance at inference time. In this work, we theoretically analyze why reinforcement fine-tuning induces better reasoning ability than purely supervised fine-tuning (SFT) methods. We model chain-of-thought (CoT) reasoning as a pathfinding problem on graphs and compare the popular method of reinforcement learning with verifiable rewards (RLVR) against traditional SFT. We prove that SFT, when trained on golden shortest paths without negative examples, fails to learn how to efficiently backtrack. In contrast, an RLVR-trained model can learn how to efficiently backtrack from dead ends using only outcome reward. This leads to an exponential separation in inference-time compute between the two methods, and demonstrates that RLVR leads the model to learn the location of difficult decisions in a reasoning chain, ultimately allowing for better allocation of inference-time compute. Finally, we show that the reasoning traces of an RLVR model can be distilled to train a base model to backtrack efficiently as well.",
+      "authors": [
+        "Stanley Wei",
+        "Juno Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T07:16:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.22938v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Theoretical analysis of RLVR benefits for reasoning",
+      "llm_evidence_cn": "RLVR在推理中优势的理论分析",
+      "llm_evidence": "RLVR在推理中优势的理论分析",
+      "canonical_evidence": "RLVR在推理中优势的理论分析",
+      "llm_tldr_en": "Theoretical analysis showing RLVR enables efficient backtracking in reasoning while SFT fails due to lack of negative examples.",
+      "llm_tldr_cn": "该论文从理论上分析强化学习与可验证奖励(RLVR)相比监督微调(SFT)在推理任务上的优势。将链式推理建模为图上的路径搜索，证明SFT因只训练正样本而无法学习回溯，而RLVR通过探索正负样本能学会高效回溯。",
+      "llm_tldr": "该论文从理论上分析强化学习与可验证奖励(RLVR)相比监督微调(SFT)在推理任务上的优势。将链式推理建模为图上的路径搜索，证明SFT因只训练正样本而无法学习回溯，而RLVR通过探索正负样本能学会高效回溯。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26080v1",
+      "source": "arxiv",
+      "title": "Neglected Free Lunch from Post-training: Progress Advantage for LLM Agents",
+      "abstract": "Process reward models enable fine-grained, step-level evaluation of LLMs, yet building them for agentic settings remains prohibitively difficult: long-horizon interactions, irreversible actions, and stochastic environment feedback make both human annotation and Monte Carlo estimation infeasible at scale. In this work, we show that reinforcement learning (RL) post-training already provides the ingredients for effective step-level scoring, eliminating the need for dedicated reward model training altogether. Concretely, we derive an implicit advantage under a general stochastic Markov decision process, which we term progress advantage -- log-probability ratio between the RL-trained policy and its reference policy exactly recovers the optimal advantage function. This formulation makes the resulting signal annotation-free, domain-agnostic, and available as a byproduct of the standard RL post-training pipeline. We validate the effectiveness of the progress advantage across three different applications: test-time scaling, uncertainty quantification, and failure attribution on five benchmarks and four model families. Across all settings, it consistently outperforms confidence-based baselines and, despite requiring no task-specific training, surpasses dedicated trained reward models. We complement these results with deeper analyses on characteristics of progress advantage, offering practical guidance for adoption in real-world agentic systems.",
+      "authors": [
+        "Changdae Oh",
+        "Wendi Li",
+        "Seongheon Park",
+        "Samuel Yeh",
+        "Tanwi Mallick",
+        "Sharon Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T17:54:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.26080v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RL post-training for step-level scoring via progress advantage",
+      "llm_evidence_cn": "通过进展优势的RL后训练实现步骤级评分",
+      "llm_evidence": "通过进展优势的RL后训练实现步骤级评分",
+      "canonical_evidence": "通过进展优势的RL后训练实现步骤级评分",
+      "llm_tldr_en": "RL post-training provides implicit step-level advantages from policy log-probability ratios, enabling process supervision without dedicated reward models.",
+      "llm_tldr_cn": "该工作发现强化学习后训练本身已隐式包含步骤级优势信号，通过策略对数概率比即可恢复最优优势，无需单独训练过程奖励模型，从而为LLM智能体提供了一种免费且高效的过程监督方法，解决了长期交互场景下奖励建模的困难。",
+      "llm_tldr": "该工作发现强化学习后训练本身已隐式包含步骤级优势信号，通过策略对数概率比即可恢复最优优势，无需单独训练过程奖励模型，从而为LLM智能体提供了一种免费且高效的过程监督方法，解决了长期交互场景下奖励建模的困难。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26917v1",
+      "source": "arxiv",
+      "title": "GEOALIGN: Geometric Rollout Curation for Robust LLM Reinforcement Learning",
+      "abstract": "Online reinforcement learning is widely used to align large language models (LLMs) with reward signals, yet training can be unstable under noisy or misspecified rewards. We identify a failure mode we call directional inconsistency: within a batch, a small set of high-reward rollouts induces representation-space preference directions that sharply disagree with the batch majority, resulting in high-variance and destabilizing updates. We propose geoalign, a lightweight plug-in for rollout curation in iterative policy optimization. Geoalign (i) forms within-prompt preference pairs, (ii) learns an online projector on per-rollout hidden states to concentrate reward-ordered displacement directions, and (iii) detects directionally inconsistent rollouts via their angular deviation from a batch consensus prototype and rectifies them with within-prompt stable alternatives. Geoalign is forward-pass only and adds negligible overhead. Across dialogue alignment with a learned reward model and mathematical reasoning with binary verified rewards, Geoalign improves final performance and reduces training oscillation, outperforming PF-PPO, PAR, PODS, and Seed-GRPO. These results suggest latent directional consensus as an effective reliability signal for online LLM RL.",
+      "authors": [
+        "Ting Zhou",
+        "Zhenqing Ling",
+        "Yiyang Zhao",
+        "Ying Shen",
+        "Daoyuan Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T11:53:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.26917v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes geometric rollout curation to handle directional inconsistency from high-reward rollouts in LLM RL",
+      "llm_evidence_cn": "提出几何启动子策展方法解决大语言模型强化学习中高奖励rollout带来的方向不一致问题",
+      "llm_evidence": "提出几何启动子策展方法解决大语言模型强化学习中高奖励rollout带来的方向不一致问题",
+      "canonical_evidence": "提出几何启动子策展方法解决大语言模型强化学习中高奖励rollout带来的方向不一致问题",
+      "llm_tldr_en": "GEOALIGN detects and curates directionally inconsistent rollouts to stabilize LLM reinforcement learning.",
+      "llm_tldr_cn": "针对大语言模型在线强化学习中的不稳定问题，本文识别出方向不一致性：少量高奖励rollout导致表示空间偏好方向与多数冲突。提出GEOALIGN轻量插件，通过在线投影器检测并移除不一致rollout。实验表明GEOALIGN显著提升了RL训练稳定性和最终性能。",
+      "llm_tldr": "针对大语言模型在线强化学习中的不稳定问题，本文识别出方向不一致性：少量高奖励rollout导致表示空间偏好方向与多数冲突。提出GEOALIGN轻量插件，通过在线投影器检测并移除不一致rollout。实验表明GEOALIGN显著提升了RL训练稳定性和最终性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27369v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning without Ground-Truth Solutions can Improve LLMs",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) for training LLMs typically rely on ground-truth answers to assign rewards, limiting their applicability to tasks where the ground-truth solution is unknown. We introduce a \\textbf{R}anking-\\textbf{i}nduced \\textbf{VER}ifiable framework (RiVER) that trains LLMs on score-based optimization tasks without ground-truth solutions, using deterministic execution feedback as continuous-valued supervision. When applying group-relative RL to such continuous rewards, we identify two key challenges: \\emph{scale dominance}, where uncalibrated score magnitudes across test instances distort policy updates, and \\emph{frequency dominance}, where repeatedly sampled suboptimal solutions can outweigh rare but stronger candidates. RiVER addresses these challenges with calibrated reward shaping that uses instance-wise comparisons and emphasizes top-ranked solvers while retaining bounded feedback for other valid solutions. We train on 12 AtCoder Heuristic Contest tasks and evaluate on Algorithm Engineering Benchmark (ALE-Bench), LiveCodeBench, and USACO. RiVER advances Qwen3-8B and GLM-Z1-9B-0414 by 8.9\\% and 9.4\\% in ALE rating rank. More importantly, despite training exclusively on score-based tasks without any ground-truth solutions, RiVER also improves the backbones across exact-solution benchmarks such as LiveCodeBench and USACO by an absolute average improvement of 2.4\\% and 3.5\\%. By contrast, baselines trained with raw execution scores improve ALE rating but fail to transfer to exact-solution benchmarks. These results suggest that score-based optimization tasks, combined with proper reward calibration, can serve as effective training environments for general coding ability without ground-truth solutions.",
+      "authors": [
+        "Yingyu Lin",
+        "Qiyue Gao",
+        "Nikki Lijing Kuang",
+        "Xunpeng Huang",
+        "Kun Zhou",
+        "Tongtong Liang",
+        "Zhewei Yao",
+        "Yi-An Ma",
+        "Yuxiong He"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-25T17:59:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.27369v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reinforcement learning from verifiable rewards without ground-truth solutions using group-relative RL",
+      "llm_evidence_cn": "基于可验证奖励的无真值强化学习，使用群体相对策略优化",
+      "llm_evidence": "基于可验证奖励的无真值强化学习，使用群体相对策略优化",
+      "canonical_evidence": "基于可验证奖励的无真值强化学习，使用群体相对策略优化",
+      "llm_tldr_en": "RiVER framework trains LLMs on score-based optimization tasks without ground-truth solutions using deterministic execution feedback as continuous supervision, addressing scale and frequency dominance in group-relative RL.",
+      "llm_tldr_cn": "该论文提出RiVER框架，通过确定性执行反馈作为连续值监督，在无需真值解的情况下训练大语言模型完成基于分数的优化任务。应用于群体相对强化学习时，识别并解决了尺度支配和频率支配两大挑战。该方法扩展了可验证奖励强化学习（RLVR）的适用范围，为推理任务中的在线学习提供了新途径。",
+      "llm_tldr": "该论文提出RiVER框架，通过确定性执行反馈作为连续值监督，在无需真值解的情况下训练大语言模型完成基于分数的优化任务。应用于群体相对强化学习时，识别并解决了尺度支配和频率支配两大挑战。该方法扩展了可验证奖励强化学习（RLVR）的适用范围，为推理任务中的在线学习提供了新途径。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26997v1",
+      "source": "arxiv",
+      "title": "RolloutPipe: Overlapping Pipelined Rollout and Training in Disaggregated On-Policy LLM Reinforcement Learning",
+      "abstract": "Large language model (LLM) post-training for reasoning increasingly relies on reinforcement learning with verifiable rewards (RLVR), where models learn from ground-truth feedback on mathematical, logical, and scientific tasks. To enable flexible resource allocation and support heterogeneous training setups, modern RLVR systems adopt disaggregated architectures that decouple rollout generation and policy training across independent GPU pools. However, existing synchronous on-policy GRPO (Group Relative Policy Optimization) RLVR systems finish an entire rollout before starting training, leaving the trainer GPU pool idle while rollout is still ongoing. Asynchronous RL pipelines overlap the two stages, but at the cost of training on stale data. To address these challenges, we propose RolloutPipe, a post-training framework for disaggregated RLVR systems, which turns the fixed-weight rollout into a complete-group pipeline where trainable groups move to the trainer while later groups are still being generated. RolloutPipe achieves this through two techniques including complete-group pipelining (CGP) and frontier-group dispatch (FGD). CGP dispatches each trainable complete group to the trainer FIFO as soon as group materialization finishes, and FGD is an admission policy on the Rollout node that first admits requests for the frontier groups needed to form the next training batch, so that trainer-ready groups arrive earlier and more steadily. The design starts training before the rollout completes while maintaining on-policy correctness. Evaluated on Qwen3-1.7B across four reasoning and science benchmarks and twelve rollout settings, RolloutPipe shortens the rollout-to-train-end time by 30.7%-42.3%, and lowers the trainer waiting ratio by 37%-76% compared to Slime, a state-of-the-art rollout and training system.",
+      "authors": [
+        "Rongjian Chen",
+        "Jianmin Hu",
+        "Kejiang Ye",
+        "Minxian Xu"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-06-25T13:14:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.26997v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "disaggregated on-policy RLVR with pipelined rollout and training for LLM reasoning",
+      "llm_evidence_cn": "用于大语言模型推理的解耦同策略RLVR，流水线化生成与训练",
+      "llm_evidence": "用于大语言模型推理的解耦同策略RLVR，流水线化生成与训练",
+      "canonical_evidence": "用于大语言模型推理的解耦同策略RLVR，流水线化生成与训练",
+      "llm_tldr_en": "RolloutPipe overlaps pipelined rollout and training in disaggregated on-policy LLM reinforcement learning, addressing trainer idle time in synchronous GRPO systems.",
+      "llm_tldr_cn": "该论文针对大语言模型强化学习后训练中的系统瓶颈，提出RolloutPipe框架，在解耦架构中通过流水线重叠生成与训练阶段。现有同步GRPO系统在生成期间使训练GPU空闲，而异步方案有代价。RolloutPipe在保持训练质量的同时显著提升吞吐量，为推理场景下的可扩展RLVR训练提供了高效工程方案。",
+      "llm_tldr": "该论文针对大语言模型强化学习后训练中的系统瓶颈，提出RolloutPipe框架，在解耦架构中通过流水线重叠生成与训练阶段。现有同步GRPO系统在生成期间使训练GPU空闲，而异步方案有代价。RolloutPipe在保持训练质量的同时显著提升吞吐量，为推理场景下的可扩展RLVR训练提供了高效工程方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.23112v1",
+      "source": "arxiv",
+      "title": "Self-Evolution for Multi-Turn Tool-Calling Agents via Divergence-Point Preference Learning",
+      "abstract": "Multi-turn tool-using agents must coordinate long-horizon tool sequences while tracking dialogue state and policy constraints. Existing approaches often separate inference-time orchestration from parameter-level learning, leaving tool selection weakly structured and preference updates vulnerable to train--deployment prompt mismatch. For within-benchmark self-improvement, ToolGraph combines schema-derived topology, transition weights estimated from successful rollouts, and history-aware controls for write prerequisites and repeated-search loops. We then construct 161 preference pairs by locating divergence points via state-based matching and prefix-based alignment, filtered through action-correctness annotations, and train DPO under the same ToolGraph context used at inference. Across 375 tau2-bench tasks, ToolGraph raises the weighted average reward from 0.304 to 0.338 (+11.2% relative), while ToolGraph+DPO reaches 0.355 (+16.8% over the baseline), with the DPO gain concentrated in airline and retail. Fine-grained diagnostics further show that roughly half of telecom trajectories exhaust the step budget before action execution and that chosen reward positivity is the most useful checkpoint signal across our 16 evaluated DPO configurations.",
+      "authors": [
+        "Jiaqiang Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-22T09:56:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.23112v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Utilizes divergence-point preference learning from rollouts for self-improvement",
+      "llm_evidence_cn": "利用轨迹中分歧点的偏好学习进行自我改进",
+      "llm_evidence": "利用轨迹中分歧点的偏好学习进行自我改进",
+      "canonical_evidence": "利用轨迹中分歧点的偏好学习进行自我改进",
+      "llm_tldr_en": "Proposes divergence-point preference learning for multi-turn tool agents, constructing preference pairs from successful rollouts, relevant to learning from rollouts.",
+      "llm_tldr_cn": "针对多轮工具调用代理，提出基于分歧点的偏好学习方法，从成功rollout中构建偏好对进行DPO训练。虽然直接目标是工具选择，但其利用rollout和失败矫正的思路与需求8中从失败rollout中学习有方法上的关联。",
+      "llm_tldr": "针对多轮工具调用代理，提出基于分歧点的偏好学习方法，从成功rollout中构建偏好对进行DPO训练。虽然直接目标是工具选择，但其利用rollout和失败矫正的思路与需求8中从失败rollout中学习有方法上的关联。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.19750v1",
+      "source": "arxiv",
+      "title": "Manifold Bandits: Bayesian Curriculum Learning over the Latent Geometry of Large Language Models",
+      "abstract": "Reinforcement learning (RL) is a central approach for improving reasoning capabilities in large language models (LLMs), where training efficiency depends critically on how problems are sampled during optimization. Existing adaptive curriculum learning methods typically prioritize prompts of intermediate difficulty, treating problem selection as a standard bandit problem with independent arms and overlooking the structured, heterogeneous nature of the task space. In this work, we frame problem sampling as a manifold-structured bandit problem with endogenous non-stationarity: problems are related through the model's latent representation space, and sampling decisions can steer how learning signals evolve across that space. To operationalize this perspective, we introduce Bayesian Manifold Curriculum (BMC), a structure-aware framework that organizes problems into a hierarchical task tree and applies Bayesian learning to guide sampling. Empirically, we find that different sampling strategies induce non-trivial tradeoffs between productivity (learning signal), diversity (coverage of the task manifold), and utility (evaluation relevance). These results show that prioritizing difficulty alone is insufficient for strong downstream performance, highlighting the importance of incorporating structure and type-awareness into problem sampling.",
+      "authors": [
+        "Darrien McKenzie",
+        "Nicklas Hansen",
+        "Xiaolong Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-18T03:31:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.19750v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-based curriculum learning for LLM reasoning, addresses sampling efficiency",
+      "llm_evidence_cn": "基于RL的课程学习用于LLM推理，优化采样效率",
+      "llm_evidence": "基于RL的课程学习用于LLM推理，优化采样效率",
+      "canonical_evidence": "基于RL的课程学习用于LLM推理，优化采样效率",
+      "llm_tldr_en": "Proposes a manifold-structured bandit framework for adaptive curriculum learning in LLM RL, improving training efficiency.",
+      "llm_tldr_cn": "在LLM推理的强化学习训练中，现有自适应课程学习将问题选择视为独立臂赌博机，忽略了任务的结构关系。本文提出流形结构赌博机框架，将问题采样建模为潜在表示空间上的非平稳流形赌博机，通过贝叶斯方法优化采样分布，从而更高效地推动推理能力提升。",
+      "llm_tldr": "在LLM推理的强化学习训练中，现有自适应课程学习将问题选择视为独立臂赌博机，忽略了任务的结构关系。本文提出流形结构赌博机框架，将问题采样建模为潜在表示空间上的非平稳流形赌博机，通过贝叶斯方法优化采样分布，从而更高效地推动推理能力提升。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
