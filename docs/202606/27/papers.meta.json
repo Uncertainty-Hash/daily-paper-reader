@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-27",
+  "date": "2026-06-27",
+  "generated_at": "2026-06-27T21:24:06",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/27/2606.22317v1-curriculum-reinforcement-learning-can-incentivize-reasoning-capacity-in-llms-beyond-the-base-model",
+      "section": "deep",
+      "title_en": "Curriculum Reinforcement Learning Can Incentivize Reasoning Capacity in LLMs Beyond the Base Model",
+      "authors": "Pengxiang Cai, Tianchen Fang, Xiaohan Li, Qingyuan Zeng, Guocong Li, Jintai Chen",
+      "date": "2026-06-21",
+      "pdf": "https://arxiv.org/pdf/2606.22317v1",
+      "score": "9.0",
+      "evidence": "针对RLVR无法扩展推理能力边界的问题，提出课程强化学习方法",
+      "tldr": "当前强化学习（RLVR）虽能提升LLM的pass@1，但可能降低大规模采样时的pass@k，表明其未能扩展模型推理能力边界。本文提出边界感知课程强化学习，首先通过pass@k采样定位当前推理边界，然后对边界附近样本提供教师引导，最后用RL巩固新推理模式。在Qwen、Llama、DeepSeek等基座上，该方法平均提升pass@1和pass@256分别比基座高9.8个百分点、比标准RLVR高10.3个百分点，证明了持续扩展推理能力的可行性。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning with verifiable rewards (RLVR) is widely viewed as a promising path toward continuously improving large language models. Recent works, however, suggest that mainstream RLVR often reallocates sampling probabilities among trajectories already present in the base model: it can improve sampling efficiency, reflected by higher pass@1 scores, but yields limited gains, and can even decrease pass@k scores when k is large, and therefore may fail to expand the base model's reasoning capacity boundary. In this paper, we present a boundary-aware Curriculum RL approach to move beyond the base model's reasoning capacity boundary. Our approach first uses pass@k sampling to locate the current reasoning capacity boundary, then applies targeted teacher guidance to examples near or beyond that boundary, and finally uses RL to consolidate the newly introduced reasoning patterns. Across Qwen, Llama, and DeepSeek base models, boundary-aware Curriculum RL improves both pass@1 scores and pass@256 scores, with pass@1 reflecting one-attempt performance and pass@256 serving as an empirical proxy for the reasoning capacity boundary. In our experiments, average pass@256 improves by 9.8 percentage points over the base models and by 10.3 percentage points over Vanilla RLVR. These results suggest that boundary-aware Curriculum RL can provide a scalable route for LLMs to continuously improve beyond the base model's empirical reasoning capacity boundary.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/27/2606.22830v1-finding-the-evidence-discovering-decision-supporting-tokens-for-on-policy-reasoning-distillation",
+      "section": "deep",
+      "title_en": "Finding the Evidence: Discovering Decision-Supporting Tokens for On-Policy Reasoning Distillation",
+      "authors": "Jinwei Xiao, Zhuowen Han, Yueqing Sun, Zhengxi Lu, Yuxin Liu, Zhiyuan Yao, Wentao Chen, Qi Gu, Xunliang Cai",
+      "date": "2026-06-22",
+      "pdf": "https://arxiv.org/pdf/2606.22830v1",
+      "score": "9.0",
+      "evidence": "同策略推理蒸馏，通过令牌级别的决策和证据发现",
+      "tldr": "在线策略蒸馏中，推理链包含决策（分支点）和证据（中间步骤）两类知识，现有方法仅传递决策而忽略证据。本文发现证据隐藏在学生自信但错误的位点，提出DEAR方法，通过学生熵识别决策，利用隐藏状态余弦相似度结合师生差异探索证据。在数学与代码任务上，DEAR较标准OPD提升显著，竞赛数学+2.5pp，代码生成+5.7pp，验证了证据传递的必要性。",
+      "tags": "query:opd",
+      "abstract_en": "On-policy distillation transfers reasoning ability through dense token-level supervision, yet the nature of the transferable signal remains unclear. We discover that reasoning chains contain two types of knowledge that require different discovery mechanisms: decisions (where to branch), which surface through student uncertainty, and evidence (intermediate steps that justify decisions), which hides in positions where the student is confident yet wrong. Current methods capture only decisions; the substantive knowledge in evidence tokens remains untransferred. We propose DEAR(Decision-Evidence Aware Reasoning Distillation), which first identifies decisions via student entropy, then discovers their supporting evidence through hidden-state cosine similarity to decision anchors, boosted by teacher-student divergence to prioritize the largest knowledge gaps. Across three student-teacher configurations on math and code benchmarks, DEAR consistently outperforms standard OPD, with up to +2.5pp on competition math and +5.7pp on code generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/27/2606.26790v1-opid-on-policy-skill-distillation-for-agentic-reinforcement-learning",
+      "section": "deep",
+      "title_en": "OPID: On-Policy Skill Distillation for Agentic Reinforcement Learning",
+      "authors": "Shuo Yang, Jinyang Wu, Zhengxi Lu, Yuhao Shen, Fan Zhang, Lang Feng, Shuai Zhang, Haoran Luo, Zheng Lian, Zhengqi Wen, Jianhua Tao",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.26790v1",
+      "score": "9.0",
+      "evidence": "从语言代理轨迹中提取技能监督的同策略自蒸馏框架",
+      "tldr": "基于结果的强化学习中稀疏的轨迹奖励难以指导中间决策。OPID框架从策略轨迹中提取层次化技能（片段级和步骤级），通过关键优先路由注入历史，实现密集的token级自蒸馏优势。在ALFWorld等环境上，OPID相较于仅结果RL和现有方法显著提升了智能体性能、样本效率和鲁棒性。该方法保持了RL为主目标，同时引入分布匹配的事后监督。",
+      "tags": "query:opd",
+      "abstract_en": "Outcome-based reinforcement learning provides a stable optimization backbone for language agents, but its sparse trajectory-level rewards provide little guidance on which intermediate decisions should be reinforced or suppressed. On-policy self-distillation offers dense token-level supervision, yet existing skill-conditioned variants often rely on external skill memories or retrieved privileged context, which are costly to maintain and can be mismatched with the state distribution induced by the current policy in multi-turn interaction. We propose \\textbf{OPID} (\\textbf{O}n-\\textbf{P}olicy Sk\\textbf{i}ll \\textbf{D}istillation), a framework that extracts skill supervision directly from completed on-policy trajectories. OPID represents trajectory hindsight as hierarchical skills: episode-level skills capture global workflows or failure-avoidance rules, while step-level skills capture local decision knowledge at critical timesteps. A critical-first routing mechanism uses step-level skills when critical decisions are identified and falls back to episode-level skills as default guidance otherwise. The selected skill is injected into the interaction history, allowing the old policy to re-score the same sampled response under both original and skill-augmented contexts. The resulting log-probability shift yields a token-level self-distillation advantage, which is combined with the outcome advantage for policy optimization. OPID thus preserves RL as the primary training objective while introducing dense, distribution-matched hindsight supervision. Experiments on ALFWorld, WebShop and Search-based QA demonstrate that OPID generally improves agent performance, sample efficiency, and robustness over outcome-only RL and existing skill-distillation baselines. Our code is available at https://github.com/jinyangwu/OPID/tree/main.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/27/2606.27136v1-joint-learning-of-experiential-rules-and-policies-for-large-language-model-agents",
+      "section": "quick",
+      "title_en": "Joint Learning of Experiential Rules and Policies for Large Language Model Agents",
+      "authors": "Shicheng Ye, Chao Yu",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27136v1",
+      "score": "6.0",
+      "evidence": "从交互轨迹中联合学习经验规则和策略，利用反馈和失败信号",
+      "tldr": "大语言模型代理在多步交互环境中面临经验有效利用的挑战。现有方法将经验作为外部自然语言规则用于提示，或用于更新模型参数，但前者难与策略同步，后者在稀疏奖励下局部纠正有限。本文提出JERP，联合学习经验规则池和策略：决策时检索规则与历史联合条件化；每轮后利用轨迹优化策略并对比参考轨迹修正规则池。在AlfWorld和WebShop上，JERP在复杂交互任务中取得一致决策性能提升。",
+      "tags": "query:opd",
+      "abstract_en": "For LLM agents in multi-step interactive environments, a key challenge is to make effective use of accumulated interaction experience. Existing work has typically separated two uses of such experience: keeping it outside the model as natural-language rules for later prompting, or using trajectories and feedback to update the model parameters. The former is easy to interpret but can fall out of sync with the evolving policy; the latter improves the policy more broadly but provides only limited correction for local mistakes in sparse-reward settings. We present Joint Learning of Experiential Rules and Policies for LLM Agents (JERP), which updates a long-term experiential-rule pool and the policy from the same interaction trajectories. At decision time, JERP retrieves task-relevant rules and conditions the agent on them together with the interaction history. After each episode, it uses the collected trajectories both to optimize the policy and to revise the rule pool by comparing current rollouts with reference successful trajectories. This coupling keeps the rule pool aligned with the evolving policy while allowing stable and effective behaviors to be gradually absorbed into the model itself. Experiments on AlfWorld and WebShop show that JERP yields consistent gains in decision performance for complex interactive tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

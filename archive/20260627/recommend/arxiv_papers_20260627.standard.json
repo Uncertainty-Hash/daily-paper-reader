@@ -1,0 +1,180 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-27T21:20:28.322014+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.22317v1",
+      "source": "arxiv",
+      "title": "Curriculum Reinforcement Learning Can Incentivize Reasoning Capacity in LLMs Beyond the Base Model",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) is widely viewed as a promising path toward continuously improving large language models. Recent works, however, suggest that mainstream RLVR often reallocates sampling probabilities among trajectories already present in the base model: it can improve sampling efficiency, reflected by higher pass@1 scores, but yields limited gains, and can even decrease pass@k scores when k is large, and therefore may fail to expand the base model's reasoning capacity boundary. In this paper, we present a boundary-aware Curriculum RL approach to move beyond the base model's reasoning capacity boundary. Our approach first uses pass@k sampling to locate the current reasoning capacity boundary, then applies targeted teacher guidance to examples near or beyond that boundary, and finally uses RL to consolidate the newly introduced reasoning patterns. Across Qwen, Llama, and DeepSeek base models, boundary-aware Curriculum RL improves both pass@1 scores and pass@256 scores, with pass@1 reflecting one-attempt performance and pass@256 serving as an empirical proxy for the reasoning capacity boundary. In our experiments, average pass@256 improves by 9.8 percentage points over the base models and by 10.3 percentage points over Vanilla RLVR. These results suggest that boundary-aware Curriculum RL can provide a scalable route for LLMs to continuously improve beyond the base model's empirical reasoning capacity boundary.",
+      "authors": [
+        "Pengxiang Cai",
+        "Tianchen Fang",
+        "Xiaohan Li",
+        "Qingyuan Zeng",
+        "Guocong Li",
+        "Jintai Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-21T03:15:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.22317v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "addresses RLVR limitations and proposes curriculum RL to expand reasoning capacity",
+      "llm_evidence_cn": "针对RLVR无法扩展推理能力边界的问题，提出课程强化学习方法",
+      "llm_evidence": "针对RLVR无法扩展推理能力边界的问题，提出课程强化学习方法",
+      "canonical_evidence": "针对RLVR无法扩展推理能力边界的问题，提出课程强化学习方法",
+      "llm_tldr_en": "Proposes boundary-aware Curriculum RL to expand LLM reasoning capacity beyond the base model, overcoming RLVR's limitation of only reallocating sampling probabilities.",
+      "llm_tldr_cn": "主流RLVR虽能提升pass@1，但无法扩展基座模型的推理能力边界。本文提出一种边界感知的课程强化学习：先用pass@k采样定位当前边界，然后设计课程逐步增加难度，激励模型探索新推理路径。实验证明该方法能真正突破基座模型的能力上限。",
+      "llm_tldr": "主流RLVR虽能提升pass@1，但无法扩展基座模型的推理能力边界。本文提出一种边界感知的课程强化学习：先用pass@k采样定位当前边界，然后设计课程逐步增加难度，激励模型探索新推理路径。实验证明该方法能真正突破基座模型的能力上限。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22830v1",
+      "source": "arxiv",
+      "title": "Finding the Evidence: Discovering Decision-Supporting Tokens for On-Policy Reasoning Distillation",
+      "abstract": "On-policy distillation transfers reasoning ability through dense token-level supervision, yet the nature of the transferable signal remains unclear. We discover that reasoning chains contain two types of knowledge that require different discovery mechanisms: decisions (where to branch), which surface through student uncertainty, and evidence (intermediate steps that justify decisions), which hides in positions where the student is confident yet wrong. Current methods capture only decisions; the substantive knowledge in evidence tokens remains untransferred. We propose DEAR(Decision-Evidence Aware Reasoning Distillation), which first identifies decisions via student entropy, then discovers their supporting evidence through hidden-state cosine similarity to decision anchors, boosted by teacher-student divergence to prioritize the largest knowledge gaps. Across three student-teacher configurations on math and code benchmarks, DEAR consistently outperforms standard OPD, with up to +2.5pp on competition math and +5.7pp on code generation.",
+      "authors": [
+        "Jinwei Xiao",
+        "Zhuowen Han",
+        "Yueqing Sun",
+        "Zhengxi Lu",
+        "Yuxin Liu",
+        "Zhiyuan Yao",
+        "Wentao Chen",
+        "Qi Gu",
+        "Xunliang Cai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-22T04:13:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.22830v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "On-policy reasoning distillation with token-level decision and evidence discovery",
+      "llm_evidence_cn": "同策略推理蒸馏，通过令牌级别的决策和证据发现",
+      "llm_evidence": "同策略推理蒸馏，通过令牌级别的决策和证据发现",
+      "canonical_evidence": "同策略推理蒸馏，通过令牌级别的决策和证据发现",
+      "llm_tldr_en": "Proposes DEAR, an on-policy distillation method that identifies both decision tokens (via student uncertainty) and evidence tokens (hidden in confident but wrong positions) to fully transfer reasoning knowledge.",
+      "llm_tldr_cn": "针对同策略蒸馏中仅传递决策信号而遗漏证据知识的问题，提出DEAR方法，利用学生模型熵识别决策位置，并通过隐藏状态挖掘学生自信但出错的证据令牌，实现推理链的完整蒸馏。实验证明DEAR在多个数学推理任务上显著优于仅传递决策的蒸馏方法，揭示了证据令牌对推理能力迁移的关键作用。",
+      "llm_tldr": "针对同策略蒸馏中仅传递决策信号而遗漏证据知识的问题，提出DEAR方法，利用学生模型熵识别决策位置，并通过隐藏状态挖掘学生自信但出错的证据令牌，实现推理链的完整蒸馏。实验证明DEAR在多个数学推理任务上显著优于仅传递决策的蒸馏方法，揭示了证据令牌对推理能力迁移的关键作用。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26790v1",
+      "source": "arxiv",
+      "title": "OPID: On-Policy Skill Distillation for Agentic Reinforcement Learning",
+      "abstract": "Outcome-based reinforcement learning provides a stable optimization backbone for language agents, but its sparse trajectory-level rewards provide little guidance on which intermediate decisions should be reinforced or suppressed. On-policy self-distillation offers dense token-level supervision, yet existing skill-conditioned variants often rely on external skill memories or retrieved privileged context, which are costly to maintain and can be mismatched with the state distribution induced by the current policy in multi-turn interaction. We propose \\textbf{OPID} (\\textbf{O}n-\\textbf{P}olicy Sk\\textbf{i}ll \\textbf{D}istillation), a framework that extracts skill supervision directly from completed on-policy trajectories. OPID represents trajectory hindsight as hierarchical skills: episode-level skills capture global workflows or failure-avoidance rules, while step-level skills capture local decision knowledge at critical timesteps. A critical-first routing mechanism uses step-level skills when critical decisions are identified and falls back to episode-level skills as default guidance otherwise. The selected skill is injected into the interaction history, allowing the old policy to re-score the same sampled response under both original and skill-augmented contexts. The resulting log-probability shift yields a token-level self-distillation advantage, which is combined with the outcome advantage for policy optimization. OPID thus preserves RL as the primary training objective while introducing dense, distribution-matched hindsight supervision. Experiments on ALFWorld, WebShop and Search-based QA demonstrate that OPID generally improves agent performance, sample efficiency, and robustness over outcome-only RL and existing skill-distillation baselines. Our code is available at https://github.com/jinyangwu/OPID/tree/main.",
+      "authors": [
+        "Shuo Yang",
+        "Jinyang Wu",
+        "Zhengxi Lu",
+        "Yuhao Shen",
+        "Fan Zhang",
+        "Lang Feng",
+        "Shuai Zhang",
+        "Haoran Luo",
+        "Zheng Lian",
+        "Zhengqi Wen",
+        "Jianhua Tao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-25T09:24:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.26790v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation framework for extracting skill supervision from trajectories in language agents",
+      "llm_evidence_cn": "从语言代理轨迹中提取技能监督的同策略自蒸馏框架",
+      "llm_evidence": "从语言代理轨迹中提取技能监督的同策略自蒸馏框架",
+      "canonical_evidence": "从语言代理轨迹中提取技能监督的同策略自蒸馏框架",
+      "llm_tldr_en": "OPID proposes On-Policy Skill Distillation for agentic RL, extracting dense token-level supervision from on-policy trajectories without external skill memories.",
+      "llm_tldr_cn": "该论文提出OPID（同策略技能蒸馏）框架，针对基于结果奖励的稀疏问题，从完整同策略轨迹中提取密集的技能监督。与依赖外部技能记忆的方法不同，OPID直接利用轨迹事后分析来提供中间决策的反馈。实验表明OPID能有效提升语言代理在复杂多轮交互中的性能。",
+      "llm_tldr": "该论文提出OPID（同策略技能蒸馏）框架，针对基于结果奖励的稀疏问题，从完整同策略轨迹中提取密集的技能监督。与依赖外部技能记忆的方法不同，OPID直接利用轨迹事后分析来提供中间决策的反馈。实验表明OPID能有效提升语言代理在复杂多轮交互中的性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.27136v1",
+      "source": "arxiv",
+      "title": "Joint Learning of Experiential Rules and Policies for Large Language Model Agents",
+      "abstract": "For LLM agents in multi-step interactive environments, a key challenge is to make effective use of accumulated interaction experience. Existing work has typically separated two uses of such experience: keeping it outside the model as natural-language rules for later prompting, or using trajectories and feedback to update the model parameters. The former is easy to interpret but can fall out of sync with the evolving policy; the latter improves the policy more broadly but provides only limited correction for local mistakes in sparse-reward settings. We present Joint Learning of Experiential Rules and Policies for LLM Agents (JERP), which updates a long-term experiential-rule pool and the policy from the same interaction trajectories. At decision time, JERP retrieves task-relevant rules and conditions the agent on them together with the interaction history. After each episode, it uses the collected trajectories both to optimize the policy and to revise the rule pool by comparing current rollouts with reference successful trajectories. This coupling keeps the rule pool aligned with the evolving policy while allowing stable and effective behaviors to be gradually absorbed into the model itself. Experiments on AlfWorld and WebShop show that JERP yields consistent gains in decision performance for complex interactive tasks.",
+      "authors": [
+        "Shicheng Ye",
+        "Chao Yu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-25T15:11:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.27136v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Joint learning of experiential rules and policies from interaction trajectories, using feedback and failure signals",
+      "llm_evidence_cn": "从交互轨迹中联合学习经验规则和策略，利用反馈和失败信号",
+      "llm_evidence": "从交互轨迹中联合学习经验规则和策略，利用反馈和失败信号",
+      "canonical_evidence": "从交互轨迹中联合学习经验规则和策略，利用反馈和失败信号",
+      "llm_tldr_en": "JERP jointly updates an experiential-rule pool and the policy from the same trajectories, combining interpretability of rules with policy improvements for LLM agents.",
+      "llm_tldr_cn": "该论文针对LLM智能体交互经验利用不足的问题，提出JERP。该方法从同一交互轨迹中同时更新经验规则池和策略参数，规则提供可解释性，策略提供广泛改进。通过结合局部修正与全局优化，在稀疏奖励环境中提升了智能体的适应能力。",
+      "llm_tldr": "该论文针对LLM智能体交互经验利用不足的问题，提出JERP。该方法从同一交互轨迹中同时更新经验规则池和策略参数，规则提供可解释性，策略提供广泛改进。通过结合局部修正与全局优化，在稀疏奖励环境中提升了智能体的适应能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
