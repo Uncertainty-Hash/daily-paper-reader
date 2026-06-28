@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-28",
+  "date": "2026-06-28",
+  "generated_at": "2026-06-28T21:23:59",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/28/2606.22402v1-reinforcement-learning-to-improve-large-language-model-based-automated-code-compliance-systems",
+      "section": "quick",
+      "title_en": "Reinforcement learning to improve large language model-based automated code compliance systems",
+      "authors": "Jack Wei Lun Shi, Minghao Dang, Wawan Solihin, Leong Hien Poh, Justin K. W. Yeoh",
+      "date": "2026-06-21",
+      "pdf": "https://arxiv.org/pdf/2606.22402v1",
+      "score": "7.0",
+      "evidence": "将GRPO应用于代码合规领域提升LLM准确率，接近推理任务",
+      "tldr": "针对基于大语言模型的建筑规范自动合规系统易产生错误和幻觉的问题，提出P4IR两阶段框架，先通过监督微调注入领域知识，再采用Group Relative Policy Optimization优化中间代码骨架表示。在建筑规范合规任务上，树编辑距离和Levenshtein距离分别降低23.8%和38.6%，零样本性能超越Claude Opus、GPT-5.2等模型，并显著减少假阳性。该工作展示了SFT与强化学习结合提升领域专用LLM系统准确性和可靠性的有效路径。",
+      "tags": "query:opd",
+      "abstract_en": "Large language model (LLM)-based approaches for automated code compliance (ACC) of building regulations are prone to generating incorrect and hallucinated computer-processable rules. This paper introduces P4IR, a two-stage framework that uses supervised fine-tuning (SFT) to instill domain knowledge in an LLM, followed by Group Relative Policy Optimization (GRPO) to improve the accuracy of the generated intermediate representations in the form of high-level code skeletons. The framework achieved reductions of up to 23.8% and 38.6% in tree edit distance and token-level Levenshtein distance respectively, relative to the SFT baselines. Comparative analysis demonstrates that this approach in a zero-shot setting outperforms leading LLMs in both code structure and semantics, specifically Claude Opus and Sonnet 4.5, GPT-5.2, Qwen-3-Max, and GLM-4.7, evaluated via few-shot prompting. Additionally, the GRPO stage produced a small yet statistically significant reduction in false positives. By combining SFT with GRPO to optimize directly for domain-specific objectives, this approach offers a path toward more accurate and reliable LLM-based ACC systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/28/2606.24124v1-verytrace-verifying-reasoning-traces-through-compilable-formalism-and-structured-verification",
+      "section": "quick",
+      "title_en": "VeryTrace: Verifying Reasoning Traces through Compilable Formalism and Structured Verification",
+      "authors": "Ninghan Zhong, Ahmet Ege Tanriverdi, Kaan Kale, Sriram Vishwanath",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24124v1",
+      "score": "7.0",
+      "evidence": "VeryTrace将推理轨迹形式化为可编译DSL进行验证和修复，支持过程监督。",
+      "tldr": "针对链式思维推理中早期错误累积导致结论不可靠的问题，提出VeryTrace零样本验证与修复框架。通过领域特定语言将推理轨迹形式化为可编译表示，显式化步骤依赖、量化内容与推理模式。混合验证器结合确定性检查与LLM审计，实现步骤级错误定位与修复。在数学、机器人规划和亲属推理任务上显著提升准确率，无需领域训练或上下文示例，兼具精确性与泛化性。",
+      "tags": "query:opd",
+      "abstract_en": "Multi-step reasoning with Chain-of-Thought (CoT) prompting remains fragile: logical errors or hallucinations in early steps silently propagate, producing confident but incorrect conclusions. This paper presents VeryTrace, a zero-shot verification-and-repair framework that formalizes natural-language reasoning traces into a structured, compilable representation. VeryTrace introduces a Domain-Specific Language (DSL) that (i) makes step dependencies explicit, (ii) mechanizes quantitative content as executable expressions, and (iii) structures semantic inferences via deduction schemas. Our hybrid verifier combines deterministic checks for computational correctness, dependency resolution, and constraint satisfaction with targeted LLM audits for non-mechanizable semantic judgments, enabling step-level error localization and repair.   Across three diverse domains-competition mathematics (AIME 2025), robotics planning (LLM-BabyBench), and kinship reasoning (CLUTRR), VeryTrace improves accuracy over zero-shot baselines on state-of-the-art LLMs without requiring domain-specific training or in-context examples, demonstrating that formalized trace verification achieves both precision and generalization.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/28/2606.24428v1-escaping-the-self-confirmation-trap-an-execute-distill-verify-paradigm-for-agentic-experience-learning",
+      "section": "quick",
+      "title_en": "Escaping the Self-Confirmation Trap: An Execute-Distill-Verify Paradigm for Agentic Experience Learning",
+      "authors": "Shiding Zhu, Yudi Qi, Yajie Wang, Jiaze Li, Chao Song, Yaorui Shi, Yibo Miao, Hanqi Gao, Kai Zhang",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24428v1",
+      "score": "7.0",
+      "evidence": "针对经验学习的自蒸馏框架，包含失败检测",
+      "tldr": "LLM代理在单一循环中自我反思易陷入自确认陷阱，误将错误但自洽的轨迹当作成功经验。本文提出EDV框架，通过执行阶段多异构代理并行探索、蒸馏阶段第三方代理对比分析、验证阶段执行组共识确认，将经验学习从自我反思转为协同建构。在tau2-bench、Mind2Web和MMTB上，EDV显著超越基线，验证了可靠经验对代理自进化的关键作用。",
+      "tags": "query:opd",
+      "abstract_en": "Experience-driven self-evolution is critical for large language model (LLM) agents to improve through open-world interaction. However, existing experience learning methods mostly rely on single-agent loops, where the same agent executes tasks, summarizes outcomes, and determines memory content. This setup makes agents vulnerable to the Self-Confirmation Trap: wrong-but-self-consistent trajectories are misidentified as successful experience, leading to cumulative errors during retrieval and reuse. To address this issue, we propose EDV, an Execute-Distill-Verify framework for reliable experience learning. In the Execute stage, multiple heterogeneous agents explore the same task space in parallel to generate diverse candidate trajectories. In the Distill stage, a dedicated third-party agent comparatively analyzes these trajectories to produce candidate experiences, reducing executor-centric summarization bias. In the Verify stage, the execution group validates candidates via a consensus mechanism, and only approved experiences are written into shared or private memory. By decoupling the three stages, EDV transforms experience learning from isolated self-reflection into collaborative construction, filtering erroneous and noisy content before memory insertion. We evaluate EDV on three challenging long-horizon benchmarks: tau2-bench, Mind2Web and MMTB. Results show EDV consistently outperforms strong baselines, validating that reliable experience construction is essential for robust agent self-evolution. Our code is available at https://github.com/shidingz/EDV.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/28/2606.24525v1-viscritic-visual-state-comparison-as-process-reward-for-gui-agents",
+      "section": "quick",
+      "title_en": "VisCritic: Visual State Comparison as Process Reward for GUI Agents",
+      "authors": "Jiachen Qian",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24525v1",
+      "score": "7.0",
+      "evidence": "针对GUI智能体的视觉过程奖励框架",
+      "tldr": "当前基于视觉语言模型的GUI代理在长任务中常失败，因缺乏步骤级验证。现有过程奖励模型仅通过文本推理验证，忽略了GUI状态变化的视觉特性。VisCritic通过直接对比操作前后截图在视觉特征空间进行验证，采用孪生视觉变换器和动作感知评判头，联合评估动作成功、任务进展和错误类型。在五个基准测试中作为即插即用模块提升多种代理性能，并提供视觉诊断线索。",
+      "tags": "query:opd",
+      "abstract_en": "GUI agents powered by vision-language models show strong potential for automating digital tasks, yet frequently fail in long-horizon scenarios due to the absence of step-level verification. Existing process reward models verify actions through textual reasoning alone, missing the visual nature of GUI state changes. We introduce VisCritic, a visual process reward framework that verifies agent actions by directly comparing pre-action and post-action screenshots in visual feature space. VisCritic employs a Siamese vision transformer to extract change-aware representations, coupled with an Action-Aware Critic Head that jointly evaluates action success, task progress, and error type. A critic-training data construction pipeline generates weakly supervised samples from existing trajectories without additional human labels for critic training. Experiments and offline analyses across five benchmarks demonstrate that VisCritic serves as a plug-and-play enhancement for diverse GUI agents, generally improving benchmark metrics while providing visual diagnostic cues.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
