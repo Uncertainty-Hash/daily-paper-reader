@@ -6,35 +6,39 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-28
-- 运行时间：2026-06-28 21:23:51 UTC
+- 最新运行日期：2026-06-29
+- 运行时间：2026-06-29 20:47:26 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：0
-- 速读区：4
+- 本次总论文数：5
+- 精读区：4
+- 速读区：1
 
 ### 今日简报（AI）
-1) 今日速读4篇论文，聚焦强化学习优化代码合规、推理轨迹验证与智能体经验学习三大方向。  
-2) 最值得关注：用可编译形式化验证LLM推理步骤，以及通过执行-蒸馏-验证循环摆脱智能体自我确认陷阱。  
-3) 建议优先阅读《VeryTrace》与《Escaping the Self-Confirmation Trap》，掌握结构化验证与自主学习范式。
-- 详情：[/202606/28/README](/202606/28/README)
+今日精读4篇、速读1篇，聚焦策略蒸馏位置偏差、鲁棒Bash代码生成与延迟感知RLHF。
+
+最值得看《On the Position Bias of On-Policy Distillation》（10分）与《BashCoder-R1》（9分），前者揭示蒸馏位置偏差，后者提出鲁棒代码生成新方法。
+
+普通读者建议优先了解位置偏差如何影响蒸馏效果，以及RLHF中延迟校正的实用技巧。
+- 详情：[/202606/29/README](/202606/29/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [On the Position Bias of On-Policy Distillation](/202606/29/2606.22600v3-on-the-position-bias-of-on-policy-distillation)  
+   标签：评分：10.0/10、query:opd
+   evidence：直接研究同策略蒸馏中的位置偏差
+2. [BashCoder-R1: Towards Robust and Explainable Bash Code Generation with Robustness-Aware Group Relative Policy Optimization](/202606/29/2606.27733v1-bashcoder-r1-towards-robust-and-explainable-bash-code-generation-with-robustness-aware-group-relative-policy-optimization)  
+   标签：评分：9.0/10、query:opd
+   evidence：使用鲁棒性感知的组相对策略优化进行Bash代码生成
+3. [ATOD: Annealed Turn-aware On-policy Distillation for Multi-turn Autonomous Agents](/202606/29/2606.27814v1-atod-annealed-turn-aware-on-policy-distillation-for-multi-turn-autonomous-agents)  
+   标签：评分：9.0/10、query:opd
+   evidence：提出退火回合感知的同策略蒸馏，融合OPD和RL用于多轮智能体
+4. [Tandem Reinforcement Learning with Verifiable Rewards](/202606/29/2606.28166v1-tandem-reinforcement-learning-with-verifiable-rewards)  
+   标签：评分：9.0/10、query:opd
+   evidence：使用强弱模型串联训练的可验证奖励强化学习，属于同策略蒸馏
 
 ### 速读区论文标签
-1. [Reinforcement learning to improve large language model-based automated code compliance systems](/202606/28/2606.22402v1-reinforcement-learning-to-improve-large-language-model-based-automated-code-compliance-systems)  
-   标签：评分：7.0/10、query:opd
-   evidence：将GRPO应用于代码合规领域提升LLM准确率，接近推理任务
-2. [VeryTrace: Verifying Reasoning Traces through Compilable Formalism and Structured Verification](/202606/28/2606.24124v1-verytrace-verifying-reasoning-traces-through-compilable-formalism-and-structured-verification)  
-   标签：评分：7.0/10、query:opd
-   evidence：VeryTrace将推理轨迹形式化为可编译DSL进行验证和修复，支持过程监督。
-3. [Escaping the Self-Confirmation Trap: An Execute-Distill-Verify Paradigm for Agentic Experience Learning](/202606/28/2606.24428v1-escaping-the-self-confirmation-trap-an-execute-distill-verify-paradigm-for-agentic-experience-learning)  
-   标签：评分：7.0/10、query:opd
-   evidence：针对经验学习的自蒸馏框架，包含失败检测
-4. [VisCritic: Visual State Comparison as Process Reward for GUI Agents](/202606/28/2606.24525v1-viscritic-visual-state-comparison-as-process-reward-for-gui-agents)  
-   标签：评分：7.0/10、query:opd
-   evidence：针对GUI智能体的视觉过程奖励框架
+1. [Retroactive Advantage Correction: Closed-Form V-Trace Bias Correction for Delay-Aware RLHF](/202606/29/2606.27580v1-retroactive-advantage-correction-closed-form-v-trace-bias-correction-for-delay-aware-rlhf)  
+   标签：评分：6.0/10、query:opd
+   evidence：针对RLHF中的延迟奖励提出回溯优势校正
 
 
 <div class="dpr-home-promo-card">
