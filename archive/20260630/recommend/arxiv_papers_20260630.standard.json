@@ -1,0 +1,523 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-30T21:57:17.085101+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 9,
+    "deep_cap": 6,
+    "deep_selected": 7,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2606.28707v1",
+      "source": "arxiv",
+      "title": "BV-Blend: Uncertainty-Weighted Historical Baselines for Stable Critic-Free RL with Verifiable Rewards",
+      "abstract": "Critic-free reinforcement learning with verifiable rewards (RLVR), exemplified by Group Relative Policy Optimization (GRPO), avoids training a value function (critic) and reduces memory and compute overhead relative to critic-based PPO pipelines for aligning large language models. However, GRPO-style advantage estimation depends on prompt-local (within-prompt-group) reward statistics and can be unstable. In particular, when all rollouts in a prompt group receive identical rewards, the within-group reward variance becomes zero, and group normalization yields zero advantages for that group, impeding learning in cold-start regimes with binary verifiers. We introduce BV-Blend, a critic-free framework that stabilizes advantage estimation by combining prompt-local on-policy statistics with semantic-cluster-conditioned historical moments. BV-Blend maintains EMA-tracked reward moments for each cluster, derives a confidence weight from a standard error of the mean (SEM) proxy, and uses this weight to blend historical and prompt-local baseline and variance statistics into a standardized advantage for PPO-style clipped updates. Experiments on verifiable reasoning benchmarks show that BV-Blend improves training stability and performance, and remains robust in regimes where group-normalized methods may stall.",
+      "authors": [
+        "Yupeng Chang",
+        "Yuan Wu",
+        "Yi Chang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-27T03:25:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.28707v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Stabilizes GRPO advantage estimation with uncertainty-weighted baselines",
+      "llm_evidence_cn": "使用不确定性加权基线稳定GRPO优势估计",
+      "llm_evidence": "使用不确定性加权基线稳定GRPO优势估计",
+      "canonical_evidence": "使用不确定性加权基线稳定GRPO优势估计",
+      "llm_tldr_en": "Proposes BV-Blend to stabilize critic-free RLVR by blending historical baselines when within-group variance is zero, improving cold-start performance with binary verifiers.",
+      "llm_tldr_cn": "针对GRPO等无评论家RLVR方法在二元验证器冷启动时由于组内奖励方差为零导致优势为零的问题，提出BV-Blend框架，通过不确定性加权融合历史基线来稳定优势估计。实验表明该方法显著提升了训练稳定性和最终性能，为在线强化学习推理优化提供了实用方案。",
+      "llm_tldr": "针对GRPO等无评论家RLVR方法在二元验证器冷启动时由于组内奖励方差为零导致优势为零的问题，提出BV-Blend框架，通过不确定性加权融合历史基线来稳定优势估计。实验表明该方法显著提升了训练稳定性和最终性能，为在线强化学习推理优化提供了实用方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29238v1",
+      "source": "arxiv",
+      "title": "On the Policy Gradient Foundations of Group Relative Policy Optimization: Credit Assignment, Gradient Sparsity, and Rank Collapse",
+      "abstract": "Group Relative Policy Optimization (GRPO) eliminates the learned critic in PPO by using the mean reward of grouped rollouts as a baseline. We provide a rigorous derivation of GRPO from first principles of the policy gradient theorem, revealing a fundamental credit assignment failure: under output-only reward, every token in a rollout receives identical advantage, collapsing token-level credit to a single scalar. We prove this induces gradient sparsity that intensifies over training, and demonstrate empirically via SVD analysis of GRPO gradients on Nemotron-4B/GSM8K that the gradient matrix has effective rank $\\approx$ 2 regardless of group size $R \\in \\{2, 4, 8\\}$. We formalize this as an intrinsic rank-2 structure arising from the zero-sum constraint on advantages and derive conditions under which GRPO's baseline is optimal. Our results characterize when GRPO's simplicity is theoretically justified and identify the credit assignment bottleneck as the key limitation for multi-step reasoning.",
+      "authors": [
+        "Amritansh Mishra",
+        "Supriyo Chakraborty",
+        "Berkcan Kapusuzoglu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-28T06:51:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.29238v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Group Relative Policy Optimization credit assignment analysis",
+      "llm_evidence_cn": "GRPO信用分配分析",
+      "llm_evidence": "GRPO信用分配分析",
+      "canonical_evidence": "GRPO信用分配分析",
+      "llm_tldr_en": "Rigorous derivation of GRPO reveals fundamental credit assignment failure and gradient sparsity; empirical SVD analysis confirms effective rank≈2.",
+      "llm_tldr_cn": "该论文从策略梯度定理出发，严格推导了Group Relative Policy Optimization (GRPO)的基础，发现其存在根本性的信用分配失败：在仅输出奖励下，每个令牌获得相同的优势，导致令牌级信用塌缩为一个标量。理论证明这种梯度稀疏性随训练加剧，并通过Nemotron-4B/GSM8K上的SVD分析实证显示梯度矩阵有效秩约为2，与组大小无关。该工作揭示了GRPO的内在局限性，为改进在线强化学习方法提供了理论指导。",
+      "llm_tldr": "该论文从策略梯度定理出发，严格推导了Group Relative Policy Optimization (GRPO)的基础，发现其存在根本性的信用分配失败：在仅输出奖励下，每个令牌获得相同的优势，导致令牌级信用塌缩为一个标量。理论证明这种梯度稀疏性随训练加剧，并通过Nemotron-4B/GSM8K上的SVD分析实证显示梯度矩阵有效秩约为2，与组大小无关。该工作揭示了GRPO的内在局限性，为改进在线强化学习方法提供了理论指导。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29296v1",
+      "source": "arxiv",
+      "title": "Process Advantage Signal Shaping: A Paradigm-Agnostic Middleware for Process-Supervised RL in LLM Reasoners",
+      "abstract": "Group Relative Policy Optimization (GRPO) is a default recipe for process-supervised reinforcement learning of LLM reasoners, and dense process supervision -- via learned process reward models (PRMs) or on-policy-distillation KL signals -- is a common way to densify its otherwise weak outcome reward. Layering such a step-level signal on top of GRPO's group-standardized advantage, however, exposes three structural pathologies: \\emph{channel contamination} between the pooled process, outcome, and format streams at group standardization; \\emph{resolution mismatch} between the granularity of the process signal and the granularity of the logical decisions being credited; and a \\emph{cumulative trap} by which GRPO's return-to-go sum surfaces either length inflation or truncated exploration depending on the sign regime of the signal. We propose \\textbf{PASS} (\\emph{Process Advantage Signal Shaping}), a compact middleware that sits between any scalar step-level process signal and GRPO's clipped surrogate and addresses the three pathologies in turn: \\emph{Advantage Fusion} standardizes the three streams independently within each group, \\emph{Chunk-by-Value} derives value-homogeneous chunks from the signal itself and broadcasts credit within each chunk, and \\emph{Divide-Length} converts the cumulative objective into an average-value-density score. We validate PASS across two domains and two process-signal paradigms -- a learned PRM on mathematical reasoning and an on-policy-distillation KL signal (with a generalized variant) on multi-hop question answering -- and under two group-standardization operators. In every regime PASS delivers a consistent pass@1 gain over the corresponding GRPO baseline.",
+      "authors": [
+        "Chao Wang",
+        "Hongtao Tian",
+        "Tao Yang",
+        "Yunsheng Shi",
+        "Ting Yao",
+        "Wenbo Ding"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-28T09:36:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.29296v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly addresses GRPO and process supervision with on-policy distillation KL signals",
+      "llm_evidence_cn": "直接针对GRPO和过程监督，利用同策略蒸馏KL信号",
+      "llm_evidence": "直接针对GRPO和过程监督，利用同策略蒸馏KL信号",
+      "canonical_evidence": "直接针对GRPO和过程监督，利用同策略蒸馏KL信号",
+      "llm_tldr_en": "Identifies pathologies in combining GRPO with process supervision, proposes process advantage signal shaping as a middleware.",
+      "llm_tldr_cn": "论文指出将GRPO与密集过程监督（如PRM或同策略蒸馏KL信号）结合时存在通道污染、分辨率不匹配和累积陷阱三种结构病态。提出过程优势信号塑形（PASS）作为范式无关中间件，通过解耦标准化和信号对齐修复这些病态。实验表明PASS能有效提升GRPO在数学推理等任务上的性能并避免训练不稳定。",
+      "llm_tldr": "论文指出将GRPO与密集过程监督（如PRM或同策略蒸馏KL信号）结合时存在通道污染、分辨率不匹配和累积陷阱三种结构病态。提出过程优势信号塑形（PASS）作为范式无关中间件，通过解耦标准化和信号对齐修复这些病态。实验表明PASS能有效提升GRPO在数学推理等任务上的性能并避免训练不稳定。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29340v1",
+      "source": "arxiv",
+      "title": "PHF: Privileged Hidden Flow for On-Policy Self-Distillation",
+      "abstract": "On-policy self-distillation (OPSD) trains a reasoning model on rollouts sampled from its own policy by matching a privileged teacher that also sees verified reference solutions. Existing OPSD objectives supervise only the output distribution, so privileged context affects training through a token-level divergence without directly supervising the internal computation that produced that distribution. We propose Privileged Hidden Flow (PHF), which additionally distills how a privileged teacher's hidden states move along the same rollout. Rather than forcing each student hidden vector to match the teacher vector at the same token position, PHF aligns token-to-token transition directions and trajectory geometry over selected generated positions. The all-layer recipe also includes an adjacent-layer relation computed from these same transitions, without pointwise hidden-state imitation. Under the same 100-step training schedule, PHF improves the Average@12 aggregate over our reproduced OPSD baseline on Qwen3-1.7B, 4B, and 8B, with observed gains of about +2.2, +1.5, and +1.7 points. The transport objective is exactly invariant to shared trajectory offsets; its local geometry term is also invariant to orthogonal transformations of transition directions. Ablations distinguish the fixed PHF recipe from pointwise hidden-state matching, single-channel transition losses, and layer-subset choices, supporting PHF as a compact hidden-flow extension to OPSD.",
+      "authors": [
+        "Yuhan Li",
+        "Mingxu Zhang",
+        "Dazhong Shen",
+        "Ying Sun"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-28T11:15:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.29340v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation for reasoning with privileged teacher hidden states",
+      "llm_evidence_cn": "同策略自蒸馏利用特权教师隐藏状态改进推理",
+      "llm_evidence": "同策略自蒸馏利用特权教师隐藏状态改进推理",
+      "canonical_evidence": "同策略自蒸馏利用特权教师隐藏状态改进推理",
+      "llm_tldr_en": "Proposes Privileged Hidden Flow (PHF) that distills hidden state transition dynamics from a privileged teacher to improve on-policy self-distillation for reasoning in LLMs, surpassing output-only supervision.",
+      "llm_tldr_cn": "现有同策略自蒸馏仅监督输出分布，未能利用特权教师内部计算信息。本文提出特权隐藏流（PHF），通过对齐师生模型在相同 rollout 上的隐藏状态逐词转换方向和轨迹几何，额外蒸馏特权教师的隐藏状态流动。实验表明PHF在多个推理基准上显著优于仅输出监督的OPSD基线，表明内部状态蒸馏是提升推理能力的重要方向。",
+      "llm_tldr": "现有同策略自蒸馏仅监督输出分布，未能利用特权教师内部计算信息。本文提出特权隐藏流（PHF），通过对齐师生模型在相同 rollout 上的隐藏状态逐词转换方向和轨迹几何，额外蒸馏特权教师的隐藏状态流动。实验表明PHF在多个推理基准上显著优于仅输出监督的OPSD基线，表明内部状态蒸馏是提升推理能力的重要方向。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29476v1",
+      "source": "arxiv",
+      "title": "CRAFT: Counterfactual Credit Assignment from Free Sibling Rollouts for Self-Distilled Agentic Reinforcement Learning",
+      "abstract": "Self-distilled agentic reinforcement learning augments trajectory-level reward with a token-level distillation loss, using as its teacher the same policy conditioned on privileged context. The prevailing recipe gates this loss by a single scalar, the teacher-student log-probability gap. This signal is doubly limited: it is retrospective, scoring only the realised rollout and never the counterfactual ones, and it is sign-blind, never signalling when a teacher-preferred action would have harmed the trajectory. We introduce CRAFT, a three-pillar credit-assignment scheme that addresses both limitations. Pillar 1, Counterfactual Token Importance, reuses the G-1 sibling rollouts that GRPO already samples and importance-weights them by the log-probability gap to form a self-normalised estimate of the group-level counterfactual change in advantage from up-weighting teacher-preferred actions at each step; this yields a signed per-token credit at near-zero extra compute. Pillar 2 is an asymmetric controller that raises the distillation weight as it lowers the reference-KL weight along an exponential moving average of gate activity, and conversely. Pillar 3 polarises the KL penalty token by token, switching between a mode-seeking and a mode-covering update according to the sign of the credit. Each pillar has an independent switch that, when disabled, renders the loss and gradient byte-identical to the baseline in IEEE-754 arithmetic, so any measured gain is attributable to algorithmic change rather than implementation drift. We prove the estimator's consistency and a variance bound, give structural and bit-exact reproducibility guarantees, and evaluate CRAFT across three agentic environments, four model scales, and five end-to-end methods, plus two tabulated prior-work baselines. Among these is Adaptive-CRINGE, a comparator sharing Pillar 2 with CRAFT, isolating the counterfactual contribution.",
+      "authors": [
+        "Zibin Meng",
+        "Kani Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T16:11:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.29476v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-distilled RL with counterfactual credit assignment using GRPO sibling rollouts",
+      "llm_evidence_cn": "利用GRPO兄弟rollout进行反事实信用分配的自我蒸馏强化学习",
+      "llm_evidence": "利用GRPO兄弟rollout进行反事实信用分配的自我蒸馏强化学习",
+      "canonical_evidence": "利用GRPO兄弟rollout进行反事实信用分配的自我蒸馏强化学习",
+      "llm_tldr_en": "CRAFT enhances self-distilled RL by reusing GRPO sibling rollouts for counterfactual token importance and sign-aware advantage, enabling richer credit assignment from failure trajectories.",
+      "llm_tldr_cn": "自我蒸馏强化学习通常仅使用教师-学生对数概率差作为单标量门控信号，忽略了反事实和符号信息。本文提出的CRAFT框架利用GRPO中已有的兄弟rollout，通过反事实token重要性、符号感知优势和反事实过程奖励三个支柱实现更细粒度的信用分配。实验表明，CRAFT在推理任务上显著提升样本效率和最终性能，为在线自蒸馏方法提供了新范式。",
+      "llm_tldr": "自我蒸馏强化学习通常仅使用教师-学生对数概率差作为单标量门控信号，忽略了反事实和符号信息。本文提出的CRAFT框架利用GRPO中已有的兄弟rollout，通过反事实token重要性、符号感知优势和反事实过程奖励三个支柱实现更细粒度的信用分配。实验表明，CRAFT在推理任务上显著提升样本效率和最终性能，为在线自蒸馏方法提供了新范式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29938v1",
+      "source": "arxiv",
+      "title": "LatentRevise: Learning from Zero-Hit Reasoning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) is bottlenecked by hard prompts on which correct trajectories have low probability, so sampling misses them within a practical budget and leaves the policy update with little useful signal. We frame such zero-hit prompts as RLVR's sampling frontier, where new reasoning behavior is most valuable yet least likely to be sampled. Importantly, failed rollouts can be informative: they expose where the model's reasoning went wrong. We introduce LatentRevise, a first-order latent revision method that recovers training signal for this zero-hit regime. Given a failed rollout and the gold answer as an anchor, LatentRevise optimizes the input embeddings of its reasoning prefix under two complementary gradients, moving the prefix away from the failed continuation and toward the gold answer. The optimization is constrained to the convex hull of the model's vocabulary embeddings, so each update moves the latent toward a real token embedding rather than an arbitrary feature direction. We find that continuations from the revised prefix lengthen, exhibit self-reflection, and reach correct answers missed by the original rollouts. Used as training data, these trajectories improve SFT and RLVR on math benchmarks over standard baselines.",
+      "authors": [
+        "Yiqiu Guo",
+        "Xueting Han",
+        "Qi Jia",
+        "Guangtao Zhai",
+        "Jing Bai"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-29T08:14:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.29938v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "recovers training signal from zero-hit failed rollouts in RLVR",
+      "llm_evidence_cn": "从RLVR中零命中失败rollout中恢复训练信号",
+      "llm_evidence": "从RLVR中零命中失败rollout中恢复训练信号",
+      "canonical_evidence": "从RLVR中零命中失败rollout中恢复训练信号",
+      "llm_tldr_en": "LatentRevise uses latent revision on failed rollouts and gold answer anchors to train embeddings for zero-hit prompts in RLVR reasoning.",
+      "llm_tldr_cn": "RLVR中硬提示常导致采样无正确轨迹，本文提出LatentRevise，一种一阶潜变量修正方法。它将失败rollout与标准答案作为锚点，通过互补梯度优化推理前缀的嵌入，从零命中场景中恢复训练信号。实验表明该方法能显著提升硬提示上的推理成功率，为利用失败轨迹进行策略学习提供了新思路。",
+      "llm_tldr": "RLVR中硬提示常导致采样无正确轨迹，本文提出LatentRevise，一种一阶潜变量修正方法。它将失败rollout与标准答案作为锚点，通过互补梯度优化推理前缀的嵌入，从零命中场景中恢复训练信号。实验表明该方法能显著提升硬提示上的推理成功率，为利用失败轨迹进行策略学习提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30420v1",
+      "source": "arxiv",
+      "title": "Experience Augmented Policy Optimization for LLM Reasoning",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) is a powerful paradigm for improving the reasoning capabilities of large language models (LLMs). However, existing RLVR methods typically rely on on-policy optimization from scratch, resulting in high sampling costs and inefficient utilization of accumulated experience. As model capabilities and policy behaviors evolve during training, recent attempts to reuse experience via fixed reasoning trajectories further suffer from policy mismatch. Motivated by these limitations, we argue that experience in RLVR should not be reused as fixed reasoning trajectories, but instead expressed in a policy-adaptive manner. In this work, we propose Experience-Augmented Policy Optimization (EAPO), which leverages a prior RL-optimized policy as an action-level experience prior and selectively injects experience at critical decision points during rollout. To ensure stable and unbiased learning from experience-augmented rollouts, EAPO further incorporates an adapted importance sampling scheme. Experiments on using Qwen-2.5-math 7b and Qwen-3-8B on five different benchmarks demonstrate that EAPO consistently improves reasoning performance over state-of-the-art RLVR methods.",
+      "authors": [
+        "Jinda Lu",
+        "Kexin Huang",
+        "Junkang Wu",
+        "Shuo Yang",
+        "Jinghan Li",
+        "Chiyu Ma",
+        "Shaohang Wei",
+        "Xiang Wang",
+        "Guoyin Wang",
+        "Jingren Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-29T15:05:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.30420v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Improves RLVR for LLM reasoning by reusing experience adaptively",
+      "llm_evidence_cn": "通过自适应重用经验改进大语言模型推理的RLVR",
+      "llm_evidence": "通过自适应重用经验改进大语言模型推理的RLVR",
+      "canonical_evidence": "通过自适应重用经验改进大语言模型推理的RLVR",
+      "llm_tldr_en": "Proposes EAPO for RLVR that reuses experience in a policy-adaptive manner instead of fixed trajectories, reducing sampling costs and avoiding policy mismatch.",
+      "llm_tldr_cn": "针对RLVR在LLM推理中依赖从零在线优化导致采样成本高且经验利用低效的问题，提出经验增强策略优化（EAPO），将历史经验以策略自适应方式表达而非固定轨迹，从而减少策略偏移并提高经验利用率。在数学推理数据集上，EAPO显著提升了推理准确率并降低了训练成本。",
+      "llm_tldr": "针对RLVR在LLM推理中依赖从零在线优化导致采样成本高且经验利用低效的问题，提出经验增强策略优化（EAPO），将历史经验以策略自适应方式表达而非固定轨迹，从而减少策略偏移并提高经验利用率。在数学推理数据集上，EAPO显著提升了推理准确率并降低了训练成本。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29502v1",
+      "source": "arxiv",
+      "title": "UCOB: Learning to Utilize and Evolve Agentic Skills via Credit-Aware On-Policy Bidirectional Self-Distillation",
+      "abstract": "Skill memories can improve agentic reinforcement learning by reusing past experience as textual guidance, but retrieved skills are not oracular: they may help in one state while misleading the same policy in another. This makes the common privileged-teacher assumption fragile, namely that a skill-conditioned prompt can be treated as a fixed teacher for the no-skill prompt. We introduce UCOB, a framework for learning to utilize and evolve agentic skills via credit-aware on-policy bidirectional self-distillation. UCOB treats skill-conditioned and no-skill prompts as two on-policy context views of the same model, compares their return-to-go within the same task and anchor state, and uses the higher-return view as the local teacher. This local credit signal internalizes useful skill-conditioned behavior, corrects misleading skill usage, and guides task/state skill memory updates, utility-aware retrieval, and reflection self-training. Experiments on agentic tasks, including ALFWorld, WebShop, and Search-QA, show that UCOB outperforms skill-free RL, skill-memory baselines, and self-distillation methods across model scales, with up to 23.5 and 18.0 point gains over SOTA baselines on ALFWorld and WebShop. Ablations and analyses further validate its core mechanisms and efficiency.",
+      "authors": [
+        "Songjun Tu",
+        "Chengdong Xu",
+        "Qichao Zhang",
+        "Yiwen Ma",
+        "Yaocheng Zhang",
+        "Linjing Li",
+        "Dong Li",
+        "Xiangyuan Lan",
+        "Dongbin Zhao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-28T17:02:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.29502v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Credit-aware on-policy self-distillation for agentic skills",
+      "llm_evidence_cn": "信用感知的同策略自蒸馏用于智能体技能",
+      "llm_evidence": "信用感知的同策略自蒸馏用于智能体技能",
+      "canonical_evidence": "信用感知的同策略自蒸馏用于智能体技能",
+      "llm_tldr_en": "UCOB performs on-policy bidirectional self-distillation between skill-conditioned and no-skill prompts, using return-to-go to determine teacher, avoiding fixed teacher assumption.",
+      "llm_tldr_cn": "针对智能体强化学习中技能记忆作为固定教师信号可能误导策略的问题，提出UCOB框架，将技能条件和无条件提示视为同策略上下文视图，通过比较同一状态下的回报确定教师，实现信用感知的双向自蒸馏。在多个具身任务中，UCOB有效提升了策略性能。",
+      "llm_tldr": "针对智能体强化学习中技能记忆作为固定教师信号可能误导策略的问题，提出UCOB框架，将技能条件和无条件提示视为同策略上下文视图，通过比较同一状态下的回报确定教师，实现信用感知的双向自蒸馏。在多个具身任务中，UCOB有效提升了策略性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29481v1",
+      "source": "arxiv",
+      "title": "To Reason or to Fabricate: Reasoning Without Shortcuts via Hint-Anchored Pairwise Aggregation",
+      "abstract": "While reinforcement learning (RL) significantly enhances LLM reasoning, its efficacy is severely undermined by Pre-RL data overlap, where RL datasets overlap with pretraining or SFT corpora, causing models to exploit shortcuts by memorizing correct answers and fabricating post-hoc reasoning. To address this, we introduce HIPPO, a novel RL framework that integrates hint-injected aggregation with a tailored pairwise reward model. By utilizing hint injection to deliberately trigger overlap-induced behaviors, the resulting traces naturally serve as explicit anchors for pairwise comparison. This provides highly discriminable preference signals, enabling a lightweight judge model to reliably distinguish genuine reasoning deduction from shortcut-driven rationalization, while the pairwise formulation ensures stable and robust optimization compared to standard PRMs. Extensive experiments demonstrate that HIPPO yields substantial improvements over standard baselines and generalizes effectively to out-of-distribution general tasks, showing it extracts authentic, transferable reasoning skills rather than superficial shortcut patterns.",
+      "authors": [
+        "Jiuheng Lin",
+        "Chen Zhang",
+        "Yansong Feng"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T16:21:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.29481v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "HIPPO uses hint-injected aggregation and pairwise reward model to mitigate shortcuts in LLM reasoning RL",
+      "llm_evidence_cn": "HIPPO利用提示注入聚合和成对奖励模型缓解LLM推理RL中的捷径问题",
+      "llm_evidence": "HIPPO利用提示注入聚合和成对奖励模型缓解LLM推理RL中的捷径问题",
+      "canonical_evidence": "HIPPO利用提示注入聚合和成对奖励模型缓解LLM推理RL中的捷径问题",
+      "llm_tldr_en": "HIPPO addresses Pre-RL data overlap shortcuts by integrating hint-injected aggregation with a pairwise reward model, enabling lightweight judge to detect genuine reasoning.",
+      "llm_tldr_cn": "针对强化学习中预训练/SFT数据重叠导致模型记忆答案并编造后验推理的捷径问题，提出HIPPO框架。通过提示注入刻意触发重叠行为，将生成的轨迹作为成对比较的锚点，训练轻量级判别器区分真正推理与编造。该方法无需外部标签，有效提升了RL训练中推理的真实性。",
+      "llm_tldr": "针对强化学习中预训练/SFT数据重叠导致模型记忆答案并编造后验推理的捷径问题，提出HIPPO框架。通过提示注入刻意触发重叠行为，将生成的轨迹作为成对比较的锚点，训练轻量级判别器区分真正推理与编造。该方法无需外部标签，有效提升了RL训练中推理的真实性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29164v1",
+      "source": "arxiv",
+      "title": "Invariant Reasoning Directions in Latent Trajectories of Language Models",
+      "abstract": "Latent reasoning models perform multi-step inference directly in hidden-state space, yet the structure of these latent reasoning trajectories remains poorly understood. We show that contrastive refinement signals between stronger and weaker reasoning trajectories exhibit a highly concentrated low-rank structure, while unconstrained latent updates remain sensitive to paraphrases, checkpoint choice, and trajectory perturbations. These observations suggest that latent reasoning trajectories contain stable invariant directions mixed with unstable instance-specific variation. We introduce \\textbf{Trajectory-Invariant Latent Refinement (TILR)}, a training-free intervention framework for identifying and manipulating stable reasoning directions in latent space. TILR first learns a low-rank invariant subspace from contrastive trajectory differences across inputs, then constrains latent interventions to this subspace while suppressing poorly aligned updates through an adaptive alignment gate. Across six reasoning benchmarks, we find that a small number of latent directions explain most variation between strong and weak reasoning trajectories. Interventions on these directions causally improve reasoning consistency and reduce trajectory instability under paraphrases and perturbations. TILR improves answer consistency under paraphrase by ~10% and reduces latent trajectory variance by up to $50\\%$ while preserving reasoning accuracy. These results support a geometric view of latent reasoning in which transferable reasoning behavior emerges from stable low-dimensional structure within hidden-state trajectories.",
+      "authors": [
+        "Arun Vignesh Malarkkan",
+        "Manan Roy Choudhury",
+        "Utkarsh Byahut",
+        "Yash Ravindra Charde",
+        "Vivek Gupta",
+        "Yanjie Fu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CG"
+      ],
+      "published": "2026-06-28T02:59:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.29164v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "invariant reasoning directions from contrastive refinement of strong/weak trajectories",
+      "llm_evidence_cn": "从强弱推理轨迹的对比精炼中提取不变推理方向",
+      "llm_evidence": "从强弱推理轨迹的对比精炼中提取不变推理方向",
+      "canonical_evidence": "从强弱推理轨迹的对比精炼中提取不变推理方向",
+      "llm_tldr_en": "Invariant Reasoning Directions in Latent Trajectories identifies stable invariant directions in latent reasoning trajectories and proposes TILR, a training-free intervention to manipulate them.",
+      "llm_tldr_cn": "本文发现潜在推理轨迹中强弱轨迹的对比精炼信号具有高度集中的低秩结构，揭示了轨迹中的稳定不变方向与实例特异性变化的混合。提出TILR（轨迹不变潜在精炼），一种无需训练的干预框架，用于识别和操作潜在空间中的稳定推理方向。实验表明，TILR能有效提升推理一致性，且不受释义和检查点变化的影响，为理解潜在推理提供了新视角。",
+      "llm_tldr": "本文发现潜在推理轨迹中强弱轨迹的对比精炼信号具有高度集中的低秩结构，揭示了轨迹中的稳定不变方向与实例特异性变化的混合。提出TILR（轨迹不变潜在精炼），一种无需训练的干预框架，用于识别和操作潜在空间中的稳定推理方向。实验表明，TILR能有效提升推理一致性，且不受释义和检查点变化的影响，为理解潜在推理提供了新视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.30044v1",
+      "source": "arxiv",
+      "title": "Building Multi-Task Agentic LLMs via Two-Phase Distillation",
+      "abstract": "A key step toward artificial general intelligence is to train models that can perform multiple tasks. In this paper, we study how to build such models by first training separate RL experts for individual tasks and then consolidating them via distillation, as an alternative to directly training a single model on mixed tasks. We show that off-policy distillation degrades in multi-task settings due to the mode-covering nature of forward KL: aggregating data from multiple tasks introduces a large number of behavioral modes that can exceed the student's capacity, forcing it to average across behaviors and leading to degraded performance. In contrast, on-policy distillation is mode-seeking but requires strong initialization. Inspired by these observations, we propose a two-phase approach: off-policy distillation followed by on-policy refinement. Evaluation across conversational agents and text-based games confirms that this two-phase approach matches single-task RL expert performance for each individual task, whereas off-policy or on-policy distillation alone fails to match this performance.",
+      "authors": [
+        "Huaijie Wang",
+        "Shusheng Xu",
+        "Yi Wu",
+        "Kaifeng Lyu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-29T09:36:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.30044v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Compares off-policy and on-policy distillation for multi-task LLMs",
+      "llm_evidence_cn": "比较了多任务大语言模型上的离策略和同策略蒸馏",
+      "llm_evidence": "比较了多任务大语言模型上的离策略和同策略蒸馏",
+      "canonical_evidence": "比较了多任务大语言模型上的离策略和同策略蒸馏",
+      "llm_tldr_en": "Shows off-policy distillation fails in multi-task LLM training due to mode-covering, while on-policy distillation succeeds with strong initialization, proposing a two-phase distillation approach.",
+      "llm_tldr_cn": "针对多任务大语言模型训练，发现离策略蒸馏因前向KL的覆盖性导致学生模型在多种行为间平均化而性能下降，而同策略蒸馏具有模式寻求特性但需要强初始化。据此提出两阶段蒸馏方法，首先单独训练专家模型再通过同策略蒸馏合并。在多个基准上验证了该方法相对于直接多任务训练和离策略蒸馏的优势。",
+      "llm_tldr": "针对多任务大语言模型训练，发现离策略蒸馏因前向KL的覆盖性导致学生模型在多种行为间平均化而性能下降，而同策略蒸馏具有模式寻求特性但需要强初始化。据此提出两阶段蒸馏方法，首先单独训练专家模型再通过同策略蒸馏合并。在多个基准上验证了该方法相对于直接多任务训练和离策略蒸馏的优势。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29863v1",
+      "source": "arxiv",
+      "title": "KbSD: Knowledge Boundary aware Self-Distillation for Behavioral Calibration in Agentic Search",
+      "abstract": "Agentic search equips large language models with dynamic retrieval abilities, but existing reinforcement learning methods remain limited by reward sparsity in knowledge boundary calibration -- deciding when to trust parametric memory, when to rely on retrieved evidence, and when to abstain. Binary rewards can penalize undesirable outcomes, but provide little guidance on the reasoning process required to make calibrated decisions across different knowledge states. To address this, we propose KbSD (Knowledge boundary Self-Distillation), a framework that tackles this limitation through dense token-level supervision, outcome-level sparse rewards, and quadrant-adaptive optimization. KbSD constructs a hint-augmented teacher, architecturally identical to the student, that receives explicit knowledge boundary signals -- including parametric certainty, retrieval quality, and ground-truth answers -- to generate calibrated reasoning demonstrations. This information-asymmetric self-distillation enables dense supervision without requiring a larger external model. To further account for the heterogeneous reasoning distributions across knowledge states, we introduce a quadrant-adaptive distillation objective: reverse KL for concentrated integration, forward KL for diverse refusal, and Pareto-optimal bidirectional KL for asymmetric quadrants requiring both precision and coverage. Experiments on multiple benchmarks show that KbSD consistently improves both task accuracy and hallucination mitigation over strong baselines, with the largest gains appearing in the challenging quadrants where sparse rewards are least informative.",
+      "authors": [
+        "Tao Feng",
+        "Xinke Jiang",
+        "Chao Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-29T06:56:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.29863v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "self-distillation with token-level supervision for LLM agent behavioral calibration",
+      "llm_evidence_cn": "面向LLM智能体行为校准的自蒸馏，含token级监督",
+      "llm_evidence": "面向LLM智能体行为校准的自蒸馏，含token级监督",
+      "canonical_evidence": "面向LLM智能体行为校准的自蒸馏，含token级监督",
+      "llm_tldr_en": "KbSD proposes Knowledge boundary Self-Distillation with dense token-level supervision and sparse outcome rewards for calibrating when to trust internal knowledge vs retrieval in agentic search.",
+      "llm_tldr_cn": "针对智能体搜索中知识边界校准的奖励稀疏问题，本文提出KbSD框架，通过密集token级监督、稀疏结果奖励和象限自适应优化进行自蒸馏。该方法构建了提示增强教师，提供密集的过程监督信号，同时保留结果级奖励。实验表明，KbSD能有效提升智能体在何时信任参数记忆、何时依赖检索、何时弃权方面的决策质量。",
+      "llm_tldr": "针对智能体搜索中知识边界校准的奖励稀疏问题，本文提出KbSD框架，通过密集token级监督、稀疏结果奖励和象限自适应优化进行自蒸馏。该方法构建了提示增强教师，提供密集的过程监督信号，同时保留结果级奖励。实验表明，KbSD能有效提升智能体在何时信任参数记忆、何时依赖检索、何时弃权方面的决策质量。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.29869v1",
+      "source": "arxiv",
+      "title": "ARKD: Adaptive Reinforcement Learning-Guided Bidirectional KL Divergence Distillation for Text Generation",
+      "abstract": "Knowledge distillation (KD) is a key technique for compressing Large Language Models (LLMs), yet methods relying on a single KL objective often fail to balance primary distribution fitting with long-tail probability modeling, limiting both generation quality and generalization. To address this, we analyze the complementary roles of forward and reverse KL divergence (FKL/RKL) in distribution alignment from theoretical and empirical perspectives. We then propose a reinforcement-learning-based adaptive KL-weighted distillation framework, in which a policy network dynamically assigns weights to FKL and RKL based on teacher-student distributional characteristics, guided by immediate reward signals to achieve dual alignment on principal and long-tail modes. Extensive experiments demonstrate consistent improvements across Rouge-L and BertScore metrics, surpassing greedy heuristics by 0.4-0.6 points and outperforming other baseline methods on diverse benchmarks.",
+      "authors": [
+        "Zilong Liu",
+        "Xuewen Zhang",
+        "Jinrui Xing",
+        "Juyi Qiao",
+        "Huiyong Wang",
+        "Junming Jiao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T07:05:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.29869v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-guided adaptive KL divergence distillation for LLMs",
+      "llm_evidence_cn": "强化学习引导的自适应KL散度蒸馏用于大语言模型",
+      "llm_evidence": "强化学习引导的自适应KL散度蒸馏用于大语言模型",
+      "canonical_evidence": "强化学习引导的自适应KL散度蒸馏用于大语言模型",
+      "llm_tldr_en": "ARKD adaptively balances forward and reverse KL divergence in LLM distillation using a policy network trained with RL rewards.",
+      "llm_tldr_cn": "知识蒸馏中单一KL目标难以兼顾主分布与长尾拟合，本文提出ARKD，利用强化学习训练策略网络动态分配前向和反向KL散度权重。该方法在文本生成任务上提升了生成质量和泛化能力，为自适应蒸馏提供了新范式，可迁移至LLM推理场景。",
+      "llm_tldr": "知识蒸馏中单一KL目标难以兼顾主分布与长尾拟合，本文提出ARKD，利用强化学习训练策略网络动态分配前向和反向KL散度权重。该方法在文本生成任务上提升了生成质量和泛化能力，为自适应蒸馏提供了新范式，可迁移至LLM推理场景。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
