@@ -1,0 +1,175 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T22:08:46.102582+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.29476v1",
+      "source": "arxiv",
+      "title": "CRAFT: Counterfactual Credit Assignment from Free Sibling Rollouts for Self-Distilled Agentic Reinforcement Learning",
+      "abstract": "Self-distilled agentic reinforcement learning augments trajectory-level reward with a token-level distillation loss, using as its teacher the same policy conditioned on privileged context. The prevailing recipe gates this loss by a single scalar, the teacher-student log-probability gap. This signal is doubly limited: it is retrospective, scoring only the realised rollout and never the counterfactual ones, and it is sign-blind, never signalling when a teacher-preferred action would have harmed the trajectory. We introduce CRAFT, a three-pillar credit-assignment scheme that addresses both limitations. Pillar 1, Counterfactual Token Importance, reuses the G-1 sibling rollouts that GRPO already samples and importance-weights them by the log-probability gap to form a self-normalised estimate of the group-level counterfactual change in advantage from up-weighting teacher-preferred actions at each step; this yields a signed per-token credit at near-zero extra compute. Pillar 2 is an asymmetric controller that raises the distillation weight as it lowers the reference-KL weight along an exponential moving average of gate activity, and conversely. Pillar 3 polarises the KL penalty token by token, switching between a mode-seeking and a mode-covering update according to the sign of the credit. Each pillar has an independent switch that, when disabled, renders the loss and gradient byte-identical to the baseline in IEEE-754 arithmetic, so any measured gain is attributable to algorithmic change rather than implementation drift. We prove the estimator's consistency and a variance bound, give structural and bit-exact reproducibility guarantees, and evaluate CRAFT across three agentic environments, four model scales, and five end-to-end methods, plus two tabulated prior-work baselines. Among these is Adaptive-CRINGE, a comparator sharing Pillar 2 with CRAFT, isolating the counterfactual contribution.",
+      "authors": [
+        "Zibin Meng",
+        "Kani Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T16:11:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.29476v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-distilled RL with counterfactual credit from sibling rollouts",
+      "llm_evidence_cn": "利用兄弟轨迹的反事实信用分配进行自蒸馏强化学习",
+      "llm_evidence": "利用兄弟轨迹的反事实信用分配进行自蒸馏强化学习",
+      "canonical_evidence": "利用兄弟轨迹的反事实信用分配进行自蒸馏强化学习",
+      "llm_tldr_en": "CRAFT improves self-distilled agentic RL by reusing sibling rollouts for counterfactual credit assignment, addressing the retrospective and sign-blind limitations of the prevailing log-probability gap signal.",
+      "llm_tldr_cn": "该论文提出CRAFT，一种三支柱信用分配方案，通过重用GRPO已经采样的兄弟轨迹进行反事实信用分配，克服了现有自蒸馏RL中信号仅为回顾性且无符号限制的缺点。实验表明，CRAFT显著提升了自蒸馏智能体的训练效果和信用分配精度。",
+      "llm_tldr": "该论文提出CRAFT，一种三支柱信用分配方案，通过重用GRPO已经采样的兄弟轨迹进行反事实信用分配，克服了现有自蒸馏RL中信号仅为回顾性且无符号限制的缺点。实验表明，CRAFT显著提升了自蒸馏智能体的训练效果和信用分配精度。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31413v1",
+      "source": "arxiv",
+      "title": "Learning to Select, Not Relearn: Hard-Routed Mixtures of Reasoning LoRAs",
+      "abstract": "Composing independently trained LoRA adapters into a single large language model is useful for multi-domain adaptation, especially when the original training data cannot be shared. A common approach is to use MoE-style routing over LoRA experts, but for frozen pretrained adapters, soft weighted combinations can change the unit-scale additive update under which each LoRA module was originally trained. We propose \\textbf{Hard-Routed MoR-LoRA}, a two-stage framework for composing frozen reasoning LoRA experts through unit-scale hard selection. First, domain-specific LoRA adapters are trained independently using reinforcement learning from verifiable feedback to obtain reasoning experts. Then, all experts are frozen, reasoning traces are distilled from them, and only a lightweight shared router together with a small attention LoRA is trained for integration. The router selects exactly one expert per token using hard top-1 routing, while a straight-through estimator enables gradient-based training. Experiments across five benchmarks, multiple model scales, and additional model families show that Hard-Routed MoR-LoRA preserves expert behavior while requiring substantially fewer trainable parameters than soft-routing mixture baselines. Our analysis further shows that normalized soft mixtures often concentrate most routing mass on a single expert, suggesting that hard unit-scale routing provides a simple and efficient abstraction for frozen LoRA expert composition.",
+      "authors": [
+        "Seyed Alireza Molavi",
+        "Zhan Su",
+        "Yan Hu",
+        "Peyman Sheikholharam Mashhadi",
+        "Stefan Byttner",
+        "Prayag Tiwari"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-30T09:40:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.31413v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reinforcement learning from verifiable feedback for reasoning experts",
+      "llm_evidence_cn": "使用可验证反馈的强化学习训练推理专家",
+      "llm_evidence": "使用可验证反馈的强化学习训练推理专家",
+      "canonical_evidence": "使用可验证反馈的强化学习训练推理专家",
+      "llm_tldr_en": "Proposes Hard-Routed MoR-LoRA that trains reasoning LoRAs with RL from verifiable feedback and then distills reasoning traces, enabling compositional reasoning.",
+      "llm_tldr_cn": "本文提出Hard-Routed MoR-LoRA框架，先使用可验证反馈的强化学习独立训练领域专用的推理LoRA适配器，再通过硬路由组合冻结的适配器。实验表明该方法在多个推理任务中优于软路由方法，并保留了各适配器的原始训练特性。",
+      "llm_tldr": "本文提出Hard-Routed MoR-LoRA框架，先使用可验证反馈的强化学习独立训练领域专用的推理LoRA适配器，再通过硬路由组合冻结的适配器。实验表明该方法在多个推理任务中优于软路由方法，并保留了各适配器的原始训练特性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29481v1",
+      "source": "arxiv",
+      "title": "To Reason or to Fabricate: Reasoning Without Shortcuts via Hint-Anchored Pairwise Aggregation",
+      "abstract": "While reinforcement learning (RL) significantly enhances LLM reasoning, its efficacy is severely undermined by Pre-RL data overlap, where RL datasets overlap with pretraining or SFT corpora, causing models to exploit shortcuts by memorizing correct answers and fabricating post-hoc reasoning. To address this, we introduce HIPPO, a novel RL framework that integrates hint-injected aggregation with a tailored pairwise reward model. By utilizing hint injection to deliberately trigger overlap-induced behaviors, the resulting traces naturally serve as explicit anchors for pairwise comparison. This provides highly discriminable preference signals, enabling a lightweight judge model to reliably distinguish genuine reasoning deduction from shortcut-driven rationalization, while the pairwise formulation ensures stable and robust optimization compared to standard PRMs. Extensive experiments demonstrate that HIPPO yields substantial improvements over standard baselines and generalizes effectively to out-of-distribution general tasks, showing it extracts authentic, transferable reasoning skills rather than superficial shortcut patterns.",
+      "authors": [
+        "Jiuheng Lin",
+        "Chen Zhang",
+        "Yansong Feng"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T16:21:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.29481v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hint-injected aggregation RL framework for LLM reasoning with pairwise reward",
+      "llm_evidence_cn": "提示注入聚合强化学习框架，用于大语言模型推理",
+      "llm_evidence": "提示注入聚合强化学习框架，用于大语言模型推理",
+      "canonical_evidence": "提示注入聚合强化学习框架，用于大语言模型推理",
+      "llm_tldr_en": "HIPPO introduces hint-injected aggregation and pairwise reward model to mitigate pre-RL data overlap in LLM reasoning RL.",
+      "llm_tldr_cn": "针对预训练数据重叠导致大语言模型在强化学习中走捷径的问题，本文提出HIPPO框架，通过提示注入聚合和成对奖励模型，提供可区分的偏好信号，从而区分真实推理与事后编造。实验表明该方法能有效提升推理的真实性。",
+      "llm_tldr": "针对预训练数据重叠导致大语言模型在强化学习中走捷径的问题，本文提出HIPPO框架，通过提示注入聚合和成对奖励模型，提供可区分的偏好信号，从而区分真实推理与事后编造。实验表明该方法能有效提升推理的真实性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.30851v1",
+      "source": "arxiv",
+      "title": "Test-Time Verification for Text-to-SQL via Outcome Reward Models",
+      "abstract": "Improving the reliability of large language models (LLMs) at inference time is a central challenge in structured reasoning tasks such as Text-to-SQL. Common test-time inference strategies, including Best-of-N sampling and Majority Voting, rely on heuristic signals such as execution success or output frequency, which provide limited semantic discrimination across candidate outputs. In this work, we study Outcome Reward Models (ORMs) as learned semantic scoring functions for test-time verification in Text-to-SQL. While ORMs have been previously explored for test-time scaling and alignment, their application to structured query generation remains underexplored. We introduce GradeSQL, a scalable framework for training task-specific ORMs via automated candidate generation and execution-based labeling, enabling verifier training without manual annotation. We integrate ORMs into a verification-driven Best-of-N pipeline and evaluate our approach on the BIRD and Spider benchmarks across multiple open-source LLM families. ORM-based selection consistently outperforms execution-based Best-of-N and Majority Voting, with gains of up to +4.33% on BIRD and +2.10% on Spider. We further show that ORMs scale effectively with larger candidate sets and yield stronger improvements on complex queries. Overall, our results demonstrate that ORM-based verification provides a simple, effective, and scalable alternative to heuristic test-time selection strategies for Text-to-SQL. Code datasets and models are publicly available.",
+      "authors": [
+        "Mattia Tritto",
+        "Giuseppe Farano",
+        "Dario Di Palma",
+        "Gaetano Rossiello",
+        "Fedelucio Narducci",
+        "Dharmashankar Subramanian",
+        "Tommaso Di Noia"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.DB"
+      ],
+      "published": "2026-06-29T19:31:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.30851v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses outcome reward models as verifiable rewards for structured reasoning tasks",
+      "llm_evidence_cn": "使用结果奖励模型作为可验证奖励用于结构化推理任务",
+      "llm_evidence": "使用结果奖励模型作为可验证奖励用于结构化推理任务",
+      "canonical_evidence": "使用结果奖励模型作为可验证奖励用于结构化推理任务",
+      "llm_tldr_en": "Introduces GradeSQL, using Outcome Reward Models (ORMs) for test-time verification in Text-to-SQL, improving semantic discrimination over heuristics.",
+      "llm_tldr_cn": "本文针对Text-to-SQL推理任务中测试时验证的可靠性问题——常见策略如Best-of-N和多数投票依赖执行成功或输出频率等启发式信号，语义区分能力有限——研究将结果奖励模型（ORM）作为学习到的语义评分函数用于结构化查询生成。提出了GradeSQL框架，通过自动化候选生成训练任务特定的ORM，在多个数据集上显著提升了SQL生成的准确性和可靠性，展示了可验证奖励在LLM推理中的有效性。",
+      "llm_tldr": "本文针对Text-to-SQL推理任务中测试时验证的可靠性问题——常见策略如Best-of-N和多数投票依赖执行成功或输出频率等启发式信号，语义区分能力有限——研究将结果奖励模型（ORM）作为学习到的语义评分函数用于结构化查询生成。提出了GradeSQL框架，通过自动化候选生成训练任务特定的ORM，在多个数据集上显著提升了SQL生成的准确性和可靠性，展示了可验证奖励在LLM推理中的有效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
