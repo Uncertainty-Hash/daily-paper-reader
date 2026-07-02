@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-02",
+  "date": "2026-07-02",
+  "generated_at": "2026-07-02T21:29:10",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/02/2606.31648v1-think-in-english-answer-in-korean-efficient-adaptation-of-multilingual-tool-using-agents",
+      "section": "deep",
+      "title_en": "Think in English, Answer in Korean: Efficient Adaptation of Multilingual Tool-Using Agents",
+      "authors": "Utsav Garg, Sungjin Hong, Jason Jung, Justin Lee, Shaan Desai, Joon Hee Kim, Anirudh Shrinivason, Edmond Wen, Susie Park",
+      "date": "2026-06-30",
+      "pdf": "https://arxiv.org/pdf/2606.31648v1",
+      "score": "8.0",
+      "evidence": "使用可验证奖励的强化学习进行多步工具使用",
+      "tldr": "针对多语言工具使用代理在内存约束下高效适配的需求，提出LuckyStar 111B模型，基于Cohere的Command A模型进行后训练。采用前导条件切换非推理与工具推理行为，结合多语言监督微调、可验证奖励的强化学习、语言一致性奖励和4-bit量化。在数学推理、函数调用和自然语言转SQL任务上提升性能，同时保持韩英指令遵循质量。为后训练多语言模型在受限部署下的可验证代理工作流提供了实用方案和失败模式分析。",
+      "tags": "query:opd",
+      "abstract_en": "We present LuckyStar 111B, a 111B-parameter hybrid reasoning model developed through a collaboration between Cohere and LG CNS for Korean-English enterprise agents under practical memory and serving constraints. The model trains from Cohere's fully post-trained Command A model rather than a new pretraining run, and uses preamble conditioning to switch between concise non-reasoning behavior and longer tool-oriented reasoning. We study four choices for scaling tool-using agents efficiently: multilingual supervised fine-tuning, reinforcement learning with verifiable rewards for multi-step tool-use tasks, language-consistency rewards for Korean user-facing responses, and 4-bit quantization for single-GPU serving. The adapted model improves mathematical reasoning, function calling, and agentic natural-language-to-SQL (NL2SQL) performance while preserving general Korean and English instruction-following quality. These results provide a practical recipe and failure-mode analysis for adapting post-trained multilingual models to verifiable agentic workflows under memory-constrained deployment.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/02/2606.29481v1-to-reason-or-to-fabricate-reasoning-without-shortcuts-via-hint-anchored-pairwise-aggregation",
+      "section": "quick",
+      "title_en": "To Reason or to Fabricate: Reasoning Without Shortcuts via Hint-Anchored Pairwise Aggregation",
+      "authors": "Jiuheng Lin, Chen Zhang, Yansong Feng",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29481v1",
+      "score": "7.0",
+      "evidence": "引入带成对奖励的强化学习框架，提升大语言模型推理并避免捷径",
+      "tldr": "强化学习增强LLM推理时，预训练数据重叠会导致模型走捷径，即记忆答案并编造虚假推理。为解决此问题，提出HIPPO框架，通过提示注入触发重叠行为，将产生的推理链作为成对比较锚点，利用轻量级判别模型提供可辨别的偏好信号。实验表明，HIPPO显著优于标准基线，并有效泛化到分布外任务，使模型提取真实可迁移的推理能力而非表面捷径。",
+      "tags": "query:opd",
+      "abstract_en": "While reinforcement learning (RL) significantly enhances LLM reasoning, its efficacy is severely undermined by Pre-RL data overlap, where RL datasets overlap with pretraining or SFT corpora, causing models to exploit shortcuts by memorizing correct answers and fabricating post-hoc reasoning. To address this, we introduce HIPPO, a novel RL framework that integrates hint-injected aggregation with a tailored pairwise reward model. By utilizing hint injection to deliberately trigger overlap-induced behaviors, the resulting traces naturally serve as explicit anchors for pairwise comparison. This provides highly discriminable preference signals, enabling a lightweight judge model to reliably distinguish genuine reasoning deduction from shortcut-driven rationalization, while the pairwise formulation ensures stable and robust optimization compared to standard PRMs. Extensive experiments demonstrate that HIPPO yields substantial improvements over standard baselines and generalizes effectively to out-of-distribution general tasks, showing it extracts authentic, transferable reasoning skills rather than superficial shortcut patterns.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
