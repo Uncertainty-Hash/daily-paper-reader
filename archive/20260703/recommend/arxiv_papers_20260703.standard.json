@@ -1,0 +1,303 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-03T21:43:47.663825+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.02234v1",
+      "source": "arxiv",
+      "title": "Purified OPSD: On-Policy Self-Distillation Without Losing How to Think",
+      "abstract": "On-policy self-distillation (OPSD) has emerged as a promising paradigm for improving LLM reasoning, where a privileged teacher with access to reference solutions provides token-level supervision on the student's own generated trajectories. However, we find that OPSD consistently fails on long chain-of-thought (long-CoT) reasoning models, yielding at best marginal gains while destabilizing the reflective reasoning capability these models depend on. Through a novel decomposition of the teacher's supervision signal, we identify the root cause: the teacher's supervision is dominated by a reference-induced component that drives rote memorization of reference-specific shortcuts, while the question-conditioned, inference-transferable component is ignored or actively opposed. Based on this diagnosis, we propose a two-step solution. First, we construct a reference-only teacher (the same model conditioned on the reference without the question) to isolate the non-transferable component of the supervision signal; the residual after subtracting this component captures the question-conditioned, inference-transferable correction. Second, we use pointwise mutual information (PMI) as the mechanism to transform this residual into a well-formed PMI target distribution that the student can directly distill from, filtering out the reference-induced shortcut. Experiments on four long-CoT models across two datasets demonstrate consistent improvements over both the base model and standard OPSD, while preserving the models' natural epistemic behavior throughout training.",
+      "authors": [
+        "Zhanming Shen",
+        "Jintao Tong",
+        "Shaotian Yan",
+        "Chen Shen",
+        "Hao Chen",
+        "Wentao Ye",
+        "Xiaomeng Hu",
+        "Rui Miao",
+        "Haobo Wang",
+        "Junbo Zhao",
+        "Gang Chen",
+        "Jieping Ye"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-02T14:33:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.02234v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "On-policy self-distillation for LLM reasoning, identifies failure cause and proposes purified version",
+      "llm_evidence_cn": "同策略自蒸馏用于大语言模型推理，分析失败原因并提出净化版OPSD",
+      "llm_evidence": "同策略自蒸馏用于大语言模型推理，分析失败原因并提出净化版OPSD",
+      "canonical_evidence": "同策略自蒸馏用于大语言模型推理，分析失败原因并提出净化版OPSD",
+      "llm_tldr_en": "Identifies that on-policy self-distillation (OPSD) fails on long-CoT reasoning because teacher reference shortcuts dominate. Proposes Purified OPSD that isolates the transferable component, achieving robust gains.",
+      "llm_tldr_cn": "该文发现同策略自蒸馏（OPSD）在长链思维推理模型中失效，原因是教师监督信号被参考解相关的捷径主导，抑制了可迁移的推理知识。通过分解教师信号，提出Purified OPSD，只保留问题条件化的可迁移成分，在多个推理基准上取得了稳定的性能提升，并保留了模型的反思能力。",
+      "llm_tldr": "该文发现同策略自蒸馏（OPSD）在长链思维推理模型中失效，原因是教师监督信号被参考解相关的捷径主导，抑制了可迁移的推理知识。通过分解教师信号，提出Purified OPSD，只保留问题条件化的可迁移成分，在多个推理基准上取得了稳定的性能提升，并保留了模型的反思能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01763v1",
+      "source": "arxiv",
+      "title": "Denser $\\neq$ Better: Limits of On-Policy Self-Distillation for Continual Post-Training",
+      "abstract": "Continual post-training enables foundation models to acquire new knowledge while preserving existing capabilities. Recent work suggests that on-policy learning can mitigate forgetting, with on-policy self-distillation emerging as a particularly attractive approach. In this work, we revisit this optimistic view through self-distillation policy optimization (SDPO). Our experiments show that SDPO can accelerate in-domain specialization when teacher signals are stable and well aligned, but it struggles to generalize to out-of-distribution scenarios. In continual post-training, SDPO exhibits stronger forgetting and can even collapse, whereas on-policy reinforcement learning methods such as GRPO adapt more conservatively and better preserve prior capabilities. Further analyses reveal that denser self-distillation induces larger drift in both parameter space and response space, and can amplify high-frequency formatting artifacts through a self-reinforcing teacher--student loop. These findings suggest that on-policy data alone is insufficient for continual learning. Dense self-distillation can accelerate specialization when teacher targets are stable and token-level supervision is reliable, but it should not be treated as a default stabilizer for continual post-training. Our code is available at https://github.com/Moenupa/SDPO-CL.",
+      "authors": [
+        "Meng Wang",
+        "Haohan Zhao",
+        "Wenzhuo Liu",
+        "Lu Yang",
+        "Geng Liu",
+        "Haiyang Guo",
+        "Guo-Sen Xie",
+        "Gaofeng Meng",
+        "Hongbin Liu",
+        "Fei Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-02T06:24:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.01763v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly studies on-policy self-distillation and compares with GRPO",
+      "llm_evidence_cn": "直接研究在线自蒸馏并与GRPO对比",
+      "llm_evidence": "直接研究在线自蒸馏并与GRPO对比",
+      "canonical_evidence": "直接研究在线自蒸馏并与GRPO对比",
+      "llm_tldr_en": "This paper reveals limits of on-policy self-distillation (SDPO) in continual post-training, showing it accelerates in-domain specialization but struggles with OOD, while on-policy RL methods like GRPO better preserve generalization.",
+      "llm_tldr_cn": "该论文重新审视了在线自蒸馏（SDPO）在持续后训练中的效果。实验发现，当教师信号稳定且对齐时，SDPO可加速领域内专门化，但在分布外场景中泛化困难，甚至出现遗忘和崩溃。相比之下，在线强化学习方法（如GRPO）更保守地适应并更好地保留现有能力。这项工作对理解在线策略蒸馏在推理模型中的适用性提供了重要警示。",
+      "llm_tldr": "该论文重新审视了在线自蒸馏（SDPO）在持续后训练中的效果。实验发现，当教师信号稳定且对齐时，SDPO可加速领域内专门化，但在分布外场景中泛化困难，甚至出现遗忘和崩溃。相比之下，在线强化学习方法（如GRPO）更保守地适应并更好地保留现有能力。这项工作对理解在线策略蒸馏在推理模型中的适用性提供了重要警示。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02460v1",
+      "source": "arxiv",
+      "title": "Neuron-Aware Data Selection for Annotation-Free LLM Self-Distillation",
+      "abstract": "Post-training large language models (LLMs) without real-world interaction feedback or human-labeled supervision remains challenging, particularly in specialized domains where expert annotations are costly to obtain. Recent annotation-free self-evolution methods address this by using the model's own outputs as supervision signals, constructing a teacher via additional context and aggregating predictions across multiple rollouts through majority voting to produce pseudo-labels. However, these approaches are not without drawbacks: SFT- and GRPO-based variants suffer out-of-domain performance degradation, while reward-based on-policy RL inflates calibration error. In this paper, we propose Neuron On-Policy Self-Distillation (Neuron-OPSD), a data-centric framework for annotation-free self-distillation that leverages internal neuron activations to guide both training-data selection and teacher context construction. The model is then trained via on-policy distillation from the teacher distribution, requiring no ground-truth labels at any stage. Across specialized-domain benchmarks, Neuron-OPSD improves in-domain task performance while preserving cross-domain generalization and mitigating calibration collapse over prior annotation-free baselines. This framework is particularly relevant to settings where online interaction or external supervision is costly or infeasible, and is conceptually distinct from offline RL approaches that rely on logged, reward-labeled trajectories.",
+      "authors": [
+        "Zhuowei Chen",
+        "Xiang Lorraine Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T17:27:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.02460v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation for LLM",
+      "llm_evidence_cn": "大语言模型同策略自蒸馏",
+      "llm_evidence": "大语言模型同策略自蒸馏",
+      "canonical_evidence": "大语言模型同策略自蒸馏",
+      "llm_tldr_en": "Proposes Neuron-OPSD, an annotation-free on-policy self-distillation method that outperforms GRPO variants for LLM post-training.",
+      "llm_tldr_cn": "现有无标注自演化方法如SFT和GRPO存在域外性能下降或校准误差增大问题。本文提出神经元感知数据选择方法Neuron-OPSD，通过同策略自蒸馏实现无标注后训练。该方法在多个基准上提升了模型性能，且避免了下游退化，为LLM自蒸馏提供了高效方案。",
+      "llm_tldr": "现有无标注自演化方法如SFT和GRPO存在域外性能下降或校准误差增大问题。本文提出神经元感知数据选择方法Neuron-OPSD，通过同策略自蒸馏实现无标注后训练。该方法在多个基准上提升了模型性能，且避免了下游退化，为LLM自蒸馏提供了高效方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02502v1",
+      "source": "arxiv",
+      "title": "DemoPSD: Disagreement-Modulated Policy Self-Distillation",
+      "abstract": "On-policy self-distillation (OPSD) has emerged as a practical method for training large language models (LLMs) to reason, where a single model acts as both the teacher and the student with different levels of information access. However, recent studies have found that the teacher's dense token-level supervision, conditioned on privileged information, can lead to overfitting to in-domain patterns, suppress exploration, and hurt cross-domain generalization, while also introducing a more fundamental issue: *privileged information leakage*, where the student encodes answer-dependent shortcuts that are unavailable at test time. We introduce **DemoPSD**, a novel framework that resolves such problems through the idea of *selective adoption of teacher guidance*. Instead of fitting the full teacher distribution, DemoPSD steers the student toward a *reverse-KL barycenter target*, a weighted geometric combination of the teacher and student distributions, that naturally balances learning from the teacher with preserving the student's own reasoning capacity. We measure the difference between their distributions and use such a discrepancy to adaptively control the blending at each token position. We provably show that DemoPSD achieves **(1)** *leakage attenuation*, i.e., effective mitigation of privileged information leakage; and **(2)** *exploration preservation*, i.e., preservation of exploration capacity under dense token-level distillation. Extensive experiments on SciKnowEval across four scientific fields show that DemoPSD outperforms both GRPO and SDPO while maintaining higher training entropy and robustly generalizing to out-of-distribution GPQA benchmarks.",
+      "authors": [
+        "Yunhe Li",
+        "Hao Shi",
+        "Wenhao Liu",
+        "Mengzhe Ruan",
+        "Hanxu Hou",
+        "Zhongxiang Dai",
+        "Shuang Qiu",
+        "Linqi Song"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T17:58:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.02502v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "selective teacher guidance to mitigate overfitting and information leakage in on-policy self-distillation for LLM reasoning",
+      "llm_evidence_cn": "通过选择性教师指导缓解同策略自蒸馏中的过拟合和特权信息泄露",
+      "llm_evidence": "通过选择性教师指导缓解同策略自蒸馏中的过拟合和特权信息泄露",
+      "canonical_evidence": "通过选择性教师指导缓解同策略自蒸馏中的过拟合和特权信息泄露",
+      "llm_tldr_en": "DemoPSD proposes selective adoption of teacher guidance based on disagreement to mitigate overfitting and privileged information leakage in on-policy self-distillation for LLM reasoning.",
+      "llm_tldr_cn": "DemoPSD针对同策略自蒸馏中教师密集token监督导致过拟合和特权信息泄露的问题，提出基于分歧调制的选择性教师指导采纳，从而提升LLM推理的泛化能力，避免模型学得答案相关捷径。",
+      "llm_tldr": "DemoPSD针对同策略自蒸馏中教师密集token监督导致过拟合和特权信息泄露的问题，提出基于分歧调制的选择性教师指导采纳，从而提升LLM推理的泛化能力，避免模型学得答案相关捷径。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.32017v1",
+      "source": "arxiv",
+      "title": "TRIAGE: Role-Typed Credit Assignment for Agentic Reinforcement Learning",
+      "abstract": "Agentic reinforcement learning requires assigning credit to environment-facing actions such as searches, clicks, edits, navigation commands, and object interactions. Standard GRPO uses the final verifier outcome as a uniform advantage over all action tokens. This outcome signal is useful but structurally incomplete: it punishes useful exploration in failed rollouts and reinforces redundant or regressive actions in successful rollouts. We propose TRIAGE, a role-typed credit assignment framework that adds a semantic role axis to outcome credit. A structured judge classifies each segment as decisive progress, useful exploration, no-progress infrastructure, or regression, and a fixed role-conditioned rule maps these labels to bounded segment-level process rewards. This keeps verifier outcomes as the source of optimization direction while correcting the two main blind spots of outcome-only credit. We further show that role-conditioned credit is the optimal segment-level correction expressible from role labels alone -- a projection of the per-segment advantage residual onto the role variable -- so that the fixed role constants reduce advantage estimation error whenever the judge is reliable, and we connect this to lower-variance policy gradients. Across ALFWorld, Search-QA, and WebShop, TRIAGE improves success rates over GRPO for two policy models and outperforms both a scalar judge-derived process reward and an outcome-supervised shared-backbone value baseline. Ablations show that the gain comes from role typing rather than merely adding dense rewards: reliable detection of regression inside successful trajectories is the dominant contributor, while exploration credit provides a consistent secondary gain; on completed ALFWorld and WebShop rollouts, TRIAGE also reduces environment-facing turns by an additional $10.4\\%$ and $14.8\\%$ relative to GRPO.",
+      "authors": [
+        "Yuanda Xu",
+        "Zhengze Zhou",
+        "Hejian Sang",
+        "Xiaomin Li",
+        "Jiaxin Zhang",
+        "Xinchen Du",
+        "Zhipeng Wang",
+        "Alborz Geramifard"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T17:48:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.32017v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "explicitly addresses failure rollouts in GRPO",
+      "llm_evidence_cn": "明确处理GRPO中的失败rollout",
+      "llm_evidence": "明确处理GRPO中的失败rollout",
+      "canonical_evidence": "明确处理GRPO中的失败rollout",
+      "llm_tldr_en": "TRIAGE proposes role-typed credit assignment for agentic RL, improving on GRPO by treating failed rollouts as informative and avoiding punishment of useful exploration.",
+      "llm_tldr_cn": "该论文针对智能体强化学习中GRPO信用分配的不足，提出了角色类型信用分配框架TRIAGE。标准GRPO对失败rollout中的有用探索和成功rollout中的冗余动作处理不当。TRIAGE通过语义角色分类将片段标记为决定性进展、有用探索、无进展基础设施或回归，并映射到局部过程奖励。实验表明该方法更合理利用失败rollout信号，提升学习效率。相关方法可借鉴用于优化推理模型的强化学习训练。",
+      "llm_tldr": "该论文针对智能体强化学习中GRPO信用分配的不足，提出了角色类型信用分配框架TRIAGE。标准GRPO对失败rollout中的有用探索和成功rollout中的冗余动作处理不当。TRIAGE通过语义角色分类将片段标记为决定性进展、有用探索、无进展基础设施或回归，并映射到局部过程奖励。实验表明该方法更合理利用失败rollout信号，提升学习效率。相关方法可借鉴用于优化推理模型的强化学习训练。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02073v1",
+      "source": "arxiv",
+      "title": "Evidence-State Rewards for Long-Context Reasoning",
+      "abstract": "Long-context reasoning requires models to locate, revise, and synthesize evidence distributed across lengthy inputs. Existing long-context RL methods usually reward final answers or static evidence extraction, offering little feedback on how intermediate actions change the model's evidence state. We propose Maven, a reinforcement learning framework with an editable evidence memory. Maven defines an answer-conditioned evidence-state value and rewards action-level state transitions: add actions are credited by marginal gain and hindsight contribution, link actions by evidence synergy, and drop actions by improved answer support after removing misleading evidence. These rewards are assigned to the corresponding action spans in GRPO. Across Llama and Qwen models on LongBench v2, LongReason, and RULER, Maven outperforms outcome-only RL and evidence-identification baselines, producing more sufficient evidence sets and lower distractor retention. Our results show that long-context RL benefits from optimizing stateful evidence navigation rather than one-shot evidence extraction.",
+      "authors": [
+        "Ya Gao",
+        "Pekka Marttinen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-02T12:11:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.02073v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Rewards action-level evidence state transitions within GRPO for long-context reasoning",
+      "llm_evidence_cn": "在GRPO框架内奖励长上下文推理中的证据状态转移",
+      "llm_evidence": "在GRPO框架内奖励长上下文推理中的证据状态转移",
+      "canonical_evidence": "在GRPO框架内奖励长上下文推理中的证据状态转移",
+      "llm_tldr_en": "Maven proposes evidence-state rewards that credit intermediate actions in long-context reasoning, assigned to action spans in GRPO, improving performance on LongBench.",
+      "llm_tldr_cn": "现有长上下文强化学习仅奖励最终答案或静态证据提取，缺乏对中间操作反馈。本文提出Maven，一个带有可编辑证据记忆的强化学习框架，定义了基于答案的证据状态值，并对添加、链接、删除证据等操作进行细粒度奖励分配，并将这些奖励通过GRPO分配给对应动作。在Llama和Qwen模型上的LongBench实验显示，该方法显著提升了长上下文推理能力。",
+      "llm_tldr": "现有长上下文强化学习仅奖励最终答案或静态证据提取，缺乏对中间操作反馈。本文提出Maven，一个带有可编辑证据记忆的强化学习框架，定义了基于答案的证据状态值，并对添加、链接、删除证据等操作进行细粒度奖励分配，并将这些奖励通过GRPO分配给对应动作。在Llama和Qwen模型上的LongBench实验显示，该方法显著提升了长上下文推理能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.01897v1",
+      "source": "arxiv",
+      "title": "Rank-Then-Act: Reward-Free Control from Frame-Order Progress",
+      "abstract": "We introduce Rank-Then-Act (RTA), a framework for learning control policies from expert video demonstrations without environment rewards. RTA trains a Vision-Language Model (VLM) offline as a progress-based ordinal scorer, using a Group Relative Policy Optimization (GRPO) objective over shuffled frame sequences, which forces the model to recover temporal ordering from visual semantics rather than trivial time cues. Importantly, instead of using the scorer directly as a scalar reward model, we propose a correlation-based reward function for reinforcement learning: at each interaction window, we compute the Spearman rank correlation between predicted progress rankings and true temporal indices, yielding a bounded, scale-invariant learning signal. This design decouples reward learning from absolute calibration and enables stable transfer across tasks and environments. We evaluate RTA on discrete control benchmarks (PyBoy: Catrap, Kirby) and continuous control tasks (PointMaze, MetaWorld). RTA consistently matches or outperforms prior video-based reward learning methods and rank-based baselines, while demonstrating strong cross-task reuse of a single pretrained progress scorer. Our results suggest that correlation-structured supervision over video-derived ordinal signals is sufficient for policy learning, offering a scalable alternative to explicit reward design.",
+      "authors": [
+        "Yuriy Maksyuta",
+        "George Bredis",
+        "Ruslan Rakhimov",
+        "Daniil Gavrilov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T08:50:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.01897v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses GRPO objective for training",
+      "llm_evidence_cn": "使用GRPO目标进行训练",
+      "llm_evidence": "使用GRPO目标进行训练",
+      "canonical_evidence": "使用GRPO目标进行训练",
+      "llm_tldr_en": "Proposes RTA using GRPO to train a VLM as progress scorer for reward-free RL control, illustrating GRPO's applicability beyond LLM reasoning.",
+      "llm_tldr_cn": "该论文提出Rank-Then-Act框架，利用组相对策略优化（GRPO）目标在视频帧序列上训练视觉语言模型作为进度评分器，再基于排序相关性构建奖励函数进行强化学习。虽然应用于机器人控制，但展示了GRPO作为通用训练目标的有效性，对LLM推理中的GRPO方法具有参考价值。",
+      "llm_tldr": "该论文提出Rank-Then-Act框架，利用组相对策略优化（GRPO）目标在视频帧序列上训练视觉语言模型作为进度评分器，再基于排序相关性构建奖励函数进行强化学习。虽然应用于机器人控制，但展示了GRPO作为通用训练目标的有效性，对LLM推理中的GRPO方法具有参考价值。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
