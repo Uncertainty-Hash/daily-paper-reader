@@ -1,0 +1,134 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T20:38:01.144782+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.28166v1",
+      "source": "arxiv",
+      "title": "Tandem Reinforcement Learning with Verifiable Rewards",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has significantly improved the reasoning capability of large language models, reaching expert or even superhuman performance in domains such as competition math. However, whether weaker agents and humans can actually harness this capability is far less certain, with RLVR documented to drift reasoning toward idiosyncratic patterns such as poor readability and language mixing. Tandem training is a recently introduced paradigm that targets this compatibility problem: a trained, stronger senior co-generates each rollout with a frozen, weaker junior, and the two are rewarded as a team, so the senior is pushed to reason in ways the junior can follow. Yet this paradigm has so far been demonstrated only in proof-of-concept settings, leaving open whether it scales to the long chains of thought of the modern RLVR pipeline. In this work, we propose Tandem Reinforcement Learning (TRL), which carries the tandem training paradigm into RLVR. In TRL, the senior and a frozen junior alternate stochastically to co-generate the reasoning, the resulting generation is rewarded, and the standard GRPO loss is applied to the senior. Training Qwen3-4B-Instruct on competition math, we find that TRL matches vanilla GRPO on solo reasoning capability while three properties emerge together from the same rollout structure: stronger handoff robustness with the junior, reduced distributional drift from the junior, and a chain-of-thought more legible to the junior. Our results demonstrate a promising route for RLVR with practical payoffs in multi-model communication and human compatibility.",
+      "authors": [
+        "Difan Jiao",
+        "Raghav Singhal",
+        "Robert West",
+        "Ashton Anderson"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-26T15:00:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.28166v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "tandem RL with verifiable rewards for reasoning improvement",
+      "llm_evidence_cn": "使用可验证奖励的串联强化学习提升推理能力",
+      "llm_evidence": "使用可验证奖励的串联强化学习提升推理能力",
+      "canonical_evidence": "使用可验证奖励的串联强化学习提升推理能力",
+      "llm_tldr_en": "Proposes Tandem RL with verifiable rewards, where a senior and junior model co-generate rollouts to improve reasoning compatibility.",
+      "llm_tldr_cn": "本文提出串联强化学习(Tandem RL)框架，利用可验证奖励(RLVR)提升大语言模型推理能力。与标准RLVR不同，该方法让较强的资深模型与冻结的较弱初级模型共同生成轨迹，并作为团队获得奖励，从而迫使资深模型以初级模型可跟随的方式推理。该工作针对RLVR导致的推理风格漂移问题，在数学推理任务上展示了兼容性和性能提升。",
+      "llm_tldr": "本文提出串联强化学习(Tandem RL)框架，利用可验证奖励(RLVR)提升大语言模型推理能力。与标准RLVR不同，该方法让较强的资深模型与冻结的较弱初级模型共同生成轨迹，并作为团队获得奖励，从而迫使资深模型以初级模型可跟随的方式推理。该工作针对RLVR导致的推理风格漂移问题，在数学推理任务上展示了兼容性和性能提升。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29812v1",
+      "source": "arxiv",
+      "title": "Consistency as Inductive Bias: Learning Cross-View Invariance for Robust Multimodal Reasoning",
+      "abstract": "Inductive biases steer learning toward generalizable solutions by encoding task structure. In this work, we identify a crucial missing bias in MLLMs: cross-view consistency, \\textit{i.e.}, semantically invariant views of the same instance should lead to the same answer. Standard reinforcement learning with verifiable rewards (RLVR) objectives do not impose this constraint, but instead assign pointwise rewards to each visual input. Even with data augmentation (DA), transformed views are typically rewarded independently, providing little signal once within-view rewards saturate. We propose \\textbf{ConsistRoll}, a simple but effective method that injects cross-view consistency into RLVR training by reusing the group-sampling mechanism of GRPO. Specifically, ConsistRoll places original and semantically invariant transformed views in the same generation group, and assigns a joint reward only when paired completions are both correct and consistent. In this way, ConsistRoll turns consistency into an online credit-assignment signal, \\textbf{without extra generation overhead and annotations}. Theoretically, we show that cross-view consistency is a valid inductive bias, and ConsistRoll introduces a cross-view correction term absent from DA, penalizing view dependence and alleviating advantage collapse. Comprehensive benchmarks across math, general-purpose, hallucination domains confirm that ConsistRoll achieves robust improvements in multimodal reasoning.",
+      "authors": [
+        "Xin Zou",
+        "Haolin Deng",
+        "Yibo Yan",
+        "Shuliang Liu",
+        "Kening Zheng",
+        "Zhiwei Jin",
+        "Chen Chen",
+        "Haonan Lu",
+        "Xuming Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-29T05:45:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.29812v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes ConsistRoll method that injects cross-view consistency into RLVR training for multimodal reasoning",
+      "llm_evidence_cn": "提出ConsistRoll方法，将跨视角一致性注入RLVR训练中",
+      "llm_evidence": "提出ConsistRoll方法，将跨视角一致性注入RLVR训练中",
+      "canonical_evidence": "提出ConsistRoll方法，将跨视角一致性注入RLVR训练中",
+      "llm_tldr_en": "ConsistRoll improves RLVR for multimodal LLMs by enforcing cross-view consistency via group-sampling, addressing the lack of invariance in standard RLVR.",
+      "llm_tldr_cn": "该论文指出现有多模态大语言模型在RLVR训练中缺乏跨视角一致性约束，导致鲁棒性不足。为此，作者提出ConsistRoll方法，通过复用组采样机制将跨视角一致性注入RLVR训练，使模型对同一实例的不同变换视图产生一致回答。实验表明该方法显著提升了多模态推理的鲁棒性和泛化能力，为RLVR框架提供了重要的改进方向。",
+      "llm_tldr": "该论文指出现有多模态大语言模型在RLVR训练中缺乏跨视角一致性约束，导致鲁棒性不足。为此，作者提出ConsistRoll方法，通过复用组采样机制将跨视角一致性注入RLVR训练，使模型对同一实例的不同变换视图产生一致回答。实验表明该方法显著提升了多模态推理的鲁棒性和泛化能力，为RLVR框架提供了重要的改进方向。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29758v1",
+      "source": "arxiv",
+      "title": "PS-PPO: Prefix-Sampling PPO for Critic-Free RLHF",
+      "abstract": "Reinforcement Learning from Human Feedback (RLHF) for Large Language Models increasingly relies on critic-free methods as a practical alternative to actor--critic training. Despite their simplicity, existing critic-free approaches propagate a trajectory-level learning signal uniformly across all tokens in a trajectory. This requires full-trajectory policy updates for every rollout, leading to substantial optimization cost for long reasoning traces, even though intermediate prefixes often contain enough information to largely determine the final outcome. We propose Prefix-Sampling Proximal Policy Optimization (PS-PPO), a compute-efficient critic-free method for RLHF that exploits this temporal redundancy. PS-PPO introduces a prompt-conditioned cutoff distribution and samples a cutoff timestep for each trajectory. During the update pass, PS-PPO backpropagates only through the sampled prefix of each trajectory and applies an importance-weighting correction so that the resulting truncated gradient estimator remains unbiased with respect to the full-trajectory objective. Experiments on mathematical reasoning and RLHF benchmarks show that PS-PPO achieves large reductions in training compute and peak GPU memory, while maintaining accuracy comparable to strong critic-free baselines.",
+      "authors": [
+        "Doo Hwan Hwang",
+        "Kee-Eung Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T04:04:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.29758v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "critic-free RLHF for LLM with prefix sampling, improves efficiency for long reasoning traces",
+      "llm_evidence_cn": "针对大语言模型的无评论者RLHF，通过前缀采样提高长推理轨迹的效率",
+      "llm_evidence": "针对大语言模型的无评论者RLHF，通过前缀采样提高长推理轨迹的效率",
+      "canonical_evidence": "针对大语言模型的无评论者RLHF，通过前缀采样提高长推理轨迹的效率",
+      "llm_tldr_en": "PS-PPO proposes a critic-free RLHF method using prefix sampling to reduce optimization cost for long reasoning traces, relevant to RL for LLM reasoning.",
+      "llm_tldr_cn": "该论文针对大型语言模型RLHF中无评论者方法对长推理轨迹全更新成本高的问题，提出前缀采样PPO（PS-PPO），通过引入条件截断分布采样前缀，仅对前缀部分更新策略。实验表明该方法在保持性能的同时大幅降低了计算开销，与LLM推理强化学习优化需求相关。",
+      "llm_tldr": "该论文针对大型语言模型RLHF中无评论者方法对长推理轨迹全更新成本高的问题，提出前缀采样PPO（PS-PPO），通过引入条件截断分布采样前缀，仅对前缀部分更新策略。实验表明该方法在保持性能的同时大幅降低了计算开销，与LLM推理强化学习优化需求相关。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-04",
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T20:40:23",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/04/2606.28166v1-tandem-reinforcement-learning-with-verifiable-rewards",
+      "section": "deep",
+      "title_en": "Tandem Reinforcement Learning with Verifiable Rewards",
+      "authors": "Difan Jiao, Raghav Singhal, Robert West, Ashton Anderson",
+      "date": "2026-06-26",
+      "pdf": "https://arxiv.org/pdf/2606.28166v1",
+      "score": "9.0",
+      "evidence": "使用可验证奖励的串联强化学习提升推理能力",
+      "tldr": "强化学习与可验证奖励(RLVR)虽提升了大型语言模型的推理能力，但导致推理模式偏离人类可读性。Tandem训练通过强弱模型协作生成推理，但未扩展至长思维链。本文提出Tandem强化学习(TRL)，让强模型与弱模型交替生成推理并用GRPO优化，在Qwen3-4B-Instruct数学题上，TRL保持原有独奏能力，同时增强了与弱模型的交接鲁棒性、减少了分布漂移并生成更易理解的思维链，为多模型通信和人机兼容提供了实用方案。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning with verifiable rewards (RLVR) has significantly improved the reasoning capability of large language models, reaching expert or even superhuman performance in domains such as competition math. However, whether weaker agents and humans can actually harness this capability is far less certain, with RLVR documented to drift reasoning toward idiosyncratic patterns such as poor readability and language mixing. Tandem training is a recently introduced paradigm that targets this compatibility problem: a trained, stronger senior co-generates each rollout with a frozen, weaker junior, and the two are rewarded as a team, so the senior is pushed to reason in ways the junior can follow. Yet this paradigm has so far been demonstrated only in proof-of-concept settings, leaving open whether it scales to the long chains of thought of the modern RLVR pipeline. In this work, we propose Tandem Reinforcement Learning (TRL), which carries the tandem training paradigm into RLVR. In TRL, the senior and a frozen junior alternate stochastically to co-generate the reasoning, the resulting generation is rewarded, and the standard GRPO loss is applied to the senior. Training Qwen3-4B-Instruct on competition math, we find that TRL matches vanilla GRPO on solo reasoning capability while three properties emerge together from the same rollout structure: stronger handoff robustness with the junior, reduced distributional drift from the junior, and a chain-of-thought more legible to the junior. Our results demonstrate a promising route for RLVR with practical payoffs in multi-model communication and human compatibility.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/04/2606.29812v1-consistency-as-inductive-bias-learning-cross-view-invariance-for-robust-multimodal-reasoning",
+      "section": "deep",
+      "title_en": "Consistency as Inductive Bias: Learning Cross-View Invariance for Robust Multimodal Reasoning",
+      "authors": "Xin Zou, Haolin Deng, Yibo Yan, Shuliang Liu, Kening Zheng, Zhiwei Jin, Chen Chen, Haonan Lu, Xuming Hu",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29812v1",
+      "score": "8.0",
+      "evidence": "提出ConsistRoll方法，将跨视角一致性注入RLVR训练中",
+      "tldr": "多模态大语言模型的强化学习训练缺乏跨视角一致性归纳偏置，导致对视角变化敏感。ConsistRoll通过将原始与语义不变增强视图置于同一生成组，并联合奖励正确且一致的输出，将一致性转化为在线信用分配信号。无需额外生成开销和标注，在数学、通用推理和幻觉检测基准上取得鲁棒提升。理论证明该方法有效缓解了视角依赖和优势崩溃问题。",
+      "tags": "query:opd",
+      "abstract_en": "Inductive biases steer learning toward generalizable solutions by encoding task structure. In this work, we identify a crucial missing bias in MLLMs: cross-view consistency, \\textit{i.e.}, semantically invariant views of the same instance should lead to the same answer. Standard reinforcement learning with verifiable rewards (RLVR) objectives do not impose this constraint, but instead assign pointwise rewards to each visual input. Even with data augmentation (DA), transformed views are typically rewarded independently, providing little signal once within-view rewards saturate. We propose \\textbf{ConsistRoll}, a simple but effective method that injects cross-view consistency into RLVR training by reusing the group-sampling mechanism of GRPO. Specifically, ConsistRoll places original and semantically invariant transformed views in the same generation group, and assigns a joint reward only when paired completions are both correct and consistent. In this way, ConsistRoll turns consistency into an online credit-assignment signal, \\textbf{without extra generation overhead and annotations}. Theoretically, we show that cross-view consistency is a valid inductive bias, and ConsistRoll introduces a cross-view correction term absent from DA, penalizing view dependence and alleviating advantage collapse. Comprehensive benchmarks across math, general-purpose, hallucination domains confirm that ConsistRoll achieves robust improvements in multimodal reasoning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/04/2606.29758v1-ps-ppo-prefix-sampling-ppo-for-critic-free-rlhf",
+      "section": "quick",
+      "title_en": "PS-PPO: Prefix-Sampling PPO for Critic-Free RLHF",
+      "authors": "Doo Hwan Hwang, Kee-Eung Kim",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29758v1",
+      "score": "6.0",
+      "evidence": "针对大语言模型的无评论者RLHF，通过前缀采样提高长推理轨迹的效率",
+      "tldr": "现有无评论家RLHF方法将轨迹级学习信号均匀分配给所有token，导致长推理轨迹优化成本高。PS-PPO通过采样截断时间步，仅回传前缀梯度并采用重要性权重校正实现无偏估计。在数学推理和RLHF基准上，该方法大幅减少训练计算和峰值GPU内存，同时保持精度。为长序列RLHF提供了高效的无评论家方案。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement Learning from Human Feedback (RLHF) for Large Language Models increasingly relies on critic-free methods as a practical alternative to actor--critic training. Despite their simplicity, existing critic-free approaches propagate a trajectory-level learning signal uniformly across all tokens in a trajectory. This requires full-trajectory policy updates for every rollout, leading to substantial optimization cost for long reasoning traces, even though intermediate prefixes often contain enough information to largely determine the final outcome. We propose Prefix-Sampling Proximal Policy Optimization (PS-PPO), a compute-efficient critic-free method for RLHF that exploits this temporal redundancy. PS-PPO introduces a prompt-conditioned cutoff distribution and samples a cutoff timestep for each trajectory. During the update pass, PS-PPO backpropagates only through the sampled prefix of each trajectory and applies an importance-weighting correction so that the resulting truncated gradient estimator remains unbiased with respect to the full-trajectory objective. Experiments on mathematical reasoning and RLHF benchmarks show that PS-PPO achieves large reductions in training compute and peak GPU memory, while maintaining accuracy comparable to strong critic-free baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
