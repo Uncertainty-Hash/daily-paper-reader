@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-05",
+  "date": "2026-07-05",
+  "generated_at": "2026-07-05T21:25:31",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/05/2607.01480v1-procedural-memory-distillation-online-reflection-for-self-improving-language-models",
+      "section": "deep",
+      "title_en": "Procedural Memory Distillation: Online Reflection for Self-Improving Language Models",
+      "authors": "Ye Liu, Srijan Bansal, Bo Pang, Yang Li, Zeyu Leo Liu, Yifei Ming, Zixuan Ke, Shafiq Joty, Semih Yavuz",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.01480v1",
+      "score": "9.0",
+      "evidence": "通过程序记忆蒸馏从失败轨迹和自生成修正中学习",
+      "tldr": "现有强化学习与验证奖励方法仅利用episode级信号，忽略轨迹中的过程信息。本文提出过程记忆蒸馏（PMD），在线从模型自身轨迹中提取原始轨迹、自反思策略及跨问题行为模式三级记忆，通过记忆条件自我教师蒸馏至策略参数。在Qwen3-8B和OLMo3-Instruct-7B上，PMD比SDPO在SCIKNOWEVAL提升3.8-5.5%，在LIVECODEBENCH提升7.9-13.6%。共进化机制使策略与记忆相互增强，有效内化过程知识，实现推理时免记忆。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning with verifiable rewards (RLVR), along with recent selfdistillation variants such as SDPO, evaluates each rollout against a verifier and updates the policy from that episode-level signal. However, the richer procedural information in the rollout is rarely retained or reused. Across episodes and epochs, the model repeatedly encounters related problems under a changing policy, producing cross-episode signals that episode-local updates cannot capture: which strategies consistently pass verification, which failure modes persist, which patterns recur. We propose Procedural Memory Distillation (PMD), which converts these crossepisode signals into reusable procedural memory and distills it into the policy's weights during training. This memory functions as a training scaffold, absorbed into the policy itself, yielding a memory-free model at inference. PMD organizes the memory at three levels of abstraction: raw trajectories, self-reflected strategies and lessons, and higher-level behavioral patterns that recur across problems, all extracted online from the model's own trajectories. A memory-conditioned self-teacher draws on the accumulated experience to supervise the student on its own rollouts, enabling student to progressively internalize procedural knowledge within its parameters. The central design principle is co-evolution: the policy generates rollouts that update the memory, and memory shapes the supervision that updates the policy. Empirically, across Qwen3-8B and OLMo3-Instruct-7B, PMD improves over SDPO by 3.8-5.5% on SCIKNOWEVAL and 7.9-13.6% on LIVECODEBENCH. Co-evolution powers these gains: freezing either the memory or the policy trails PMD by more than 10% across SCIKNOWEVAL domains.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/05/2607.01612v1-scaling-with-confidence-calibrating-confidence-of-llms-for-adaptive-test-time-scaling",
+      "section": "deep",
+      "title_en": "Scaling with Confidence: Calibrating Confidence of LLMs for Adaptive Test Time Scaling",
+      "authors": "Xuqing Yang, Yi Yuan, Shanzhe Lei, Xuhong Wang",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01612v1",
+      "score": "8.0",
+      "evidence": "强化学习奖励设计、推理、可验证奖励",
+      "tldr": "大语言模型通过强化学习提升性能，但现有奖励设计忽视置信度校准，导致模型过度自信。本文提出C3RL算法，整合正确性、校准和参考准确率奖励，显著改善校准性而不损失准确性。基于校准的置信度，进一步提出CAS自适应测试时缩放策略，动态分配计算资源，在多个数据集上超越多数投票，推理预算最高降低12.33倍。该工作为部署可靠且资源高效的LLM提供了新思路。",
+      "tags": "query:opd",
+      "abstract_en": "Training large language models (LLMs) with reinforcement learning (RL) has significantly advanced their performance on reasoning and question-answering tasks. However, prevailing RL reward designs typically prioritize response correctness, neglecting to incentivize models to express their confidence accurately. This leads to a critical problem: performance gains are often accompanied by poor calibration between confidence and accuracy, misleading models to overconfidently hallucinate when uncertain. To address this limitation, we propose $\\textbf{C}$orrectness and $\\textbf{C}$onfidence $\\textbf{C}$alibration $\\textbf{R}$einforcement $\\textbf{L}$earning ($\\textbf{C3RL}$), a novel RL algorithm integrating correctness, calibration and dataset-informed reference accuracy rewards together. Comprehensive evaluation across 8 text and multimodal datasets demonstrates that C3RL enhances calibration without sacrificing accuracy, outperforming the current state-of-the-art method in both performance and calibration metrics. Utilizing the well-calibrated verbalized confidence from C3RL, we further introduce $\\textbf{C}$onfidence-based $\\textbf{A}$daptive Test Time $\\textbf{S}$caling ($\\textbf{CAS}$), an adjustable inference-time strategy that allocates computational resources based on response confidence. Experiments show that CAS surpasses majority voting on both in-domain and out-of-domain datasets while reducing the inference budget by up to 12.33 times. We believe the synergy of C3RL and CAS paves the way for deploying more reliable and resource-efficient LLMs. The code, data and models will be released.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/05/2607.01111v1-far-failure-aware-retry-for-test-time-recovery-and-continual-policy-improvement",
+      "section": "quick",
+      "title_en": "FAR: Failure-Aware Retry for Test-Time Recovery and Continual Policy Improvement",
+      "authors": "Haoran Hao, Shahram Najam Syed, Jeffrey Ichnowski, Jeff Schneider",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.01111v1",
+      "score": "6.0",
+      "evidence": "提出失败感知重试框架，通过偏好从失败中学习，与利用失败rollout的RL推理相关",
+      "tldr": "机器人策略在真实部署中难免失败，简单重试常重复错误，现有恢复方法多依赖人工干预。本文提出失败感知重试 (FAR) 框架，使机器人在测试时从失败中学习并自适应调整行为，最终自主完成任务。FAR 结合失败对比偏好适应（利用失败数据构造偏好学习）和轻量动作扰动，促进局部探索，并将成功恢复轨迹纳入训练循环实现持续策略改进。在模拟和真实操作任务中，FAR 相比标准扩散策略平均提升 17.6% 和 11.7% 的成功率，并在持续策略改进中通过利用信息性失败案例大幅提高数据效率。",
+      "tags": "query:opd",
+      "abstract_en": "Robot policies inevitably encounter failures when deployed in real environments. Naive retries often repeat the same mistakes, while many existing recovery methods rely on human intervention. In this paper, we propose Failure-Aware Retry (FAR), a framework that enables robots to learn from previous failures at test time, adapt their behavior accordingly, and eventually complete the task autonomously. FAR combines Failure-Contrastive Preference Adaptation, which constructs preference learning data from failures to steer the policy away from previously unsuccessful behaviors, with lightweight action perturbations during retries to encourage local exploration. We further incorporate successful recovery trajectories into a training loop for continual policy improvement. Experiments in both simulation and real-world manipulation tasks show that FAR substantially improves success rates and robustness, with average gains of 17.6% over the standard diffusion policy in simulation and 11.7% in the real world. In addition, FAR significantly improves data efficiency under both reset and timestep budgets during continual policy improvement by exploiting informative failure cases.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

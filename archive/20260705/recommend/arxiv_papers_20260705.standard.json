@@ -1,0 +1,138 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-05T21:22:14.671941+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01480v1",
+      "source": "arxiv",
+      "title": "Procedural Memory Distillation: Online Reflection for Self-Improving Language Models",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR), along with recent selfdistillation variants such as SDPO, evaluates each rollout against a verifier and updates the policy from that episode-level signal. However, the richer procedural information in the rollout is rarely retained or reused. Across episodes and epochs, the model repeatedly encounters related problems under a changing policy, producing cross-episode signals that episode-local updates cannot capture: which strategies consistently pass verification, which failure modes persist, which patterns recur. We propose Procedural Memory Distillation (PMD), which converts these crossepisode signals into reusable procedural memory and distills it into the policy's weights during training. This memory functions as a training scaffold, absorbed into the policy itself, yielding a memory-free model at inference. PMD organizes the memory at three levels of abstraction: raw trajectories, self-reflected strategies and lessons, and higher-level behavioral patterns that recur across problems, all extracted online from the model's own trajectories. A memory-conditioned self-teacher draws on the accumulated experience to supervise the student on its own rollouts, enabling student to progressively internalize procedural knowledge within its parameters. The central design principle is co-evolution: the policy generates rollouts that update the memory, and memory shapes the supervision that updates the policy. Empirically, across Qwen3-8B and OLMo3-Instruct-7B, PMD improves over SDPO by 3.8-5.5% on SCIKNOWEVAL and 7.9-13.6% on LIVECODEBENCH. Co-evolution powers these gains: freezing either the memory or the policy trails PMD by more than 10% across SCIKNOWEVAL domains.",
+      "authors": [
+        "Ye Liu",
+        "Srijan Bansal",
+        "Bo Pang",
+        "Yang Li",
+        "Zeyu Leo Liu",
+        "Yifei Ming",
+        "Zixuan Ke",
+        "Shafiq Joty",
+        "Semih Yavuz"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-01T21:20:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.01480v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning from failure rollouts and self-generated corrections via procedural memory distillation",
+      "llm_evidence_cn": "通过程序记忆蒸馏从失败轨迹和自生成修正中学习",
+      "llm_evidence": "通过程序记忆蒸馏从失败轨迹和自生成修正中学习",
+      "canonical_evidence": "通过程序记忆蒸馏从失败轨迹和自生成修正中学习",
+      "llm_tldr_en": "Proposes Procedural Memory Distillation (PMD) that captures cross-episode signals from failures and distills them into policy weights for self-improvement.",
+      "llm_tldr_cn": "该文指出RLVR等自蒸馏方法仅使用单轮信号，忽略了跨轮次的程序性信息。提出程序记忆蒸馏（PMD），将多个回合中持续出现的成功策略、失败模式和重复模式转化为可复用的程序记忆，并蒸馏到策略权重中。实验表明PMD显著提升了模型在数学推理等任务上的自我改进能力。",
+      "llm_tldr": "该文指出RLVR等自蒸馏方法仅使用单轮信号，忽略了跨轮次的程序性信息。提出程序记忆蒸馏（PMD），将多个回合中持续出现的成功策略、失败模式和重复模式转化为可复用的程序记忆，并蒸馏到策略权重中。实验表明PMD显著提升了模型在数学推理等任务上的自我改进能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01612v1",
+      "source": "arxiv",
+      "title": "Scaling with Confidence: Calibrating Confidence of LLMs for Adaptive Test Time Scaling",
+      "abstract": "Training large language models (LLMs) with reinforcement learning (RL) has significantly advanced their performance on reasoning and question-answering tasks. However, prevailing RL reward designs typically prioritize response correctness, neglecting to incentivize models to express their confidence accurately. This leads to a critical problem: performance gains are often accompanied by poor calibration between confidence and accuracy, misleading models to overconfidently hallucinate when uncertain. To address this limitation, we propose $\\textbf{C}$orrectness and $\\textbf{C}$onfidence $\\textbf{C}$alibration $\\textbf{R}$einforcement $\\textbf{L}$earning ($\\textbf{C3RL}$), a novel RL algorithm integrating correctness, calibration and dataset-informed reference accuracy rewards together. Comprehensive evaluation across 8 text and multimodal datasets demonstrates that C3RL enhances calibration without sacrificing accuracy, outperforming the current state-of-the-art method in both performance and calibration metrics. Utilizing the well-calibrated verbalized confidence from C3RL, we further introduce $\\textbf{C}$onfidence-based $\\textbf{A}$daptive Test Time $\\textbf{S}$caling ($\\textbf{CAS}$), an adjustable inference-time strategy that allocates computational resources based on response confidence. Experiments show that CAS surpasses majority voting on both in-domain and out-of-domain datasets while reducing the inference budget by up to 12.33 times. We believe the synergy of C3RL and CAS paves the way for deploying more reliable and resource-efficient LLMs. The code, data and models will be released.",
+      "authors": [
+        "Xuqing Yang",
+        "Yi Yuan",
+        "Shanzhe Lei",
+        "Xuhong Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T02:29:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.01612v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL reward design reasoning verifiable rewards",
+      "llm_evidence_cn": "强化学习奖励设计、推理、可验证奖励",
+      "llm_evidence": "强化学习奖励设计、推理、可验证奖励",
+      "canonical_evidence": "强化学习奖励设计、推理、可验证奖励",
+      "llm_tldr_en": "Proposes C3RL, an RL algorithm that integrates correctness and confidence calibration for LLM reasoning.",
+      "llm_tldr_cn": "现有LLM强化学习奖励设计只关心答案正确性，导致自信度校准差，模型易过度自信。论文提出C3RL算法，将正确性和置信度校准一起纳入奖励，并联合优化。在推理和问答任务上，C3RL不仅提升了准确率，还显著改善了置信度校准，使得模型在不确定时更谨慎。这项工作为推理任务中的RL奖励设计提供了新思路，与可验证奖励（RLVR）密切相关。",
+      "llm_tldr": "现有LLM强化学习奖励设计只关心答案正确性，导致自信度校准差，模型易过度自信。论文提出C3RL算法，将正确性和置信度校准一起纳入奖励，并联合优化。在推理和问答任务上，C3RL不仅提升了准确率，还显著改善了置信度校准，使得模型在不确定时更谨慎。这项工作为推理任务中的RL奖励设计提供了新思路，与可验证奖励（RLVR）密切相关。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.01111v1",
+      "source": "arxiv",
+      "title": "FAR: Failure-Aware Retry for Test-Time Recovery and Continual Policy Improvement",
+      "abstract": "Robot policies inevitably encounter failures when deployed in real environments. Naive retries often repeat the same mistakes, while many existing recovery methods rely on human intervention. In this paper, we propose Failure-Aware Retry (FAR), a framework that enables robots to learn from previous failures at test time, adapt their behavior accordingly, and eventually complete the task autonomously. FAR combines Failure-Contrastive Preference Adaptation, which constructs preference learning data from failures to steer the policy away from previously unsuccessful behaviors, with lightweight action perturbations during retries to encourage local exploration. We further incorporate successful recovery trajectories into a training loop for continual policy improvement. Experiments in both simulation and real-world manipulation tasks show that FAR substantially improves success rates and robustness, with average gains of 17.6% over the standard diffusion policy in simulation and 11.7% in the real world. In addition, FAR significantly improves data efficiency under both reset and timestep budgets during continual policy improvement by exploiting informative failure cases.",
+      "authors": [
+        "Haoran Hao",
+        "Shahram Najam Syed",
+        "Jeffrey Ichnowski",
+        "Jeff Schneider"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-01T16:01:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.01111v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Failure-aware retry framework learning from previous failures using preference adaptation, relevant to utilizing failure rollouts in RL for reasoning",
+      "llm_evidence_cn": "提出失败感知重试框架，通过偏好从失败中学习，与利用失败rollout的RL推理相关",
+      "llm_evidence": "提出失败感知重试框架，通过偏好从失败中学习，与利用失败rollout的RL推理相关",
+      "canonical_evidence": "提出失败感知重试框架，通过偏好从失败中学习，与利用失败rollout的RL推理相关",
+      "llm_tldr_en": "FAR enables robots to learn from previous failures at test time using Failure-Contrastive Preference Adaptation and action perturbations, achieving autonomous task completion.",
+      "llm_tldr_cn": "该论文提出失败感知重试（FAR）框架，使机器人能够在测试时从之前的失败中学习，避免重复错误。FAR结合了失败对比偏好适应（从失败构建偏好数据）和轻量动作扰动以鼓励探索，并将成功的恢复轨迹纳入持续训练循环。实验表明该方法显著提高了任务的自主完成率，但该工作应用于机器人领域，其从失败rollout学习的思想可迁移至LLM推理过程监督。",
+      "llm_tldr": "该论文提出失败感知重试（FAR）框架，使机器人能够在测试时从之前的失败中学习，避免重复错误。FAR结合了失败对比偏好适应（从失败构建偏好数据）和轻量动作扰动以鼓励探索，并将成功的恢复轨迹纳入持续训练循环。实验表明该方法显著提高了任务的自主完成率，但该工作应用于机器人领域，其从失败rollout学习的思想可迁移至LLM推理过程监督。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
