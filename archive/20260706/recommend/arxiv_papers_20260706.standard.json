@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-06T21:42:47.385282+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.00685v1",
+      "source": "arxiv",
+      "title": "M2Note: Continual Evolution of Vision Language Models via Mistake Notebook Learning",
+      "abstract": "Vision Language Models (VLMs) have demonstrated remarkable capabilities in multimodal reasoning tasks, yet they still suffer from recurring failures, such as skipping key visual checks, misapplying domain rules, and hallucinating unsupported concepts. Most existing solutions rely on supervised fine-tuning (SFT) and reinforcement learning (RL), which are expensive to iterate and can be brittle under distribution shift. To this end, we propose Multimodal Mistake Notebook Learning (M2Note), a training-free continual evolution framework that externalizes learning into an editable memory. M2Note transforms failed trajectories into compact subject-guidance notes: the subject summarizes the underlying domain and concept, while the guidance provides actionable verification steps that can be reused in future inference. At test time, M2Note retrieves relevant notes via multimodal retrieval-augmented generation (RAG) and appends them to the model context, steering reasoning away from previously observed pitfalls. To stabilize continual evolution, we adopt batch-level post-verification with rollback, which commits notebook edits only if they improve performance on the same batch, reducing noisy updates and preventing regressions. M2Note supports both self-evolving, where the same VLM acts as solver and supervisor, and cross-model evolving, where a stronger supervisor guides a weaker solver, enabling capability transfer without weight updates. Experiments on six multimodal reasoning benchmarks show consistent improvements across domains and backbones, while achieving strong cost and sample efficiency and remaining complementary to Chain-of-Thought (CoT) prompting.",
+      "authors": [
+        "Haiwen Li",
+        "Jing Tang",
+        "Rui Chen",
+        "Lei Sun",
+        "Xiangxiang Chu"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA"
+      ],
+      "published": "2026-07-01T09:30:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.00685v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Learning from failure trajectories via mistake notebooks",
+      "llm_evidence_cn": "通过错误笔记从失败轨迹中学习",
+      "llm_evidence": "通过错误笔记从失败轨迹中学习",
+      "canonical_evidence": "通过错误笔记从失败轨迹中学习",
+      "llm_tldr_en": "Proposes M2Note, a training-free framework that externalizes learning by converting failed VLM trajectories into editable subject-guidance notes, enabling continual improvement without expensive retraining.",
+      "llm_tldr_cn": "本文提出M2Note，一种无需训练的持续演化框架，将视觉语言模型(VLM)的失败轨迹转化为可编辑的主题-指导笔记，外化学习过程。通过存储和处理错误样例，模型可不断从失败中学习而无需重训练。实验证明M2Note能有效减少重复错误并提升多模态推理鲁棒性。该工作为利用失败轨迹改进推理提供了轻量级替代方案。",
+      "llm_tldr": "本文提出M2Note，一种无需训练的持续演化框架，将视觉语言模型(VLM)的失败轨迹转化为可编辑的主题-指导笔记，外化学习过程。通过存储和处理错误样例，模型可不断从失败中学习而无需重训练。实验证明M2Note能有效减少重复错误并提升多模态推理鲁棒性。该工作为利用失败轨迹改进推理提供了轻量级替代方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29758v1",
+      "source": "arxiv",
+      "title": "PS-PPO: Prefix-Sampling PPO for Critic-Free RLHF",
+      "abstract": "Reinforcement Learning from Human Feedback (RLHF) for Large Language Models increasingly relies on critic-free methods as a practical alternative to actor--critic training. Despite their simplicity, existing critic-free approaches propagate a trajectory-level learning signal uniformly across all tokens in a trajectory. This requires full-trajectory policy updates for every rollout, leading to substantial optimization cost for long reasoning traces, even though intermediate prefixes often contain enough information to largely determine the final outcome. We propose Prefix-Sampling Proximal Policy Optimization (PS-PPO), a compute-efficient critic-free method for RLHF that exploits this temporal redundancy. PS-PPO introduces a prompt-conditioned cutoff distribution and samples a cutoff timestep for each trajectory. During the update pass, PS-PPO backpropagates only through the sampled prefix of each trajectory and applies an importance-weighting correction so that the resulting truncated gradient estimator remains unbiased with respect to the full-trajectory objective. Experiments on mathematical reasoning and RLHF benchmarks show that PS-PPO achieves large reductions in training compute and peak GPU memory, while maintaining accuracy comparable to strong critic-free baselines.",
+      "authors": [
+        "Doo Hwan Hwang",
+        "Kee-Eung Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T04:04:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.29758v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Critic-free PPO for efficient LLM reasoning RL",
+      "llm_evidence_cn": "针对大语言模型推理高效强化学习的无评论者PPO方法",
+      "llm_evidence": "针对大语言模型推理高效强化学习的无评论者PPO方法",
+      "canonical_evidence": "针对大语言模型推理高效强化学习的无评论者PPO方法",
+      "llm_tldr_en": "Proposes Prefix-Sampling PPO to reduce computational cost of long reasoning traces in RLHF by exploiting temporal redundancy.",
+      "llm_tldr_cn": "现有批评者无关的RLHF方法对所有token统一分配学习信号，导致长推理轨迹的计算代价高昂。本文提出前缀采样PPO（PS-PPO），它利用中间前缀足以决定最终结果的特点，通过提示条件截断分布采样来减少更新频率。实验表明该方法在保持推理性能的同时大幅降低训练成本。该工作为LLM推理的强化学习提供了更高效的批评者无关范本。",
+      "llm_tldr": "现有批评者无关的RLHF方法对所有token统一分配学习信号，导致长推理轨迹的计算代价高昂。本文提出前缀采样PPO（PS-PPO），它利用中间前缀足以决定最终结果的特点，通过提示条件截断分布采样来减少更新频率。实验表明该方法在保持推理性能的同时大幅降低训练成本。该工作为LLM推理的强化学习提供了更高效的批评者无关范本。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

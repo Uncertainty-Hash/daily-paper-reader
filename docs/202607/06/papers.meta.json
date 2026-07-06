@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-06",
+  "date": "2026-07-06",
+  "generated_at": "2026-07-06T21:44:16",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/06/2607.00685v1-m2note-continual-evolution-of-vision-language-models-via-mistake-notebook-learning",
+      "section": "deep",
+      "title_en": "M2Note: Continual Evolution of Vision Language Models via Mistake Notebook Learning",
+      "authors": "Haiwen Li, Jing Tang, Rui Chen, Lei Sun, Xiangxiang Chu",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00685v1",
+      "score": "8.0",
+      "evidence": "通过错误笔记从失败轨迹中学习",
+      "tldr": "VLM仍存在重复错误，如漏检视觉信息、误用领域规则和幻觉。现有SFT和RL迭代成本高且鲁棒性差。本文提出M2Note，通过可编辑记忆将失败轨迹转化为主题-指导笔记，利用多模态检索增强生成（RAG）在推理时修正路径。采用批量级后验证和回滚稳定演化。在六个基准上持续提升性能，成本低且样本高效，可互补CoT提示。",
+      "tags": "query:opd",
+      "abstract_en": "Vision Language Models (VLMs) have demonstrated remarkable capabilities in multimodal reasoning tasks, yet they still suffer from recurring failures, such as skipping key visual checks, misapplying domain rules, and hallucinating unsupported concepts. Most existing solutions rely on supervised fine-tuning (SFT) and reinforcement learning (RL), which are expensive to iterate and can be brittle under distribution shift. To this end, we propose Multimodal Mistake Notebook Learning (M2Note), a training-free continual evolution framework that externalizes learning into an editable memory. M2Note transforms failed trajectories into compact subject-guidance notes: the subject summarizes the underlying domain and concept, while the guidance provides actionable verification steps that can be reused in future inference. At test time, M2Note retrieves relevant notes via multimodal retrieval-augmented generation (RAG) and appends them to the model context, steering reasoning away from previously observed pitfalls. To stabilize continual evolution, we adopt batch-level post-verification with rollback, which commits notebook edits only if they improve performance on the same batch, reducing noisy updates and preventing regressions. M2Note supports both self-evolving, where the same VLM acts as solver and supervisor, and cross-model evolving, where a stronger supervisor guides a weaker solver, enabling capability transfer without weight updates. Experiments on six multimodal reasoning benchmarks show consistent improvements across domains and backbones, while achieving strong cost and sample efficiency and remaining complementary to Chain-of-Thought (CoT) prompting.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/06/2606.29758v1-ps-ppo-prefix-sampling-ppo-for-critic-free-rlhf",
+      "section": "quick",
+      "title_en": "PS-PPO: Prefix-Sampling PPO for Critic-Free RLHF",
+      "authors": "Doo Hwan Hwang, Kee-Eung Kim",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29758v1",
+      "score": "7.0",
+      "evidence": "针对大语言模型推理高效强化学习的无评论者PPO方法",
+      "tldr": "现有无评论器RLHF方法对长推理轨迹进行全序列策略更新，计算成本高。提出PS-PPO，引入前缀采样策略，只对采样前缀反向传播，并通过重要性加权修正保持无偏性。在数学推理等任务上，训练计算和峰值显存大幅降低，精度与强基线相当。该方法为长序列RLHF提供高效解决方案。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement Learning from Human Feedback (RLHF) for Large Language Models increasingly relies on critic-free methods as a practical alternative to actor--critic training. Despite their simplicity, existing critic-free approaches propagate a trajectory-level learning signal uniformly across all tokens in a trajectory. This requires full-trajectory policy updates for every rollout, leading to substantial optimization cost for long reasoning traces, even though intermediate prefixes often contain enough information to largely determine the final outcome. We propose Prefix-Sampling Proximal Policy Optimization (PS-PPO), a compute-efficient critic-free method for RLHF that exploits this temporal redundancy. PS-PPO introduces a prompt-conditioned cutoff distribution and samples a cutoff timestep for each trajectory. During the update pass, PS-PPO backpropagates only through the sampled prefix of each trajectory and applies an importance-weighting correction so that the resulting truncated gradient estimator remains unbiased with respect to the full-trajectory objective. Experiments on mathematical reasoning and RLHF benchmarks show that PS-PPO achieves large reductions in training compute and peak GPU memory, while maintaining accuracy comparable to strong critic-free baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
