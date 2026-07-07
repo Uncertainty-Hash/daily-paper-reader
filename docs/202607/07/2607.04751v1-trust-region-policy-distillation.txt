@@ -1,0 +1,1510 @@
+Title: Trust Region Policy Distillation
+
+URL Source: https://arxiv.org/pdf/2607.04751v1
+
+Published Time: Tue, 07 Jul 2026 02:47:29 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+# Trust Region Policy Distillation 
+
+Zhengpeng Xie ∗∗ Li Lyna Zhang † Zeke Xie ‡ Mao Yang 
+
+zhengpengxie00@gmail.com li.zhang@xingyunzhili.com zekexie@hkust-gz.edu.cn maoyang@microsoft.com Trust Region 
+
+> TOP-D
+> Naive OPD
+
+Figure 1: While standard OPD forces direct teacher supervision and suffers from unstable optimiza-tion, TOP-D ensures stable training by dynamically constructing a proximal teacher at every iteration. 
+
+## Abstract 
+
+Big goals are hard to achieve all at once; breaking them into small steps is wiser. We present Trust Region Policy Distillation (TOP-D), which transforms the notori-ously unstable, high-variance On-Policy Distillation (OPD) into a stable training paradigm by dynamically constructing a proximal teacher . Theoretically, we estab-lish a rigorous framework demonstrating that TOP-D inherently controls gradient variance. By providing a formal global convergence analysis alongside a monotonic improvement bound, we mathematically formalize the reliability and stability of the overall training dynamics. Empirically, TOP-D dramatically enhances training stability, sample efficiency, and final performance on mathematical reasoning tasks. More importantly, TOP-D introduces zero additional computational overhead, positioning itself as a promising alternative to the well-established OPD paradigm. Base RLVR OPD TOP-D        
+
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> avg@32 Accuracy (%)
+> 9.38
+> 30.10
+> 24.58
+> 50.42
+> AIME24
+> Base RLVR OPD TOP-D
+> 0
+> 10
+> 20
+> 30
+> 40
+> avg@32 Accuracy (%)
+> 8.02
+> 22.08 23.33
+> 34.06
+> AIME25
+> Base RLVR OPD TOP-D
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> avg@32 Accuracy (%)
+> 6.15
+> 21.67
+> 25.42
+> 44.06
+> AIME26
+
+Figure 2: The avg@32 accuracy on several AIME benchmarks for RLVR applied to the Qwen3-8B-Base model, and for OPD and TOP-D using Qwen3-30B-A3B-Instruct-2507 as the teacher model. 
+
+> ∗
+
+Work done during an internship. †Project leader. ‡Corresponding author.                     
+
+> arXiv:2607.04751v1 [cs.LG] 6 Jul 2026 Method Sampling Reward Signal Training Stability Theoretical Guarantee Supervised Fine-Tuning off-policy dense high weak Reinforcement Learning with Verifiable Rewards on-policy sparse low weak On-Policy Distillation on-policy dense low weak Trust Region Policy Distillation on-policy dense high strong
+
+Table 1: Comparison of different paradigms. 
+
+## 1 Introduction 
+
+On-Policy Distillation (OPD) [ 10 ] has rapidly emerged as the prevailing paradigm for post-training Large Language Models (LLMs) [ 18 , 16 , 21 , 19 , 1], in which the student learns from token-level signals provided by an external teacher. Mathematically, this is equivalent to reinforcement learning where the immediate reward is defined by the logarithmic probability ratio between the teacher and student policies. Consequently, the on-policy nature of OPD prevents the catastrophic forgetting of Supervised Fine-Tuning (SFT) [ 14 ], while its dense rewards overcome the sample inefficiency and instability of Reinforcement Learning with Verifiable Rewards (RLVR) (as summarized in Table 1). Despite its theoretical appeal, standard OPD suffers from severe optimization fragility in practice. The fundamental bottleneck of OPD lies in the inherent capacity gap between the target teacher and the student [ 5]. Because the standard distillation objective is driven by the logarithmic probability ratio between the two policies, the optimization dynamics are highly vulnerable to teacher-student disagreements. Recent studies have devoted considerable engineering efforts to mitigate this instability through various techniques, including teacher-student mixed sampling [ 3], reward clipping [ 7], top-p
+
+sampling [ 2], off-policy cold starts [ 9], and scaling to full-vocabulary supervision [ 1]. However, these mitigation strategies remain largely empirical heuristics that fail to capture the underlying mechanism of the instability: the unbounded logarithmic probability difference between the teacher and student. Furthermore, these empirical methods inherently lack theoretical guarantees for reliable optimization. In this paper, we present Trust Region Policy Distillation (TOP-D) to systematically resolve the inherent optimization instability of standard OPD. Specifically, to overcome the unbounded logarith-mic signals, we dynamically construct an external proximal teacher (as illustrated in Figure 1 and Section 3.1) by interpolating the probability distributions of the target teacher and the current student. This mathematical construction transforms the unbounded distillation reward into a smooth, strictly lower-bounded signal, analytically preventing variance explosion. Building upon this stabilized objective, we further incorporate internal trust region iterations (described in Section 3.2) to better approximate the current proximal teacher, while simultaneously improving overall sample efficiency. Crucially, while the proximal teacher is constructed conceptually, the practical objective mathe-matically reduces to a simple algebraic transformation of the standard token-level OPD reward. As a result, TOP-D introduces zero additional computational overhead, serving as a plug-and-play module that is natively compatible with both state-of-the-art distributed training infrastructures [15 , 22 ] and high-throughput inference engines [ 8, 23 ]. Beyond this empirical elegance, our proposed framework establishes a rigorous theoretical closed-loop: while the external proximal teacher strictly bounds the gradient variance (described in Section 4.1), the internal trust region iterations guarantee monotonic policy improvement (described in Section 4.3), systematically minimizing the single-step optimization error to tightly close the overall asymptotic convergence gap (described in Section 4.2). In summary, the main contributions of this paper are as follows: • We propose TOP-D, a plug-and-play distillation paradigm that smooths the unbounded reward signal and safely breaks the strict on-policy data-reuse barrier of standard OPD. • We establish a rigorous theoretical framework where the proximal teacher inherently bounds gradient variance to stabilize training, while our convergence analysis and monotonic improvement bound form a closed-loop to systematically minimize the asymptotic error. • We empirically demonstrate that TOP-D dramatically improves reasoning capabilities on mathematical reasoning tasks, delivering a 25.84% absolute improvement in avg@32 accu-racy over standard OPD on AIME24 and consistently dominating RLVR and OPD baselines. 22 Preliminaries 
+
+2.1 On-Policy Distillation 
+
+Suppose we have an autoregressive language model πθ , where θ ∈ Θ denotes the parameters. Given a prompt x ∼ D x, the model generates response y = ( y0, y 1, . . . , y T )2 autoregressively, where 
+
+T = |y| is the response length. Formally, 
+
+log πθ (y | x) = 
+
+> |y|
+
+X
+
+> t=1
+
+log πθ (yt | x, y <t ), (1) where y<t denotes (y0, y 1, . . . , y t−1). In the context of OPD, we aim to minimize the following 
+
+reverse KL divergence: 
+
+θ∗ = arg min  
+
+> θ
+
+L(θ) = arg min  
+
+> θ
+
+Ex∼D x [DKL (πθ (· | x), π ∗(· | x))] = arg max  
+
+> θ
+
+Ex∼D x,y ∼πθ (·| x)
+
+
+
+log π∗(y | x)
+
+πθ (y | x)
+
+
+
+= arg max  
+
+> θ
+
+J(θ), (2) where π∗ is typically a stronger model. We are now ready to present the standard policy gradient 
+
+form of the objective (2): 
+
+∇θ J(θ) = Ex∼D x,y ∼πθ (·| x)
+
+
+
+> |y|
+
+X
+
+> t=1
+
+∇θ log πθ (yt | x, y <t ) ·
+
+
+
+> |y|
+
+X
+
+> k=t
+
+log ρk
+
+ , (3) where ρk = π∗(yk |x,y <k )    
+
+> πθ(yk|x,y <k )
+
+. In other words, we can treat log ρk as the immediate reward for the k-th token, i.e., rk = log ρk. However, the cumulative reward P|y| 
+
+> k=t
+
+rk introduces an inherent length bias as well as high variance. In practice, a common approach is to use the immediate reward rk directly. 
+
+2.2 Reinforcement Learning Formulation 
+
+To establish a rigorous theoretical foundation, we cast autoregressive language modeling as a deter-ministic Markov Decision Process (MDP) defined by the tuple (S, A, P, r, μ 0).• State space S and action space A. State st = ( x, y <t ) represents the prompt and prefix. The action space A = V includes the vocabulary and the EOS token. To rigorously handle variable-length sequences, we augment S with a permanent absorbing state s⊥.• Dynamics P and initial distribution μ0. The initial state distribution μ0(s) follows the prompt distribution Dx and the special initial token y0. Transitions are deterministic :selecting a̸ = EOS appends a to the prefix, while selecting EOS definitively transitions to s⊥.• Reward function r. The immediate reward is the distillation signal: r(s, a ) = log π∗(a|s) 
+
+> π(a|s)
+
+.To prevent infinite accumulation after termination 3, we set r(s⊥, a ) ≡ 0 for any a ∈ A .Let π : S → ∆( A) be a stochastic policy. Operating in the undiscounted setting ( γ = 1 ), the action value function Qπ (s, a ) is defined as Qπ (s, a ) = Eπ [P∞ 
+
+> k=0
+
+r(st+k, a t+k) | st = s, a t = a].The state value function V π (s) is strictly obtained by marginalizing Qπ over the policy: V π (s) = 
+
+Ea∼π(·| s) [Qπ (s, a )] . Consequently, we define the advantage function, which forms the basis for policy improvement bounds, as Aπ (s, a ) = Qπ (s, a ) − V π (s). To decouple sequential dependencies, we introduce the unnormalized state distribution dπ (s) = P∞ 
+
+> t=1
+
+P(st = s | π). The true objective of a policy π is the expected cumulative reward over the infinite horizon: 
+
+η(π) = Ex∼D x,y ∼π(·| x)
+
+" ∞X
+
+> t=1
+
+r(st, a t)
+
+#
+
+. (4) While this abstract MDP formalization is adopted for the theoretical proofs in Section 4.3, the remainder of the paper defaults to the notation established in Section 2.1.      
+
+> 2Here, y0denotes the special initial token and is not counted toward the response length.
+> 3Assume that π(EOS |s⊥) = 1 .
+
+33 Methodology 
+
+This section details the design of our core algorithm, Trust Region Policy Distillation (TOP-D). We begin in Section 3.1 by constructing a proximal teacher to stabilize training. Subsequently, in Section 3.2, the current student approximates this proximal teacher by performing trust region iterations .Finally, Section 3.3 outlines the practical implementation of the TOP-D algorithm. 
+
+3.1 External Proximal Teacher 
+
+The fundamental challenge in standard On-Policy Distillation (OPD) arises from the inherent capacity gap between the student policy πθ and the target teacher policy π∗. As defined in Equation (3) , the optimization dynamics heavily rely on the probability ratio ρk = π∗(yk |x,y <k )    
+
+> πθ(yk|x,y <k )
+
+. In extreme cases where the teacher assigns a near-zero probability to a generated token ( π∗ → 0), the immediate reward rk = log ρk diverges to negative infinity. This unbounded penalty destabilizes the policy gradient, making the optimization process extremely fragile. 0.0 0.5 1.0 1.5 2.0 2.5 3.0                       
+
+> Probability Ratio ρk=π∗
+> πθ
+> 3
+> 2
+> 1
+> 0
+> 1
+> Token-level Reward
+> log(1 −0.8)
+> log(1 −0.5)
+> log(1 −0.2)
+> OPD Reward rk(α= 1 .0)
+> TOP-D reward ˜rk(α= 0 .8)
+> TOP-D reward ˜rk(α= 0 .5)
+> TOP-D reward ˜rk(α= 0 .2)
+
+Figure 3: Reward curves of rk and ˜rk.To address this instability, we draw inspiration from trust region methods in reinforcement learning [ 11 , 12 , 17 ], which restrict policy updates from taking destructively large steps. Rather than forcing the student to perfectly imitate a rigid teacher, we dynamically construct an intermediate, localized target distribution. We term this surrogate target the proximal teacher ˜π∗. Formally, 
+
+˜π∗(yk | x, y <k ) = απ ∗(yk | x, y <k )+(1 −α)πθ (yk | x, y <k ),
+
+where α ∈ (0 , 1) is the coefficient that controls the inter-polation strength. In fact, the proximal teacher inherently smooths the token-level reward rk. Specifically, 
+
+˜rk = log ˜π∗(yk | x, y <k )
+
+πθ (yk | x, y <k ) = log 
+
+
+
+α π∗(yk | x, y <k )
+
+πθ (yk | x, y <k ) + 1 − α
+
+
+
+= log ( αρ k + 1 − α) . (5) When α = 1 , it reduces to the original OPD reward rk. Thanks to mathematics, we do not need to explicitly construct a proximal teacher to obtain the new reward ˜rk. Figure 3 visualizes the OPD reward rk and our proposed reward ˜rk with respect to the probability ratio ρk. We can see that ˜rk is strictly bounded from below 4 as ρk → 0. Moreover, we explicitly justify our choice of interpolating in the probability space instead of the log-probability space to construct the proximal teacher, since setting log ˜ π∗(yk | x, y <k ) = α log π∗(yk | x, y <k ) + (1 − α) log πθ (yk | x, y <k ) yields 
+
+˜rk = αr k, (6) which is merely a naive scaling of the original OPD reward. 
+
+3.2 Internal Trust Region Iterations 
+
+With the proximal teacher established, the student policy is optimized to maximize the expected cumulative reward ˜Rt = P|y| 
+
+> k=t
+
+˜rk. While standard OPD relies on continuous online sampling, it fundamentally operates in a strictly on-policy manner. In the naive formulation, once the student policy is updated, the previously generated trajectories are immediately discarded. This results in notoriously low sample efficiency, lacking the capacity to reuse data. Inspired by modern trust region algorithms [ 11 , 12 , 17 ], we analogously decouple the behavior policy 
+
+πθold and the target policy πθ to inherit their high sample efficiency. Specifically, 
+
+J(θ) = E 
+
+> x∼D x
+> {yi}Gi=1 ∼πθold (·| x)
+
+ 1
+
+PGi=1 |yi|
+
+> G
+
+X
+
+> i=1
+> |yi|
+
+X
+
+> t=1
+
+n
+
+min 
+
+h
+
+pit · ˆAit, clip  pit, 1 − ϵ, 1 + ϵ · ˆAit
+
+io  . (7) Here, we follow the group-based reinforcement learning settings [ 13 , 4], where the superscript i
+
+indexes different model responses. pit = πθ (yit |x,y i<t )   
+
+> πθold (yit|x,y i<t )
+
+is the importance sampling ratio. We adopt                  
+
+> 4log( αx + 1 −α)≥log(1 −α)when x∈(0 ,+∞)and α∈(0 ,1) .
+
+4Prompts  Responses  Advantages Figure 4: In contrast to sequence-level advantage normalization, we perform token-level normalization across the responses generated for a given prompt to better leverage the dense reward signal. 
+
+Algorithm 1 Trust Region Policy Distillation (TOP-D) 
+
+Require: Student πθ , teacher π∗, dataset Dx, interpolation α, group size G, internal epochs E 
+
+> 1:
+
+while not converged do  
+
+> 2:
+
+Initialize πθold ← πθ 
+
+> 3:
+
+Sample a batch of prompts X ⊂ D x 
+
+> 4:
+
+for each prompt x ∈ X do  
+
+> 5:
+
+Perform rollout to sample G responses {yi}Gi=1 ∼ πθold (· | x) 
+
+> 6:
+
+Compute TOP-D rewards ˜rik ← log 
+
+
+
+α π∗(yik |x,y i<k )    
+
+> πθold (yik|x,y i<k )
+
++ 1 − α
+
+ 
+
+> 7:
+
+Compute token-level returns ˜Rik ← ˜rik + 1
+
+> |yi|− k
+
+P|yi| 
+
+> j=k+1
+
+˜rij 
+
+> 8:
+
+Compute token-level advantages ˆAik ← ˜Rik −μσ 
+
+> 9:
+
+end for  
+
+> 10:
+
+for epoch e = 1 to E do  
+
+> 11:
+
+J(θ) ← 1PGi=1 |yi|
+
+PGi=1 
+
+P|yi|
+
+> t=1
+
+n
+
+min 
+
+h
+
+pit · ˆAit, clip  pit, 1 − ϵ, 1 + ϵ · ˆAit
+
+io  
+
+> 12:
+
+Update θ by maximizing J(θ) using an optimizer  
+
+> 13:
+
+end for  
+
+> 14:
+
+end while 
+
+a more fine-grained token-level normalized advantage ˆAit to better exploit dense reward signals, as illustrated in Figure 4. For each prompt, the advantage relies on a token-level reward ˜Rt, which combines the immediate reward and a length-normalized future return [3], i.e., 
+
+˜Rik = ˜ rik + 1
+
+|yi| − k
+
+> |yi|
+
+X
+
+> j=k+1
+
+˜rij . (8) We empirically observe that this prevents the model from generating overly short or excessively long responses. The mean μ and standard deviation σ within each group are calculated via μ = mean { ˜Rik}
+
+and σ = std { ˜Rik}, where i = 1 , . . . , G and k = 1 , . . . , |yi|.
+
+3.3 Trust Region Policy Distillation 
+
+In this section, we synthesize the concepts of the external proximal teacher in Section 3.1 and the 
+
+internal trust region iterations in Section 3.2 to formulate our complete algorithmic framework, Trust Region Policy Distillation (TOP-D), summarized in Algorithm 1. Standard OPD suffers from two fundamental bottlenecks: optimization fragility and low sample efficiency. TOP-D systematically resolves both through a unified design. First, the external proximal teacher transforms the unbounded OPD reward into a smooth, lower-bounded reward ˜rk, intrinsically stabilizing the optimization process. Built upon this principle, the internal trust region iterations 
+
+decouple the behavior and target policies, breaking the strict on-policy data-reuse barrier. Crucially, these mechanisms are not merely empirical heuristics but share deep theoretical synergy. We rigorously formalize this framework and establish its mathematical guarantees in the Section 4. 54 Theoretical Analysis 
+
+In this section, we establish a rigorous theoretical foundation for TOP-D. We begin in Section 4.1 by proving that the proximal teacher inherently bounds gradient variance to stabilize optimization. Building upon this, we derive a global convergence bound in Section 4.2 by abstracting the learning dynamics. Finally, to minimize the local error bottleneck identified in this convergence analysis, we establish the monotonic improvement guarantee for our internal trust region iterations in Section 4.3. 
+
+4.1 Bounded Variance 
+
+To rigorously analyze the gradient stability, we restrict our discussion to the autoregressive generation environment over a finite vocabulary V. In policy gradient methods, the variance of the gradient is typically dominated by its second moment , i.e., Var [ g] ≤ E ∥g∥2. Thus, our theoretical analysis will primarily focus on establishing an absolute upper bound for the gradient’s second moment. 
+
+Assumption 4.1. We assume that the gradient of the student policy’s log-probability (the score function) is uniformly bounded. That is, there exists a constant M > 0, such that for any prompt 
+
+x ∼ D x, generated response y ∼ π(· | x), and k-th token yk, we have 
+
+∥∇ θ log πθ (yk | x, y <k )∥ ≤ M. (9) Let gk = ∇θ log πθ (yk | x, y <k ) · rk denote the token-level policy gradient estimator for standard OPD, and ˜gk = ∇θ log πθ (yk | x, y <k ) · ˜rk denote the gradient estimator for our proposed TOP-D. 
+
+Theorem 4.2. Under Assumption 4.1, for any interpolation coefficient α ∈ (0 , 1) , the variance of the TOP-D gradient estimator ˜gk does not diverge across the entire probability space. Instead, it is strictly bounded by a uniform absolute limit: 
+
+Var(˜ gk) ≤ M 2|V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+, (10) 
+
+where C∗ is a universal mathematical constant, and |V| denotes the size of the vocabulary V.Proof. See Appendix C.1. 
+
+Remark 4.3 . TOP-D employs an asymmetric operator to stabilize training. For heavy penalizations, it introduces a hard safety bound, (log(1 − α)) 2, preventing catastrophic divergence; for high rewards, it applies a linear dampening scaled by C∗α. This effectively designates α as a direct variance controller. As α → 1−, TOP-D recovers standard OPD, with its upper bound diverging ( (log(1 − α)) 2 → ∞ )to reflect OPD’s unbounded variance. Conversely, as α → 0+, the variance vanishes. 
+
+4.2 Convergence Analysis 
+
+To rigorously analyze the convergence properties of TOP-D, we abstract the construction of the proximal teacher as an iterative operator mapping over the policy space. Let Π denote the space of all valid policies. To quantify the divergence within this space, we introduce the expected L1
+
+distance between any two policies πi, π j as d(πi, π j ) = Ex∼D x [∥πi(· | x) − πj (· | x)∥1]. Next, we formalize the iterative process through the proximal teacher operator T : Π → Π, given by 
+
+T (π) = απ ∗ + (1 − α)π, (11) where α ∈ (0 , 1) is the interpolation coefficient, and π∗ is the target teacher. Building upon this metric space, we are now ready to establish the following convergence analysis: 
+
+Theorem 4.4. For any initial student policy π0 ∈ Π, consider the iterative update process πk+1 =
+
+T (πk) + ϵk5, where ϵk accounts for the practical optimization error (e.g., function approximation and optimization noise) at the k-th global step, where k ≥ 0. Then, the following bound holds: 
+
+d(πk+1 , π ∗) ≤ (1 − α)k+1 d(π0, π ∗) + 
+
+> k
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1. (12) 
+
+Furthermore, assuming the optimization process eventually stabilizes such that the asymptotic error is bounded by lim sup k→∞ ∥ϵk∥1 ≤ ϵ∞, we have 
+
+lim sup 
+
+> k→∞
+
+d(πk+1 , π ∗) ≤ ϵ∞
+
+α . (13)              
+
+> 5With a slight abuse of notation, let ∥ϵk∥1=d(πk+1 ,˜π∗
+> k), where ˜π∗
+> k=T(πk)is the proximal teacher at the k-th step.
+
+6Proof. See Appendix C.2. 
+
+Remark 4.5 . The bound presented in Theorem 4.4 not only reveals an inherent error forgetting 
+
+mechanism that isolates early high-variance updates, but also highlights a fundamental theoretical 
+
+trade-off : the asymptotic convergence gap is strictly bounded by ϵ∞/α . This implies that to break through the precision ceiling without compromising stability (i.e., keeping α small), the only viable path is to strictly minimize the single-step optimization error ∥ϵk∥1. This theoretical bottleneck motivates the necessity of introducing internal trust region iterations in the subsequent section. 
+
+4.3 Monotonic Improvement 
+
+As revealed in Theorem 4.4, the fundamental theoretical bottleneck of the proximal teacher frame-work lies in the asymptotic convergence gap bounded by ϵ∞/α . To tightly close this gap without compromising optimization stability (i.e., avoiding excessively large α), it is imperative to rigorously minimize the single-step optimization error ∥ϵk∥1. TOP-D achieves this via internal trust region iterations. In this section, we establish the theoretical insight of this mechanism by proving monotonic policy improvement. For mathematical rigor, we follow the notation established in Section 2.2. 
+
+Assumption 4.6. Given the fixed context window constraints inherent to autoregressive language models, we assume that any valid policy π ∈ Π generates the EOS token within a finite maximum horizon Tmax . Consequently, the response length strictly satisfies |y| ≤ Tmax , so P 
+
+> s̸=s⊥
+
+dπ (s) < ∞.In our undiscounted setting ( γ = 1 ), the unnormalized measure dπ (s) diverges because the permanent absorbing state s⊥ dominates as t → ∞ . To construct a valid probability distribution over the meaningful transient states, we explicitly exclude s⊥ and normalize dπ (s).
+
+Definition 4.7. We formally define the expected response length of a policy π as ℓπ =
+
+Ex∼D x,y ∼π(·| x) [|y|]. Excluding s⊥, the sum of the state distribution precisely evaluates to this length. Thus, we define the normalized state visitation measure dπ
+
+> norm
+
+(s) = dπ (s) 
+
+> ℓπ
+
+, s̸ = s⊥.
+
+Remark 4.8 . This normalized measure enables an equivalent reformulation of the Performance Difference Lemma [ 6 ], strictly decoupling the sequence length from the single-step generation quality. We can thus rewrite the original objective (4) as η(π) = ℓπ · Es∼dπ 
+
+> norm (·),a ∼π(·| s)
+
+[r(s, a )] , and we are now ready to present the main theoretical result of this section: 
+
+Theorem 4.9. Given Assumption 4.6 and Definition 4.7, for any two policies, ˜π and π, the following bound holds: 
+
+η(˜ π) ≥ ζπ (˜ π) − 2ξT max ℓπ Es∼dπ 
+
+> norm (·)
+
+[DTV (˜ π(· | s), π (· | s))] , (14) 
+
+where ζπ (˜ π) = η(π) + ℓπ Es∼dπ 
+
+> norm (·),a ∼˜π(·| s)
+
+[Aπ (s, a )] , and ξ = max s|Ea∼˜π(·| s) [Aπ (s, a )] |.Proof. See Appendix C.3. 
+
+Remark 4.10 . Let Mπ (˜ π) denote the lower bound established in Theorem 4.9. By definition, 
+
+η(π) = Mπ (π). Therefore, any policy update that improves the lower bound guarantees monotonic improvement on the true objective, i.e., η(˜ π) − η(π) ≥ M π (˜ π) − M π (π).As a result, optimizing Mπ (˜ π) ensures that the original reverse KL divergence objective monotoni-cally improves during the internal updates. Let the superscript (n) denote the n-th step of the internal trust region iterations at the k-th global step, and let ˜π∗ 
+
+> k
+
+= T (πk) be the fixed proximal teacher. By iteratively optimizing Mπ (˜ π), we obtain a monotonically decreasing sequence of KL divergences: 
+
+Ex∼D x
+
+h
+
+D(0) KL 
+
+i
+
+≥ Ex∼D x
+
+h
+
+D(1) KL 
+
+i
+
+≥ · · · ≥ Ex∼D x
+
+h
+
+D(n)KL 
+
+i
+
+, (15) where D(j)KL ≜ DKL (π(j) 
+
+> k
+
+(· | x), ˜π∗
+
+> k
+
+(· | x)) denotes the reverse KL divergence objective at the 
+
+j-th internal iteration. If the internal trust region optimization proceeds until the final expected divergence satisfies Ex∼D x
+
+h
+
+D(n)KL 
+
+i
+
+≤ 12 δ2 where δ > 0, then by applying Pinsker’s inequality 
+
+∥ϵk∥1 = d(πk+1 , ˜π∗
+
+> k
+
+) = d(π(n) 
+
+> k
+
+, ˜π∗
+
+> k
+
+) ≤ Ex∼D x
+
+q 
+
+2D(n)KL 
+
+
+
+≤
+
+r
+
+2Ex∼D x
+
+h
+
+D(n)KL 
+
+i
+
+≤ δ alongside Jensen’s inequality, we rigorously guarantee that the optimization error satisfies ∥ϵk∥1 ≤ δ. This perfectly closes the overall theoretical loop: the internal trust region iterations mathematically guarantee the continuous minimization of the single-step optimization error ϵk, thereby enabling the algorithm to tightly close the asymptotic convergence gap ϵ∞/α defined in Theorem 4.4. 75 Experiments 
+
+In this section, we empirically validate the effectiveness of TOP-D. Specifically, Section 5.1 details our validation datasets, model configurations, baseline methods, and implementation hyperparameters. Section 5.2 presents a comprehensive comparison of TOP-D against existing post-training baselines. Finally, Section 5.3 provides an in-depth analysis of the core components of our method, including the external proximal teacher and the internal trust region iterations, as well as the sensitivity analysis. 
+
+5.1 Experimental Setup Datasets and benchmarks. We conduct our training phase using the DAPO-Math-17k [ 20 ] dataset, a high-quality mathematical reasoning corpus. For validation, we benchmark the post-trained models on widely recognized and challenging mathematical reasoning competitions like AIME and AMC. 
+
+Models and baselines. To comprehensively investigate the scalability of TOP-D and its robustness across different teacher-student capacity gaps, we employ two distinct base models as students: Qwen3-1.7B-Base [ 18 ] and Qwen3-8B-Base [ 18 ]. For the target teacher policies, we utilize Qwen3-14B [ 18 ] and the exceptionally capable Qwen3-30B-A3B-Instruct-2507 [ 18 ]. We compare TOP-D against several post-training paradigms including GRPO [13], DAPO [20], and standard OPD [10]. 
+
+Implementation details. During the rollout phase, the student model generates 8 responses for each prompt. To execute the trust region iterations, we follow the same off-policy setting as RLVR by dividing the same batch of data into multiple mini-batches, where the global batch size is set to 512 prompts (4096 samples) and the mini-batch size is set to 32 prompts (256 samples). The core interpolation coefficient α for TOP-D is set to 0.1 or 0.2. During training, we apply a sampling temperature of 1.0 and a top-p of 1.0. For performance validation, we use a temperature of 1.0 and a top-p of 0.7. Comprehensive details regarding other hyperparameters are provided in Appendix B.                                                
+
+> Student Model Paradigm Method Teacher Model
+> Qwen3-30B-A3B-Instruct-2507
+> avg@32 avg@8 AIME24 AIME25 AIME26 AMC23 MATH-500 Olympiad
+> Qwen3-8B-Base
+> Base -9.38 8.02 6.15 53.13 75.23 40.08
+> RLVR GRPO 30.10 22.08 21.67 56.33 76.83 44.92 DAPO 32.92 27.81 32.29 65.39 81.65 44.23
+> Distillation OPD 24.58 23.33 25.42 76.88 87.98 59.29
+> TOP-D (Ours) 50.42 (+25.84) 34.06 (+10.73) 44.06 (+18.64) 88.13 (+11.25) 91.23 (+3.25) 64.67 (+5.38)
+
+Table 2: Performance comparison of the Qwen3-8B-Base across various mathematical benchmarks.                                                
+
+> Student Model Paradigm Method Teacher Model
+> Qwen3-30B-A3B-Instruct-2507 Qwen3-14B
+> avg@32 AIME24 AIME25 AIME26 AIME24 AIME25 AIME26
+> Qwen3-1.7B-Base
+> Base -3.44 1.98 1.88 3.44 1.98 1.88
+> RLVR GRPO 10.52 7.19 4.69 10.52 7.19 4.69 DAPO 12.29 11.56 8.54 12.29 11.56 8.54
+> Distillation OPD 8.96 7.50 5.94 7.81 8.33 5.63
+> TOP-D (Ours) 20.31 (+11.35) 17.71 (+10.21) 13.75 (+7.81) 12.81 (+5.00) 14.69 (+6.36) 9.69 (+4.06)
+
+Table 3: Performance comparison of the Qwen3-1.7B-Base across AIME benchmarks. 
+
+5.2 Main Results 
+
+Table 2 and Table 3 summarize the validation results of TOP-D compared to other baselines. TOP-D consistently outperforms the evaluated baselines across all mathematical benchmarks and student model scales. The most striking improvement is observed when compared to standard OPD. For instance, using the Qwen3-8B-Base student supervised by the Qwen3-30B-A3B-Instruct-2507 teacher, TOP-D achieves an avg@32 accuracy of 50.42% on AIME24, delivering a massive 25.84% absolute 80 100 200 300 400             
+
+> Training Steps
+> 5
+> 10
+> 15
+> 20
+> avg@32 Accuracy (%)  AIME24
+> 0100 200 300 400
+> Training Steps
+> 5
+> 10
+> 15
+> AIME25
+> 0100 200 300 400
+> Training Steps
+> 5
+> 10
+> AIME26
+> TOP-D ( α= 0 .1)
+> TOP-D ( α= 1 .0)
+> TOP-D ( α= 0 .2)
+> TOP-D w/o off-policy
+> TOP-D ( α= 0 .3)
+> Standard OPD
+
+Figure 5: Learning curves for the ablation study on the Qwen3-1.7B-Base. We isolate the effects of the external proximal teacher ( α = 1 .0) and the internal trust region iterations (w/o off-policy). improvement over standard OPD (24.58%). This immense performance gain definitively proves that bounding the variance of the distillation reward effectively stabilizes the training process and subsequently unlocks the student’s reasoning potential. Furthermore, TOP-D firmly dominates the RLVR baselines, exceeding the highly competitive DAPO by 17.5% absolute accuracy on the same benchmark, demonstrating the superiority of stabilized TOP-D over the traditional RLVR baselines. When scaling down to the smaller Qwen3-1.7B-Base student, standard OPD suffers from severe performance degradation, noticeably falling behind the RLVR baselines. This fragility highlights the vulnerability of the unbounded logarithmic probability ratio when the capacity gap between the teacher and the student is severe. In stark contrast, TOP-D consistently maintains its substantial advantage. For the 1.7B student, TOP-D pushes the AIME24 accuracy past the 20% threshold and consistently surpasses standard OPD by over 10 percentage points on both AIME24 and AIME25. 
+
+5.3 Ablation Study 
+
+To deeply understand the mechanisms driving TOP-D’s success, we isolate the impact of its core structural designs. For this analysis, we utilize the Qwen3-1.7B-Base student model supervised by the Qwen3-30B-A3B-Instruct-2507 teacher. Figure 5 illustrates the learning curves of TOP-D compared to its ablated variants and the standard OPD baseline throughout the entire model training process. By setting the interpolation coefficient to α = 1 .0, we remove the external proximal teacher and revert the objective to the unbounded standard OPD reward. As shown in the training curves, this ablation causes highly unstable training dynamics and a significant degradation in overall performance. On the other hand, by disabling the internal trust region iterations (denoted as w/o off-policy), we force the optimization into a strictly on-policy regime. This leads to a drastic drop in sample efficiency, requiring significantly more training steps to converge and climb the performance curve. These empirical results clearly demonstrate that both the external proximal teacher and the 
+
+internal trust region iterations are indispensable components for achieving optimization stability and rapid performance improvement. Furthermore, we evaluate the sensitivity of TOP-D to the interpolation coefficient by varying α ∈ { 0.1, 0.2, 0.3}. We empirically observe that the training stability, convergence speed, and final performance exhibit marginal differences across this interval. This demonstrates that TOP-D is highly robust to the choice of α, functioning as a reliable solution without the need for exhaustive and computationally expensive hyperparameter tuning efforts. 
+
+## 6 Conclusion 
+
+In this paper, we introduce Trust Region Policy Distillation (TOP-D), a principled post-training paradigm resolving the optimization instability and sample inefficiency of standard On-Policy Distil-lation (OPD). Theoretically, TOP-D bounds gradient variance via an external proximal teacher and guarantees monotonic improvement with safe off-policy data reuse through internal trust region itera-tions. Empirically, it achieves massive performance gains on mathematical reasoning benchmarks, decisively outperforming standard OPD and competitive RLVR baselines across multiple model scales. By achieving these advancements without any additional computational overhead, TOP-D establishes a highly reliable, sample-efficient, and robust paradigm for aligning foundation models. 9References 
+
+[1] DeepSeek-AI. Deepseek-v4: Towards highly efficient million-token context intelligence, 2026. [2] Yuqian Fu, Haohuan Huang, Kaiwen Jiang, Yuanheng Zhu, and Dongbin Zhao. Revisiting on-policy distillation: Empirical failure modes and simple fixes. arXiv preprint arXiv:2603.25562 ,2026. [3] Yuxian Gu, Li Dong, Furu Wei, and Minlie Huang. MiniLLM: Knowledge distillation of large language models. In The Twelfth International Conference on Learning Representations , 2024. URL https://openreview.net/forum?id=5h0qf7IBZZ .[4] Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu, Runxin Xu, Ruoyu Zhang, Shirong Ma, Xiao Bi, et al. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning. arXiv preprint arXiv:2501.12948 , 2025. [5] Ijun Jang, Jewon Yeom, Juan Yeo, Hyunggu Lim, and Taesup Kim. Stable on-policy distillation through adaptive target reformulation. arXiv preprint arXiv:2601.07155 , 2026. [6] Sham Kakade and John Langford. Approximately optimal approximate reinforcement learning. In Proceedings of the nineteenth international conference on machine learning , pages 267–274, 2002. [7] Jongwoo Ko, Sara Abdali, Young Jin Kim, Tianyi Chen, and Pashmina Cameron. Scaling reasoning efficiently via relaxed on-policy distillation. arXiv preprint arXiv:2603.11137 , 2026. [8] Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph Gonzalez, Hao Zhang, and Ion Stoica. Efficient memory management for large language model serving with pagedattention. In Proceedings of the 29th symposium on operating systems principles , pages 611–626, 2023. [9] Yaxuan Li, Yuxin Zuo, Bingxiang He, Jinqian Zhang, Chaojun Xiao, Cheng Qian, Tianyu Yu, Huan-ang Gao, Wenkai Yang, Zhiyuan Liu, et al. Rethinking on-policy distillation of large language models: Phenomenology, mechanism, and recipe. arXiv preprint arXiv:2604.13016 ,2026. [10] Kevin Lu and Thinking Machines Lab. On-policy distillation. Thinking Machines Lab: Con-nectionism , 2025. doi: 10.64434/tml.20251026. https://thinkingmachines.ai/blog/on-policy-distillation. [11] John Schulman, Sergey Levine, Pieter Abbeel, Michael Jordan, and Philipp Moritz. Trust region policy optimization. In International conference on machine learning , pages 1889–1897. PMLR, 2015. [12] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347 , 2017. [13] Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Yang Wu, et al. Deepseekmath: Pushing the limits of mathematical reasoning in open language models. arXiv preprint arXiv:2402.03300 , 2024. [14] Idan Shenfeld, Mehul Damani, Jonas Hübotter, and Pulkit Agrawal. Self-distillation enables continual learning. arXiv preprint arXiv:2601.19897 , 2026. [15] Mohammad Shoeybi, Mostofa Patwary, Raul Puri, Patrick LeGresley, Jared Casper, and Bryan Catanzaro. Megatron-lm: Training multi-billion parameter language models using model parallelism. arXiv preprint arXiv:1909.08053 , 2019. [16] Bangjun Xiao, Bingquan Xia, Bo Yang, Bofei Gao, Bowen Shen, Chen Zhang, Chenhong He, Chiheng Lou, Fuli Luo, Gang Wang, et al. Mimo-v2-flash technical report. arXiv preprint arXiv:2601.02780 , 2026. [17] Zhengpeng Xie, Qiang Zhang, Fan Yang, Marco Hutter, and Renjing Xu. Simple policy optimization. In Forty-second International Conference on Machine Learning , 2025. URL 
+
+https://openreview.net/forum?id=SG8Yx1FyeU .10 [18] An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, et al. Qwen3 technical report. arXiv preprint arXiv:2505.09388 , 2025. [19] Zhuolin Yang, Zihan Liu, Yang Chen, Wenliang Dai, Boxin Wang, Sheng-Chieh Lin, Chankyu Lee, Yangyi Chen, Dongfu Jiang, Jiafan He, et al. Nemotron-cascade 2: Post-training llms with cascade rl and multi-domain on-policy distillation. arXiv preprint arXiv:2603.19220 , 2026. [20] Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Weinan Dai, Tiantian Fan, Gaohong Liu, Lingjun Liu, et al. Dapo: An open-source llm reinforcement learning system at scale. arXiv preprint arXiv:2503.14476 , 2025. [21] Aohan Zeng, Xin Lv, Zhenyu Hou, Zhengxiao Du, Qinkai Zheng, Bin Chen, Da Yin, Chendi Ge, Chenghua Huang, Chengxing Xie, et al. Glm-5: from vibe coding to agentic engineering. 
+
+arXiv preprint arXiv:2602.15763 , 2026. [22] Yanli Zhao, Andrew Gu, Rohan Varma, Liang Luo, Chien-Chin Huang, Min Xu, Less Wright, Hamid Shojanazeri, Myle Ott, Sam Shleifer, et al. Pytorch fsdp: experiences on scaling fully sharded data parallel. arXiv preprint arXiv:2304.11277 , 2023. [23] Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Sun, Jeff Huang, Cody H Yu, Shiyi Cao, Christos Kozyrakis, Ion Stoica, Joseph E Gonzalez, et al. Sglang: Efficient execution of structured language model programs. Advances in neural information processing systems , 37: 62557–62583, 2024. 11 A More Results                                                
+
+> Student Model Paradigm Method Teacher Model
+> Qwen3-30B-A3B-Instruct-2507
+> avg@32 avg@8 AIME24 AIME25 AIME26 AMC23 MATH-500 Olympiad
+> Qwen3-1.7B-Base
+> Base -3.44 1.98 1.88 27.27 56.80 24.00
+> RLVR GRPO 10.52 7.19 4.69 35.55 54.73 18.47 DAPO 12.29 11.56 8.54 37.50 61.88 26.63
+> Distillation OPD 8.96 7.50 5.94 45.70 71.13 35.83
+> TOP-D (Ours) 20.31 (+11.35) 17.71 (+10.21) 13.75 (+7.81) 54.38 (+8.68) 77.33 (+6.20) 43.06 (+7.23)
+
+Table 4: Performance comparison of the Qwen3-1.7B-Base across various mathematical benchmarks. 
+
+## Computational Resources 
+
+All primary experiments, including the training of the TOP-D and the reproduction of baseline methods, were conducted on a high-performance computing cluster equipped with NVIDIA H200 GPUs. To accelerate the research iteration cycle, our standard distributed training setup utilized 4 compute nodes, with each node containing 8 H200 GPUs (amounting to 32 GPUs in total). However, we emphasize that our proposed method is highly resource-efficient and accessible. The entire TOP-D training pipeline and its reported results can be fully reproduced on a single standard 8-GPU node. 
+
+## Limitations 
+
+Although TOP-D establishes a highly reliable and sample-efficient paradigm for policy distillation, yielding massive improvements over existing baselines, our current validation is naturally bounded by computational budgets and time constraints. Specifically, our primary validations focus on student models up to the 8B parameter scale. Due to resource limitations, we have not yet investigated the scaling behavior of TOP-D on massive-scale foundation models (e.g., scaling the student model beyond 30B parameters). However, given the theoretically grounded variance-reduction properties of our proximal teacher and the guaranteed monotonic improvement from our trust region iterations, we are optimistic that the robust performance of TOP-D will seamlessly transfer to larger-scale regimes. Furthermore, our current empirical evaluations are constrained to a relatively short optimization window of only approximately 200 to 400 update steps (except for the RLVR baselines). Crucially, we have not observed any empirical signs of performance saturation within this timeframe. This strongly suggests that the impressive results reported in our main text are far from their upper bounds, leaving substantial room for further improvements with continued training. We leave the exploration of such extreme-scale distillation and extended training horizons as exciting avenues for future work. 12 B Hyperparameters 
+
+Hyperparameter GRPO [13] DAPO [20] OPD [10] TOP-D (Ours) 
+
+General 
+
+Max prompt length 2048 2048 2048 2048 
+
+Optimization 
+
+Global batch size 512 512 512 512 Mini-batch size 32 32 512 32 Mini-batches 16 16 1 16 Group size 8 8 8 8Off-policy epoch 1 1 - 1Optimizer AdamW AdamW AdamW AdamW Learning rate 1e-6 1e-6 1e-6 1e-6 Warmup steps 10 10 - -
+
+Sampling 
+
+Rollout max response length 16384 16384 16384 16384 Rollout temperature 1.0 1.0 1.0 1.0 Rollout top-p 1.0 1.0 1.0 1.0 Validation max response length 16384 16384 16384 16384 Validation temperature 1.0 1.0 1.0 1.0 Validation top-p 0.7 0.7 0.7 0.7 
+
+Algorithm-specific 
+
+ϵlow 0.2 0.2 - 0.2 
+
+ϵhigh 0.2 0.28 - 0.2 Interpolation α - - - 0.1 / 0.2 
+
+Table 5: Detailed hyperparameters for different methods. 13 C Proofs 
+
+C.1 Proof of Theorem 4.2 Theorem 4.2. Under Assumption 4.1, for any interpolation coefficient α ∈ (0 , 1) , the variance of the TOP-D gradient estimator ˜gk does not diverge across the entire probability space. Instead, it is strictly bounded by a uniform absolute limit: 
+
+Var(˜ gk) ≤ M 2|V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+, (16) 
+
+where C∗ is a universal mathematical constant, and |V| denotes the size of the vocabulary V.Proof. By the fundamental definition of variance, for any random vector g, Var( g) ≤ E ∥g∥2.Thus, it suffices to establish a uniform upper bound for the gradient’s second moment E ∥˜gk∥2.The TOP-D immediate reward is ˜rk = log ( αρ k + 1 − α). Given a specific prompt x and a generated prefix y<k , we analyze the conditional expectation of the squared TOP-D reward ˜r2 
+
+> k
+
+over the finite vocabulary V at k-th token: 
+
+Eyk ∼πθ (·| x,y <k )
+
+˜r2
+
+> k
+
+ = X 
+
+> yk∈V
+
+πθ (yk | x, y <k )
+
+
+
+log 
+
+
+
+α π∗(yk | x, y <k )
+
+πθ (yk | x, y <k ) + 1 − α
+
+ 2
+
+. (17) For simplicity, let p = πθ (yk | x, y <k ) and q = π∗(yk | x, y <k ), where p, q ∈ (0 , 1) . We define the objective term for each token in the summation as 
+
+h(p, q ) = p
+
+
+
+log 
+
+
+
+α qp + 1 − α
+
+ 2
+
+. (18) We seek to find the global supremum of h(p, q ) over the open domain (p, q ) ∈ (0 , 1) × (0 , 1) by splitting it into two regions: 
+
+Case 1: The negative reward region q < p .
+
+In this region, qp < 1, so the inner logarithmic term satisfies α qp + 1 − α < 1. Its infimum is approached as q → 0+, giving a strict lower bound of 1 − α. Therefore, 1 − α < α qp + 1 − α < 1.The squared logarithm is bounded by 
+
+
+
+log 
+
+
+
+α qp + 1 − α
+
+ 2
+
+< (log(1 − α)) 2 . (19) Since p ∈ (0 , 1) , we directly bound the entire term: 
+
+h(p, q ) < (log(1 − α)) 2. (20) 
+
+Case 2: The positive reward region q ≥ p.
+
+Here, qp ≥ 1. Since we strictly know q < 1, we can upper bound the ratio qp < 1 
+
+> p
+
+. Because the function (log( αx + 1 − α)) 2 is monotonically increasing for x ≥ 1, we can relax h(p, q ) into a univariate upper bounding function solely dependent on p:
+
+h(p, q ) < p 
+
+
+
+log 
+
+
+
+α 1
+
+p + 1 − α
+
+ 2
+
+. (21) Furthermore, since 1 − α > 0 as α ∈ (0 , 1) , we can slightly loosen the inner term for algebraic simplicity without affecting its asymptotic behavior: αp + 1 − α < αp + 1 . Because the logarithm is monotonic, this substitution strictly bounds the function from above: 
+
+h(p, q ) < p 
+
+
+
+log 
+
+
+
+α 1
+
+p + 1 − α
+
+ 2
+
+< p 
+
+
+
+log 
+
+ αp + 1 
+
+ 2
+
+. (22) Next, let u = 1 
+
+> p
+
+∈ (1 , ∞). We define the ultimate boundary function for this region: 
+
+f (u) = (log( αu + 1)) 2
+
+u . (23) 14 To find the global maximum of f (u) on (1 , ∞), we compute its derivative with respect to u:
+
+f ′(u) = 2 log( αu + 1) · ααu +1 · u − (log( αu + 1)) 2
+
+u2 . (24) Setting f ′(u) = 0 identifies the stationary points. Since u > 1 and α ∈ (0 , 1) , the term log( αu +1) >
+
+0 and can be safely factored out. The condition simplifies to 
+
+2αu αu + 1 = log( αu + 1) . (25) We further introduce a variable substitution t = αu + 1 . Because αu > 0, we have t > 1. Noting that αu = t − 1, the condition transforms into a pure transcendental equation independent of α:
+
+2
+
+
+
+1 − 1
+
+t
+
+
+
+= log t =⇒ log t − 2
+
+
+
+1 − 1
+
+t
+
+
+
+= 0 . (26) Let w(t) = log t − 2  1 − 1
+
+> t
+
+. We analyze its roots for t > 1:1. The derivative is w′(t) = 1 
+
+> t
+
+− 2 
+
+> t2
+
+= t−2 
+
+> t2
+
+.2. For t ∈ (1 , 2) , w′(t) < 0, meaning w(t) strictly decreases. Since lim t→1+ w(t) = 0 ,
+
+w(t) < 0 for all t ∈ (1 , 2) .3. For t > 2, w′(t) > 0, meaning w(t) strictly increases. 4. Since w(2) = log 2 − 1 < 0 and w(e2) = 2 
+
+> e2
+
+> 0, by the Intermediate Value Theorem, there exists exactly one unique root t∗ in the interval (2 , e 2).Since there is only one critical point, this unique stationary point corresponds to the global maximum of f (u). The optimal point is u∗ = t∗−1 
+
+> α
+
+. Substituting u∗ back into f (u) yields the closed-form analytical upper bound: 
+
+f (u) ≤ f (u∗) = (log t∗)2
+
+t∗ − 1 · α. (27) Let C∗ = (log t∗)2 
+
+> t∗−1
+
+. We conclude that for q ≥ p, the term is strictly bounded by h(p, q ) ≤ C∗α.In summary, the function h(p, q ) is uniformly bounded across the entire open domain (0 , 1) × (0 , 1) 
+
+by an absolute limit: 
+
+sup 
+
+> p,q ∈(0 ,1)
+
+h(p, q ) ≤ max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+. (28) Because the conditional expectation is a sum over a finite vocabulary of size |V| , and each indi-vidual term is strictly bounded by max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+, the conditional expectation itself is absolutely bounded regardless of the specific context (x, y <k ):
+
+Eyk ∼πθ (·| x,y <k )
+
+˜r2
+
+> k
+
+ = X 
+
+> yk∈V
+
+πθ (yk | x, y <k )
+
+
+
+log 
+
+
+
+α π∗(yk | x, y <k )
+
+πθ (yk | x, y <k ) + 1 − α
+
+ 2
+
+= X 
+
+> yk∈V
+
+h(p, q ) ≤ |V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+.
+
+(29) Now, we move to the TOP-D gradient estimator ˜gk = ∇θ log πθ (yk | x, y <k ) · ˜rk. According to Assumption 4.1, we have 
+
+∥˜gk∥2 ≤ ∥∇ θ log πθ (yk | x, y <k )∥2 · ˜r2 
+
+> k
+
+≤ M 2 ˜r2
+
+> k
+
+. (30) Taking the total expectation over the prompt distribution x ∼ D x, the autoregressive prefix trajectories 
+
+y<k ∼ πθ (· | x), and the current token yk ∼ πθ (· | x, y <k ), we apply the law of iterated expectations: 
+
+E[∥˜gk∥2] = Ex∼D x,y <k ∼πθ (·| x)
+
+Eyk ∼πθ (·| x,y <k )
+
+∥˜gk∥2 
+
+≤ Ex∼D x,y <k ∼πθ (·| x)
+
+M 2Eyk ∼πθ (·| x,y <k )
+
+˜r2
+
+> k
+
+ 
+
+≤ Ex∼D x,y <k ∼πθ (·| x)
+
+h
+
+M 2|V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+oi 
+
+= M 2|V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+.
+
+(31) 15 Finally, returning to our variance inequality established at the beginning of the proof: 
+
+Var(˜ gk) ≤ E ∥˜gk∥2 ≤ M 2|V| max 
+
+n
+
+(log(1 − α)) 2 , C ∗α
+
+o
+
+. (32) Since M , |V| , α, and C∗ are all finite, the exact gradient variance is absolutely bounded. The proof is now complete. 
+
+C.2 Proof of Theorem 4.4 Theorem 4.4. For any initial student policy π0 ∈ Π, consider the iterative update process πk+1 =
+
+T (πk) + ϵk, where ϵk accounts for the practical optimization error (e.g., function approximation and optimization noise) at the k-th global step, where k ≥ 0. Then, the following bound holds: 
+
+d(πk+1 , π ∗) ≤ (1 − α)k+1 d(π0, π ∗) + 
+
+> k
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1. (33) 
+
+Furthermore, assuming the optimization process eventually stabilizes such that the asymptotic error is bounded by lim sup k→∞ ∥ϵk∥1 ≤ ϵ∞, we have 
+
+lim sup 
+
+> k→∞
+
+d(πk+1 , π ∗) ≤ ϵ∞
+
+α . (34) 
+
+Proof. We aim to bound the expected L1 distance between the student policy πk+1 and the optimal target teacher policy π∗.
+
+Step 1: Establishing the single-step recurrence relation. 
+
+According to the iterative update process defined in the theorem, for any global step k ≥ 0, the updated policy is given by 
+
+πk+1 = T (πk) + ϵk, (35) where T : Π → Π is the proximal teacher operator defined in (11) . By utilizing the triangle inequality of the expected L1 distance metric d(·, ·), we decouple the distance between the updated policy πk+1 and the target policy π∗ into two components: 
+
+d(πk+1 , π ∗) ≤ d(T (πk), π ∗) + d(πk+1 , T (πk)) . (36) We analyze the second term on the right-hand side first. As defined in the main text, the proximal teacher is explicitly given by ˜π∗ 
+
+> k
+
+= T (πk) = απ ∗ + (1 − α)πk. Therefore, the distance between the updated policy πk+1 and the proximal teacher T (πk) precisely corresponds to the expected L1 norm of the optimization error at step k:
+
+d(πk+1 , T (πk)) = d(πk+1 , ˜π∗
+
+> k
+
+) = ∥ϵk∥1. (37) For the first term, we substitute the explicit definition of the proximal operator T (πk). Utilizing the absolute homogeneity and linearity of the expected L1 norm over Dx, we obtain 
+
+d(T (πk), π ∗) = Ex∼D x [∥απ ∗(· | x) + (1 − α)πk(· | x) − π∗(· | x)∥1]= (1 − α)Ex∼D x [∥πk(· | x) − π∗(· | x)∥1]= (1 − α)d(πk, π ∗).
+
+(38) Substituting both decoupled terms back into the triangle inequality (36) , we establish the strict single-step recurrence relation for any step: 
+
+d(πk+1 , π ∗) ≤ (1 − α)d(πk, π ∗) + ∥ϵk∥1. (39) 
+
+Step 2: Forward unrolling of the recurrence relation. 
+
+To derive the explicit global bound for step k +1 , we recursively unroll this single-step bound forward, starting from the initial step k = 0 .For k = 0 , the single-step recurrence gives 
+
+d(π1, π ∗) ≤ (1 − α)d(π0, π ∗) + ∥ϵ0∥1. (40) 16 For k = 1 , we apply the recurrence and substitute the previously established bound for d(π1, π ∗):
+
+d(π2, π ∗) ≤ (1 − α)d(π1, π ∗) + ∥ϵ1∥1
+
+≤ (1 − α)2d(π0, π ∗) + (1 − α)∥ϵ0∥1 + ∥ϵ1∥1. (41) For k = 2 , we repeat the process by substituting the bound for d(π2, π ∗):
+
+d(π3, π ∗) ≤ (1 − α)d(π2, π ∗) + ∥ϵ2∥1
+
+≤ (1 − α)3d(π0, π ∗) + (1 − α)2∥ϵ0∥1 + (1 − α)∥ϵ1∥1 + ∥ϵ2∥1. (42) Through rigorous algebraic expansion by repeating this substitution multiple times, a clear geometric pattern emerges. Accumulating these terms yields the closed-form finite-step global bound: 
+
+d(πk+1 , π ∗) ≤ (1 − α)k+1 d(π0, π ∗) + 
+
+> k
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1. (43) 
+
+Step 3: Deriving the asymptotic convergence bound. 
+
+To determine the asymptotic behavior, we apply the limit supremum ( lim sup k→∞ ) to both sides of the inequality: 
+
+lim sup 
+
+> k→∞
+
+d(πk+1 , π ∗) ≤ lim sup 
+
+> k→∞
+
+(
+
+(1 − α)k+1 d(π0, π ∗) + 
+
+> k
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1
+
+)
+
+. (44) First, the interpolation coefficient satisfies α ∈ (0 , 1) . Consequently, the term associated with the initial distance decays exponentially to zero: 
+
+lim sup 
+
+> k→∞
+
+(1 − α)k+1 d(π0, π ∗) = 0 . (45) Next, we analyze the accumulated error summation term. We are given the assumption that the asymptotic optimization error is bounded, i.e., lim sup k→∞ ∥ϵk∥1 ≤ ϵ∞. By the mathematical definition of the limit supremum, for any arbitrarily small constant δ > 0, there exists a sufficiently large integer N > 0 such that for all i ≥ N , the condition ∥ϵi∥1 ≤ ϵ∞ + δ strictly holds. Let k → ∞ , we now split the summation into two parts at this critical index N :
+
+> k
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1 = 
+
+> N−1
+
+X
+
+> i=0
+
+(1 − α)k−i∥ϵi∥1 +
+
+> k
+
+X
+
+> i=N
+
+(1 − α)k−i∥ϵi∥1. (46) As k → ∞ , the first term vanishes to zero. For the second term, we safely substitute the uniform bound ∥ϵi∥1 ≤ ϵ∞ + δ for all terms where i ≥ N :
+
+> k
+
+X
+
+> i=N
+
+(1 − α)k−i∥ϵi∥1 ≤ (ϵ∞ + δ)
+
+> k
+
+X
+
+> i=N
+
+(1 − α)k−i. (47) We introduce a change of variable by letting j = k − i. When i = k, j = 0 . When i = N , j = k − N .This transforms the summation into a standard geometric series: 
+
+(ϵ∞ + δ)
+
+> k
+
+X
+
+> i=N
+
+(1 − α)k−i = ( ϵ∞ + δ)
+
+> k−N
+
+X
+
+> j=0
+
+(1 − α)j . (48) Now we have 
+
+lim sup 
+
+> k→∞
+> k
+
+X
+
+> i=N
+
+(1 − α)k−i∥ϵi∥1 ≤ lim sup 
+
+> k→∞
+
+(ϵ∞ + δ)
+
+> k−N
+
+X
+
+> j=0
+
+(1 − α)j = ( ϵ∞ + δ)
+
+> ∞
+
+X
+
+> j=0
+
+(1 − α)j = ϵ∞ + δα .
+
+(49) Because the choice of δ > 0 is arbitrary and can be chosen to be infinitesimally small ( δ → 0), the limit supremum of the entire sequence is strictly bounded by ϵ∞/α . Combining this bound with the vanishing first term, we have 
+
+lim sup 
+
+> k→∞
+
+d(πk+1 , π ∗) ≤ ϵ∞
+
+α . (50) The proof is now complete. 17 C.3 Proof of Theorem 4.9 Theorem 4.9. Given Assumption 4.6 and Definition 4.7, for any two policies, ˜π and π, the following bound holds: 
+
+η(˜ π) ≥ ζπ (˜ π) − 2ξT max ℓπ Es∼dπ 
+
+> norm (·)
+
+[DTV (˜ π(· | s), π (· | s))] , (51) 
+
+where ζπ (˜ π) = η(π) + ℓπ Es∼dπ 
+
+> norm (·),a ∼˜π(·| s)
+
+[Aπ (s, a )] , and ξ = max s|Ea∼˜π(·| s) [Aπ (s, a )] |.Proof. To establish the monotonic improvement lower bound, we begin by bounding the absolute error between the true expected return η(˜ π) and our constructed surrogate objective ζπ (˜ π).First, we express the unnormalized performance difference: 
+
+η(˜ π) = η(π) + X
+
+> s̸=s⊥
+
+d˜π (s) X
+
+> a∈V
+
+˜π(a | s)Aπ (s, a ). (52) 
+
+ζπ (˜ π) is anchored to the base policy’s normalized state distribution. By applying Definition 4.7, where dπ (s) = ℓπ dπ
+
+> norm
+
+(s), we can unroll ζπ (˜ π) back into the unnormalized measure space: 
+
+ζπ (˜ π) = η(π) + X
+
+> s̸=s⊥
+
+dπ (s) X
+
+> a∈V
+
+˜π(a | s)Aπ (s, a ). (53) We isolate the objective approximation error by subtracting ζπ (˜ π) from η(˜ π). By applying Hölder’s Inequality, we decouple the global state distribution shift from the local expected advantage drift: 
+
+|η(˜ π) − ζπ (˜ π)| ≤ 
+
+ X
+
+> s̸=s⊥
+
+|d˜π (s) − dπ (s)|
+
+ · max 
+
+> s
+
+X
+
+> a∈V
+
+˜π(a | s)Aπ (s, a ) . (54) The second decoupled term is precisely defined as our constant ξ = max s|Ea∼˜π(·| s) [Aπ (s, a )] |.Next, we rigorously bound the L1 norm of the unnormalized global measure shift. Since the unnormalized measure is the sum of marginal state probabilities over time, we expand this across the maximum generation horizon Tmax defined in Assumption 4.6, and apply the triangle inequality: 
+
+X
+
+> s̸=s⊥
+
+|d˜π (s) − dπ (s)| ≤ 
+
+> Tmax
+
+X
+
+> t=1
+
+X
+
+> s̸=s⊥
+
+|P(st = s | ˜π) − P(st = s | π)|. (55) At the first generation step t = 1 , the initial state s1 is strictly defined by the input prompt x ∼ D x
+
+and the special initial token y0. Because this initial distribution is completely independent of the policy, the marginal probability distance is exactly zero: 
+
+X
+
+> s̸=s⊥
+
+|P(s1 = s | ˜π) − P(s1 = s | π)| = 0 . (56) For any subsequent generation step t > 1, we construct a telescoping sum to bound the difference in marginal probabilities. Let Pi denote a hybrid trajectory distribution where the first i steps are generated by the behavior policy π, and the remaining steps from i + 1 to t − 1 are generated by the target policy ˜π. Note that Pt−1 represents full generation under π, and P0 represents full generation under ˜π. The telescoping sum bridging these two extreme distributions is given by 
+
+P(st = s | ˜π) − P(st = s | π) = P0 − Pt−1 = −
+
+> t−1
+
+X
+
+> i=1
+
+(Pi(st = s) − Pi−1(st = s)) . (57) Taking the absolute value and applying the triangle inequality yields 
+
+X
+
+> s̸=s⊥
+
+|P(st = s | ˜π) − P(st = s | π)| ≤ X
+
+> s̸=s⊥
+> t−1
+
+X
+
+> i=1
+
+|Pi(st = s) − Pi−1(st = s)|. (58) Observe that the adjacent hybrid distributions Pi and Pi−1 share the identical generation history up to step i − 1 (governed by π) and share the identical rollout strategy from step i + 1 onward (governed by ˜π). They diverge only at the specific decision step i.18 In our autoregressive generation framework, the environmental transitions are purely deterministic (appending the generated token to the prefix). Consequently, summing over all possible future states 
+
+st effectively marginalizes them out, collapsing the trajectory distance precisely to the expected L1
+
+divergence of the action distributions at the singular branching step i:
+
+X
+
+> s̸=s⊥
+
+|Pi(st = s) − Pi−1(st = s)| ≤ Esi∼P(si|π) [∥˜π(· | si) − π(· | si)∥1] . (59) Substituting this into our bound and summing over the entire telescoping sequence from i = 1 to 
+
+t − 1, we obtain the marginal probability distance for a specific step t:
+
+X
+
+> s̸=s⊥
+
+|P(st = s | ˜π) − P(st = s | π)| ≤ 2
+
+> t−1
+
+X
+
+> i=1
+
+Esi∼P(si|π) [DTV (˜ π(· | si), π (· | si))] . (60) As established earlier, the initial state distribution at t = 1 is strictly fixed by the prompt and the special initial token, yielding zero divergence. Therefore, we sum this temporal bound over the valid response steps from t = 2 to the maximum generation horizon Tmax to measure the global shift: 
+
+X
+
+> s̸=s⊥
+
+|d˜π (s) − dπ (s)| ≤ 2
+
+> Tmax
+
+X
+
+> t=2
+> t−1
+
+X
+
+> i=1
+
+Esi∼P(si|π) [DTV (˜ π(· | si), π (· | si))] . (61) To efficiently decouple this complex temporal accumulation, we rearrange the nested summations. By exchanging the order of summation between the time steps, we observe that the expected divergence at any step i is repeatedly accumulated exactly (Tmax − i) times: 
+
+> Tmax
+
+X
+
+> t=2
+> t−1
+
+X
+
+> i=1
+
+Esi∼P(si|π) [DTV (˜ π(· | si), π (· | si))] =
+
+> Tmax −1
+
+X
+
+> i=1
+
+(Tmax − i)Esi∼P(si|π) [DTV (˜ π(· | si), π (· | si))] 
+
+≤Tmax 
+
+> Tmax
+
+X
+
+> i=1
+
+X
+
+> s̸=s⊥
+
+P(si = s | π)DTV (˜ π(· | s), π (· | s)) .
+
+=Tmax 
+
+X
+
+> s̸=s⊥
+
+DTV (˜ π(· | s), π (· | s)) 
+
+> Tmax
+
+X
+
+> i=1
+
+P(si = s | π)
+
+!
+
+.
+
+(62) Here, we relax this sum by bounding the varying coefficient (Tmax − i) with the uniform maximum horizon Tmax and expand the expectation into a summation over specific states. Since the unnormalized state measure dπ (s) intrinsically aggregates the expected distribution across all steps by definition, i.e., dπ (s) = P∞ 
+
+> t=1
+
+P(st = s | π) ≥ PTmax  
+
+> i=1
+
+P(si = s | π), we can concisely upper-bound the relaxed sequence, so 
+
+X
+
+> s̸=s⊥
+
+|d˜π (s) − dπ (s)| ≤ 2Tmax 
+
+X
+
+> s̸=s⊥
+
+dπ (s)DTV (˜ π(· | s), π (· | s)) . (63) Recalling Definition 4.7, we substitute the unnormalized measure with dπ (s) = ℓπ dπ
+
+> norm
+
+(s), grace-fully transforming the summation into a formal expectation over the normalized state distribution: 
+
+X
+
+> s̸=s⊥
+
+|d˜π (s) − dπ (s)| ≤ 2Tmax ℓπ Es∼dπ 
+
+> norm (·)
+
+[DTV (˜ π(· | s), π (· | s))] . (64) Finally, substituting this global measure shift bound back into our decoupled objective approximation error (54), we obtain the absolute bound for the objective difference: 
+
+|η(˜ π) − ζπ (˜ π)| ≤ 2ξT max ℓπ Es∼dπ 
+
+> norm (·)
+
+[DTV (˜ π(· | s), π (· | s))] , (65) which implies that 
+
+η(˜ π) ≥ ζπ (˜ π) − 2ξT max ℓπ Es∼dπ 
+
+> norm (·)
+
+[DTV (˜ π(· | s), π (· | s))] . (66) The proof is now complete. 19
