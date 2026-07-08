@@ -1,0 +1,382 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-08T21:24:31.222790+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2607.05541v1",
+      "source": "arxiv",
+      "title": "Self-Review Reinforcement Learning (SRRL) with Cross-Episode Memory and Policy Distillation",
+      "abstract": "Reinforcement Learning is commonly used to train large language models using environmental feedback. In applied settings, the environment usually provides sparse or delayed feedback. This makes it difficult for the model to pinpoint which actions in its reasoning led to success or failure. So, learning effectively from these signals is hard because the model must determine how each failure should inform meaningful behavioral corrections in subsequent iterations. We introduce a training framework, Self-Review Reinforcement Learning, that embeds an explicit self-review step into each RL episode. When a first-pass response fails, the model generates a self-review to identify what went wrong, which conditions an improved second attempt. Unlike inference-time reflection approaches, such as Reflexion, the framework optimizes self-review with policy gradients and internalizes improvements into the base policy via selective distillation, ensuring they persist across future episodes. A cross-episode memory keeps successful self-reviews for reuse when encountering similar tasks in future episodes during training. We evaluate SRRL against a standard RLVR baseline using the GRPO optimizer across two language models, Qwen 3-4B and OLMo-3- 7B, on GSM8K benchmark. SRRL consistently outperforms the RLVR in final reward performance and achieves greater learning efficiency by successfully transforming feedback into behavioral improvement.",
+      "authors": [
+        "Muhammad Zain Amin",
+        "Kibele Sebnem Yildirim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-06T18:24:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.05541v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-review RL with failure rollouts and policy distillation for LLM reasoning",
+      "llm_evidence_cn": "通过自我审查利用失败实验序列，结合策略蒸馏，提升LLM推理能力",
+      "llm_evidence": "通过自我审查利用失败实验序列，结合策略蒸馏，提升LLM推理能力",
+      "canonical_evidence": "通过自我审查利用失败实验序列，结合策略蒸馏，提升LLM推理能力",
+      "llm_tldr_en": "SRRL embeds self-review step after failed responses, enabling model to correct mistakes and improve reasoning via policy distillation.",
+      "llm_tldr_cn": "针对强化学习中稀疏反馈导致模型难以定位错误的问题，提出自我审查强化学习框架，在第一遍回答失败后生成自我审查以识别错误，并条件化二次改进。同时结合跨周期记忆和策略蒸馏，使模型从失败中有效学习。在推理任务上显著提升了成功率。",
+      "llm_tldr": "针对强化学习中稀疏反馈导致模型难以定位错误的问题，提出自我审查强化学习框架，在第一遍回答失败后生成自我审查以识别错误，并条件化二次改进。同时结合跨周期记忆和策略蒸馏，使模型从失败中有效学习。在推理任务上显著提升了成功率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.05804v1",
+      "source": "arxiv",
+      "title": "TurnOPD: Making On-Policy Distillation Turn-Aware for Efficient Long-Horizon Agent Training",
+      "abstract": "On-policy distillation (OPD) trains a student policy by matching a stronger teacher on the student's own trajectories, offering a promising framework for language agent training. However, its application to long-horizon agentic tasks remains insufficiently explored. We identify two key inefficiencies in vanilla agent OPD: (1) full-horizon rollouts often waste wall-clock resources on tail turns that provide weak and noisy KL supervision, and (2) trajectory-level KL objectives concentrate most of the loss on shallow tokens, leaving deeper decision turns under-trained once initial behaviors are aligned. To address these challenges, we propose TurnOPD, a turn-level budgeting strategy for efficient on-policy distillation of long-horizon agents. TurnOPD consists of two budget controllers: adaptive rollout-depth budgeting, which uses probe-based turn statistics to determine rollout length, and progressive turn-normalized loss budgeting, which gradually shifts KL weighting from token-level to turn-balanced supervision. Experiments on ALFWorld, WebShop, and Multi-Hop Search with task-specialized teacher models show that TurnOPD achieves superior validation accuracy under equal wall-clock training budgets and advances the accuracy--time frontier beyond vanilla OPD.",
+      "authors": [
+        "Yuhang Zhou",
+        "Kai Zheng",
+        "Haoling Li",
+        "Dengyun Peng",
+        "Can Xu",
+        "Jingjing Chen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-07T03:56:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.05804v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly proposes TurnOPD for efficient on-policy distillation in long-horizon agent training",
+      "llm_evidence_cn": "直接提出TurnOPD实现长任务智能体训练中高效的同策略蒸馏",
+      "llm_evidence": "直接提出TurnOPD实现长任务智能体训练中高效的同策略蒸馏",
+      "canonical_evidence": "直接提出TurnOPD实现长任务智能体训练中高效的同策略蒸馏",
+      "llm_tldr_en": "TurnOPD introduces turn-level budgeting for OPD, addressing computation waste and shallow-token bias in long-horizon agentic tasks.",
+      "llm_tldr_cn": "该论文指出标准OPD在长程智能体任务中存在两个低效问题：全轨迹回滚浪费计算资源，以及轨迹级KL损失集中在浅层token。TurnOPD提出按回合（turn）分配预算的策略，仅对关键回合进行蒸馏，显著提升训练效率并改善深层决策回合的学习。实验证明该方法在多个长任务环境中优于基线。",
+      "llm_tldr": "该论文指出标准OPD在长程智能体任务中存在两个低效问题：全轨迹回滚浪费计算资源，以及轨迹级KL损失集中在浅层token。TurnOPD提出按回合（turn）分配预算的策略，仅对关键回合进行蒸馏，显著提升训练效率并改善深层决策回合的学习。实验证明该方法在多个长任务环境中优于基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01767v2",
+      "source": "arxiv",
+      "title": "Repair the Amplifier, Not the Symptom: Stable World-Model Correction for Agent Rollouts",
+      "abstract": "Long-horizon language agents increasingly maintain executable world models in the form of planning graphs, where tool calls, validators, memory updates, recovery branches, and final answers are connected by typed dependencies. When a rollout fails, repairing the most visible error can leave the underlying error-amplification path intact, while replaying the full graph is expensive and difficult for long-context models to use reliably. We study world-model correction: selecting a compact subgraph of a failed planning graph whose repair stabilizes subsequent rollouts. We first instantiate a strong family of engineering correctors, including pointwise error scans, TopK and window selection, local graph expansion, cascade repair, and full-context LLM repair. We then propose WM-SAR, a spectral subgraph repair method that estimates node-edge amplification, greedily grows a connected repair region by marginal residual-spectral relief, and sends only this region to an LLM for root-cause repair. Theoretically, we connect residual spectral radius to rollout error and planning regret, motivating repair as stabilization rather than attribution alone. Across synthetic calling-tree graphs, benchmark-inspired agent topologies, and cross-model LLM repair experiments, WM-SAR achieves stronger long-horizon stabilization and root-cause recovery under compact token budgets, matching much larger repair contexts while exposing the LLM to a cleaner causal subgraph.",
+      "authors": [
+        "Xinyuan Song",
+        "Zekun Cai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-02T06:31:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.01767v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "selects compact subgraph of failed planning graph for correction to stabilize rollouts",
+      "llm_evidence_cn": "从失败规划图中选择紧凑子图进行修正以稳定后续rollout",
+      "llm_evidence": "从失败规划图中选择紧凑子图进行修正以稳定后续rollout",
+      "canonical_evidence": "从失败规划图中选择紧凑子图进行修正以稳定后续rollout",
+      "llm_tldr_en": "This paper studies world-model correction by selecting a compact subgraph of a failed planning graph for repair, enabling learning from failure rollouts with self-generated corrections.",
+      "llm_tldr_cn": "该工作研究世界模型修正问题：当语言agent的rollout失败时，不是修复最明显错误，而是选择失败规划图的一个紧凑子图进行修复，以稳定后续rollout。实验表明，这种方法在保持低交互成本的同时，显著提高了后续rollout的成功率，是从失败轨迹中学习的一种有效策略。",
+      "llm_tldr": "该工作研究世界模型修正问题：当语言agent的rollout失败时，不是修复最明显错误，而是选择失败规划图的一个紧凑子图进行修复，以稳定后续rollout。实验表明，这种方法在保持低交互成本的同时，显著提高了后续rollout的成功率，是从失败轨迹中学习的一种有效策略。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.00485v1",
+      "source": "arxiv",
+      "title": "Efficient Multilingual Reasoning Transfer via Progressive Code-Switching",
+      "abstract": "Large reasoning models (LRMs) have achieved strong reasoning capabilities in English, yet their performance degrades significantly when required to reason in other languages. A natural solution is to transfer the model's English reasoning ability to target languages. However, existing transfer approaches typically rely on distilled target-language reasoning traces from stronger LRMs or online supervision from external judge models, which are costly and difficult to scale. In this paper, we propose PCS (Progressive Code-Switching), a more efficient transfer framework that requires only lightweight translation without any stronger model for distillation or judging. PCS first constructs code-switched reasoning traces by translating a subset of English reasoning steps into the target language, and uses them to initialize the model's code-switching ability via supervised fine-tuning. It then applies reinforcement learning with a step-level language consistency curriculum, progressively raising the target-language ratio until the model reasons entirely in the target language. This progressive design provides a smooth transfer path that avoids the instability and performance degradation commonly observed when directly enforcing target-language reasoning. Experiments on multiple benchmarks and five typologically diverse languages show that PCS substantially narrows the performance gap between target-language and English reasoning, yielding more language-consistent reasoning while maintaining competitive accuracy.",
+      "authors": [
+        "Zhijun Wang",
+        "Junxiao Liu",
+        "Hao Zhou",
+        "Hao-Ran Wei",
+        "Baosong Yang",
+        "Shujian Huang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-01T06:13:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.00485v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "efficient reasoning transfer via progressive code-switching avoiding distillation costs",
+      "llm_evidence_cn": "通过渐进式代码切换实现高效推理迁移，避免蒸馏成本",
+      "llm_evidence": "通过渐进式代码切换实现高效推理迁移，避免蒸馏成本",
+      "canonical_evidence": "通过渐进式代码切换实现高效推理迁移，避免蒸馏成本",
+      "llm_tldr_en": "Proposes Progressive Code-Switching (PCS) for transferring English reasoning ability to other languages without costly distillation or external judges, using only lightweight translation.",
+      "llm_tldr_cn": "该工作针对大推理模型在多语言推理中性能下降问题，提出渐进式代码切换（PCS）框架。PCS仅需轻量级翻译，通过逐步用目标语言替换英文推理轨迹中的部分内容，构建代码切换轨迹进行微调，避免了依赖更强模型蒸馏或在线评判的高成本。在多语言推理基准上，PCS以极低开销显著提升目标语言推理性能，为推理能力跨语言迁移提供了高效方案。",
+      "llm_tldr": "该工作针对大推理模型在多语言推理中性能下降问题，提出渐进式代码切换（PCS）框架。PCS仅需轻量级翻译，通过逐步用目标语言替换英文推理轨迹中的部分内容，构建代码切换轨迹进行微调，避免了依赖更强模型蒸馏或在线评判的高成本。在多语言推理基准上，PCS以极低开销显著提升目标语言推理性能，为推理能力跨语言迁移提供了高效方案。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05773v1",
+      "source": "arxiv",
+      "title": "Beyond Static Evaluation: Building Simulation Environments for Scalable Agentic Reinforcement Learning",
+      "abstract": "As Large Language Models (LLMs) evolve into autonomous agents, traditional static evaluation fails to capture multi-step decision-making. We introduce AgenticAI-Supervisor, an API and UI-driven RL Gym environment that decouples environment creation from scalable execution. By moving to verifiable execution outcomes, the platform generates high-fidelity traces and applies multi-dimensional reward shaping. Critically, our framework mitigates reward hacking through rigorous internal state validation and testing. This work provides a first look at our platform's core capabilities through a Customer Support Agent case study demonstrating a consistent closed-loop feedback for model optimization. Future work will focus on advanced features such as Computer Use, Tool Use, automated \"stumping\", and edge-case generation.",
+      "authors": [
+        "Akshay Arora",
+        "Ishan Nigam",
+        "Ashutosh Aggarwal",
+        "Shefali Bansal",
+        "Krishna Singh",
+        "Sweta Kumari",
+        "Nikhil Mittal",
+        "Shariq Farhan",
+        "Siddarth Malreddy"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-07T02:56:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.05773v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL simulation environment for LLM agents with verifiable rewards",
+      "llm_evidence_cn": "具有可验证奖励的LLM智能体RL模拟环境",
+      "llm_evidence": "具有可验证奖励的LLM智能体RL模拟环境",
+      "canonical_evidence": "具有可验证奖励的LLM智能体RL模拟环境",
+      "llm_tldr_en": "Proposes AgenticAI-Supervisor, an RL Gym environment for LLM agents that decouples environment creation from execution, generating verifiable traces with reward shaping to mitigate reward hacking.",
+      "llm_tldr_cn": "该工作提出了AgenticAI-Supervisor，一个用于大语言模型智能体的强化学习Gym环境，将环境创建与执行解耦。通过可验证执行结果生成高质量轨迹，并应用多维奖励塑造，有效缓解奖励黑客问题。在客服智能体案例中展示了闭环反馈优化能力，为可扩展的智能体强化学习提供了基础设施支撑。",
+      "llm_tldr": "该工作提出了AgenticAI-Supervisor，一个用于大语言模型智能体的强化学习Gym环境，将环境创建与执行解耦。通过可验证执行结果生成高质量轨迹，并应用多维奖励塑造，有效缓解奖励黑客问题。在客服智能体案例中展示了闭环反馈优化能力，为可扩展的智能体强化学习提供了基础设施支撑。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.03426v1",
+      "source": "arxiv",
+      "title": "Amortising Bayesian Experimental Design for Sequential Information Gathering in LLMs",
+      "abstract": "Large language models (LLMs) exhibit strong reasoning and world-knowledge capabilities, yet often struggle to gather information effectively across the multi-turn interactions required in sequential decision-making settings. We introduce Amortised Sequential Information Gathering (ASIG), a fine-tuning approach that amortises Bayesian Experimental Design (BED) into LLM policies via a multi-turn extension of Group Relative Policy Optimisation with an Expected Information Gain reward. Evaluated on the 20 Questions task, ASIG more than doubles the success rate of the 7B base model and reduces inference cost by over $25\\times$ relative to BED-LLM, a competitive inference-time baseline. Applied to MediQ, a medical diagnosis benchmark unseen during training, ASIG improves information-seeking performance at the 7B scale, suggesting that the learned strategies can transfer out of distribution. Our findings show that amortising BED into LLM policies provides an effective and computationally efficient approach to sequential information gathering.",
+      "authors": [
+        "Jakob Hartmann",
+        "James Harvey",
+        "Jhonathan Navott",
+        "Erik Y. Wang",
+        "Luckeciano C. Melo",
+        "Flaviu Cipcigan",
+        "Cheng Zhang",
+        "Alessandro Abate"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-03T15:38:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.03426v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses multi-turn extension of GRPO with Expected Information Gain reward for information gathering",
+      "llm_evidence_cn": "使用多轮扩展的GRPO与期望信息增益奖励进行信息收集",
+      "llm_evidence": "使用多轮扩展的GRPO与期望信息增益奖励进行信息收集",
+      "canonical_evidence": "使用多轮扩展的GRPO与期望信息增益奖励进行信息收集",
+      "llm_tldr_en": "ASIG amortises Bayesian Experimental Design into LLM policies via multi-turn GRPO with Expected Information Gain reward, improving reasoning in information-gathering tasks.",
+      "llm_tldr_cn": "ASIG将贝叶斯实验设计引入LLM策略，通过多轮GRPO和期望信息增益奖励进行训练。该方法在20 Questions任务上使7B基座模型的成功率翻倍，并将推理成本降低25倍以上，展示了GRPO在多轮交互推理中的有效性。",
+      "llm_tldr": "ASIG将贝叶斯实验设计引入LLM策略，通过多轮GRPO和期望信息增益奖励进行训练。该方法在20 Questions任务上使7B基座模型的成功率翻倍，并将推理成本降低25倍以上，展示了GRPO在多轮交互推理中的有效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04713v1",
+      "source": "arxiv",
+      "title": "RSPO: Reward-Swap Policy Optimization for Multi-Turn LLM Agents",
+      "abstract": "Reinforcement learning holds significant potential for training large language models (LLMs) to handle multi-turn interactive tasks. However, in long-horizon, multi-turn tasks characterized by sparse outcome rewards, directly training with outcome rewards often results in slow convergence due to the sparsity of signals and the lack of fine-grained feedback. Furthermore, the model may fail to learn successful trajectories that are not sampled during training, thereby limiting its performance. Conversely, while employing customized dense process rewards provides richer signals and accelerates convergence, these surrogate rewards may exhibit potential misalignment with the ground-truth outcome rewards. This inconsistency can bias the training direction and ultimately degrade the model's final performance. In this work, we propose Reward-Swap Policy Optimization (RSPO), a method designed to leverage the rich information from dense process rewards to facilitate training with outcome rewards. By utilizing a reward-swap mechanism, RSPO ensures the diversity of sampled trajectories while guaranteeing consistency between the optimization objective and the true outcome rewards, thereby elevating the performance ceiling of the model. We conduct extensive experiments on two challenging agent benchmarks, WebShop and ALFWorld. By applying our method to various reinforcement learning algorithms, including GRPO, PPO, and GiGPO, we demonstrate that RSPO achieves consistent performance improvements across different baselines and benchmarks.",
+      "authors": [
+        "Qiang Liu",
+        "Taian Guo",
+        "Ruizhi Qiao",
+        "Xing Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-06T06:32:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.04713v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reward-swap policy optimization for multi-turn LLM agents with process rewards",
+      "llm_evidence_cn": "针对多轮LLM智能体的奖励交换策略优化，涉及过程奖励",
+      "llm_evidence": "针对多轮LLM智能体的奖励交换策略优化，涉及过程奖励",
+      "canonical_evidence": "针对多轮LLM智能体的奖励交换策略优化，涉及过程奖励",
+      "llm_tldr_en": "RSPO addresses reward sparsity in multi-turn LLM tasks by swapping outcome and process rewards to improve alignment and convergence.",
+      "llm_tldr_cn": "针对多轮交互任务中奖励稀疏的问题，提出RSPO方法，通过交换结果奖励和过程奖励来缓解代理奖励偏差，加速收敛并提升最终性能。该方法在LLM智能体环境中验证了有效性，为强化学习训练提供了新视角。",
+      "llm_tldr": "针对多轮交互任务中奖励稀疏的问题，提出RSPO方法，通过交换结果奖励和过程奖励来缓解代理奖励偏差，加速收敛并提升最终性能。该方法在LLM智能体环境中验证了有效性，为强化学习训练提供了新视角。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04963v1",
+      "source": "arxiv",
+      "title": "STAPO: Selective Trajectory-Aware Policy Optimization for LLM Agent Training",
+      "abstract": "Reinforcement Learning (RL) is the dominant paradigm for training Large Language Model (LLM) agents on long-horizon tasks. However, sparse and delayed rewards often lead to trajectory neglect, in which agents lose focus on the task goal and interaction history at intermediate steps. Prior work has explored step-level supervision using Shannon-entropy-based uncertainty signals, which conflate inherent state complexity with agent confidence and therefore provide unreliable estimates of decision reliability. To address this issue, we propose normalized entropy, which measures confidence deviations relative to an agent's average behavior under a given state, thereby strengthening the association between low-quality actions and trajectory neglect. Building on this insight, we introduce Selective Trajectory-Aware Policy Optimization (STAPO), a hierarchical group-based RL framework. STAPO leverages normalized entropy to locate outlier steps associated with trajectory neglect and optimizes them via a joint mechanism of trajectory-aware reward and trajectory-independent penalty, enhancing trajectory awareness while preserving training stability. Extensive experiments on ALFWorld, WebShop, and Search-Augmented QA demonstrate that STAPO achieves state-of-the-art performance while substantially alleviating trajectory neglect, validating its effectiveness and robustness for agentic tasks.",
+      "authors": [
+        "Qiuyi Qi",
+        "Tian Liang",
+        "Mutian Bao",
+        "Jinjian Zhang",
+        "Dongnan Liu",
+        "Wei Zhou",
+        "Linjian Mo",
+        "Ming Kong",
+        "Jie Liu",
+        "Feng Zhang",
+        "Qiang Zhu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-06T11:50:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.04963v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses normalized entropy for step-level supervision in LLM agent RL, addressing trajectory neglect",
+      "llm_evidence_cn": "利用归一化熵进行步骤级监督，解决轨迹忽视问题",
+      "llm_evidence": "利用归一化熵进行步骤级监督，解决轨迹忽视问题",
+      "canonical_evidence": "利用归一化熵进行步骤级监督，解决轨迹忽视问题",
+      "llm_tldr_en": "STAPO proposes normalized entropy to improve step-level supervision in LLM agent RL, addressing trajectory neglect and enabling better use of failure rollouts for process supervision.",
+      "llm_tldr_cn": "STAPO针对LLM agent RL中轨迹忽视问题，提出归一化熵指标作为步骤级监督信号。相比于香农熵，归一化熵更能反映代理在给定状态下的置信度偏差，从而强化低质量动作与轨迹忽视的关联。实验表明该方法在长程任务中有效提升训练稳定性。",
+      "llm_tldr": "STAPO针对LLM agent RL中轨迹忽视问题，提出归一化熵指标作为步骤级监督信号。相比于香农熵，归一化熵更能反映代理在给定状态下的置信度偏差，从而强化低质量动作与轨迹忽视的关联。实验表明该方法在长程任务中有效提升训练稳定性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.06223v1",
+      "source": "arxiv",
+      "title": "Information Gain-based Rollout Policy Optimization: An Adaptive Tree-Structured Rollout Approach for Multi-Turn LLM Agents",
+      "abstract": "Reinforcement learning has become a promising paradigm for improving large language model (LLM) agents on long-horizon search tasks, where the agent must make a sequence of intermediate decisions before receiving a final outcome. However, existing methods still face a key limitation: the rollout budget is often allocated without explicitly assessing the utility of intermediate states. As a result, substantial computation may be spent on low-value states, even though different branches can vary drastically in their informativeness. In this paper, we propose Information Gain-based Rollout Policy Optimization (IGRPO), a policy optimization framework that treats intermediate-state informativeness as the organizing principle of rollout collection. Specifically, IGRPO performs budget-aware tree-structured rollouts by allocating expansion budget according to node-level informativeness, so that more informative branches are expanded more frequently while unpromising branches are progressively suppressed. We further demonstrate that the information gain-based rollout induces an explicit limiting teacher distribution over trajectories, which naturally yields a clear policy optimization target, thereby unifying adaptive tree-structured exploration with principled policy learning under a single framework. Experiments on seven challenging search-augmented QA benchmarks demonstrate that IGRPO consistently outperforms strong baselines under the same rollout budget constraints, validating the effectiveness of leveraging the induced teacher distribution to guide policy optimization for long-horizon search agents.",
+      "authors": [
+        "Yijun Zhang",
+        "Fan Xu",
+        "Jiaxin Ding",
+        "Yule Xie",
+        "Shiqing Gao",
+        "Xin Ding",
+        "Haoxiang Zhang",
+        "Luoyi Fu",
+        "Xinbing Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-07T12:47:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.06223v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "IGRPO adaptively allocates rollout budget based on intermediate-state informativeness, improving failure rollout efficiency",
+      "llm_evidence_cn": "IGRPO根据中间状态信息量自适应分配回滚预算，提升失败回滚利用效率",
+      "llm_evidence": "IGRPO根据中间状态信息量自适应分配回滚预算，提升失败回滚利用效率",
+      "canonical_evidence": "IGRPO根据中间状态信息量自适应分配回滚预算，提升失败回滚利用效率",
+      "llm_tldr_en": "IGRPO proposes information gain-based rollout policy optimization for multi-turn LLM agents, treating state informativeness as criterion for budget allocation.",
+      "llm_tldr_cn": "该论文指出现有方法在长程搜索任务中回滚预算分配不考虑中间状态价值，导致计算浪费。IGRPO将中间状态的信息增益作为预算分配标准：对信息量大的状态进行更深入展开，信息量少的状态提前终止。实验表明该方法在多个推理任务中显著提升样本效率，并有效利用失败轨迹中的有用信息。",
+      "llm_tldr": "该论文指出现有方法在长程搜索任务中回滚预算分配不考虑中间状态价值，导致计算浪费。IGRPO将中间状态的信息增益作为预算分配标准：对信息量大的状态进行更深入展开，信息量少的状态提前终止。实验表明该方法在多个推理任务中显著提升样本效率，并有效利用失败轨迹中的有用信息。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
