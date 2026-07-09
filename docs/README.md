@@ -6,49 +6,49 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-08
-- 运行时间：2026-07-08 21:29:47 UTC
+- 最新运行日期：2026-07-09
+- 运行时间：2026-07-09 22:05:27 UTC
 - 运行状态：成功
 - 本次总论文数：9
-- 精读区：3
-- 速读区：6
+- 精读区：6
+- 速读区：3
 
 ### 今日简报（AI）
-1) 今日精读两篇高分文章：自反思强化学习（SRRL）与回合感知同策略蒸馏（TurnOPD），主攻智能体长期任务训练与策略迁移。
-2) 最值得看：SRRL 通过跨回合记忆+策略蒸馏实现高效自对齐，TurnOPD 则针对长程任务优化蒸馏效率；速读中 RSPO 的奖励切换方法对多轮LLM训练有启发。
-3) 建议关注这些强化学习策略在LLM多轮对话、跨语言推理等场景的落地，尤其是代码切换与贝叶斯实验设计中的自适应信息收集。
-- 详情：[/202607/08/README](/202607/08/README)
+今日聚焦9篇论文，精读6篇，核心围绕大模型推理泛化与自我改进策略的蒸馏方法。  
+最值得关注的两个方向：弱到强泛化的直接on-policy蒸馏，以及基于几何的自蒸馏提升推理泛化能力。  
+建议普通读者优先阅读这两篇精读论文，探索如何在弱监督或自蒸馏框架下强化模型推理。
+- 详情：[/202607/09/README](/202607/09/README)
 
 ### 精读区论文标签
-1. [Self-Review Reinforcement Learning (SRRL) with Cross-Episode Memory and Policy Distillation](/202607/08/2607.05541v1-self-review-reinforcement-learning-srrl-with-cross-episode-memory-and-policy-distillation)  
+1. [Weak-to-Strong Generalization via Direct On-Policy Distillation](/202607/09/2607.05394v2-weak-to-strong-generalization-via-direct-on-policy-distillation)  
+   标签：评分：10.0/10、query:opd
+   evidence：直接同策略蒸馏用于大语言模型推理
+2. [Geometric Self-Distillation for Reasoning Generalization](/202607/09/2607.06855v1-geometric-self-distillation-for-reasoning-generalization)  
    标签：评分：9.0/10、query:opd
-   evidence：通过自我审查利用失败实验序列，结合策略蒸馏，提升LLM推理能力
-2. [TurnOPD: Making On-Policy Distillation Turn-Aware for Efficient Long-Horizon Agent Training](/202607/08/2607.05804v1-turnopd-making-on-policy-distillation-turn-aware-for-efficient-long-horizon-agent-training)  
+   evidence：针对推理泛化的同策略蒸馏
+3. [Search, Fail, Recover: A Training Framework for Correction-Aware Reasoning](/202607/09/2607.07492v1-search-fail-recover-a-training-framework-for-correction-aware-reasoning)  
    标签：评分：9.0/10、query:opd
-   evidence：直接提出TurnOPD实现长任务智能体训练中高效的同策略蒸馏
-3. [Repair the Amplifier, Not the Symptom: Stable World-Model Correction for Agent Rollouts](/202607/08/2607.01767v2-repair-the-amplifier-not-the-symptom-stable-world-model-correction-for-agent-rollouts)  
+   evidence：使用失败轨迹和回退的修正感知推理训练框架
+4. [Max Out GRPO Signal: Adaptive Trace Prefix Control for Hard Reasoning Problems](/202607/09/2607.07674v1-max-out-grpo-signal-adaptive-trace-prefix-control-for-hard-reasoning-problems)  
+   标签：评分：9.0/10、query:opd
+   evidence：通过自适应轨迹前缀控制最大化GRPO信号(AdaPrefix-GRPO)
+5. [Behavior Leverage Imbalance in Multi-Teacher On-Policy Distillation](/202607/09/2607.07050v1-behavior-leverage-imbalance-in-multi-teacher-on-policy-distillation)  
    标签：评分：8.0/10、query:opd
-   evidence：从失败规划图中选择紧凑子图进行修正以稳定后续rollout
+   evidence：面向代理语言模型的多教师同策略蒸馏
+6. [Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning](/202607/09/2607.07508v1-single-rollout-asynchronous-optimization-for-agentic-reinforcement-learning)  
+   标签：评分：8.0/10、query:opd
+   evidence：面向GRPO的单展开异步优化方法用于智能体强化学习
 
 ### 速读区论文标签
-1. [Efficient Multilingual Reasoning Transfer via Progressive Code-Switching](/202607/08/2607.00485v1-efficient-multilingual-reasoning-transfer-via-progressive-code-switching)  
+1. [RSPO: Reward-Swap Policy Optimization for Multi-Turn LLM Agents](/202607/09/2607.04713v1-rspo-reward-swap-policy-optimization-for-multi-turn-llm-agents)  
    标签：评分：7.0/10、query:opd
-   evidence：通过渐进式代码切换实现高效推理迁移，避免蒸馏成本
-2. [Amortising Bayesian Experimental Design for Sequential Information Gathering in LLMs](/202607/08/2607.03426v1-amortising-bayesian-experimental-design-for-sequential-information-gathering-in-llms)  
-   标签：评分：7.0/10、query:opd
-   evidence：使用多轮扩展的GRPO与期望信息增益奖励进行信息收集
-3. [RSPO: Reward-Swap Policy Optimization for Multi-Turn LLM Agents](/202607/08/2607.04713v1-rspo-reward-swap-policy-optimization-for-multi-turn-llm-agents)  
-   标签：评分：7.0/10、query:opd
-   evidence：针对多轮LLM智能体的奖励交换策略优化，涉及过程奖励
-4. [STAPO: Selective Trajectory-Aware Policy Optimization for LLM Agent Training](/202607/08/2607.04963v1-stapo-selective-trajectory-aware-policy-optimization-for-llm-agent-training)  
-   标签：评分：7.0/10、query:opd
-   evidence：利用归一化熵进行步骤级监督，解决轨迹忽视问题
-5. [Information Gain-based Rollout Policy Optimization: An Adaptive Tree-Structured Rollout Approach for Multi-Turn LLM Agents](/202607/08/2607.06223v1-information-gain-based-rollout-policy-optimization-an-adaptive-tree-structured-rollout-approach-for-multi-turn-llm-agents)  
-   标签：评分：7.0/10、query:opd
-   evidence：IGRPO根据中间状态信息量自适应分配回滚预算，提升失败回滚利用效率
-6. [Beyond Static Evaluation: Building Simulation Environments for Scalable Agentic Reinforcement Learning](/202607/08/2607.05773v1-beyond-static-evaluation-building-simulation-environments-for-scalable-agentic-reinforcement-learning)  
+   evidence：使用奖励交换策略优化来结合可验证奖励和过程奖励
+2. [MILES: Modular Instruction Memory with Learnable Selection for Self-Improving LLM Reasoning](/202607/09/2607.06974v1-miles-modular-instruction-memory-with-learnable-selection-for-self-improving-llm-reasoning)  
    标签：评分：6.0/10、query:opd
-   evidence：具有可验证奖励的LLM智能体RL模拟环境
+   evidence：通过可学习选择的模块化指令记忆实现LLM推理自我改进
+3. [RLVP: Penalize the Path, Reward the Outcome](/202607/09/2607.07435v1-rlvp-penalize-the-path-reward-the-outcome)  
+   标签：评分：6.0/10、query:opd
+   evidence：提出路径惩罚以解决RLVR仅优化结果的局限性
 
 
 <div class="dpr-home-promo-card">

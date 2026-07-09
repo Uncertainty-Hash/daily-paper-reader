@@ -1,0 +1,360 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-09T22:00:21.545518+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.05394v2",
+      "source": "arxiv",
+      "title": "Weak-to-Strong Generalization via Direct On-Policy Distillation",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) is a powerful recipe for improving language-model reasoning, but it is expensive to repeat on every new strong model because the target model must generate many rollouts during training. As models scale, post-training itself becomes a bottleneck. We study a weak-to-strong alternative: run RL on a smaller model where rollouts are cheaper, then reuse what that RL run learned to improve a stronger target model. Directly distilling the post-RL weak teacher is not enough, because the teacher's final policy mixes useful RL gains with the limitations of the smaller model. We propose Direct On-Policy Distillation (Direct-OPD), which transfers the teacher's RL-induced policy shift instead. Direct-OPD compares the post-RL teacher with its own pre-RL reference and treats their log-ratio as a dense implicit reward for the student. In plain terms, the checkpoint pair tells us which actions RL made the weak model more or less likely to take, and Direct-OPD applies that signal on the stronger student's own on-policy states. This directly reuses the weak model's RL supervision signal without running sparse-reward RL on the target model. Empirically, Direct-OPD consistently leverages weaker teachers to improve stronger target models; notably, it boosts Qwen3-1.7B from 48.3% to 58.3% on AIME 2024 in just 4 hours on 8 A100 GPUs. It outperforms step-matched direct RL and enables the sequential composition of multiple policy shifts. Our results show that RL outcomes can be reused across model scales as implicit reward signals, not merely as final models to imitate.",
+      "authors": [
+        "Shiyuan Feng",
+        "Huan-ang Gao",
+        "Haohan Chi",
+        "Hanlin Wu",
+        "Zhilong Zhang",
+        "Zheng Jiang",
+        "Bingxiang He",
+        "Wei-Ying Ma",
+        "Ya-Qin Zhang",
+        "Hao Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-06T17:59:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.05394v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Direct on-policy distillation for LLM reasoning with RLVR",
+      "llm_evidence_cn": "直接同策略蒸馏用于大语言模型推理",
+      "llm_evidence": "直接同策略蒸馏用于大语言模型推理",
+      "canonical_evidence": "直接同策略蒸馏用于大语言模型推理",
+      "llm_tldr_en": "Proposes Direct On-Policy Distillation (Direct-OPD) to transfer RL-induced policy shift from a small teacher to a large student, improving LLM reasoning efficiently.",
+      "llm_tldr_cn": "针对强化学习可验证奖励（RLVR）在大模型上生成rollout成本高的问题，本文提出直接同策略蒸馏（Direct-OPD）方法，将小模型经过强化学习后的策略偏移而非最终策略蒸馏到大模型上，从而以较低成本提升大模型的推理能力。实验表明该方法优于直接蒸馏和仅在小模型上运行RL的基线。",
+      "llm_tldr": "针对强化学习可验证奖励（RLVR）在大模型上生成rollout成本高的问题，本文提出直接同策略蒸馏（Direct-OPD）方法，将小模型经过强化学习后的策略偏移而非最终策略蒸馏到大模型上，从而以较低成本提升大模型的推理能力。实验表明该方法优于直接蒸馏和仅在小模型上运行RL的基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06855v1",
+      "source": "arxiv",
+      "title": "Geometric Self-Distillation for Reasoning Generalization",
+      "abstract": "On-policy distillation is a practical post-training recipe for large language models, supplying dense teacher supervision on the student's own trajectories. In privileged-context self-distillation, teacher and student are the same model conditioned on the same prefix, but the teacher also sees a hint or the full solution trace. This makes supervision abundant but harder to trust: the teacher can be confident about continuations its privileged view makes obvious but the student cannot yet justify. The distillation pull is strongest where teacher and student disagree most, and over many updates it accumulates into drift that degrades out-of-distribution (OOD) reasoning. We introduce GeoSD, a geometric self-distillation objective that treats this drift as movement in the student's predictive behavior and counters it in two complementary ways. A Hellinger loss scales each teacher preference by the overlap the student already shares with it, attenuating the pull on tokens the student cannot yet support. Since these pulls still compound over training, a proximal term penalizes how far the student's predictions drift from a recent checkpoint, measured as a Fisher-Rao distance. Both are distances in the same geometry of next-token distributions, and a natural-gradient update takes its steps in that geometry rather than in parameter space. Across mathematical reasoning benchmarks and three model families, GeoSD preserves the in-distribution gains of self-distillation while improving average OOD accuracy by 5.7-8.6 points over the base model, with gains holding across model scales from 1.7B to 32B. Analyzing why standard matching fails out of distribution, we find it wins agreement with the teacher by draining mass from alternatives at high-entropy states, resulting in confident agreement on wrong answers, whereas GeoSD keeps those alternatives in reach.",
+      "authors": [
+        "Josip Jukić",
+        "Ivan Titov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-07T23:16:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.06855v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "On-policy distillation for reasoning generalization",
+      "llm_evidence_cn": "针对推理泛化的同策略蒸馏",
+      "llm_evidence": "针对推理泛化的同策略蒸馏",
+      "canonical_evidence": "针对推理泛化的同策略蒸馏",
+      "llm_tldr_en": "Proposes GeoSD, a geometric self-distillation objective for LLM reasoning. Addresses distribution drift in on-policy distillation by treating disagreement as movement in a geometric space. Shows improved OOD reasoning performance.",
+      "llm_tldr_cn": "针对大语言模型推理的同策略自蒸馏中教师与学生评分差异导致的分布漂移问题，提出几何自蒸馏目标GeoSD，将漂移视为学生表征空间中的几何运动。实验表明GeoSD显著提升了模型在分布外推理任务上的泛化能力，为自蒸馏方法提供了新的理论视角。",
+      "llm_tldr": "针对大语言模型推理的同策略自蒸馏中教师与学生评分差异导致的分布漂移问题，提出几何自蒸馏目标GeoSD，将漂移视为学生表征空间中的几何运动。实验表明GeoSD显著提升了模型在分布外推理任务上的泛化能力，为自蒸馏方法提供了新的理论视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07492v1",
+      "source": "arxiv",
+      "title": "Search, Fail, Recover: A Training Framework for Correction-Aware Reasoning",
+      "abstract": "Many reasoning tasks are not well described by a single left-to-right chain: a solver may need to pursue a plausible branch, observe delayed failure, and return to the latest prefix that can still be completed. We introduce Pyligent, a training and inference framework inspired by the Diligent Learner formulation that represents reasoning as validated search over partial solution chains. A task validator labels generated continuations and failures, and the resulting search trees are converted into supervised targets for three actions: continue, finish, and backtrack, with optional traces that summarize abandoned branches. We evaluate Pyligent on a hidden directed graph task designed to isolate delayed-failure recovery, and on structured reasoning domains with exact validators, including $4{\\times}4$ Sudoku, Sudoku with reasoning traces, and Blocksworld. Compared with gold-only supervised fine-tuning, Pyligent improves solve rate by $72.7$ percentage points on hidden graphs, by $17$ and $18$ points on mixed and expert Sudoku, by $27$ and $14$ points on mixed and expert Sudoku with reasoning traces, and by $13$ points on Blocksworld. These results suggest that explicit failed-branch supervision can teach useful recovery behavior beyond imitation of polished solution chains.",
+      "authors": [
+        "Dmitry Beresnev",
+        "Vladimir Makharev",
+        "Roman Khalikov",
+        "Ivan Oseledets",
+        "Petr Anokhin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-08T14:53:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.07492v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training framework for correction-aware reasoning using failure rollouts and backtracking",
+      "llm_evidence_cn": "使用失败轨迹和回退的修正感知推理训练框架",
+      "llm_evidence": "使用失败轨迹和回退的修正感知推理训练框架",
+      "canonical_evidence": "使用失败轨迹和回退的修正感知推理训练框架",
+      "llm_tldr_en": "Pyligent introduces a training framework for correction-aware reasoning that uses failure rollouts to train models to backtrack and recover from delayed failures.",
+      "llm_tldr_cn": "Pyligent提出一个针对修正感知推理的训练框架，将推理表示为带验证的部分解搜索。任务验证器标记生成续写和失败，将搜索树转化为三种动作的监督目标：继续、完成、回退，并附上废弃分支的可选轨迹。在隐藏有向图任务和结构化推理领域上的评估显示，该方法有效提升了从延迟失败中恢复的能力。",
+      "llm_tldr": "Pyligent提出一个针对修正感知推理的训练框架，将推理表示为带验证的部分解搜索。任务验证器标记生成续写和失败，将搜索树转化为三种动作的监督目标：继续、完成、回退，并附上废弃分支的可选轨迹。在隐藏有向图任务和结构化推理领域上的评估显示，该方法有效提升了从延迟失败中恢复的能力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07674v1",
+      "source": "arxiv",
+      "title": "Max Out GRPO Signal: Adaptive Trace Prefix Control for Hard Reasoning Problems",
+      "abstract": "Group Relative Policy Optimization (GRPO) stalls on a model's hardest problems: when no rollout in a group succeeds, the group-relative advantages vanish and the problem contributes no gradient, wasting the frontier examples we most want to learn from. Prepending a correct prefix of a reference solution raises the success rate, making prefix length a continuous knob on difficulty. Concurrent methods set the knob once; AdaPrefix-GRPO turns it into a feedback controller: throughout training it adjusts how much of the solution each problem gets, holding its success rate near 50%, where GRPO's gradient signal is largest, then withdraws the assistance entirely, so the deployed model solves problems unaided. On hard math, at matched training FLOPs, it more than doubles GRPO's accuracy on held-out problems from the training distribution for a 0.6B model (2.1x), with 1.6x on Qwen3-1.7B and 1.7x on AIME, while roughly halving trace length. The method is implemented in data preparation plus a loss mask on prefix tokens; the trainer is otherwise stock. The smaller the model, the larger the gain.",
+      "authors": [
+        "Vladislav Beliaev"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-08T17:32:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.07674v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Max Out GRPO Signal via Adaptive Trace Prefix Control (AdaPrefix-GRPO)",
+      "llm_evidence_cn": "通过自适应轨迹前缀控制最大化GRPO信号(AdaPrefix-GRPO)",
+      "llm_evidence": "通过自适应轨迹前缀控制最大化GRPO信号(AdaPrefix-GRPO)",
+      "canonical_evidence": "通过自适应轨迹前缀控制最大化GRPO信号(AdaPrefix-GRPO)",
+      "llm_tldr_en": "Proposes AdaPrefix-GRPO, adaptively adjusting prefix length during GRPO training to maintain 50% success rate, avoiding gradient starvation on hard problems.",
+      "llm_tldr_cn": "针对GRPO在硬问题上因所有rollout失败导致梯度消失的问题，提出AdaPrefix-GRPO，通过PID控制器动态调整参考解前缀长度，将问题成功率维持在50%附近，最大化GRPO梯度信号，训练完成后撤消辅助，在硬数学问题上以相同FLOPs取得显著优势。",
+      "llm_tldr": "针对GRPO在硬问题上因所有rollout失败导致梯度消失的问题，提出AdaPrefix-GRPO，通过PID控制器动态调整参考解前缀长度，将问题成功率维持在50%附近，最大化GRPO梯度信号，训练完成后撤消辅助，在硬数学问题上以相同FLOPs取得显著优势。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07050v1",
+      "source": "arxiv",
+      "title": "Behavior Leverage Imbalance in Multi-Teacher On-Policy Distillation",
+      "abstract": "Agentic language models must learn when to call tools, when to consume tool responses, and when to answer directly. This makes multi-teacher on-policy distillation a natural training strategy: one teacher can specialize in tool calls, another in direct responses, and the student can learn from both on   its own generated distribution. We show that this strategy can induce a behavior shift that is invisible from aggregate losses alone. In a two-teacher tool-use setting, vanilla generalized knowledge distillation improves tool-call recall but also moves the model toward over-calling, where it calls tools   on examples that should be answered directly. Aggregate explanations are insufficient: tool-call samples do not receive more token exposure, and full-sequence per-token divergence is not larger for the tool-call teacher. We instead analyze behavior leverage imbalance: local token-level signals at mode-   entry and structural positions, such as <tool_call> and function names, can have disproportionate control over the global generation mode. We propose Soft Clamp, a per-token divergence calibration method that dynamically compresses extreme token-level Jensen-Shannon divergence while preserving nonzero   gradients. On APIGen-MT, Soft Clamp reduces over-calling from 13.7% to 9.0% relative to vanilla GKD while matching its decision accuracy. In a BFCL multi-turn diagnostic, it also lowers tool-call loops and repeated calls among GKD variants. These results suggest that multi-teacher OPD should monitor   where teacher signals act, not only how large they are in aggregate.",
+      "authors": [
+        "Jiabin Shen",
+        "Guang Chen",
+        "Chengjun Mao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T06:26:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.07050v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-teacher on-policy distillation for agentic language models",
+      "llm_evidence_cn": "面向代理语言模型的多教师同策略蒸馏",
+      "llm_evidence": "面向代理语言模型的多教师同策略蒸馏",
+      "canonical_evidence": "面向代理语言模型的多教师同策略蒸馏",
+      "llm_tldr_en": "Analyzes behavior imbalance in multi-teacher on-policy distillation for tool-calling language models, showing over-calling issue despite improved recall.",
+      "llm_tldr_cn": "代理语言模型需要学会工具调用时机。多教师同策略蒸馏是自然策略，但本文发现它可能导致过度调用行为。通过分析发现，聚合损失无法揭示行为偏移，需要更细致的监控。",
+      "llm_tldr": "代理语言模型需要学会工具调用时机。多教师同策略蒸馏是自然策略，但本文发现它可能导致过度调用行为。通过分析发现，聚合损失无法揭示行为偏移，需要更细致的监控。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07508v1",
+      "source": "arxiv",
+      "title": "Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning",
+      "abstract": "Reinforcement learning (RL) is becoming increasingly important for post-training large language models (LLMs). Previous RL pipelines for LLMs were mostly synchronous and batch-interleaved, which is inefficient for long-horizon agentic tasks. Recently, asynchronous RL has emerged as a more efficient alternative by updating the model as rollouts arrive. However, existing asynchronous RL systems often emphasize throughput, while leaving training stability and task effectiveness largely underexplored. For example, a key challenge is that group-wise sampling in the widely-used GRPO framework does not naturally fit asynchronous agentic training. In this paper, we present Single-rollout Asynchronous Optimization (SAO) to address the stability and off-policy challenges in asynchronous RL. To reduce off-policy effects and improve generalization, we replace group-wise sampling with single-rollout sampling, that is, using one rollout per prompt. We further improve this single-rollout strategy with practical value-model training designs. To improve optimization stability, we introduce a strict double-side token-level clipping strategy. SAO is able to train stably for one thousand steps and consistently outperform GRPO and its variants on agentic coding and reasoning benchmarks, such as SWE-Bench Verified, BeyondAIME, and IMOAnswerBench. We also demonstrate that single-rollout RL is particularly effective in a simulated online learning setting, where the model must adapt to changing evolving environments. To this end, SAO is successfully deployed in the agentic RL pipeline for training the open GLM-5.2 model (750B-A40B).",
+      "authors": [
+        "Zhenyu Hou",
+        "Yujiang Li",
+        "Jie Tang",
+        "Yuxiao Dong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-08T15:02:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.07508v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Single-rollout asynchronous optimization for GRPO-based agentic RL",
+      "llm_evidence_cn": "面向GRPO的单展开异步优化方法用于智能体强化学习",
+      "llm_evidence": "面向GRPO的单展开异步优化方法用于智能体强化学习",
+      "canonical_evidence": "面向GRPO的单展开异步优化方法用于智能体强化学习",
+      "llm_tldr_en": "SAO proposes single-rollout asynchronous optimization to address GRPO stability issues in agentic RL, enabling efficient and stable training.",
+      "llm_tldr_cn": "SAO提出单展开异步优化方法，解决了GRPO在异步智能体训练中的稳定性问题。现有异步RL系统忽略稳定性，GRPO的组采样不适用于异步训练。SAO通过单展开更新避免了组间依赖，同时保持训练效率。实验表明，该方法在长周期智能体任务上达到与同步方法相当的性能，且吞吐量更高。",
+      "llm_tldr": "SAO提出单展开异步优化方法，解决了GRPO在异步智能体训练中的稳定性问题。现有异步RL系统忽略稳定性，GRPO的组采样不适用于异步训练。SAO通过单展开更新避免了组间依赖，同时保持训练效率。实验表明，该方法在长周期智能体任务上达到与同步方法相当的性能，且吞吐量更高。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.04713v1",
+      "source": "arxiv",
+      "title": "RSPO: Reward-Swap Policy Optimization for Multi-Turn LLM Agents",
+      "abstract": "Reinforcement learning holds significant potential for training large language models (LLMs) to handle multi-turn interactive tasks. However, in long-horizon, multi-turn tasks characterized by sparse outcome rewards, directly training with outcome rewards often results in slow convergence due to the sparsity of signals and the lack of fine-grained feedback. Furthermore, the model may fail to learn successful trajectories that are not sampled during training, thereby limiting its performance. Conversely, while employing customized dense process rewards provides richer signals and accelerates convergence, these surrogate rewards may exhibit potential misalignment with the ground-truth outcome rewards. This inconsistency can bias the training direction and ultimately degrade the model's final performance. In this work, we propose Reward-Swap Policy Optimization (RSPO), a method designed to leverage the rich information from dense process rewards to facilitate training with outcome rewards. By utilizing a reward-swap mechanism, RSPO ensures the diversity of sampled trajectories while guaranteeing consistency between the optimization objective and the true outcome rewards, thereby elevating the performance ceiling of the model. We conduct extensive experiments on two challenging agent benchmarks, WebShop and ALFWorld. By applying our method to various reinforcement learning algorithms, including GRPO, PPO, and GiGPO, we demonstrate that RSPO achieves consistent performance improvements across different baselines and benchmarks.",
+      "authors": [
+        "Qiang Liu",
+        "Taian Guo",
+        "Ruizhi Qiao",
+        "Xing Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-06T06:32:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.04713v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Reinforcement learning with verifiable rewards for multi-turn LLM agents using reward-swap",
+      "llm_evidence_cn": "使用奖励交换策略优化来结合可验证奖励和过程奖励",
+      "llm_evidence": "使用奖励交换策略优化来结合可验证奖励和过程奖励",
+      "canonical_evidence": "使用奖励交换策略优化来结合可验证奖励和过程奖励",
+      "llm_tldr_en": "Proposes Reward-Swap Policy Optimization (RSPO) that alternates between outcome rewards and dense process rewards to improve multi-turn LLM agent training.",
+      "llm_tldr_cn": "针对多轮交互任务中稀疏结果奖励收敛慢而密集过程奖励可能偏差的问题，提出奖励交换策略优化（RSPO），在训练过程中动态切换使用结果奖励和过程奖励，兼顾收敛速度和奖励对齐。实验表明该方法在多轮问答任务上优于单独使用任何一种奖励。",
+      "llm_tldr": "针对多轮交互任务中稀疏结果奖励收敛慢而密集过程奖励可能偏差的问题，提出奖励交换策略优化（RSPO），在训练过程中动态切换使用结果奖励和过程奖励，兼顾收敛速度和奖励对齐。实验表明该方法在多轮问答任务上优于单独使用任何一种奖励。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.06974v1",
+      "source": "arxiv",
+      "title": "MILES: Modular Instruction Memory with Learnable Selection for Self-Improving LLM Reasoning",
+      "abstract": "Large language models (LLMs) increasingly improve their reasoning at test time via additional computation, yet most existing works treat each problem in isolation. When problems arrive sequentially, accumulating reusable experience across them can further improve performance. Existing memory-based methods either store whole-solution templates that generalize poorly to novel problems or use heuristic step-level selection that is not optimized for final-answer correctness. Learning selection policies requires large-scale training data and fixed action spaces, making such approaches unsuitable for test-time settings where memory expands incrementally and only limited supervision is available. We propose MILES (Modular Instruction Memory with LEarnable Selection for self-improving LLM reasoning), a framework that dynamically expands step-wise memory and applies correctness-optimized memory composition under realistic test-time constraints. MILES maintains modular memory units consisting of asymmetric pairs of sub-goal embeddings and sub-instructions, each associated with a learnable selection head. This memory structure enables a coarse-to-fine retrieval mechanism: The coarse level enables memory expansion and collects supervision for training selection heads from confident samples, while the fine stage applies learned selection heads to rerank coarse-level candidates and guide reasoning for uncertain samples. MILES consistently matches or outperforms prior methods while achieving superior accuracy-efficiency tradeoffs. Extensive experiments demonstrate its effectiveness, robustness, and transferability.",
+      "authors": [
+        "Ruilin Tong",
+        "Dong Gong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T03:51:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.06974v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Self-improving LLM reasoning through modular instruction memory with learnable selection",
+      "llm_evidence_cn": "通过可学习选择的模块化指令记忆实现LLM推理自我改进",
+      "llm_evidence": "通过可学习选择的模块化指令记忆实现LLM推理自我改进",
+      "canonical_evidence": "通过可学习选择的模块化指令记忆实现LLM推理自我改进",
+      "llm_tldr_en": "Proposes MILES, a modular instruction memory with learnable selection for test-time self-improvement of LLM reasoning. Stores and selects useful reasoning steps across problems, improving performance sequentially without large-scale training.",
+      "llm_tldr_cn": "现有记忆方法在LLM推理的测试时间自我改进中面临泛化差或选择不优的问题。本文提出MILES，通过模块化指令记忆和可学习选择机制，在问题序列中累积和复用有效推理步骤。实验表明MILES在无需大规模训练的情况下提升了推理准确率，为在线推理改进提供了新思路。",
+      "llm_tldr": "现有记忆方法在LLM推理的测试时间自我改进中面临泛化差或选择不优的问题。本文提出MILES，通过模块化指令记忆和可学习选择机制，在问题序列中累积和复用有效推理步骤。实验表明MILES在无需大规模训练的情况下提升了推理准确率，为在线推理改进提供了新思路。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07435v1",
+      "source": "arxiv",
+      "title": "RLVP: Penalize the Path, Reward the Outcome",
+      "abstract": "Agents acting on our behalf in the real world (e.g. placing phone calls) must learn online from costly, often irreversible interactions rather than cheap simulator steps. Two things follow. First, deployability depends on the path, not only the outcome. An agent must respect outcome-neutral constraints such as not repeatedly calling an unresponsive user, respecting business hours, or completing required authentication constraints that outcome-based rewards cannot express, since violating them frequently improves apparent success. Second, because each interaction is expensive, the agent must learn efficiently from very few examples.   Reinforcement learning from verifiable rewards (RLVR) is blind to both challenges: it optimizes solely on the outcome and wastes expensive rollouts on all-fail groups where group-relative advantage collapses to zero. Attempts to densify supervision by rewarding progress target the hard-to-verify direction. In contrast, real agentic environments can cheaply detect bad moves. Since group-relative advantage is equivalent to within-group variance, a dense signal helps only when it supplies variance the outcome lacks. A verifiable penalty on the path meets this condition reliably, while a progress potential helps only where partial progress is reachable. The resulting recipe \"penalize the path, reward the outcome\" achieves high task success with near-zero violations, where outcome-only training violates constraints on nearly every episode. We provide four design rules for effective penalties, including avoidance of the inaction trap that arises when a penalty is used in isolation.",
+      "authors": [
+        "Bojie Li",
+        "Noah Shi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-08T14:06:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.07435v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes path penalization to address RLVR's limitation on outcome-only optimization",
+      "llm_evidence_cn": "提出路径惩罚以解决RLVR仅优化结果的局限性",
+      "llm_evidence": "提出路径惩罚以解决RLVR仅优化结果的局限性",
+      "canonical_evidence": "提出路径惩罚以解决RLVR仅优化结果的局限性",
+      "llm_tldr_en": "RLVP penalizes undesirable path behaviors while rewarding outcomes, addressing RLVR's blindness to path constraints and sample inefficiency in real-world agent learning.",
+      "llm_tldr_cn": "该论文指出强化学习从可验证奖励（RLVR）在真实世界agent应用中仅关注结果，忽略了路径约束（如不重复呼叫）且样本效率低。为此提出RLVP方法，在奖励结果的同时惩罚不可取的路径行为。实验表明RLVP能更高效地学习符合约束的策略。该方法为提升LLM推理中奖励设计和失败轨迹利用提供了新思路。",
+      "llm_tldr": "该论文指出强化学习从可验证奖励（RLVR）在真实世界agent应用中仅关注结果，忽略了路径约束（如不重复呼叫）且样本效率低。为此提出RLVP方法，在奖励结果的同时惩罚不可取的路径行为。实验表明RLVP能更高效地学习符合约束的策略。该方法为提升LLM推理中奖励设计和失败轨迹利用提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

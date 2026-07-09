@@ -1,0 +1,382 @@
+Title: Max Out GRPO Signal: Adaptive Trace Prefix Control for Hard Reasoning Problems
+
+URL Source: https://arxiv.org/pdf/2607.07674v1
+
+Published Time: Thu, 09 Jul 2026 01:14:05 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Max Out GRPO Signal: Adaptive Trace Prefix Control for Hard Reasoning Problems 
+
+# Vladislav Beliaev Independent Researcher 
+
+# belyaev.vladislav.nw@gmail.com thinkdense.ai 
+
+Abstract 
+
+Group Relative Policy Optimization (GRPO) stalls on a model’s hardest problems: when no rollout in a group succeeds, the group-relative advantages vanish and the problem contributes no gradient, wasting the frontier examples we most want to learn from. Prepending a correct prefix of a reference solution raises the success rate, making prefix length a continuous knob on difficulty. Concurrent methods set the knob once; AdaPrefix-GRPO turns it into a feedback controller: throughout training it adjusts how much of the solution each problem gets, holding its success rate near 50%, where GRPO’s gradient signal is largest, then withdraws the assistance entirely, so the deployed model solves problems unaided. On hard math, at matched training FLOPs, it more than doubles GRPO’s accuracy on held-out problems from the training distribution for a 0.6B model (2.1 ×), with 1.6 × on Qwen3-1.7B and 1.7 × on AIME, while roughly halving trace length. The method is implemented in data preparation plus a loss mask on prefix tokens; the trainer is otherwise stock. The smaller the model, the larger the gain. 
+
+# 1 Introduction 
+
+Reinforcement learning from verifiable rewards is now the standard tool for improving the reasoning of large language models (LLMs) on tasks such as mathematics and code [Guo et al., 2025, Lambert et al., 2024]. Building on policy-gradient methods [Schulman et al., 2017, Ahmadian et al., 2024] and RLHF [Ouyang et al., 2022], the dominant recipe is on-policy: sample a group of G rollouts from the current policy, score each by an outcome reward, and update using group-relative advantages, as in GRPO [Shao et al., 2024]. This recipe has a structural blind spot. On a hard problem, one the model almost never solves, all G rollouts fail, every reward is identical, the group-relative advantage is exactly zero, and the gradient contribution of that problem is zero [Yu et al., 2025, Zhang et al., 2025]. The model burns sampling compute on the problem and learns nothing from it. Worse, these are frequently the problems we most want to learn: the ones at the frontier of the model’s ability. Common remedies work around this rather than fix it. Oversampling and dynamic filtering, as in DAPO [Yu et al., 2025], discard degenerate all-correct/all-wrong groups but cannot manufacture a cor-rect rollout where the model has none. Warm-starting RL with supervised fine-tuning on reference traces (or rejection-sampled ones, STaR/RAFT-style [Zelikman et al., 2022, Dong et al., 2023]) injects competence but induces entropy collapse that hurts subsequent exploration [Chu et al., 2025, Cui et al., 2025]. A natural idea is instead to make hard problems temporarily easier so they yield a signal, then remove the assistance. If we prepend a correct prefix of a solution and ask the model to complete it, the conditional success rate rises (empirically near-monotonically) with prefix length: with no prefix the model solves almost nothing, with a long enough prefix it solves almost everything. Prefix length is therefore a continuous dial on difficulty , and for most reachable success rates k/G there is a prefix length that achieves it. This observation underlies a line of concurrent work [Setlur et al., 2026, Qu et al., 2026, Huang et al., 2025]. The central question this paper addresses is what success rate to aim for, and how to hit it , i.e. how to max out the GRPO signal on hard problems. Concurrent methods fix a small set of prefix lengths per problem, chosen once from the base model so that the conditioned base accuracy is “reasonable” [Setlur et al., 2026]. We argue this leaves most of the available signal on the table for two reasons. First, the GRPO 1arXiv:2607.07674v1 [cs.LG] 8 Jul 2026 0 1 2 3 4 5 6 
+
+> 20
+> 30
+> 40
+> 50
+> plateau: signal exhausted
+> +17 pp
+> cumulative training FLOPs ( ×10 18 )
+> held-out pass@1 (%)
+> Vanilla GRPO
+> AdaPrefix-GRPO (ours)
+
+Figure 1: Held-out pass@1 (no prefix) versus cumulative training FLOPs on hard math, Qwen3-1.7B. Both methods spend the same total training budget (AdaPrefix-GRPO’s one-time calibration and difficulty probe are amortized preprocessing, excluded from the budget). Within the budget vanilla GRPO completes one pass over the data with full-length rollouts, while AdaPrefix-GRPO completes ∼2.1 passes of shorter prefixed episodes. Curves are 3-seed means, evaluated on a fixed 250-problem subset of the held-out split; bands show 95% problem-level bootstrap CIs. GRPO plateaus once it exhausts the problems it can already partly solve; AdaPrefix-GRPO keeps extracting signal. signal is not maximized merely by being non-zero; prior work establishes an intermediate optimal k/G (near 
+
+50% ) for RL learning signal [Bae et al., 2025, Gao et al., 2025] (Section 4.1). Second, the prefix length that achieves a given k/G is per-sample and non-stationary: as the policy improves during training, the same prefix yields a higher k/G , drifting the problem out of the productive regime. A schedule fixed at the start cannot track this. We introduce AdaPrefix-GRPO , which treats prefix length as a closed-loop controller . During training we measure the realized batch-mean k/G and adjust a single global base prefix length toward a target k/G 
+
+using a root-finding update (secant or binary search); each sample is offset from the base by a static difficulty-dependent shift, and all prefixes are annealed to zero so that the deployed policy never sees a prefix at test time. The method requires only minimal changes to the RL trainer: prefixes are injected as an assistant message in the data pipeline, gradients are masked on the prefix, and the reward is computed on the full completion. We hold the total training compute (FLOPs) fixed across all methods, so improvements are not attributable to extra training compute; the one-time calibration is a per-model preprocessing step, amortized across all runs on the same model and data, and excluded from the training budgets. 
+
+Contributions. 
+
+• We frame prefix length as a closed-loop controller of GRPO’s success rate k/G , converting an un-controlled observable into a tracked set-point (a global closed loop with per-sample difficulty offsets; Section 4). 
+
+• We adopt the established intermediate ( ≈ 50% ) solve-rate set-point for RL signal [Bae et al., 2025, Gao et al., 2025] and make it reachable across the batch through prefix length (Section 4.1). 
+
+• We propose AdaPrefix-GRPO: cold-start initialization, global closed-loop adaptation of a base prefix with per-sample difficulty offsets, and annealing to zero, implemented purely in data preparation on top of a stock GRPO trainer (Section 4.2). 
+
+• At matched training FLOPs on hard math, AdaPrefix-GRPO improves pass@1 over vanilla GRPO and a fixed-prefix baseline without collapsing pass@16, and the gain grows as the model shrinks (Section 5). 
+
+# 2 Related Work 
+
+The dead zone in group-relative RL. GRPO [Shao et al., 2024] and its variants estimate advantages by centering rewards within a group of rollouts. When a problem is solved by none (or all) of the group, the centered advantages collapse to zero and the problem produces no gradient, the “learning cliff” [Zhang et al., 22025] that DAPO’s dynamic filtering works around [Yu et al., 2025]. Classical exploration remedies (entropy bonuses, looser clipping, pass@ k objectives) do not resolve this and can destabilize optimization [Qu et al., 2026]. 
+
+Prefix- and hint-guided RL. Closest is PrefixRL [Setlur et al., 2026]: it conditions on-policy RL on prefixes of off-policy correct traces (rejection-sampled to “reuse” prior compute), masks gradients on the prefix, and reports back-generalization from prefixed to unprefixed problems, but it fixes a handful of prefix lengths per problem, chosen once from base accuracy. POPE [Qu et al., 2026] uses the minimal prefix that yields a non-zero reward; Prefix-RFT [Huang et al., 2025] anneals a single global prefix on a cosine schedule; Scaf-/Hint-GRPO [Zhang et al., 2025, Huang et al., 2025] give graded in-prompt hints; R3 [Xi et al., 2024] slides the RL start state backward along a demonstration, a reverse curriculum over prefix position. These treat assistance as a fixed or global heuristic. We additionally show it is closed-loop control, not prefixing per se, that carries the gain (Section 5.3). Off-policy methods such as LUFFY [Yan et al., 2025] and ReLIFT [Ma et al., 2025] use demonstrations as training targets; like PrefixRL we stay on-policy and use solutions only to seed exploration. 
+
+Difficulty curricula. Ordering data by difficulty is classic [Bengio et al., 2009, Kumar et al., 2010], and recent RL work curates toward an intermediate success rate [Bae et al., 2025, Gao et al., 2025]. Instead of selecting problems that already sit at the right difficulty, we move every problem toward the target and track it over time. 
+
+# 3 Preliminaries: GRPO and the Dead Zone 
+
+For a problem x with reference solution and a verifier r(x, y ) ∈ { 0, 1}, GRPO samples a group of G rollouts 
+
+y1, . . . , y G ∼ πθ (· | x) and forms the group-relative advantage 
+
+Ai = r(x, y i) − 1
+
+G
+
+> G
+
+X
+
+> j=1
+
+r(x, y j ). (1) We use this un-normalized centered advantage (no division by the group std). The choice matters for Section 4.1: std-normalization does not move the set-point (the aggregate positive mass still peaks at k/G =0.5), but it inflates the per-sample advantage of a rare correct rollout, which scales as p(1 − p)/p and diverges as p → 0. The un-normalized form keeps a well-behaved p(1 − p) scaling without that instability. Un-normalized advantages are also competitive with the std-normalized variant in recent practice [Liu et al., 2025], so this departure does not weaken the baseline. Let k = P 
+
+> i
+
+r(x, y i) be the number of correct rollouts, so the empirical success rate is k/G . If k = 0 (or k = G), all Ai = 0 and the gradient contribution of x
+
+vanishes. We call the set of problems with pass@ G ≈ 0 the dead zone : at exactly zero success probability no amount of sampling extracts signal, and under finite sampling near-zero rates yield negligible signal. On our hard split this is the common case: vanilla GRPO solves only ∼35% of problems at pass@16, leaving a substantial dead zone on the training portion; controlled prefixing converts a substantial fraction of these into learnable problems. 
+
+Prefix as a difficulty dial. Given a reference solution z = ( z1, . . . , z L) for x, a prefix of ratio ρ ∈ [0 , 1] 
+
+is z1: ⌈ρL ⌉, prepended to the prompt as a partial answer the model must continue. The conditional success rate κ(ρ) = E[r(x, y ) | y ∼ π(· | x, z 1: ρL )] is empirically near-monotone in ρ (Figure 2a), with κ(0) the unconditioned rate and κ(1) → 1; longer, partly off-distribution prefixes occasionally fail to help, a violation rate we report (Section 5.4). We do not require strict monotonicity: the bracketing (binary-search) update only needs κ to cross τ once inside [ρ−, ρ +] and tolerates local non-monotonicity, and it is the fallback whenever the secant step is ill-conditioned. For any reachable target τ ∈ (κ(0) , 1) there is a ρ⋆ with 
+
+κ(ρ⋆) = τ ; for easy problems κ(0) > τ already, so the controller simply sets ρ = 0 . Gradients are masked on the prefix tokens; the reward is computed on the full (prefix + generated) sequence; evaluation always uses 
+
+ρ = 0 .34 Method: AdaPrefix-GRPO 
+
+# 4.1 The intermediate set-point 
+
+Escaping the dead zone only requires k ≥ 1, but the magnitude of the learning signal depends on where in 
+
+(0 , 1) the group success rate p = k/G sits. Work on RL data selection finds, empirically and through analysis of the optimization dynamics, that an intermediate solve rate, commonly near 50% , maximizes useful signal per update, while groups that are almost always or almost never solved contribute little [Bae et al., 2025, Gao et al., 2025]; classical RL curricula targeted the same intermediate-success band long before LLMs [Florensa et al., 2018]. Two intuitions match this empirical optimum, both stated for the un-normalized advantages we use (Section 3). First, the aggregate positive gradient in a group scales with the reward spread p(1 − p), which peaks at p = 0 .5. Second, the number of contrastive (correct, incorrect) pairs the group baseline can separate is k(G − k), maximal at k = G/ 2 and zero at p ∈ { 0, 1}, recovering the dead zone as the degenerate case. Neither argument is a proof. The set-point itself is robust to advantage normalization (Section 3), so the choice of un-normalized advantages does not affect where the optimum sits. The empirical target sweep in Section 5.3 is the actual evidence; reward noise and many valid solution paths can shift the optimum somewhat [Gao et al., 2025], so we treat τ = 0 .5 as a default. Our contribution is the mechanism that reaches this set-point: prefix length lets us hold the batch near τ throughout training. 
+
+# 4.2 Algorithm 
+
+The set-point fixes where we want each group to sit ( k/G ≈ τ ); the algorithm is the controller that gets it there and keeps it there as the policy moves. AdaPrefix-GRPO has three stages (Algorithm 1): a cold start that places the population roughly in range, a global closed loop with per-sample difficulty offsets that tracks τ throughout training, and an anneal to ρ = 0 so deployment needs no prefix. 
+
+Cold start. Before the first step we set the initial base prefix ratio ρ(0)  
+
+> b
+
+, shared by the whole population. We support two estimators: a conservative constant (e.g. 0.8, which over-prefixes but makes k ≥ 1 overwhelmingly likely from step one), and a one-shot calibration sweep : 4 rollouts per problem on a random 512-problem subset, over the grid ρ ∈ { 0, 0.2, 0.4, 0.6, 0.8}, give the population-mean κ(ρ) curve, which we invert at τ to set ρ(0)  
+
+> b
+
+. Independently of which estimator sets the base, a difficulty probe always runs: four rollouts per problem at ρ(0)  
+
+> b
+
+give every sample a difficulty estimate dx (its measured pass rate) that the offsets below consume; the conservative variant thus skips only the grid sweep, not the probe. Sweep and probe are one-time preprocessing, amortized across all runs on the same model and data (seeds, hyperparameter sweeps, ablations), and excluded from the training budgets. The cold start only needs to land inside (κ(0) , 1) ; the closed loop removes the residual error. The sweep costs a single pre-training inference pass and lands near the optimum, so our main runs use it; the hyperparameter-free conservative constant trails it by only ∼1.8 pp (Table 3) and is a reasonable fallback when even that overhead is unwanted. 
+
+Closed-loop adaptation with per-sample offsets. The controller maintains a single base prefix ratio 
+
+ρb, shared by the whole population. Every N optimizer steps we read the realized k/G , pooled over all rollouts in the window and smoothed with an EMA ( β=0 .7), and move ρb toward τ . Because κ(ρ) is monotone, this is a one-dimensional root-find. Binary search keeps bracketing bounds [ρ−, ρ +] and halves toward τ (robust, one bit per update); secant interpolates from the two most recent (ρb, k/G ) pairs, 
+
+ρt+1 = ρt + ( τ − k/G t) ρt − ρt−1
+
+k/G t − k/G t−1
+
+, (2) which converges in fewer updates when κ is locally smooth. We guard the denominator (falling back to a bisection step when k/G t ≈ k/G t−1; in our runs this fires on ∼17% of updates, mostly early when k/G 
+
+estimates are noisiest), clip the per-update step in ρb to 0.05 , and keep ρ ∈ [0 , ρ max ]. Pooling over the window makes the loop feasible: a single sample yields one heavily quantized Bernoulli estimate ( k/G ∈ { 0, 1 
+
+> G
+
+, . . . , 1})per visit, and visits are ∼100 steps apart, far too sparse to track a moving target, whereas the window aggregates thousands of rollouts. 4Algorithm 1 AdaPrefix-GRPO (per training run)  
+
+> 1:
+
+input: hard problems with reference solutions; target τ ; update interval N ; group size G 
+
+> 2:
+
+initialize the base ratio ρb by cold start (conservative constant or calibration sweep); estimate per-sample difficulties dx 
+
+> 3:
+
+for each optimizer step t do  
+
+> 4:
+
+build prefixed prompts x ⊕ z1: ρxL with ρx = min  ¯ρt, clip( ρb + δ(dx), 0, ρ max ); sample G rollouts; compute rewards (mask grad on prefix)  
+
+> 5:
+
+update the EMA of the window-mean k/G with the batch’s new (kx, G ) 
+
+> 6:
+
+every N steps: move ρb toward τ (secant w/ bisection fallback)  
+
+> 7:
+
+end for  
+
+> 8:
+
+return policy (deployed with ρ = 0 )Holding the population mean at τ is not enough: the same mean can hide a wide spread, with half the samples saturated ( k = G) and half dead ( k = 0 ), so most rollouts still carry no signal. To compress the spread, each sample is offset from the base by a static difficulty shift, ρx = clip  ρb + δ(dx), 0, ρ max 
+
+, where 
+
+dx is the sample’s cold-start difficulty and δ is a small monotone (linear) map with a hand-tuned slope, spanning ±0.15 around the base across the difficulty range in our runs: harder samples get slightly longer prefixes than the base, easier ones shorter. The offset is open-loop, its constants fixed across training; all tracking of the policy’s improvement happens through the single global loop. On easy problems the negative offset saturates at the clip, ρx = 0 , so prefixing is reduced on easy problems (we verify no regression on the GSM8K slice included in every method’s training mixture; Section 5). 
+
+Why closed-loop, and why offsets. A single global schedule (Prefix-RFT) or a fixed per-problem length (PrefixRL) can only be right on average at one moment: problems differ widely in κ(·), and as the policy improves every κ curve shifts left, so any static or open-loop choice drifts off τ , typically toward k = G, back into a zero-variance regime (Figure 2b). The global loop absorbs this non-stationarity across time. The per-sample offset addresses the orthogonal problem, heterogeneity across problems: mean-only control can leave the batch bimodal, many samples saturated or dead around a healthy average, so most rollouts are wasted; the offset narrows the spread of k/G around the tracked mean, keeping the whole batch, not just its mean, near the signal-maximizing set-point (Figure 5). The granularity ablation (Section 5.3) isolates how much of the gain the offset adds on top of base-only control. Two caveats. We use “controller” loosely: the update is a smoothed, quantized root-finder with no formal stability guarantee, and the annealing envelope (below) overrides the loop in the final phase. The offset is a static heuristic: it corrects difficulty ordering 
+
+across problems but cannot adapt to a sample whose difficulty was mis-estimated at cold start. 
+
+Annealing. To remove the train/test mismatch we impose a shrinking upper envelope and run the con-troller inside it: ρx ← min  ¯ρt, ρ b + δ(dx). The envelope is held near ρmax for the first fraction w of training and then decayed to zero, ¯ρt = ρmax · clip   T −t 
+
+> (1 −w)T
+
+, 0, 1 (we use w ≈ 0.8). Early on the envelope is slack and the loop is free to hold τ ; late in training the envelope binds and forces every ρx → 0, trading some signal for on-distribution (no-prefix) practice. The final policy is thus trained to solve unaided, and all evaluation is at ρ = 0 . As the envelope binds, the controller can no longer hold τ and the measured k/G dips modestly below it (Figure 2b); but the no-prefix held-out curve shows no sustained regression (Figure 1), so this phase consolidates what was learned. To test this, we report the final ρ = 0 pass rate on the full originally-dead set (Section 5.4); a non-trivial unaided pass rate on problems that started at κ(0) ≈ 0 indicates that the gains are driven by back-generalization, not by prefix-conditioned imitation. 
+
+Prefix source. Prefixes can be cut from reference solutions (always available) or from model-generated 
+
+correct traces (rejection-sampled, on-distribution, as in PrefixRL). A reference path may be off-distribution and harder to continue, so the source matters; we default to reference solutions for availability and show in Section 5.3 that the controller is orthogonal to it: swapping in off-policy prefixes retains most of the gain. 50 0.2 0.4 0.6 0.8 1               
+
+> 0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1
+> τ≈0.5
+> ρ⋆
+> κ(0)
+> κ(1) →1
+> prefix length ρ
+> success rate  κ(ρ)
+> (a) the dial
+> 050 100 150 200
+> 0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1dead: k=G
+> dead: k= 0
+> anneal starts
+> training steps
+> mean  k/G
+> (b) the controller
+> PrefixRL
+> ours
+
+Figure 2: The mechanism. (a) Prefix length is a dial: the conditional success rate κ(ρ) rises near-monotonically from the base rate to ≈ 1, so a unique ρ⋆ realizes a reachable target τ . (b) Closed-loop control of the base prefix (with per-sample offsets) holds the batch-mean k/G at τ = 0 .5 (band: 95% CI) while PrefixRL’s static lengths drift toward k = G and leave the informative regime. Once annealing starts and the envelope binds (right of the dashed line) ρ → 0 is forced and k/G dips modestly below τ , but stays well clear of the dead zone. Panel (a) is illustrative. 
+
+Implementation. AdaPrefix-GRPO touches the trainer only through the prefix loss mask; everything else lives in data preparation. Prefixes are appended as an assistant message that the model is asked to continue; the trainer masks loss on prefix tokens and scores the full sequence. Prefix cuts snap to sentence boundaries to avoid mid-token artifacts. 
+
+Compute accounting. We compare methods at matched training compute , not matched steps or episodes. Following the accounting of Setlur et al. [2026], Snell et al. [2024], a run’s cost is FLOPs = 2 N D samp +6N D upd , where N is the number of model parameters (we train with LoRA, but sampling and backpropaga-tion traverse the full model, so we use the full parameter count), Dsamp counts all tokens processed at rollout time (including the prefill of supplied prefixes , so prefixing is not free), and Dupd counts tokens in gradient updates. Every method runs to the same cumulative budget; AdaPrefix-GRPO’s one-time calibration sweep and difficulty probe are treated as amortized per-model preprocessing and excluded from the training budget. Because a prefixed rollout decodes only the continuation, AdaPrefix-GRPO completes more, shorter episodes within the budget, roughly two passes over the data where vanilla GRPO completes one; Figure 3 separates this revisit effect from the controller itself by reporting both compute-matched and iteration-matched views, and by including a vanilla variant that spends the same budget on more samples per problem. Prefix prefill stays under ∼15% of total training tokens because prefixes are capped and annealed. Table 1 reports gener-ated length at evaluation ( ρ = 0 ), where no prefix is present, so the trace-length saving reflects the deployed policy rather than the mechanical effect of starting mid-solution. 
+
+# 5 Experiments 
+
+Setup. We train on three Qwen3 sizes (0.6B, 1.7B, 4B) [Yang et al., 2025] and additionally validate cross-family on Qwen3.5-2B [Qwen Team, 2026] and Gemma 4 E4B [Gemma Team, 2026], to confirm the controller is not Qwen-specific. Training data is the DeepMath-103K [He et al., 2025] hard split (difficulty 8, binary-answer questions removed): ∼6.8K problems with verified reference solutions (R1-generated traces shipped with the dataset). All methods train on the identical mixture: this hard split plus a 5% slice of GSM8K training problems (included so that self-disabling of prefixing on easy data can be verified; the GSM8K test split is disjoint). We use G = 8 rollouts, a batch of 64 prompts per optimizer step, and LoRA [Hu et al., 2022]. All methods run to the same training-FLOPs budget ( ≈6×10 18 for the 1.7B model) under the accounting of Section 4. For vanilla GRPO this budget corresponds to a single pass over the mixture ( ∼112 optimizer steps, 8 full-length rollouts per problem); because prefixed rollouts decode only the continuation, AdaPrefix-GRPO completes ∼2.1 passes ( ∼240 steps) of shorter episodes within the same budget. The controller updates every 
+
+N =10 steps. The main comparison rows (vanilla GRPO, PrefixRL, AdaPrefix-GRPO) are averaged over 3 seeds (per-seed spread ≤1.2 pp on DeepMath-hold); the remaining baselines and all ablations use a single 6seed. Figure 3 additionally reports the iteration-matched view, in which baselines run the same number of optimizer steps and are therefore granted more FLOPs. Training is built on TRL [von Werra et al., 2020] with vLLM [Kwon et al., 2023] generation. Evaluation spans GSM8K [Cobbe et al., 2021] as an easy-task sanity check, MATH-500 [Hendrycks et al., 2021], AIME 2024/2025 (averaged), AMC 2023 (40 problems), and a DeepMath held-out split (1,000 problems held out from the same difficulty-8 hard split, disjoint from training). We report pass@1 and pass@16 estimated from 8 and 16 samples per problem respectively (avg@8 for the small AIME/AMC sets) with 95% CIs from a problem-level bootstrap (resampling problems together with their 8 samples, which accounts for per-problem clustering), and mean trace length. Evaluation uses temperature 1.0 with a strict verifier and no system prompt or thinking mode ; official Qwen3 reports use thinking mode and larger sampling budgets, so absolute zero-shot numbers are lower here. We additionally report held-out pass@16 to verify that gains do not come from collapsing the policy’s exploration onto a few modes. 
+
+Baselines. 
+
+• Zero-shot : base model, no RL. 
+
+• Vanilla GRPO : standard on-policy GRPO, no prefix. 
+
+• Vanilla GRPO ( G=16 ): doubles the group size within the same FLOPs budget, which halves the number of optimizer steps; controls for the possibility that simply re-allocating compute toward more attempts per problem explains the gain. 
+
+• SFT-warmup → GRPO : mid-train on reference solutions, then GRPO (the “why not just SFT” control). The SFT phase is charged to the method’s FLOPs budget ( ∼8%, one epoch over the reference traces), shortening its RL phase accordingly. 
+
+• Difficulty-filter GRPO : drop dead-zone problems, GRPO on the rest. 
+
+• PrefixRL [Setlur et al., 2026]: a fixed set of prefix lengths per problem chosen once from base accuracy, static across training; the primary baseline. To keep the comparison fair, it uses the same reference solutions and prefix source as AdaPrefix-GRPO, the same FLOPs budget, and its per-problem length set is tuned with a matched length sweep; the only difference is that lengths are fixed rather than tracked. We additionally report a PrefixRL + anneal variant to separate the effect of annealing from the effect of closing the loop. 
+
+• Prefix-RFT [Huang et al., 2025]: uniform decay, a single global prefix ratio annealed 0.8 → 0.
+
+• AdaPrefix-GRPO (ours) : global secant control of the base prefix toward τ = 0 .5, with per-sample difficulty offsets, annealed to 0.
+
+# 5.1 Main results 
+
+Table 1 reports the FLOPs-matched comparison on Qwen3-1.7B; Figure 3 shows the full compute curves and the iteration-matched control. AdaPrefix-GRPO improves pass@1 across benchmarks. The extra passes over the data that AdaPrefix-GRPO affords within the budget do not by themselves explain the gain: giving vanilla GRPO the same budget as a larger group ( G=16 ) recovers only a small fraction of it. In absolute terms it adds +6.4 pp over GRPO on MATH-500 ( +17.0 pp on the DeepMath held-out split at budget end) versus +1.7/+6.1 pp for the PrefixRL baseline, i.e. 3–4 × its gain on both. Head-to-head, AdaPrefix-GRPO beats the PrefixRL baseline on every benchmark (+4.7 MATH-500, +3.5 AIME, +3.4 AMC, +12.0 DeepMath-hold); under a paired problem-level bootstrap (both methods are evaluated on the same problems, so we resample per-problem score differences) the DeepMath gap reaches significance while the remaining three are positive and directionally consistent; all this at half the trace length (4.4k vs. 8.0k) and with no GSM8K regression; the gain over fixed prefixing thus does not hinge on the held-out split. Because every number here is measured at ρ = 0 (no prefix), the ∼2× shorter outputs come from the deployed policy itself, not from counting only the completion of a prefixed problem. Among the baselines, Prefix-RFT (uniform decay) is the strongest simple alternative, edging out fixed prefixing on MATH-500 and DeepMath 7Table 1: Training-FLOPs-matched comparison on Qwen3-1.7B (pass@1 estimated from 8 samples per prob-lem; †avg@8 for AIME/AMC). All methods spend the same total budget. 95% CIs from a problem-level bootstrap; AMC is the standard AMC 2023 set (40 problems). Largest CIs per column: ±1.5 (GSM8K), ±4.0 (MATH-500), ±8.5 (AIME), ±9.2 (AMC), ±3.1 (DeepMath-hold). The GRPO, PrefixRL, and AdaPrefix-GRPO rows are 3-seed means. 
+
+Method GSM8K MATH-500 AIME † AMC † DeepMath-hold gen. len Zero-shot 88.2 57.8 6.5 32.7 22.8 6.2k Vanilla GRPO 91.3 63.7 10.1 37.9 30.1 7.9k Vanilla GRPO ( G=16 ) 91.4 64.2 10.6 38.5 31.7 7.8k SFT-warmup → GRPO 91.8 64.7 11.0 39.8 33.1 7.1k Difficulty-filter GRPO 91.1 63.9 10.2 38.9 30.8 7.6k PrefixRL 90.4 65.4 13.7 43.1 36.2 8.0k Prefix-RFT 91.0 67.4 13.5 42.4 36.8 5.4k 
+
+AdaPrefix-GRPO (ours) 92.4 70.1 17.2 46.5 48.2 4.4k           
+
+> 0123456
+> 20
+> 30
+> 40
+> 50
+> cumulative training FLOPs ( ×10 18 )
+> held-out pass@1 (%)
+> (a) compute-matched
+> GRPO
+> PrefixRL
+> AdaPrefix-GRPO (ours)
+> 050 100 150 200
+> 20
+> 30
+> 40
+> 50
+> optimizer steps
+> held-out pass@1 (%)
+> (b) iteration-matched
+> GRPO
+> PrefixRL
+> AdaPrefix-GRPO (ours)
+
+Figure 3: Separating the controller from the revisit effect (Qwen3-1.7B, DeepMath held-out 250-problem subset; single seed). (a) At matched cumulative training FLOPs, AdaPrefix-GRPO dominates at every budget; re-allocating the same budget to a larger group barely moves the baseline (GRPO G=16 , Table 1). 
+
+(b) Iteration-matched view: run for the same number of optimizer steps, the baselines receive more FLOPs than in (a) (up to ∼2.1 × for vanilla GRPO by step 240) yet remain far below AdaPrefix-GRPO, so the compute-matched gains cannot be blamed on degenerate baseline runs. with shorter traces, which confirms that annealing helps; but without the closed loop it still trails AdaPrefix-GRPO by +11.4 pp on DeepMath-hold (significant under the paired bootstrap) and by +2.7 on MATH-500. The gain also does not come from narrowing the policy: pass@16 on the DeepMath held-out split improves alongside pass@1 (base 32.8 / GRPO 35.1 / ours 56.3%), so the distribution sharpens without collapsing. On easy GSM8K all methods are near ceiling and AdaPrefix-GRPO is best or tied (92.4%), confirming the controller does no harm where prefixing is unneeded, whereas fixed prefixing slips slightly (90.4%) by over-prefixing easy problems. AIME columns average the 2024 and 2025 sets. Beyond the benchmark numbers, the solvable set itself expands: ∼17% of originally-dead problems (zero pass@16 under the base model at 
+
+ρ = 0 before training) are solved at pass@1 after annealing. 
+
+# 5.2 Scaling and cross-family generalization 
+
+We expect smaller models to live deeper in the dead zone and therefore benefit more. Each model size runs both methods to the same per-size FLOPs budget, set by the same rule as in the main setup, one vanilla-GRPO pass over the mixture at that size (so budgets scale with N and trace length); within every row of Table 2 the two columns are therefore directly comparable, while absolute budgets differ across rows. Table 2 shows the pass@1 gain over vanilla GRPO on the DeepMath held-out split shrinking but staying positive 80 50 100 150 200        
+
+> 0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1
+> τ
+> hardest
+> easiest
+> anneal
+> training steps
+> cohort-mean  k/G
+> (a) each difficulty cohort funnels to τ
+> 050 100 150 200
+> 0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1
+> hardest
+> easiest anneal
+> training steps
+> cohort-mean  ρx
+> (b) prefixes anneal to 0
+
+Figure 4: Control in action, by difficulty cohort (Qwen3-1.7B). Problems are split into quintiles by cold-start difficulty dx estimated from 4 rollouts at ρ(0)  
+
+> b
+
+; quintiles are formed by cumulative distribution (ties broken by stable sort), yielding ∼1.36K problems per bin. Each point pools all rollouts of a quintile within a controller window, so estimates are dense even though an individual problem is visited only ∼2–3 times over training. 
+
+(a) Regardless of starting position, every cohort’s realized k/G is driven into the target band and held there, then dips as the envelope anneals prefixes away; the easiest cohort sits slightly above τ because its negative offsets saturate at the ρx = 0 clip. (b) The corresponding cohort-mean prefix ratios: harder cohorts keep longer prefixes throughout, the easiest reaches ρx = 0 mid-training on its own, and all are forced to 0 by the envelope, so deployment uses no prefix. Table 2: Model scaling and cross-family transfer: pass@1 on DeepMath held-out (%). 95% problem-level bootstrap CIs are ≈ ± 3.1.                   
+
+> Model Vanilla GRPO AdaPrefix-GRPO (ours) ∆
+> Qwen3 size scaling
+> Qwen3-0.6B 19.6 41.8 +22.2
+> Qwen3-1.7B 30.1 48.2 +18.1
+> Qwen3-4B 54.9 64.1 +9.2
+> Cross-family
+> Qwen3.5-2B 46.8 57.6 +10.8
+> Gemma 4 (E4B) 51.7 59.9 +8.2
+
+as the Qwen3 base grows, and the same controller transferring to a different architecture family (Qwen3.5-2B, Gemma 4), ruling out a Qwen-specific effect. Notably, the 0.6B model trained with AdaPrefix-GRPO surpasses the 3× larger Qwen3-1.7B trained with vanilla GRPO (41.8 vs. 30.1) despite its smaller absolute budget: at this scale the training recipe buys more than the next model size. 
+
+# 5.3 Ablations 
+
+Table 3 isolates each design choice on Qwen3-1.7B. The target sweep is consistent with the intermediate-set-point prediction (Section 4.1): extreme targets clearly hurt ( τ =0 .125 : 41.9), while 0.375–0.625 sit within CI of one another; we take τ = 0 .5 as the default from prior work and do not claim a sharp empirical optimum. Control granularity shows the gain comes from closed-loop control, not prefixing per se (PrefixRL and global-decay trail by a wide margin; the bulk of the improvement is from closing the loop). Adding our annealing envelope to the PrefixRL baseline (the PrefixRL + anneal row) recovers only a small part of that gap, confirming annealing alone is not the driver. The per-sample difficulty offset adds a smaller increment over base-only control (+2.9 pp, at the edge of the single-run CI), consistent with the view that compressing the across-problem spread of k/G matters beyond centering its mean. The advantage-norm. row addresses a confound: running AdaPrefix-GRPO with std-normalized advantages (which leave the τ set-point unchanged but over-weight rare successes; Section 3) still helps but by less, indicating the gain is not purely a global gradient-norm effect. The annealing row shows the delayed envelope modestly beats no annealing (48.2 vs 44.8), i.e. forced consolidation helps, but the method works even with the envelope removed entirely: 9Table 3: Ablations on Qwen3-1.7B (pass@1, % on DeepMath held-out; best in bold ; all rows single-seed and FLOPs-matched to the main-table budget, 95% problem-level bootstrap CI ≈ ± 3.1; values rounded to one decimal place. 48.2 is the reference 3-seed mean from Table 1 shown for scale only.)                             
+
+> Factor Variants (pass@1) Adaptation rule binary 46.8 / secant 48.2
+> Target τ0.125: 41.9 / 0.25: 44.7 / 0.375: 46.5 / 0.50: 48.2 / 0.625: 46.7 / 0.75: 45.1 / 0.875: 43.8 Cold start conservative 46.4 / calibration 48.2
+> Prefix cut exact-token 46.8 / sentence 48.2
+> Control granularity PrefixRL 35.9 / PrefixRL+anneal 38.7 / global decay 36.8 / base-only 45.3 / base + offsets 48.2
+> Prefix source off-policy (rejection-sampled) 46.2 / reference 48.2
+> Advantage norm. std-normalized 44.1 / un-normalized 48.2
+> Annealing envelope none (eval @ ρ=0 ) 44.8 / delayed ( w=0 .8) 48.2
+> Group size G4: 43.6 / 8: 48.2 / 16: 48.7
+> 00.25 0.50.75 1
+> 0
+> 20
+> 40
+> dead dead τ
+> per-sample success rate k/G
+> % of problems  PrefixRL
+> AdaPrefix-GRPO (ours)
+
+Figure 5: Distribution of per-sample k/G at mid-training (Qwen3-1.7B). Base control with per-sample offsets concentrates mass near the τ = 0 .5 set-point, where signal is maximal; a fixed prefix has drifted toward saturation, with most problems piled at k/G = 1 and a hard core stuck at k/G = 0 , since its lengths were tuned once at the start; most of its rollouts thus fall in the two zero-signal modes. back-generalization carries most of the gain, and Section 5.4 discusses why the train/test distribution shift one might expect fails to materialize. The controller is also robust to the prefix source : swapping reference for rejection-sampled off-policy prefixes (PrefixRL’s regime) retains most of the gain. Finally, the group size G trades off estimator quality against update count: at a fixed FLOPs budget, doubling G halves the number of optimizer steps, so the G = 16 row buys a sharper k/G estimate for the controller with half the updates. Accuracy improves from G = 4 to G = 8 and is essentially flat at G = 16 (48.7 vs 48.2, within CI), i.e. the better estimate roughly pays for the lost updates but no more, making G = 8 the sensible default (and confirming the controller does not require an impractically large group). 
+
+# 5.4 Analysis 
+
+The controller tracks the set-point. The closed loop holds the batch-mean k/G at τ = 0 .5 within a few update intervals and keeps it there as the policy improves (Figure 2b) and keeps the whole distribution 
+
+of per-sample k/G concentrated near τ , whereas fixed and global prefixes drift toward saturation, piling mass at k/G = 1 while a hard core stays at 0 (Figure 5). Tracking difficulty cohorts, their ρx and realized 
+
+k/G are driven toward the tracked mean by the global controller plus static offsets and anneal cleanly to 
+
+ρ = 0 (Figure 4). This is the mechanism that DAPO approximates with dynamic sampling, oversampling to discard all-correct/all-wrong groups [Yu et al., 2025], except that prefix control creates signal on problems no amount of resampling can rescue. 
+
+Why prefixing transfers to no prefix. Training on a partial solution still requires the model to generate the remaining reasoning and be graded on the full trace, so it practices the same sub-skills it must later chain unaided; as prefixes anneal away, those skills are exercised from progressively earlier states. This 10 matches the back-generalization PrefixRL reports [Setlur et al., 2026]: held-out (no-prefix) pass@1 rises throughout training (Figure 1), not only once prefixes vanish. Three mechanisms plausibly explain why the train/test distribution shift one might expect does not materialize. First, the loss is masked on prefix tokens: the model never imitates the (possibly off-distribution) reference text and is only reinforced on its own successful continuations, so every token that receives gradient is on-policy and no imitation drift accumulates (conditioning still shifts the state distribution; the final ρ = 0 pass rates below are the direct check that this shift does not persist). Second, a prefix changes only the start state of the episode, not the policy being learned: as in reverse-curriculum RL [Xi et al., 2024], the sub-skills reinforced on the remainder (algebraic manipulation, case analysis, self-verification) are the same ones a from-scratch solution must chain, and they transfer across starting positions. Third, the controller itself performs a soft anneal: as the policy improves, every κ curve shifts left and the loop lowers ρx to keep k/G at τ (Figure 4b), so the distribution of training start states drifts toward unprefixed problems on its own ; the envelope merely forces the final step to exactly ρ = 0 . As the direct test of consolidation, the final ρ = 0 policy solves ∼17% of the full originally-dead set at pass@1 ( ∼22% at pass@16), evidence that the gains persist without prefixes. 
+
+Monotonicity in practice. Across problems the response κ(ρ) violates monotonicity on ∼6% of mea-sured (ρ, κ ) pairs (mostly long, off-distribution reference prefixes), and on those the controller falls back to bracketing without diverging; the mid-training snapshot in Figure 5 shows the resulting concentration of per-sample k/G near τ on raw (un-smoothed) quantized rates. 
+
+Why traces shorten. Because each sample is held near a moderate k/G , positive advantages reward 
+
+efficient correct completions rather than long, lucky explorations; combined with annealing, the policy converges to shorter unaided ( ρ = 0 ) solutions than vanilla GRPO, which only finds reward through length-heavy exploration. (We treat this as a hypothesis to verify with length-conditioned analyses at ρ = 0 .) 
+
+# 6 Conclusion 
+
+GRPO discards its hardest problems because zero within-group reward variance yields zero gradient. Prefix length is a continuous, per-sample dial that can place any problem at almost any reachable success rate. Conceptually this removes GRPO’s sampling barrier, the dead zone in which hard problems yield no signal under a finite rollout budget, and shifts the binding constraint to the model’s own capacity : with a con-trollable signal, whether a problem is learnable turns on whether the model can complete it given enough scaffolding, not on whether it can already solve it unaided. Prefixing cannot exceed that capacity ceiling or rescue a reference path the model is unable to follow, but within it, difficulty is no longer a hard cutoff on trainability. The contribution of AdaPrefix-GRPO is to control that dial in closed loop toward the interme-diate, signal-maximizing target k/G [Bae et al., 2025, Gao et al., 2025] and anneal it away, rather than fixing it in advance. At matched training compute this extracts signal where GRPO got none, beats a fixed-prefix baseline, and yields shorter solutions, with the largest gains on the smallest models. 
+
+Limitations. AdaPrefix-GRPO needs reference (or off-policy) solutions and a reliable, near-binary verifier; we evaluate only on math reasoning and do not test noisy or non-verifiable domains, where behavior may differ. We adopt the intermediate ( ≈ 0.5) set-point from prior work [Bae et al., 2025, Gao et al., 2025] and locate it empirically; we do not derive the exact per-sample optimum under reward noise. A subtler caveat: a 
+
+50% success rate on the short remainder of a heavily prefixed problem exercises credit assignment only over that remainder, which may be an easier learning signal than 50% on a from-scratch trajectory; annealing is what forces the harder, full-length signal back in, and disentangling the two is future work. The offset map δ is a hand-tuned static heuristic: a sample whose cold-start difficulty is mis-estimated keeps a biased prefix that the global loop cannot correct individually, and upgrading the offset to a genuine per-sample second loop would require denser per-sample k/G estimates than G=8 with sparse revisits provides. The cold-start calibration and difficulty probe, while one-time and amortized across runs, are not free; cheap or training-free per-sample difficulty estimation is an interesting direction for future work. The prefix source also matters (reference paths can be off-distribution), though our ablation suggests the controller is largely orthogonal to it. Small benchmarks (AIME, AMC) carry wide intervals, so we rely on several benchmarks 11 and avg@8 sampling rather than any single number. Underlying per-step data and training code are not released. 
+
+# A Measurement Details 
+
+Quantities quoted in the main text are measured as follows. Monotonicity violation rate (∼6%, Section 5.4): the fraction of adjacent (ρ, κ (ρ)) pairs with ∆κ < 0, pooled over the calibration sweep (512 problems ×
+
+4 adjacent grid intervals = 2,048 pairs) and all subsequent controller reads. Secant fallback rate (∼17%, Section 4.2): 4 of the 24 controller updates ( ∼240 steps, N =10 ) triggered the bisection fallback, 3 of them in the first third of training. Prefill overhead (<15%, Section 4): prefix tokens account for 14.6% of all training-time tokens (prefill + generated), measured over the full AdaPrefix-GRPO run. 
+
+# References 
+
+DeepSeek-AI. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv:2501.12948, 2025. Z. Shao et al. DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models (GRPO). 2024. A. Setlur, Z. Wang, A. Cohen, P. Rashidinejad, S. M. Xie. Reuse your FLOPs: Scaling RL on Hard Problems by Conditioning on Very Off-Policy Prefixes (PrefixRL). arXiv:2601.18795, 2026. Y. Qu, A. Setlur, V. Smith, R. Salakhutdinov, A. Kumar. POPE: Learning to Reason on Hard Problems via Privileged On-Policy Exploration. arXiv:2601.18779, 2026. Z. Huang, T. Cheng, Z. Qiu, Z. Wang, Y. Xu, E. M. Ponti, I. Titov. Blending Supervised and Reinforcement Fine-Tuning with Prefix Sampling (Prefix-RFT). arXiv:2507.01679, 2025. X. Zhang, S. Wu, Y. Zhu, H. Tan, S. Yu, Z. He, J. Jia. Scaf-GRPO: Scaffolded Group Relative Policy Optimization for Enhancing LLM Reasoning. arXiv:2510.19807, 2025. Q. Huang, W. Dai, J. Liu, W. He, H. Jiang, M. Song, J. Chen, C. Yao, J. Song. Boosting MLLM Reasoning with Text-Debiased Hint-GRPO. ICCV, 2025. arXiv:2503.23905. S. Bae, J. Hong, M. Y. Lee, H. Kim, J. Nam, D. Kwak. Online Difficulty Filtering for Reasoning Oriented Reinforcement Learning. arXiv:2504.03380, 2025. Z. Gao, J. Kim, W. Sun, T. Joachims, S. Wang, R. Y. Pang, L. Tan. Prompt Curriculum Learning for Efficient LLM Post-Training. arXiv:2510.01135, 2025. Z. Xi et al. Training Large Language Models for Reasoning through Reverse Curriculum Reinforcement Learning (R3). ICML, 2024. arXiv:2402.05808. C. Florensa, D. Held, X. Geng, P. Abbeel. Automatic Goal Generation for Reinforcement Learning Agents. ICML, 2018. J. Schulman, F. Wolski, P. Dhariwal, A. Radford, O. Klimov. Proximal Policy Optimization Algorithms. arXiv:1707.06347, 2017. A. Ahmadian et al. Back to Basics: Revisiting REINFORCE-Style Optimization for Learning from Human Feedback in LLMs (RLOO). ACL, 2024. L. Ouyang et al. Training Language Models to Follow Instructions with Human Feedback (InstructGPT). NeurIPS, 2022. N. Lambert et al. Tülu 3: Pushing Frontiers in Open Language Model Post-Training. arXiv:2411.15124, 2024. 12 Q. Yu et al. DAPO: An Open-Source LLM Reinforcement Learning System at Scale. arXiv:2503.14476, 2025. Z. Liu, C. Chen, W. Xu, P. Qi, T. Pang, C. Du, W. S. Lee, M. Lin. Understanding R1-Zero-Like Training: A Critical Perspective (Dr. GRPO). arXiv:2503.20783, 2025. E. Zelikman, Y. Wu, J. Mu, N. Goodman. STaR: Bootstrapping Reasoning with Reasoning. NeurIPS, 2022. H. Dong et al. RAFT: Reward rAnked FineTuning for Generative Foundation Model Alignment. TMLR, 2023. T. Chu et al. SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model Post-Training. arXiv:2501.17161, 2025. G. Cui et al. The Entropy Mechanism of Reinforcement Learning for Reasoning Language Models. arXiv:2505.22617, 2025. J. Yan et al. Learning to Reason under Off-Policy Guidance (LUFFY). arXiv:2504.14945, 2025. L. Ma, H. Liang, M. Qiang, L. Tang, X. Ma, Z. H. Wong, et al. Learning What Reinforcement Learning Can’t: Interleaved Online Fine-Tuning for Hardest Questions (ReLIFT). arXiv:2506.07527, 2025. Y. Bengio, J. Louradour, R. Collobert, J. Weston. Curriculum Learning. ICML, 2009. M. P. Kumar, B. Packer, D. Koller. Self-Paced Learning for Latent Variable Models. NeurIPS, 2010. A. Yang et al. Qwen3 Technical Report. arXiv:2505.09388, 2025. Gemma Team, Google DeepMind. Gemma 4 Technical Report. arXiv:2607.02770, 2026. Qwen Team. Qwen3.5: Towards Native Multimodal Agents. 2026. Z. He et al. DeepMath-103K: A Large-Scale, Challenging, Decontaminated, and Verifiable Mathematical Dataset. arXiv:2504.11456, 2025. E. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. ICLR, 2022. L. von Werra et al. TRL: Transformer Reinforcement Learning. https://github.com/huggingface/trl ,2020. W. Kwon et al. Efficient Memory Management for Large Language Model Serving with PagedAttention (vLLM). SOSP, 2023. C. Snell, J. Lee, K. Xu, A. Kumar. Scaling LLM Test-Time Compute Optimally Can Be More Effective than Scaling Model Parameters. arXiv:2408.03314, 2024. D. Hendrycks et al. Measuring Mathematical Problem Solving with the MATH Dataset. NeurIPS, 2021. K. Cobbe et al. Training Verifiers to Solve Math Word Problems (GSM8K). arXiv:2110.14168, 2021. 13
