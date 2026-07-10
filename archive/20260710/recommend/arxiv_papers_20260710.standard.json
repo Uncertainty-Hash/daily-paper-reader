@@ -1,0 +1,218 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T21:31:27.913590+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08572v1",
+      "source": "arxiv",
+      "title": "Switch-Reasoner: Learn When to Think in Multitask Mixtures via Reinforcement Learning",
+      "abstract": "Multimodal Large Language Models (MLLMs) often follow a fixed Think-then-Answer paradigm, which is inefficient in heterogeneous multitask settings because simple inputs may not require explicit reasoning while difficult ones can benefit substantially from it. Learning when to think is also unstable during post-training, where imbalanced rollouts can drive the model toward always-thinking or always-direct behavior. We propose Switch-Reasoner, a GRPO-based framework that learns to adaptively select reasoning modes for MLLMs. It treats thinking as a virtual tool invocation and allows the model to either answer directly or invoke explicit reasoning before answering. To stabilize this decision, we introduce a dual-level regulation mechanism that balances the overall use of Thinking Mode and Direct Mode while providing sample-level supervision based on the relative benefit of the two choices. Experiments on 11 multimodal tasks show that Switch-Reasoner reduces unnecessary reasoning while maintaining strong performance, achieving a better accuracy-efficiency trade-off.",
+      "authors": [
+        "Yiyang Fang",
+        "Pei Fu",
+        "Jinjie Li",
+        "Jian Liang",
+        "Wenke Huang",
+        "Ruijie Luo",
+        "Shaojie Zhang",
+        "Jian Luan",
+        "Yi R. Fung",
+        "Mang Ye"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T15:04:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.08572v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "GRPO-based adaptive reasoning mode selection for MLLMs",
+      "llm_evidence_cn": "基于GRPO的多模态大模型自适应推理模式选择",
+      "llm_evidence": "基于GRPO的多模态大模型自适应推理模式选择",
+      "canonical_evidence": "基于GRPO的多模态大模型自适应推理模式选择",
+      "llm_tldr_en": "Switch-Reasoner uses GRPO to let MLLMs decide when to invoke explicit reasoning, stabilizing training with dual-level regulation.",
+      "llm_tldr_cn": "针对多模态大模型在异构多任务场景中固定推理范式效率低下的问题，提出Switch-Reasoner框架，基于GRPO学习自适应选择推理模式。该方法将思考视为虚拟工具调用，允许模型直接回答或先推理再回答，并引入双层调节机制稳定决策。实验表明，该方法在多种多模态任务上提升了推理效率与准确性，展示了GRPO在推理模式学习中的有效性。",
+      "llm_tldr": "针对多模态大模型在异构多任务场景中固定推理范式效率低下的问题，提出Switch-Reasoner框架，基于GRPO学习自适应选择推理模式。该方法将思考视为虚拟工具调用，允许模型直接回答或先推理再回答，并引入双层调节机制稳定决策。实验表明，该方法在多种多模态任务上提升了推理效率与准确性，展示了GRPO在推理模式学习中的有效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02983v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Evidence-Seeking Diagnostic Reasoning with Large Language Models",
+      "abstract": "Recent reasoning-centric Large Language Models (LLMs) have made significant strides, yet they predominantly operate on a passive-inference pattern that assumes complete information. In contrast, real-world clinical intelligence is inherently an iterative investigative process requiring strategic evidence acquisition. To bridge this gap, we formalize medical diagnosis as an Iterative Evidence-Seeking Task. We leverage Reinforcement Learning with Verifiable Rewards (RLVR) to elicit intrinsic reasoning within a closed-loop environment, guided by a novel suite of rewards that enforce diagnostic precision and examination consistency. To facilitate this, we introduce the Retrieval-Augmented Generation-based Examination Simulator (RAGES), a high-fidelity clinical oracle that provides realistic, knowledge-grounded follow-up evidence. Empirical results across diverse datasets demonstrate that our framework enables LLMs to transition from passive responders to autonomous assistants. Notably, our model demonstrates comparable performance to larger and reasoning-enhanced baselines, while RAGES proves superior to vanilla LLMs in generating biologically plausible clinical feedback.",
+      "authors": [
+        "Shengyi Hua",
+        "Kangzhe Hu",
+        "Conghui He",
+        "Xiaofan Zhang",
+        "Shaoting Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-03T05:43:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.02983v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "applies RLVR to LLM diagnostic reasoning for evidence-seeking tasks",
+      "llm_evidence_cn": "将RLVR应用于LLM诊断推理的证据寻求任务",
+      "llm_evidence": "将RLVR应用于LLM诊断推理的证据寻求任务",
+      "canonical_evidence": "将RLVR应用于LLM诊断推理的证据寻求任务",
+      "llm_tldr_en": "Uses Reinforcement Learning with Verifiable Rewards (RLVR) to elicit reasoning in LLMs for iterative evidence-seeking medical diagnosis, introducing a new reward suite and RAGES simulator.",
+      "llm_tldr_cn": "针对LLM在临床诊断中被动推理的问题，提出使用可验证奖励强化学习（RLVR）激发主动推理，结合新型奖励体系和检索增强生成检查模拟器（RAGES），实现迭代式证据寻求诊断。实验证明该方法有效提升了诊断精度和检查一致性。",
+      "llm_tldr": "针对LLM在临床诊断中被动推理的问题，提出使用可验证奖励强化学习（RLVR）激发主动推理，结合新型奖励体系和检索增强生成检查模拟器（RAGES），实现迭代式证据寻求诊断。实验证明该方法有效提升了诊断精度和检查一致性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07976v1",
+      "source": "arxiv",
+      "title": "When Implausible Tokens Get Reinforced: Tail-Aware Credit Calibration for LLM Reinforcement Learning",
+      "abstract": "Reinforcement learning (RL) has achieved remarkable success in enhancing the reasoning capabilities of large language models (LLMs). However, widely used critic-free RL methods rely on uniform credit assignment, broadcasting the same advantage to all tokens regardless of their differences. We identify a critical failure mode of this design, which we refer to as Positive-Credit Contamination: low-probability tail tokens that are contextually erroneous receive identical positive credit to plausible ones within the same trajectory, resulting in the indiscriminate reinforcement of flawed reasoning behavior. To mitigate this issue, we propose Tail-Aware Credit calibratiOn (TACO), a method that calibrates uniform credit assignment to suppress undesirable positive updates. TACO first computes a tail-risk score that incorporates the local generation context to assess each token's risk of falling into the unreliable tail, distinguishing unexpected rarity from uncertainty-driven exploration. TACO then uses this score to tune positive credit for risky tokens without removing their gradients entirely, so that recurring useful rare patterns can accumulate reinforcement while incidental noise is progressively dampened. Experimental results across three LLMs and eight benchmarks show that TACO consistently outperforms GRPO-style baselines. Notably, TACO improves training stability, supporting sustained performance gains in long-horizon RL. The source code is available at: https://github.com/xiuyilou/TACO.",
+      "authors": [
+        "Xiuyi Lou",
+        "Zicheng Xu",
+        "Yu-Neng Chuang",
+        "Hoang Anh Duy Le",
+        "Zhaozhuo Xu",
+        "Guanchu Wang",
+        "Vladimir Braverman"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T23:00:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.07976v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "credit calibration for LLM reinforcement learning reasoning",
+      "llm_evidence_cn": "LLM强化学习推理中的信用校准",
+      "llm_evidence": "LLM强化学习推理中的信用校准",
+      "canonical_evidence": "LLM强化学习推理中的信用校准",
+      "llm_tldr_en": "TACO calibrates uniform credit assignment in LLM RL, preventing reinforcement of implausible tail tokens and improving reasoning.",
+      "llm_tldr_cn": "该论文揭示了无critic强化学习方法中均匀信用分配的一个关键失败模式：低概率错误token获得与合理token相同的正面信用，导致错误推理行为被强化。为此提出尾感知信用校准（TACO），通过对均匀信用进行校准来缓解正面信用污染问题。实验表明TACO能有效提升LLM推理能力。该方法直接改进了RLVR等基于奖励的推理训练中的信用分配。",
+      "llm_tldr": "该论文揭示了无critic强化学习方法中均匀信用分配的一个关键失败模式：低概率错误token获得与合理token相同的正面信用，导致错误推理行为被强化。为此提出尾感知信用校准（TACO），通过对均匀信用进行校准来缓解正面信用污染问题。实验表明TACO能有效提升LLM推理能力。该方法直接改进了RLVR等基于奖励的推理训练中的信用分配。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.08056v1",
+      "source": "arxiv",
+      "title": "Reinforcing the Generation Order of Multimodal Masked Diffusion Models",
+      "abstract": "Diffusion Language Models (DLMs) have recently achieved substantial progress in natural language generation tasks. Recent research demonstrates that adaptive token generation ordering can significantly improve performance in mathematical reasoning and code synthesis applications. In this work, we investigate the optimization of generation order for both text-to-image synthesis and multimodal understanding. We first establish that, unlike structured problems in language generation such as Sudoku puzzles, model logits alone are insufficient for determining optimal generation sequences in text-to-image generation and multimodal understanding. To address this challenge, we introduce a learnable control module trained via Group Relative Policy Optimization (GRPO) to determine the generation order. Our results demonstrate that learning this control block substantially improves both text-to-image alignment and multimodal understanding in DLMs. In particular, it enhances the model's ability to capture fine-grained spatial relationships in generated images while also strengthening performance on multimodal reasoning and comprehension tasks. We evaluate our framework on GenEval, an object-focused benchmark for text-to-image alignment, where it achieves 4.08% relative improvements. In addition, experiments on VLMEvalKit confirm 4.85% relative improvements in multimodal understanding, highlighting the broad effectiveness of our approach.",
+      "authors": [
+        "Yidong Ouyang",
+        "Zhe Wang",
+        "Sourav Bhabesh",
+        "Dmitriy Bespalov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "stat.ML"
+      ],
+      "published": "2026-07-09T02:07:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.08056v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Group Relative Policy Optimization for generation order",
+      "llm_evidence_cn": "GRPO用于生成顺序优化",
+      "llm_evidence": "GRPO用于生成顺序优化",
+      "canonical_evidence": "GRPO用于生成顺序优化",
+      "llm_tldr_en": "This paper applies GRPO to optimize generation order in multimodal masked diffusion models, improving text-to-image and multimodal understanding.",
+      "llm_tldr_cn": "该论文将组相对策略优化（GRPO）应用于多模态掩码扩散模型的生成顺序优化中。作者发现，对于文本到图像生成和多模态理解任务，模型logits不足以确定最优生成序列，因此引入一个可学习的控制模块，通过GRPO进行训练。实验表明该方法在相关任务上取得了性能提升。虽然不直接针对LLM推理，但GRPO方法本身可迁移至推理强化学习场景。",
+      "llm_tldr": "该论文将组相对策略优化（GRPO）应用于多模态掩码扩散模型的生成顺序优化中。作者发现，对于文本到图像生成和多模态理解任务，模型logits不足以确定最优生成序列，因此引入一个可学习的控制模块，通过GRPO进行训练。实验表明该方法在相关任务上取得了性能提升。虽然不直接针对LLM推理，但GRPO方法本身可迁移至推理强化学习场景。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02757v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Data-Efficient Code-Switched ASR",
+      "abstract": "Audio-language models can be prompted for code-switched speech, but their decoding is not optimized for code-switching and often fails at language boundaries. We propose a practical reinforcement learning with verifiable rewards recipe for data-efficient adaptation of audio-language models to code-switched ASR using group relative policy optimization, combining an error rate reward with a script fidelity reward that penalizes wrong writing systems and a two-pass draft-and-refinement procedure. Using Qwen2-Audio as a reproducible testbed across 10 language pairs, training on only TTS code-switched speech, we show that RLVR with 10% of the data matches LoRA supervised fine-tuning trained on the full dataset, with the largest gains on typologically distant pairs. The error rate reward eliminates translation errors while the script fidelity reward separately reduces script contamination without degradation. These gains transfer zero-shot to a human-recorded code-switching corpus.",
+      "authors": [
+        "Ziwei Ye",
+        "Peter Vickers"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-07-02T20:44:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.02757v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "applies RLVR and GRPO for data-efficient code-switched ASR",
+      "llm_evidence_cn": "将RLVR和GRPO应用于数据高效的代码切换语音识别",
+      "llm_evidence": "将RLVR和GRPO应用于数据高效的代码切换语音识别",
+      "canonical_evidence": "将RLVR和GRPO应用于数据高效的代码切换语音识别",
+      "llm_tldr_en": "Proposes RLVR with GRPO for code-switched ASR, using error rate and script fidelity rewards, achieving data efficiency.",
+      "llm_tldr_cn": "针对代码切换语音识别中解码优化不足的问题，提出基于可验证奖励的强化学习方案，使用组相对策略优化，结合错误率和书写系统忠实性奖励以及两遍精炼流程。在10个语言对上仅用10%的TTS数据即达到全数据LoRA微调的性能，展示了RLVR在数据高效应用中的潜力。",
+      "llm_tldr": "针对代码切换语音识别中解码优化不足的问题，提出基于可验证奖励的强化学习方案，使用组相对策略优化，结合错误率和书写系统忠实性奖励以及两遍精炼流程。在10个语言对上仅用10%的TTS数据即达到全数据LoRA微调的性能，展示了RLVR在数据高效应用中的潜力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

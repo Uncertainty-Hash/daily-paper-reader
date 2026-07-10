@@ -6,49 +6,37 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-09
-- 运行时间：2026-07-09 22:05:27 UTC
+- 最新运行日期：2026-07-10
+- 运行时间：2026-07-10 21:34:58 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：6
-- 速读区：3
+- 本次总论文数：5
+- 精读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦9篇论文，精读6篇，核心围绕大模型推理泛化与自我改进策略的蒸馏方法。  
-最值得关注的两个方向：弱到强泛化的直接on-policy蒸馏，以及基于几何的自蒸馏提升推理泛化能力。  
-建议普通读者优先阅读这两篇精读论文，探索如何在弱监督或自蒸馏框架下强化模型推理。
-- 详情：[/202607/09/README](/202607/09/README)
+今日推荐5篇强化学习相关论文，精读2篇、速读2篇，聚焦如何让模型学会适时思考与证据推理。  
+最值得关注《Switch-Reasoner》在混合任务中通过强化学习动态切换思考与否（9.0分），以及《Reinforcement Learning for Evidence-Seeking Diagnostic Reasoning》用LLM进行诊断推理（8.0分）。  
+建议优先精读这两篇，理解“何时该思考”的设计思路和医学推理应用，对科研或工程选型有直接启发。
+- 详情：[/202607/10/README](/202607/10/README)
 
 ### 精读区论文标签
-1. [Weak-to-Strong Generalization via Direct On-Policy Distillation](/202607/09/2607.05394v2-weak-to-strong-generalization-via-direct-on-policy-distillation)  
-   标签：评分：10.0/10、query:opd
-   evidence：直接同策略蒸馏用于大语言模型推理
-2. [Geometric Self-Distillation for Reasoning Generalization](/202607/09/2607.06855v1-geometric-self-distillation-for-reasoning-generalization)  
+1. [Switch-Reasoner: Learn When to Think in Multitask Mixtures via Reinforcement Learning](/202607/10/2607.08572v1-switch-reasoner-learn-when-to-think-in-multitask-mixtures-via-reinforcement-learning)  
    标签：评分：9.0/10、query:opd
-   evidence：针对推理泛化的同策略蒸馏
-3. [Search, Fail, Recover: A Training Framework for Correction-Aware Reasoning](/202607/09/2607.07492v1-search-fail-recover-a-training-framework-for-correction-aware-reasoning)  
-   标签：评分：9.0/10、query:opd
-   evidence：使用失败轨迹和回退的修正感知推理训练框架
-4. [Max Out GRPO Signal: Adaptive Trace Prefix Control for Hard Reasoning Problems](/202607/09/2607.07674v1-max-out-grpo-signal-adaptive-trace-prefix-control-for-hard-reasoning-problems)  
-   标签：评分：9.0/10、query:opd
-   evidence：通过自适应轨迹前缀控制最大化GRPO信号(AdaPrefix-GRPO)
-5. [Behavior Leverage Imbalance in Multi-Teacher On-Policy Distillation](/202607/09/2607.07050v1-behavior-leverage-imbalance-in-multi-teacher-on-policy-distillation)  
+   evidence：基于GRPO的多模态大模型自适应推理模式选择
+2. [Reinforcement Learning for Evidence-Seeking Diagnostic Reasoning with Large Language Models](/202607/10/2607.02983v1-reinforcement-learning-for-evidence-seeking-diagnostic-reasoning-with-large-language-models)  
    标签：评分：8.0/10、query:opd
-   evidence：面向代理语言模型的多教师同策略蒸馏
-6. [Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning](/202607/09/2607.07508v1-single-rollout-asynchronous-optimization-for-agentic-reinforcement-learning)  
+   evidence：将RLVR应用于LLM诊断推理的证据寻求任务
+3. [When Implausible Tokens Get Reinforced: Tail-Aware Credit Calibration for LLM Reinforcement Learning](/202607/10/2607.07976v1-when-implausible-tokens-get-reinforced-tail-aware-credit-calibration-for-llm-reinforcement-learning)  
    标签：评分：8.0/10、query:opd
-   evidence：面向GRPO的单展开异步优化方法用于智能体强化学习
+   evidence：LLM强化学习推理中的信用校准
 
 ### 速读区论文标签
-1. [RSPO: Reward-Swap Policy Optimization for Multi-Turn LLM Agents](/202607/09/2607.04713v1-rspo-reward-swap-policy-optimization-for-multi-turn-llm-agents)  
+1. [Reinforcing the Generation Order of Multimodal Masked Diffusion Models](/202607/10/2607.08056v1-reinforcing-the-generation-order-of-multimodal-masked-diffusion-models)  
    标签：评分：7.0/10、query:opd
-   evidence：使用奖励交换策略优化来结合可验证奖励和过程奖励
-2. [MILES: Modular Instruction Memory with Learnable Selection for Self-Improving LLM Reasoning](/202607/09/2607.06974v1-miles-modular-instruction-memory-with-learnable-selection-for-self-improving-llm-reasoning)  
+   evidence：GRPO用于生成顺序优化
+2. [Reinforcement Learning for Data-Efficient Code-Switched ASR](/202607/10/2607.02757v1-reinforcement-learning-for-data-efficient-code-switched-asr)  
    标签：评分：6.0/10、query:opd
-   evidence：通过可学习选择的模块化指令记忆实现LLM推理自我改进
-3. [RLVP: Penalize the Path, Reward the Outcome](/202607/09/2607.07435v1-rlvp-penalize-the-path-reward-the-outcome)  
-   标签：评分：6.0/10、query:opd
-   evidence：提出路径惩罚以解决RLVR仅优化结果的局限性
+   evidence：将RLVR和GRPO应用于数据高效的代码切换语音识别
 
 
 <div class="dpr-home-promo-card">
