@@ -6,37 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 21:34:58 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 21:16:51 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：3
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日推荐5篇强化学习相关论文，精读2篇、速读2篇，聚焦如何让模型学会适时思考与证据推理。  
-最值得关注《Switch-Reasoner》在混合任务中通过强化学习动态切换思考与否（9.0分），以及《Reinforcement Learning for Evidence-Seeking Diagnostic Reasoning》用LLM进行诊断推理（8.0分）。  
-建议优先精读这两篇，理解“何时该思考”的设计思路和医学推理应用，对科研或工程选型有直接启发。
-- 详情：[/202607/10/README](/202607/10/README)
+今日精读一篇GUI智能体多平台持续学习的论文，速读两篇涉及跨语言RAG与探索稳定性优化。  
+最值得关注的是《UI-MOPD》提出的在线策略蒸馏方法，为持续GUI智能体学习提供新思路。  
+建议优先阅读精读论文，掌握多平台场景下的智能体进化技术。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
-1. [Switch-Reasoner: Learn When to Think in Multitask Mixtures via Reinforcement Learning](/202607/10/2607.08572v1-switch-reasoner-learn-when-to-think-in-multitask-mixtures-via-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：基于GRPO的多模态大模型自适应推理模式选择
-2. [Reinforcement Learning for Evidence-Seeking Diagnostic Reasoning with Large Language Models](/202607/10/2607.02983v1-reinforcement-learning-for-evidence-seeking-diagnostic-reasoning-with-large-language-models)  
+1. [UI-MOPD: Multi-Platform On-Policy Distillation for Continual GUI Agent Learning](/202607/11/2607.04425v1-ui-mopd-multi-platform-on-policy-distillation-for-continual-gui-agent-learning)  
    标签：评分：8.0/10、query:opd
-   evidence：将RLVR应用于LLM诊断推理的证据寻求任务
-3. [When Implausible Tokens Get Reinforced: Tail-Aware Credit Calibration for LLM Reinforcement Learning](/202607/10/2607.07976v1-when-implausible-tokens-get-reinforced-tail-aware-credit-calibration-for-llm-reinforcement-learning)  
-   标签：评分：8.0/10、query:opd
-   evidence：LLM强化学习推理中的信用校准
+   evidence：多平台同策略蒸馏用于GUI代理
 
 ### 速读区论文标签
-1. [Reinforcing the Generation Order of Multimodal Masked Diffusion Models](/202607/10/2607.08056v1-reinforcing-the-generation-order-of-multimodal-masked-diffusion-models)  
-   标签：评分：7.0/10、query:opd
-   evidence：GRPO用于生成顺序优化
-2. [Reinforcement Learning for Data-Efficient Code-Switched ASR](/202607/10/2607.02757v1-reinforcement-learning-for-data-efficient-code-switched-asr)  
+1. [Distill Where the Student Goes: Teacher-Regularized RL for English-Evidence Cross-Lingual RAG](/202607/11/2607.02966v2-distill-where-the-student-goes-teacher-regularized-rl-for-english-evidence-cross-lingual-rag)  
    标签：评分：6.0/10、query:opd
-   evidence：将RLVR和GRPO应用于数据高效的代码切换语音识别
+   evidence：教师正则化强化学习与蒸馏风格监督，与同策略蒸馏概念相关
+2. [UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma](/202607/11/2607.06987v1-up-unbounded-positive-asymmetric-optimization-for-breaking-the-exploration-stability-dilemma)  
+   标签：评分：6.0/10、query:opd
+   evidence：用于LLM推理强化学习的无界正不对称优化
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,145 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-11T21:12:54.784726+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.04425v1",
+      "source": "arxiv",
+      "title": "UI-MOPD: Multi-Platform On-Policy Distillation for Continual GUI Agent Learning",
+      "abstract": "Recent advances in multimodal foundation models and agent systems have driven GUI agents from single-platform task execution toward cross-platform interaction. However, building multi-platform GUI agents remains challenging. On one hand, high-quality and executable cross-platform interaction trajectories are still scarce, and existing data often suffer from limited platform coverage. On the other hand, different platforms exhibit distinct interaction conventions, making joint or continual training prone to behavioral pattern mixing, platform-specific capability degradation, and catastrophic forgetting. To address these challenges, we construct Uni-GUI, a high-quality cross-platform GUI interaction dataset, and propose UI-MOPD, the first method that incorporates multi-teacher on-policy distillation into continual learning for GUI agents. UI-MOPD dynamically selects a platform-specific teacher according to the current environment and transfers platform-specific behavioral priors to a shared policy through platform-conditioned distillation, enabling adaptation to new platforms while preserving capabilities on existing ones. Experiments on OSWorld and MobileWorld show that UI-MOPD achieves task success rates of 38.2% and 12.0%, respectively, demonstrating its effectiveness in balancing cross-platform capability retention and new-platform adaptation.   Project page: https://elispectre.github.io/UI-MOPD/.",
+      "authors": [
+        "Niu Lian",
+        "Alan Chen",
+        "Zhehao Yu",
+        "Chengzhen Duan",
+        "Fazhan Liu",
+        "Hui Liu",
+        "Pei Fu",
+        "Jian Luan",
+        "Yaowei Wang",
+        "Shu-Tao Xia",
+        "Jinpeng Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-07-05T17:37:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.04425v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-platform on-policy distillation for GUI agents",
+      "llm_evidence_cn": "多平台同策略蒸馏用于GUI代理",
+      "llm_evidence": "多平台同策略蒸馏用于GUI代理",
+      "canonical_evidence": "多平台同策略蒸馏用于GUI代理",
+      "llm_tldr_en": "UI-MOPD extends on-policy distillation to multi-platform GUI agent learning, addressing cross-platform capability degradation and catastrophic forgetting.",
+      "llm_tldr_cn": "构建多平台GUI代理面临数据稀缺和平台间行为差异导致的遗忘问题。本文构建了Uni-GUI跨平台数据集，并提出UI-MOPD，首次将同策略蒸馏应用于多平台持续学习。通过在不同平台的轨迹上进行蒸馏，模型能够保留各平台专用技能并避免遗忘。实验表明，UI-MOPD在多个平台上保持了高任务成功率。",
+      "llm_tldr": "构建多平台GUI代理面临数据稀缺和平台间行为差异导致的遗忘问题。本文构建了Uni-GUI跨平台数据集，并提出UI-MOPD，首次将同策略蒸馏应用于多平台持续学习。通过在不同平台的轨迹上进行蒸馏，模型能够保留各平台专用技能并避免遗忘。实验表明，UI-MOPD在多个平台上保持了高任务成功率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.02966v2",
+      "source": "arxiv",
+      "title": "Distill Where the Student Goes: Teacher-Regularized RL for English-Evidence Cross-Lingual RAG",
+      "abstract": "Cross-lingual retrieval-augmented generation (RAG) is often deployed in an English-evidence regime, where users query in diverse languages but retrieved passages remain English. In this setting, generation can fail despite strong base models: English evidence induces language drift (English or code-switching outputs) and models use evidence unreliably when producing non-English answers. We attribute these failures to two post-training challenges: (i) errors are prefix-dependent, so fixed-trajectory supervision suffers from prefix mismatch; and (ii) sequence-level (partly discrete / judge-based) rewards yield noisy credit assignment and high-variance updates. We propose TR-RAG, a teacher-regularized RL recipe that couples reward optimization with on-policy distillation on student-visited prefixes. A compact student samples on-policy answers, while a stronger frozen teacher is queried only on those prefixes and provides a prefix-wise student-to-teacher reverse-KL anchor. We further introduce a reward decomposition for English-evidence multilingual generation, combining language consistency, character 3-gram recall, and an LLM-judge score for evidence-grounded correctness. Across three benchmarks (BioASQ-ENKB5, Hotpot-ENKB5, and naturally multilingual MKQA) and two backbones, TR-RAG improves the composite of language adherence and evidence-grounded correctness over strong baselines. Crucially, the teacher anchor acts as a safety net: on in-domain languages it prevents the large language-consistency collapses (up to ~27 percentage points) that reward-only RL can suffer by drifting below even the base model, while on distant out-of-distribution languages, where reward-only RL stalls at the base model's ceiling, it still improves evidence grounding; and on character 3-gram recall the compact student sometimes surpasses its 70B teacher.",
+      "authors": [
+        "Haotian Zhou",
+        "Weiran Huang",
+        "Siqi Liu",
+        "Xiting Wang",
+        "Xin Zhang",
+        "Zhihao Wen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-03T05:17:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.02966v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "teacher-regularized RL with distillation-style supervision, relevant to on-policy distillation concepts",
+      "llm_evidence_cn": "教师正则化强化学习与蒸馏风格监督，与同策略蒸馏概念相关",
+      "llm_evidence": "教师正则化强化学习与蒸馏风格监督，与同策略蒸馏概念相关",
+      "canonical_evidence": "教师正则化强化学习与蒸馏风格监督，与同策略蒸馏概念相关",
+      "llm_tldr_en": "Proposes TR-RAG using teacher-regularized RL to address prefix mismatch and noisy rewards in cross-lingual RAG, involving distillation-like supervision.",
+      "llm_tldr_cn": "跨语言RAG中英语证据导致语言漂移和证据使用不可靠。本文提出TR-RAG，采用教师正则化强化学习，通过教师模型提供密集监督信号，解决固定轨迹监督的prefix不匹配和序列奖励噪声问题。虽然目标为RAG，但其教师正则化框架与同策略蒸馏高度相似，对推理场景的蒸馏方法设计有借鉴意义。",
+      "llm_tldr": "跨语言RAG中英语证据导致语言漂移和证据使用不可靠。本文提出TR-RAG，采用教师正则化强化学习，通过教师模型提供密集监督信号，解决固定轨迹监督的prefix不匹配和序列奖励噪声问题。虽然目标为RAG，但其教师正则化框架与同策略蒸馏高度相似，对推理场景的蒸馏方法设计有借鉴意义。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06987v1",
+      "source": "arxiv",
+      "title": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "abstract": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "authors": [
+        "Chongyu Fan",
+        "Pengfei Liu",
+        "Jingjia Huang",
+        "Sijia Liu",
+        "Yi Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-08T04:21:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.06987v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Unbounded positive asymmetric optimization for RL in LLM reasoning",
+      "llm_evidence_cn": "用于LLM推理强化学习的无界正不对称优化",
+      "llm_evidence": "用于LLM推理强化学习的无界正不对称优化",
+      "canonical_evidence": "用于LLM推理强化学习的无界正不对称优化",
+      "llm_tldr_en": "UP proposes an unbounded positive asymmetric optimization method to break the exploration-stability dilemma in RL for LLM reasoning, allowing low-confidence reasoning paths to be updated without clipping.",
+      "llm_tldr_cn": "现有强化学习算法在优化LLM推理时面临探索-稳定性困境：标准裁剪机制限制策略更新，抑制了对低置信度正确路径的探索。本文形式化概率容量概念，提出无界正不对称优化（UP），取消对正优势路径的裁剪，同时保持负优势路径的稳定更新。该方法在数学推理等任务上提升了探索效率和最终性能。",
+      "llm_tldr": "现有强化学习算法在优化LLM推理时面临探索-稳定性困境：标准裁剪机制限制策略更新，抑制了对低置信度正确路径的探索。本文形式化概率容量概念，提出无界正不对称优化（UP），取消对正优势路径的裁剪，同时保持负优势路径的稳定更新。该方法在数学推理等任务上提升了探索效率和最终性能。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

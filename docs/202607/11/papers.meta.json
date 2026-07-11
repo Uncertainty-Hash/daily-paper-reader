@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-11",
+  "date": "2026-07-11",
+  "generated_at": "2026-07-11T21:17:00",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/11/2607.04425v1-ui-mopd-multi-platform-on-policy-distillation-for-continual-gui-agent-learning",
+      "section": "deep",
+      "title_en": "UI-MOPD: Multi-Platform On-Policy Distillation for Continual GUI Agent Learning",
+      "authors": "Niu Lian, Alan Chen, Zhehao Yu, Chengzhen Duan, Fazhan Liu, Hui Liu, Pei Fu, Jian Luan, Yaowei Wang, Shu-Tao Xia, Jinpeng Wang",
+      "date": "2026-07-05",
+      "pdf": "https://arxiv.org/pdf/2607.04425v1",
+      "score": "8.0",
+      "evidence": "多平台同策略蒸馏用于GUI代理",
+      "tldr": "跨平台GUI代理面临数据稀缺和跨平台行为遗忘问题。本文构建了Uni-GUI高质量跨平台交互数据集，并提出UI-MOPD方法，通过多教师在线蒸馏将平台特定行为知识迁移到共享策略中。在OSWorld和MobileWorld上取得38.2%和12.0%的成功率。该方法有效平衡了旧平台能力保持与新平台适应。",
+      "tags": "query:opd",
+      "abstract_en": "Recent advances in multimodal foundation models and agent systems have driven GUI agents from single-platform task execution toward cross-platform interaction. However, building multi-platform GUI agents remains challenging. On one hand, high-quality and executable cross-platform interaction trajectories are still scarce, and existing data often suffer from limited platform coverage. On the other hand, different platforms exhibit distinct interaction conventions, making joint or continual training prone to behavioral pattern mixing, platform-specific capability degradation, and catastrophic forgetting. To address these challenges, we construct Uni-GUI, a high-quality cross-platform GUI interaction dataset, and propose UI-MOPD, the first method that incorporates multi-teacher on-policy distillation into continual learning for GUI agents. UI-MOPD dynamically selects a platform-specific teacher according to the current environment and transfers platform-specific behavioral priors to a shared policy through platform-conditioned distillation, enabling adaptation to new platforms while preserving capabilities on existing ones. Experiments on OSWorld and MobileWorld show that UI-MOPD achieves task success rates of 38.2% and 12.0%, respectively, demonstrating its effectiveness in balancing cross-platform capability retention and new-platform adaptation.   Project page: https://elispectre.github.io/UI-MOPD/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/11/2607.02966v2-distill-where-the-student-goes-teacher-regularized-rl-for-english-evidence-cross-lingual-rag",
+      "section": "quick",
+      "title_en": "Distill Where the Student Goes: Teacher-Regularized RL for English-Evidence Cross-Lingual RAG",
+      "authors": "Haotian Zhou, Weiran Huang, Siqi Liu, Xiting Wang, Xin Zhang, Zhihao Wen",
+      "date": "2026-07-03",
+      "pdf": "https://arxiv.org/pdf/2607.02966v2",
+      "score": "6.0",
+      "evidence": "教师正则化强化学习与蒸馏风格监督，与同策略蒸馏概念相关",
+      "tldr": "跨语言RAG中，英语证据导致语言漂移和不可靠生成。针对后训练挑战，提出TR-RAG方法，将奖励优化与学生访问前缀上的在线策略蒸馏相结合，并用冻结的强教师提供反向KL锚点。引入语言一致性、字符3-gram召回和LLM评判的奖励分解。在三个基准测试上，TR-RAG提升了语言一致性和证据忠实度，教师锚点防止了语言一致性崩溃，并在分布外语言上改进证据利用。",
+      "tags": "query:opd",
+      "abstract_en": "Cross-lingual retrieval-augmented generation (RAG) is often deployed in an English-evidence regime, where users query in diverse languages but retrieved passages remain English. In this setting, generation can fail despite strong base models: English evidence induces language drift (English or code-switching outputs) and models use evidence unreliably when producing non-English answers. We attribute these failures to two post-training challenges: (i) errors are prefix-dependent, so fixed-trajectory supervision suffers from prefix mismatch; and (ii) sequence-level (partly discrete / judge-based) rewards yield noisy credit assignment and high-variance updates. We propose TR-RAG, a teacher-regularized RL recipe that couples reward optimization with on-policy distillation on student-visited prefixes. A compact student samples on-policy answers, while a stronger frozen teacher is queried only on those prefixes and provides a prefix-wise student-to-teacher reverse-KL anchor. We further introduce a reward decomposition for English-evidence multilingual generation, combining language consistency, character 3-gram recall, and an LLM-judge score for evidence-grounded correctness. Across three benchmarks (BioASQ-ENKB5, Hotpot-ENKB5, and naturally multilingual MKQA) and two backbones, TR-RAG improves the composite of language adherence and evidence-grounded correctness over strong baselines. Crucially, the teacher anchor acts as a safety net: on in-domain languages it prevents the large language-consistency collapses (up to ~27 percentage points) that reward-only RL can suffer by drifting below even the base model, while on distant out-of-distribution languages, where reward-only RL stalls at the base model's ceiling, it still improves evidence grounding; and on character 3-gram recall the compact student sometimes surpasses its 70B teacher.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/11/2607.06987v1-up-unbounded-positive-asymmetric-optimization-for-breaking-the-exploration-stability-dilemma",
+      "section": "quick",
+      "title_en": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "authors": "Chongyu Fan, Pengfei Liu, Jingjia Huang, Sijia Liu, Yi Lin",
+      "date": "2026-07-08",
+      "pdf": "https://arxiv.org/pdf/2607.06987v1",
+      "score": "6.0",
+      "evidence": "用于LLM推理强化学习的无界正不对称优化",
+      "tldr": "强化学习训练大语言模型时，重要性采样导致探索与稳定性两难：标准裁剪机制严格限制策略更新预算，过早截断正确但低置信度推理路径的探索。为此提出无界正非对称优化UP，通过stop-gradient将策略锚定当前状态，对正优势提供无裁剪稳定梯度以最大化探索，对负优势保留裁剪防止不稳定。UP可扩展至token级和序列级框架，在多种RL算法、模型架构和训练模式下显著提升推理精度，验证了其作为通用即插即用增强模块的有效性。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
