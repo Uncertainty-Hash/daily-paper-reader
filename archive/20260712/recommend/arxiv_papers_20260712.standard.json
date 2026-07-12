@@ -1,0 +1,292 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-12T20:46:19.424324+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2607.06140v1",
+      "source": "arxiv",
+      "title": "CurateEvo: Data-Curation Evolving for Agentic Post-Training",
+      "abstract": "Large language model (LLM) agents require post-training methods that can improve long-horizon decision making from environment feedback. However, existing agentic post-training pipelines often treat data curation as a fixed preprocessing step, focusing mainly on data augmentation while neglecting filtering, refinement, and adaptation to downstream failures. We propose CurateEvo, a failure-driven dynamic evolution framework for agentic post-training data curation. CurateEvo represents the curation strategy as executable code and iteratively rewrites it using failed trajectories from a held-out development set. At each epoch, the evolved strategy transforms a fixed raw corpus into supervised fine-tuning data, reinforcement learning data, and an inference-time memory bank. The evolution process first improves effectiveness by diagnosing recurring failure modes and augmenting, filtering, or refining data accordingly, and then improves efficiency by pruning redundant or low-utility training turns under a cost-aware objective. Experiments on ACEBench-Agent, BFCL-V4, and τ^2-Bench under both labeled and wild-data settings show that CurateEvo consistently outperforms prior curation methods, improving average scores by 3.2 and 2.7 points, respectively. Further analyses demonstrate that CurateEvo is compatible with different post-training recipes and substantially reduces curation overhead.",
+      "authors": [
+        "Dingzirui Wang",
+        "Xuanliang Zhang",
+        "Keyan Xu",
+        "Qingfu Zhu",
+        "Wanxiang Che"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-07T11:07:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.06140v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "failure-driven data curation using failed trajectories",
+      "llm_evidence_cn": "利用失败轨迹进行数据策展",
+      "llm_evidence": "利用失败轨迹进行数据策展",
+      "canonical_evidence": "利用失败轨迹进行数据策展",
+      "llm_tldr_en": "CurateEvo evolves data curation strategy using failed trajectories; directly relevant to learning from failure rollouts for RL post-training.",
+      "llm_tldr_cn": "该论文提出CurateEvo框架，针对智能体后训练中的数据策展问题，将策展策略表示为代码，并通过开发集上的失败轨迹迭代重写策略。该方法自动从失败中学习，生成更优的SFT和RL数据，适用于利用失败样本进行推理优化的场景。",
+      "llm_tldr": "该论文提出CurateEvo框架，针对智能体后训练中的数据策展问题，将策展策略表示为代码，并通过开发集上的失败轨迹迭代重写策略。该方法自动从失败中学习，生成更优的SFT和RL数据，适用于利用失败样本进行推理优化的场景。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.04235v1",
+      "source": "arxiv",
+      "title": "Spinning Straw into Gold: Relabeling LLM Agent Trajectories in Hindsight for Successful Demonstrations",
+      "abstract": "Large language model agents operate in partially observable, long-horizon settings where obtaining supervision remains a major bottleneck. We address this by utilizing a source of supervision overlooked in existing post-training methods: unintended yet successful goals embedded within agent rollouts. Specifically, we introduce Hindsight Supervised Learning (HSL), where an auxiliary LLM reviews each completed trajectory and relabels it with all of the natural-language goals the agent actually achieved. HSL then pairs the trajectory with its relabeled goals and uses these pairs for additional fine-tuning. To mitigate suboptimality in the relabeled data, we propose two learning techniques for HSL, irrelevant-action masking and sample reweighting. Our experiments show that HSL is flexible and compatible with existing post-training pipelines. It improves both SFT and DPO, with larger gains on long-horizon tasks with more diverse goal spaces. Moreover, HSL is sample-efficient: on ALFWorld, it surpasses baselines trained on the full dataset while using only one quarter of the ground-truth demonstrations.",
+      "authors": [
+        "Zichao Li",
+        "Gang Wu",
+        "Zichao Wang",
+        "Ruiyi Zhang",
+        "Wanrong Zhu",
+        "Ryan A. Rossi",
+        "Vlad I Morariu",
+        "Jihyung Kil"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-05T11:21:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.04235v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Hindsight relabeling of unintended successful goals from rollouts",
+      "llm_evidence_cn": "通过事后重标注利用 rollout 中的意外成功目标",
+      "llm_evidence": "通过事后重标注利用 rollout 中的意外成功目标",
+      "canonical_evidence": "通过事后重标注利用 rollout 中的意外成功目标",
+      "llm_tldr_en": "HSL relabels agent trajectories with actually achieved goals, turning failures into supervised demonstrations, reducing the need for human supervision.",
+      "llm_tldr_cn": "LLM智能体在线索不足的长时域任务中，获得监督信号是主要瓶颈。HSL利用事后回顾，由辅助LLM检查完成轨迹并重标注为实际达成目标，再用于额外微调。通过不相关动作掩蔽等技术缓解次优性问题。该方法有效提升了成功率，为利用失败数据提供了新范式。",
+      "llm_tldr": "LLM智能体在线索不足的长时域任务中，获得监督信号是主要瓶颈。HSL利用事后回顾，由辅助LLM检查完成轨迹并重标注为实际达成目标，再用于额外微调。通过不相关动作掩蔽等技术缓解次优性问题。该方法有效提升了成功率，为利用失败数据提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05378v1",
+      "source": "arxiv",
+      "title": "CompactionRL: Reinforcement Learning with Context Compaction for Long-Horizon Agents",
+      "abstract": "Long-horizon agentic LLMs are increasingly limited by finite context windows, as extended interaction trajectories can exceed the maximum context length before a task is completed. Context compaction offers a natural solution by summarizing previous interaction states and continuing the rollout under a compressed context, but incorporating compaction into reinforcement learning remains underexplored. We propose CompactionRL, a reinforcement learning strategy to train long-horizon agentic LLMs with context compaction. Our approach jointly optimizes task execution and summary generation with token-level loss normalization and cross-trajectory generalized advantage estimation. This design enables the LLM agents to learn from compacted long-horizon trajectories. We train CompactionRL on top of open models and observe consistent performance gains on agentic coding tasks. CompactionRL enables the open GLM-4.5-Air model (106B-A30B) to achieve Pass@1 scores of 66.8% on SWE-bench Verified and 24.5% on Terminal-Bench 2.0, with absolute gains of 7.0 and 3.1 points, respectively. Built upon GLM-4.7-Flash (30B-A3B), CompactionRL improves Pass@1 by 5.5 and 6.8 points, reaching 56.0% on SWE-bench Verified and 20.2% on Terminal-Bench 2.0, respectively. CompactionRL is thus deployed in the RL pipeline for training the open GLM-5.2 model (750B-A40B).",
+      "authors": [
+        "Yujiang Li",
+        "Zhenyu Hou",
+        "Yi Jing",
+        "Jie Tang",
+        "Yuxiao Dong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-06T17:55:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.05378v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL training for long-horizon LLM agents with context compaction",
+      "llm_evidence_cn": "面向长程LLM智能体的RL训练，包含上下文压缩",
+      "llm_evidence": "面向长程LLM智能体的RL训练，包含上下文压缩",
+      "canonical_evidence": "面向长程LLM智能体的RL训练，包含上下文压缩",
+      "llm_tldr_en": "CompactionRL trains long-horizon LLM agents with reinforcement learning and context compaction, jointly optimizing task execution and summary generation.",
+      "llm_tldr_cn": "长程智能体任务中，LLM的上下文窗口成为瓶颈。本文提出CompactionRL，一种结合上下文压缩的强化学习策略，通过token级损失归一化和跨轨迹广义优势估计，联合优化任务执行和摘要生成。该方法使LLM智能体能够从压缩后的长轨迹中有效学习，在长程任务上显著提升性能。",
+      "llm_tldr": "长程智能体任务中，LLM的上下文窗口成为瓶颈。本文提出CompactionRL，一种结合上下文压缩的强化学习策略，通过token级损失归一化和跨轨迹广义优势估计，联合优化任务执行和摘要生成。该方法使LLM智能体能够从压缩后的长轨迹中有效学习，在长程任务上显著提升性能。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06987v1",
+      "source": "arxiv",
+      "title": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "abstract": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "authors": [
+        "Chongyu Fan",
+        "Pengfei Liu",
+        "Jingjia Huang",
+        "Sijia Liu",
+        "Yi Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-08T04:21:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.06987v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "UP method addresses exploration-stability dilemma in LLM RL, relevant to improving online RL methods",
+      "llm_evidence_cn": "UP方法解决LLM强化学习中的探索-稳定性困境，与改进在线RL方法相关",
+      "llm_evidence": "UP方法解决LLM强化学习中的探索-稳定性困境，与改进在线RL方法相关",
+      "canonical_evidence": "UP方法解决LLM强化学习中的探索-稳定性困境，与改进在线RL方法相关",
+      "llm_tldr_en": "Proposes Unbounded Positive Asymmetric optimization to break exploration-stability dilemma in LLM RL, allowing better exploration of low-confidence reasoning paths.",
+      "llm_tldr_cn": "当前LLM推理RL中的剪枝机制限制了探索。本文提出UP（无界正非对称优化），通过正式化概率容量概念，显示保守剪枝阻碍了对低置信度正确路径的探索。UP方法解除无界正更新约束，在保持稳定的同时扩展探索空间。实验表明UP能有效提升RL训练效率和推理质量。该优化器可用于GRPO、RLVR等方法。",
+      "llm_tldr": "当前LLM推理RL中的剪枝机制限制了探索。本文提出UP（无界正非对称优化），通过正式化概率容量概念，显示保守剪枝阻碍了对低置信度正确路径的探索。UP方法解除无界正更新约束，在保持稳定的同时扩展探索空间。实验表明UP能有效提升RL训练效率和推理质量。该优化器可用于GRPO、RLVR等方法。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.06720v1",
+      "source": "arxiv",
+      "title": "When Does In-Context Search Help? A Sampling-Complexity Theory of Reflection-Driven Reasoning",
+      "abstract": "Training large language models (LLMs) with extended reasoning has enabled in-context search, in which models iteratively generate, critique, and revise solution attempts. We provide a theoretical analysis of in-context search by modeling it as approximate inference over reasoning traces, where the base model defines a prior and self-reflection provides feedback for posterior updates, and study the resulting inference-time sampling complexity - the number of sequential attempts needed to achieve high success probability. We show that when reflections reliably localize early mistakes, in-context search can yield exponential improvements over the base model, solving problems with exponentially small zero-shot pass rates using only a polynomial number of sequential attempts, whereas when this property fails, conditioning on past attempts offers no asymptotic benefit over parallel sampling. We further show that these gains are robust and learnable: approximate posterior updates suffice, and cross-entropy training on search rollouts recovers the required behavior with polynomial sample complexity. Finally, we show that under a stagewise abstraction of reinforcement learning with verifiable rewards, the optimal policy extension implements the same posterior reweighting rule. We validate key qualitative predictions of the theory on real large reasoning models.",
+      "authors": [
+        "Yotam Wolf",
+        "Noam Wies",
+        "Amnon Shashua"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-07T18:36:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.06720v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Theoretical analysis of reflection-driven reasoning with error localization and self-correction",
+      "llm_evidence_cn": "反思驱动推理中错误定位与自我修正的理论分析",
+      "llm_evidence": "反思驱动推理中错误定位与自我修正的理论分析",
+      "canonical_evidence": "反思驱动推理中错误定位与自我修正的理论分析",
+      "llm_tldr_en": "Provides a sampling-complexity theory for in-context search (reflection-driven reasoning) showing that reliable early mistake localization enables exponential improvement in success probability.",
+      "llm_tldr_cn": "该论文从理论上分析了反思驱动推理（in-context search）的采样复杂度。通过将推理过程建模为近似推断，证明当模型能可靠定位早期错误时，反思机制可使成功概率指数级提升。所得理论为利用失败轨迹进行自我修正提供了理论支撑，并解释了实际中反思推理的高效性。",
+      "llm_tldr": "该论文从理论上分析了反思驱动推理（in-context search）的采样复杂度。通过将推理过程建模为近似推断，证明当模型能可靠定位早期错误时，反思机制可使成功概率指数级提升。所得理论为利用失败轨迹进行自我修正提供了理论支撑，并解释了实际中反思推理的高效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.08255v1",
+      "source": "arxiv",
+      "title": "Compete Then Collaborate: Frontier AI Teachers Build a Verifiable Curriculum to Improve a Coding Student Beyond Imitation",
+      "abstract": "Large language models increasingly serve as teachers generating training data for smaller students. Prior multi-teacher knowledge distillation methods merge outputs without determining which frontier model teaches best, often relying on an LLM judge biased toward its own outputs. We introduce a compete-then-collaborate framework where four frontier AI teachers (Claude, Codex-GPT, Grok, Gemini) are ranked head-to-head by an execution-based judge (unit tests and stdin-stdout checks) with fairness controls, and then collaborate to build a verifiable curriculum for a student (Qwen2.5-Coder). We report three findings. (1) Under execution verification, all teachers solve standard problems near-perfectly after self-correction (99-100%) due to a saturation effect, but harder competition problems separate them (Gemini 77% > Claude 69% = Codex 69% > Grok 50%); however, the robust student-side results do not depend on teacher ranking. (2) Imitation (SFT) on verified solutions does not improve, and can degrade, an already-competent student at 7B and 32B (e.g., from 76.7% to 72.7% on MBPP-test, and 5.9% to 2.9% on competition problems). (3) Using the same collaborative curriculum as a reinforcement learning with verifiable rewards (RLVR) environment improves the student (from 5.9% to 8.8% peak on competition problems, a +49% relative gain), reversing SFT's direction. The value of AI-teacher collaboration lies not in pooling answers to imitate, but in jointly constructing a verifiable environment where the student learns by doing. We release a reproducible on-prem pipeline (NVIDIA GB10) with framework patches for running GRPO on a bleeding-edge stack.",
+      "authors": [
+        "Miseong Shawn Kim"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-09T09:00:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.08255v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Uses execution-based verifiable rewards (unit tests) for teacher ranking and curriculum building",
+      "llm_evidence_cn": "使用基于执行的验证奖励（单元测试）进行教师排名和课程构建",
+      "llm_evidence": "使用基于执行的验证奖励（单元测试）进行教师排名和课程构建",
+      "canonical_evidence": "使用基于执行的验证奖励（单元测试）进行教师排名和课程构建",
+      "llm_tldr_en": "Frontier AI teachers compete via execution-based judge and collaborate to build a verifiable curriculum for a coding student, improving beyond imitation.",
+      "llm_tldr_cn": "多教师知识蒸馏时难以确定最佳教师。本文提出竞争-协作框架，通过执行验证（单元测试）对四个前沿AI教师进行公平排序，然后协作构建可验证课程蒸馏至学生模型。实验表明该方法在编程任务上超越纯模仿学习。该工作体现了可验证奖励在蒸馏中的作用，与RLVR思想一致。",
+      "llm_tldr": "多教师知识蒸馏时难以确定最佳教师。本文提出竞争-协作框架，通过执行验证（单元测试）对四个前沿AI教师进行公平排序，然后协作构建可验证课程蒸馏至学生模型。实验表明该方法在编程任务上超越纯模仿学习。该工作体现了可验证奖励在蒸馏中的作用，与RLVR思想一致。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.08766v1",
+      "source": "arxiv",
+      "title": "OPSD-V: On-Policy Self-Distillation for Post-Training Few-Step Autoregressive Video Generators",
+      "abstract": "We propose OPSD-V, an on-policy self-distillation paradigm for post-training few-step autoregressive (AR) video diffusion models. Existing few-step AR video generators can produce long videos with low latency, but still suffer from error accumulation and weakened motion dynamics during long autoregressive rollout. OPSD-V reduces long-horizon degradation while preserving the original few-step inference path. The key idea is to introduce real long-video data as temporal context during training and use it to provide dense trajectory-level supervision. Specifically, the student follows the exact inference-time rollout, generating each chunk conditioned on its own previously generated KV cache. In parallel, the teacher is evaluated at the same student-visited denoising states, but uses a cleaner AR-consistent temporal cache in which older history can be replaced by real-video context. This provides dense denoising-level corrective targets under on-policy AR cache dynamics, without changing the sampler, number of denoising steps, or inference-time cache mechanism. We apply OPSD-V to representative few-step AR video models, including Self-Forcing and LongLive. Experiments show consistent improvements in visual quality, motion dynamics, and VBenchLong scores. A user study with 10 participants comparing 20 video pairs shows that OPSD-V is preferred over the base models in 66.0% of overall-preference judgments (82.5% excluding ties).",
+      "authors": [
+        "Hongyu Liu",
+        "Chun Wang",
+        "Feng Gao",
+        "Xuanhua He",
+        "Yue Ma",
+        "Ziyu Wan",
+        "Yong Zhang",
+        "Xiaoming Wei",
+        "Qifeng Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T17:59:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.08766v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "On-policy self-distillation for autoregressive video generation",
+      "llm_evidence_cn": "同策略自蒸馏方法用于自回归视频生成",
+      "llm_evidence": "同策略自蒸馏方法用于自回归视频生成",
+      "canonical_evidence": "同策略自蒸馏方法用于自回归视频生成",
+      "llm_tldr_en": "OPSD-V applies on-policy self-distillation to reduce error accumulation in few-step autoregressive video generators, using real long-video context for dense trajectory supervision.",
+      "llm_tldr_cn": "现有少步自回归视频生成器存在长程误差累积和运动退化问题。OPSD-V提出一种同策略自蒸馏范式，在训练中使用真实长视频数据作为时间上下文，提供密集的轨迹级监督。学生生成过程跟随推理路径，教师提供多段上下文指导。实验表明该方法有效缓解了长时域退化，同时保持少步推理效率。",
+      "llm_tldr": "现有少步自回归视频生成器存在长程误差累积和运动退化问题。OPSD-V提出一种同策略自蒸馏范式，在训练中使用真实长视频数据作为时间上下文，提供密集的轨迹级监督。学生生成过程跟随推理路径，教师提供多段上下文指导。实验表明该方法有效缓解了长时域退化，同时保持少步推理效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
