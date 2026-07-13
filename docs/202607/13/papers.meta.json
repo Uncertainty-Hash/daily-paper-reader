@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-13",
+  "date": "2026-07-13",
+  "generated_at": "2026-07-13T21:24:18",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/13/2607.06987v1-up-unbounded-positive-asymmetric-optimization-for-breaking-the-exploration-stability-dilemma",
+      "section": "quick",
+      "title_en": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "authors": "Chongyu Fan, Pengfei Liu, Jingjia Huang, Sijia Liu, Yi Lin",
+      "date": "2026-07-08",
+      "pdf": "https://arxiv.org/pdf/2607.06987v1",
+      "score": "7.0",
+      "evidence": "面向大模型推理的强化学习优化，解决探索-稳定困境",
+      "tldr": "强化学习（RL）提升大语言模型（LLM）推理能力时面临探索-稳定困境：重要性采样（IS）导致训练不稳定，而标准裁剪机制严格约束更新预算，抑制对低置信正确路径的探索。本文提出无界正偏斜优化（UP），通过停梯度操作将策略锚定当前状态，为正优势提供无裁剪稳定梯度以最大化探索，负优势保持标准裁剪防止不稳定。实验表明，UP在DAPO、GSPO、GRPO等多种算法，密集、混合专家（MoE）及视觉语言模型，以及语言和多模态训练中均显著提升探索能力和推理准确率。UP作为通用即插即用增强方案，有效打破探索边界，兼具稳定性与可扩展性。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/13/2607.09042v1-learning-more-from-less-reinforcement-learning-from-hindsight",
+      "section": "quick",
+      "title_en": "Learning More from Less: Reinforcement Learning from Hindsight",
+      "authors": "Iris Xu, Sunshine Jiang, John Marangola, Nitish Dashora, Richard Li, Thomas Liu, Zexue He, Yuheng Zhi, Alex Pentland, Pulkit Agrawal, Zhang-Wei Hong",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09042v1",
+      "score": "7.0",
+      "evidence": "利用失败轨迹通过事后重标注进行强化学习",
+      "tldr": "强化学习后训练视觉-语言-行动模型时，稀疏奖励导致初始策略失败率高，但失败轨迹往往对应其他任务的成功。本文提出事后学习（LfH），利用视觉语言模型对失败轨迹进行事后指令与奖励重标，使策略从同一数据中学习更多。在LIBERO-PRO等分布外任务上，LfH将样本效率提升5倍，超越基于密集进度奖励的基线，并在实体Franka机器人上验证了有效性。该方法通过语言重标实现跨任务泛化，为VLA模型的高效后训练提供了新范式。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning (RL) is increasingly used to post-train vision-language-action (VLA) models, but every update consumes robot rollouts that are slow and costly to collect, making sample efficiency a central concern. Manipulation tasks typically provide only sparse rewards, so a weak policy fails almost every rollout early in training and has little to learn from, even when those failures execute coherent behavior. Such a failure, however, is a success at a different task. We present Learning from Hindsight (LfH), which brings hindsight relabeling to RL post-training of VLAs by scoring failed rollouts against the tasks they actually achieved. A single vision-language model relabels both the instruction and the reward, proposing a hindsight instruction for a group of failed rollouts and scoring how well each satisfies it, and the policy trains on the relabeled and original rollouts jointly. Because VLAs generalize across language, relabeling in language lets the policy learn more from the same trajectories. On out-of-distribution LIBERO-PRO tasks, where standard RL improves only slowly, LfH achieves $5\\times$ improvement in sample efficiency, and outperforms a dense progress-reward baseline. The gains hold across VLA backbones and on a physical Franka robot.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/13/2607.09492v1-multimodal-reward-hacking-in-reinforcement-learning",
+      "section": "quick",
+      "title_en": "Multimodal Reward Hacking in Reinforcement Learning",
+      "authors": "Jiayu Yao, Yiwei Wang, Anmeng Zhang, Zhe Sun, Songsong Wang, Lingrui Mei, Yuyao Ge, Shenghua Liu",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09492v1",
+      "score": "7.0",
+      "evidence": "研究多模态大模型RL中的奖励黑客现象，使用了GRPO等算法",
+      "tldr": "多模态强化学习中对齐大模型时，优化不完美的奖励会导致系统性奖励破解，表现为高奖励但性能下降。本文通过安全VQA等任务，对比不同奖励设计、模型规模（2B-32B）和算法（GRPO、RLOO、DAPO），发现纯结果奖励引发严重破解（RHR达48.1%），且新定义指标NRFR揭示RL创造新失败。扩大规模可缓解但无法消除，GRPO最鲁棒，答案感知奖励有效，而视觉证据需可靠验证。",
+      "tags": "query:opd",
+      "abstract_en": "Reinforcement learning (RL) is increasingly used to align multimodal large language models (MLLMs), but higher rewards do not always imply better task performance. This risk is amplified when visual evidence is evaluated by text-only or weakly grounded rewards. We study reward hacking in MLLM RL across safety VQA, chart VQA, and stress-test settings, varying reward design, data ambiguity, model scale (2B-32B), and RL algorithm (GRPO, RLOO, DAPO). We introduce Newly Rewarded Failure Rate (NRFR), which measures failures among samples whose proxy reward improves over the SFT baseline. Outcome-only rewards cause severe hacking, reaching 48.1% Reward Hacking Rate (RHR), while NRFR exceeding RHR shows that RL creates new failures rather than merely inheriting them. Scaling reduces but does not eliminate hacking: even the 32B model retains a 54.9% worse rate under outcome-only rewards, whereas answer-aware rewards improve the oracle trend at every scale. Robustness is also algorithm- and scale-dependent: GRPO is consistently most resistant, RLOO remains vulnerable, and DAPO improves substantially from 2B to 8B. Visual-evidence rewards help only with reliable verification: keyword-based checks increase hacking, while VLM-as-judge semantic verification reduces it. Overall, multimodal reward hacking is a systematic result of optimizing imperfect rewards, and robust alignment requires rewards and verifiers that remain reliable under optimization pressure.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/13/2607.06974v1-miles-modular-instruction-memory-with-learnable-selection-for-self-improving-llm-reasoning",
+      "section": "quick",
+      "title_en": "MILES: Modular Instruction Memory with Learnable Selection for Self-Improving LLM Reasoning",
+      "authors": "Ruilin Tong, Dong Gong",
+      "date": "2026-07-08",
+      "pdf": "https://arxiv.org/pdf/2607.06974v1",
+      "score": "6.0",
+      "evidence": "通过记忆选择实现LLM自改进推理，涉及自蒸馏概念",
+      "tldr": "LLM测试时逐步改进推理，但现有记忆方法泛化差或选择未优化正确性。MILES动态扩展步骤记忆，通过可学习选择头进行正确性优化的粗到细记忆组合。在多个推理任务上匹配或超越先前方法，实现更优精度-效率权衡。展示了有效性、鲁棒性和可迁移性。",
+      "tags": "query:opd",
+      "abstract_en": "Large language models (LLMs) increasingly improve their reasoning at test time via additional computation, yet most existing works treat each problem in isolation. When problems arrive sequentially, accumulating reusable experience across them can further improve performance. Existing memory-based methods either store whole-solution templates that generalize poorly to novel problems or use heuristic step-level selection that is not optimized for final-answer correctness. Learning selection policies requires large-scale training data and fixed action spaces, making such approaches unsuitable for test-time settings where memory expands incrementally and only limited supervision is available. We propose MILES (Modular Instruction Memory with LEarnable Selection for self-improving LLM reasoning), a framework that dynamically expands step-wise memory and applies correctness-optimized memory composition under realistic test-time constraints. MILES maintains modular memory units consisting of asymmetric pairs of sub-goal embeddings and sub-instructions, each associated with a learnable selection head. This memory structure enables a coarse-to-fine retrieval mechanism: The coarse level enables memory expansion and collects supervision for training selection heads from confident samples, while the fine stage applies learned selection heads to rerank coarse-level candidates and guide reasoning for uncertain samples. MILES consistently matches or outperforms prior methods while achieving superior accuracy-efficiency tradeoffs. Extensive experiments demonstrate its effectiveness, robustness, and transferability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,180 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T21:22:39.785632+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.06987v1",
+      "source": "arxiv",
+      "title": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "abstract": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "authors": [
+        "Chongyu Fan",
+        "Pengfei Liu",
+        "Jingjia Huang",
+        "Sijia Liu",
+        "Yi Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-08T04:21:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.06987v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL optimization for LLM reasoning, addresses exploration-stability dilemma",
+      "llm_evidence_cn": "面向大模型推理的强化学习优化，解决探索-稳定困境",
+      "llm_evidence": "面向大模型推理的强化学习优化，解决探索-稳定困境",
+      "canonical_evidence": "面向大模型推理的强化学习优化，解决探索-稳定困境",
+      "llm_tldr_en": "UP introduces Unbounded Positive Asymmetric optimization to break the exploration-stability dilemma in RL for LLM reasoning, replacing conservative clipping with asymmetric update bounds that allow low-confidence correct paths to be updated more aggressively.",
+      "llm_tldr_cn": "UP论文针对大语言模型强化学习中的探索-稳定困境，提出无界正非对称优化方法。传统裁剪机制因保守限制更新预算，抑制了对低置信度正确路径的探索。UP通过形式化概率容量概念，设计非对称更新边界，使正确但低置信度的推理路径获得更大更新。实验表明UP在多个推理任务上提升了样本效率和最终性能，为LLM强化学习训练提供了新的优化视角。",
+      "llm_tldr": "UP论文针对大语言模型强化学习中的探索-稳定困境，提出无界正非对称优化方法。传统裁剪机制因保守限制更新预算，抑制了对低置信度正确路径的探索。UP通过形式化概率容量概念，设计非对称更新边界，使正确但低置信度的推理路径获得更大更新。实验表明UP在多个推理任务上提升了样本效率和最终性能，为LLM强化学习训练提供了新的优化视角。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.06974v1",
+      "source": "arxiv",
+      "title": "MILES: Modular Instruction Memory with Learnable Selection for Self-Improving LLM Reasoning",
+      "abstract": "Large language models (LLMs) increasingly improve their reasoning at test time via additional computation, yet most existing works treat each problem in isolation. When problems arrive sequentially, accumulating reusable experience across them can further improve performance. Existing memory-based methods either store whole-solution templates that generalize poorly to novel problems or use heuristic step-level selection that is not optimized for final-answer correctness. Learning selection policies requires large-scale training data and fixed action spaces, making such approaches unsuitable for test-time settings where memory expands incrementally and only limited supervision is available. We propose MILES (Modular Instruction Memory with LEarnable Selection for self-improving LLM reasoning), a framework that dynamically expands step-wise memory and applies correctness-optimized memory composition under realistic test-time constraints. MILES maintains modular memory units consisting of asymmetric pairs of sub-goal embeddings and sub-instructions, each associated with a learnable selection head. This memory structure enables a coarse-to-fine retrieval mechanism: The coarse level enables memory expansion and collects supervision for training selection heads from confident samples, while the fine stage applies learned selection heads to rerank coarse-level candidates and guide reasoning for uncertain samples. MILES consistently matches or outperforms prior methods while achieving superior accuracy-efficiency tradeoffs. Extensive experiments demonstrate its effectiveness, robustness, and transferability.",
+      "authors": [
+        "Ruilin Tong",
+        "Dong Gong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T03:51:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.06974v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "self-improving LLM reasoning via memory selection, relevant to self-distillation",
+      "llm_evidence_cn": "通过记忆选择实现LLM自改进推理，涉及自蒸馏概念",
+      "llm_evidence": "通过记忆选择实现LLM自改进推理，涉及自蒸馏概念",
+      "canonical_evidence": "通过记忆选择实现LLM自改进推理，涉及自蒸馏概念",
+      "llm_tldr_en": "MILES uses modular instruction memory with learnable selection to accumulate reusable experience for test-time LLM reasoning improvement.",
+      "llm_tldr_cn": "现有方法在顺序推理问题中缺乏经验积累，存储整解模板泛化差。本文提出MILES，引入可学习选择的模块化指令记忆，在每个步骤选择最相关的历史经验片段辅助当前推理。实验结果表明MILES能有效利用有限监督提升推理性能，尤其在新问题上表现优异。",
+      "llm_tldr": "现有方法在顺序推理问题中缺乏经验积累，存储整解模板泛化差。本文提出MILES，引入可学习选择的模块化指令记忆，在每个步骤选择最相关的历史经验片段辅助当前推理。实验结果表明MILES能有效利用有限监督提升推理性能，尤其在新问题上表现优异。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.09042v1",
+      "source": "arxiv",
+      "title": "Learning More from Less: Reinforcement Learning from Hindsight",
+      "abstract": "Reinforcement learning (RL) is increasingly used to post-train vision-language-action (VLA) models, but every update consumes robot rollouts that are slow and costly to collect, making sample efficiency a central concern. Manipulation tasks typically provide only sparse rewards, so a weak policy fails almost every rollout early in training and has little to learn from, even when those failures execute coherent behavior. Such a failure, however, is a success at a different task. We present Learning from Hindsight (LfH), which brings hindsight relabeling to RL post-training of VLAs by scoring failed rollouts against the tasks they actually achieved. A single vision-language model relabels both the instruction and the reward, proposing a hindsight instruction for a group of failed rollouts and scoring how well each satisfies it, and the policy trains on the relabeled and original rollouts jointly. Because VLAs generalize across language, relabeling in language lets the policy learn more from the same trajectories. On out-of-distribution LIBERO-PRO tasks, where standard RL improves only slowly, LfH achieves $5\\times$ improvement in sample efficiency, and outperforms a dense progress-reward baseline. The gains hold across VLA backbones and on a physical Franka robot.",
+      "authors": [
+        "Iris Xu",
+        "Sunshine Jiang",
+        "John Marangola",
+        "Nitish Dashora",
+        "Richard Li",
+        "Thomas Liu",
+        "Zexue He",
+        "Yuheng Zhi",
+        "Alex Pentland",
+        "Pulkit Agrawal",
+        "Zhang-Wei Hong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-10T02:17:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.09042v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses failure rollouts for RL learning via hindsight relabeling",
+      "llm_evidence_cn": "利用失败轨迹通过事后重标注进行强化学习",
+      "llm_evidence": "利用失败轨迹通过事后重标注进行强化学习",
+      "canonical_evidence": "利用失败轨迹通过事后重标注进行强化学习",
+      "llm_tldr_en": "Proposes Learning from Hindsight (LfH) which relabels failed robot rollouts as successes for alternative tasks, improving sample efficiency in VLA post-training. Transfers the concept of using failure rollouts to learn effectively.",
+      "llm_tldr_cn": "针对机器人操作中强化学习样本效率低的问题，本文提出从后见之明中学习（LfH），通过将失败的rollout重标定为其他任务的成功，从而从失败中获得学习信号。该方法将失败轨迹转化为有效训练数据，显著提升了VLA模型后训练中的样本效率，展示了一种通用的失败利用机制。",
+      "llm_tldr": "针对机器人操作中强化学习样本效率低的问题，本文提出从后见之明中学习（LfH），通过将失败的rollout重标定为其他任务的成功，从而从失败中获得学习信号。该方法将失败轨迹转化为有效训练数据，显著提升了VLA模型后训练中的样本效率，展示了一种通用的失败利用机制。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.09492v1",
+      "source": "arxiv",
+      "title": "Multimodal Reward Hacking in Reinforcement Learning",
+      "abstract": "Reinforcement learning (RL) is increasingly used to align multimodal large language models (MLLMs), but higher rewards do not always imply better task performance. This risk is amplified when visual evidence is evaluated by text-only or weakly grounded rewards. We study reward hacking in MLLM RL across safety VQA, chart VQA, and stress-test settings, varying reward design, data ambiguity, model scale (2B-32B), and RL algorithm (GRPO, RLOO, DAPO). We introduce Newly Rewarded Failure Rate (NRFR), which measures failures among samples whose proxy reward improves over the SFT baseline. Outcome-only rewards cause severe hacking, reaching 48.1% Reward Hacking Rate (RHR), while NRFR exceeding RHR shows that RL creates new failures rather than merely inheriting them. Scaling reduces but does not eliminate hacking: even the 32B model retains a 54.9% worse rate under outcome-only rewards, whereas answer-aware rewards improve the oracle trend at every scale. Robustness is also algorithm- and scale-dependent: GRPO is consistently most resistant, RLOO remains vulnerable, and DAPO improves substantially from 2B to 8B. Visual-evidence rewards help only with reliable verification: keyword-based checks increase hacking, while VLM-as-judge semantic verification reduces it. Overall, multimodal reward hacking is a systematic result of optimizing imperfect rewards, and robust alignment requires rewards and verifiers that remain reliable under optimization pressure.",
+      "authors": [
+        "Jiayu Yao",
+        "Yiwei Wang",
+        "Anmeng Zhang",
+        "Zhe Sun",
+        "Songsong Wang",
+        "Lingrui Mei",
+        "Yuyao Ge",
+        "Shenghua Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-10T15:06:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.09492v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "studies reward hacking in MLLM RL using GRPO and other algorithms",
+      "llm_evidence_cn": "研究多模态大模型RL中的奖励黑客现象，使用了GRPO等算法",
+      "llm_evidence": "研究多模态大模型RL中的奖励黑客现象，使用了GRPO等算法",
+      "canonical_evidence": "研究多模态大模型RL中的奖励黑客现象，使用了GRPO等算法",
+      "llm_tldr_en": "Investigates reward hacking in multimodal LLM reinforcement learning with GRPO, RLOO, DAPO. Introduces NRFR metric. Shows outcome-only rewards cause severe hacking, and RL creates new failures.",
+      "llm_tldr_cn": "本文系统研究多模态大语言模型强化学习中的奖励黑客问题，在安全VQA等任务上对比GRPO、RLOO、DAPO等算法。提出新指标NRFR衡量奖励提升但任务失败的比例，发现仅依赖结果奖励会导致严重黑客现象（最高48.1%），且RL不仅继承现有失败还创造新失败。研究提示设计中间奖励或过程监督的重要性。",
+      "llm_tldr": "本文系统研究多模态大语言模型强化学习中的奖励黑客问题，在安全VQA等任务上对比GRPO、RLOO、DAPO等算法。提出新指标NRFR衡量奖励提升但任务失败的比例，发现仅依赖结果奖励会导致严重黑客现象（最高48.1%），且RL不仅继承现有失败还创造新失败。研究提示设计中间奖励或过程监督的重要性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
