@@ -1,0 +1,398 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:17:47.995179+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10805v1",
+      "source": "arxiv",
+      "title": "Diagnosing and Mitigating Thinking Collapse in On-Policy Self-Distillation",
+      "abstract": "On-Policy Self-Distillation (OPSD) has emerged as a crucial paradigm for enhancing and aligning Large Language Models (LLMs). However, in complex reasoning tasks, OPSD paradoxically degrades downstream performance. In this paper, we systematically investigate this pathology and identify a severe optimization trap we define as \\textbf{Thinking Collapse} -- a sharp decline in the model's native intermediate reasoning behavior, measured by epistemic-token density (ET per 1k). Through entropy-based gradient masking and token-level target analysis, we show that this collapse is triggered by aggressive teacher gradients at high-student-entropy decision forks, where student epistemic tokens are frequently suppressed into teacher non-epistemic targets and are highly concentrated in high pointwise student-teacher divergence regions. To resolve this optimization pathology, we propose \\textbf{Adaptive Dual-Perspective OPSD (AD-OPSD)}, a robust control framework that dynamically moderates the self-distillation objective. AD-OPSD selectively anchors high-suppression-risk sandboxed tokens to a reference prior derived from the frozen base model via an asymmetrical pointwise divergence gate, preserving native thinking capacity while retaining OPSD's error-correcting power. Extensive experiments across competitive mathematical benchmarks show that AD-OPSD improves over standard OPSD by up to \\textbf{+4.1\\%} absolute average accuracy across diverse model scales and datasets. Further analysis demonstrates that AD-OPSD mitigates thinking collapse and generalizes robustly to different post-training paradigms.",
+      "authors": [
+        "Keqin Peng",
+        "Chen Li",
+        "Yuanxin Ouyang",
+        "Yancheng Yuan",
+        "Liang Ding"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-12T15:24:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.10805v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation for LLM reasoning",
+      "llm_evidence_cn": "同策略自蒸馏用于大语言模型推理",
+      "llm_evidence": "同策略自蒸馏用于大语言模型推理",
+      "canonical_evidence": "同策略自蒸馏用于大语言模型推理",
+      "llm_tldr_en": "Diagnoses thinking collapse in on-policy self-distillation and proposes mitigation for LLM reasoning tasks.",
+      "llm_tldr_cn": "该论文系统研究了同策略自蒸馏（OPSD）在复杂推理任务中出现的“思维崩溃”现象——模型中间推理行为急剧下降。通过熵基梯度遮蔽和token级目标分析揭示了触发机制，并提出缓解策略，对提升蒸馏型推理模型性能具有重要指导意义。",
+      "llm_tldr": "该论文系统研究了同策略自蒸馏（OPSD）在复杂推理任务中出现的“思维崩溃”现象——模型中间推理行为急剧下降。通过熵基梯度遮蔽和token级目标分析揭示了触发机制，并提出缓解策略，对提升蒸馏型推理模型性能具有重要指导意义。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10836v1",
+      "source": "arxiv",
+      "title": "Route, Communicate, and Reason: Gated Routing and Adaptive Depth for Efficient Multi-Agent Reasoning",
+      "abstract": "Multi-agent ensembling multiplies active parameters and inference cost without answering three basic questions: which agents to consult, how deeply a query should traverse a hierarchy of agents, and when inter-agent communication is worth its cost. We present GRADE (Gated Routing and Adaptive Depth for Efficient Reasoning), a hierarchical multi-agent system in which four lightweight learned gates jointly govern agent selection, hierarchy depth, inter-agent communication, and branch pruning. Training uses CoGRPO (Collaborative Group-Relative Policy Optimization), a novel critic-free recipe that adapts GRPO to multi-agent hierarchies and assigns a shared advantage signal to every gate and agent that participated in a rollout. Agent models are drawn from a hot-swappable Expert Registry; per-agent calibration maps allow experts to be replaced at inference time without retraining. At $\\sim$17B average active parameters, GRADE outperforms all baselines on GSM8K, MMLUPro, and GPQA, surpassing the strongest baseline by 4.8 points on MMLUPro at half the active compute. On AIME-2025, where model depth dominates, GRADE remains competitive to existing frameworks. Ablations isolate the hierarchy and masked cross-attention as the largest contributors to accuracy, and show that per-agent calibration is necessary for safe hot-swapping.",
+      "authors": [
+        "Sudipto Ghosh",
+        "Tanmoy Chakraborty"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-12T16:58:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.10836v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "CoGRPO: Collaborative Group-Relative Policy Optimization",
+      "llm_evidence_cn": "CoGRPO：协作组相对策略优化",
+      "llm_evidence": "CoGRPO：协作组相对策略优化",
+      "canonical_evidence": "CoGRPO：协作组相对策略优化",
+      "llm_tldr_en": "Proposes GRADE with CoGRPO, adapting GRPO to multi-agent hierarchies for efficient reasoning.",
+      "llm_tldr_cn": "该论文针对多智能体推理中的成本问题，提出GRADE框架，包含四个轻量级门控路由和自适应深度，并使用CoGRPO（协作组相对策略优化）训练。CoGRPO将GRPO扩展到多智能体层次结构，共享优势信号。实验表明该方法在多个推理任务上显著降低了推理成本而性能几乎无损。",
+      "llm_tldr": "该论文针对多智能体推理中的成本问题，提出GRADE框架，包含四个轻量级门控路由和自适应深度，并使用CoGRPO（协作组相对策略优化）训练。CoGRPO将GRPO扩展到多智能体层次结构，共享优势信号。实验表明该方法在多个推理任务上显著降低了推理成本而性能几乎无损。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10966v1",
+      "source": "arxiv",
+      "title": "SVR-R1: Bootstrapping Multi-modal Reasoning with Self-verification in Reinforcement Learning",
+      "abstract": "We introduce Self-Verified Reasoner (SVR-R1), a multi-turn RL framework that turns a model's own verification into a learning signal for multimodal reasoning. For each query, the model proposes an answer using the same weights, and issues a binary self-verdict (Yes/No). A 'No' triggers a second-chance rethink; a 'Yes,' or a turn cap, finalizes the output for computing the outcome-based reward. SVR-R1 is implemented with GRPO and an asynchronous multi-turn rollout framework and needs no external supervision or auxiliary critics. We evaluate SVR-R1 on vision-language reasoning benchmarks and show that it improves accuracy by a large margin over strong standard GRPO baselines. Training dynamics show decreasing reliance on verification-fewer verification turns, yet higher test accuracy-indicating that the gap between verification and generation narrows as the policy internalizes self-correction and chooses the most confident answer via our framework. SVR-R1 bridges the less explored intersection of inference-time self-refinement and RL training for VLMs, offering a simple yet effective recipe for bootstrapping multimodal reasoning. We will open-source \\textbf{SVR-R1} to facilitate future research in VLMs.",
+      "authors": [
+        "Mingyuan Wu",
+        "Jingcheng Yang",
+        "Shengyi Qian",
+        "Xudong Wang",
+        "Jize Jiang",
+        "Qifan Wang",
+        "Aashu Singh",
+        "Khoi Pham",
+        "Fei Liu",
+        "Zhaolun Su",
+        "Zhuokai Zhao",
+        "Klara Nahrstedt",
+        "Jianyu Wang",
+        "Hanchao Yu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-13T00:21:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.10966v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-turn RL with GRPO and self-verification for reasoning improvement",
+      "llm_evidence_cn": "使用GRPO和自我验证的多轮强化学习提升推理",
+      "llm_evidence": "使用GRPO和自我验证的多轮强化学习提升推理",
+      "canonical_evidence": "使用GRPO和自我验证的多轮强化学习提升推理",
+      "llm_tldr_en": "SVR-R1 uses GRPO with self-verification: model answers, self-verdicts, and rethinks on 'No', improving multimodal reasoning accuracy.",
+      "llm_tldr_cn": "针对现有GRPO缺乏内省能力的问题，SVR-R1提出多轮自验证强化学习框架：模型先用自身权重生成答案并输出二值自判（是/否），若为否则触发重新思考，最终根据结果奖励进行GRPO更新。在视觉语言推理基准上，该方法大幅超越标准GRPO基线，且训练中自验证依赖逐渐降低，展示了自生成纠正信号的有效性。",
+      "llm_tldr": "针对现有GRPO缺乏内省能力的问题，SVR-R1提出多轮自验证强化学习框架：模型先用自身权重生成答案并输出二值自判（是/否），若为否则触发重新思考，最终根据结果奖励进行GRPO更新。在视觉语言推理基准上，该方法大幅超越标准GRPO基线，且训练中自验证依赖逐渐降低，展示了自生成纠正信号的有效性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11012v1",
+      "source": "arxiv",
+      "title": "EasyOPD: An Easy-to-use On-Policy Distillation Framework for Large Language Models",
+      "abstract": "Conventional language-model distillation often relies on fixed teacher-generated data, which may not cover the states encountered by an evolving student policy. On-policy distillation (OPD) instead collects teacher or evaluator supervision on student-generated rollouts. However, existing OPD methods differ substantially in supervision form, tokenizer compatibility, teacher access, and supervision granularity, leading to fragmented implementations that are difficult to reproduce and extend. We present \\textsc{EasyOPD}, an on-policy distillation framework built on verl, a distributed reinforcement-learning framework for large language models. \\textsc{EasyOPD} separates user-side configuration, method-specific supervision logic, and verl-based execution. Its method modules connect to the shared backend through extension boundaries for loss construction, rollout metadata, reward processing, tokenizer alignment, and teacher-side computation. We instantiate representative methods for three OPD settings -- cross-tokenizer OPD, on-policy self-distillation, and step-wise OPD. Experiments on reasoning, code-generation, scientific-knowledge, and tool-use benchmarks show that these implementations can be executed through the same verl-based backend while retaining their method-specific objectives and task-dependent performance profiles. We release \\textsc{EasyOPD} with runnable YAML configurations, documentation, and an installable demonstration package and video.",
+      "authors": [
+        "Jie Sun",
+        "Mao Zheng",
+        "Mingyang Song",
+        "Qiyong Zhong",
+        "Gengsheng Li",
+        "Zhepei Hong",
+        "Chang Wu",
+        "Pengfei Liu",
+        "Junfeng Fang",
+        "Xiang Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-13T02:27:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.11012v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EasyOPD: an on-policy distillation framework for LLMs",
+      "llm_evidence_cn": "EasyOPD：一个易用的同策略蒸馏框架",
+      "llm_evidence": "EasyOPD：一个易用的同策略蒸馏框架",
+      "canonical_evidence": "EasyOPD：一个易用的同策略蒸馏框架",
+      "llm_tldr_en": "Presents EasyOPD, a unified on-policy distillation framework built on verl, simplifying implementation of various OPD methods.",
+      "llm_tldr_cn": "该论文指出现有同策略蒸馏（OPD）方法实现碎片化、难以复现，提出EasyOPD框架，基于verl分布式强化学习框架，将用户配置、监督逻辑和训练引擎分离，支持多种OPD变体。EasyOPD降低了OPD方法的开发门槛，并通过实验验证了其有效性和易用性。",
+      "llm_tldr": "该论文指出现有同策略蒸馏（OPD）方法实现碎片化、难以复现，提出EasyOPD框架，基于verl分布式强化学习框架，将用户配置、监督逻辑和训练引擎分离，支持多种OPD变体。EasyOPD降低了OPD方法的开发门槛，并通过实验验证了其有效性和易用性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11506v1",
+      "source": "arxiv",
+      "title": "SCOPE-RL: Optimizing Reasoning Paths Before and After Success",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) optimizes LLMs using sparse verifiable final-answer rewards. This sparse anchor reliably verifies whether a trajectory succeeds but provides no direct feedback on the reasoning path that produced it. Before success, prerequisite progress on hard problems receives no reward signal; after success, outcome rewards cannot distinguish well-organized correct trajectories from redundant or locally flawed ones. We introduce SCOPE-RL (Scaffolded Chain Optimization with Process Efficiency), a two-stage framework that densifies this anchor while retaining the GRPO update: Adaptive Scaffolded RL adds prefix-decomposed verifiable rewards on answer-hidden sub-question chains before success, and Quality-Aware Process RL applies correctness-gated process-shape rewards to refine correct trajectories after success. An expert-validated Step-Quality Evaluation Protocol evaluates useful-step density, error localization, and token efficiency beyond final-answer accuracy. On Qwen3-8B-Instruct trained on DAPO-Math and Big-Math, SCOPE-RL improves average accuracy by up to 11.2 pp and reduces reasoning tokens by up to 27.1% over outcome-only GRPO; the gains hold under GSPO and on Qwen3-0.6B-Instruct, indicating that reward-signal densification is complementary to policy-update-level RLVR advances. Code and data are available at https://github.com/tokencraft-lab/SCOPE-RL.",
+      "authors": [
+        "Xiaojian Liu",
+        "Han Xu",
+        "Jianqiang Xia",
+        "Zhixuan Li",
+        "Ke Xu",
+        "Yiwei Dai",
+        "Xinran Chen",
+        "Changwo Wu",
+        "Yuchen Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-13T12:56:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.11506v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RLVR framework with GRPO and process rewards",
+      "llm_evidence_cn": "基于GRPO和过程奖励的RLVR框架",
+      "llm_evidence": "基于GRPO和过程奖励的RLVR框架",
+      "canonical_evidence": "基于GRPO和过程奖励的RLVR框架",
+      "llm_tldr_en": "SCOPE-RL densifies sparse verifiable rewards via adaptive scaffolded RL and quality-aware process RL, using GRPO for LLM reasoning optimization.",
+      "llm_tldr_cn": "针对RLVR中稀疏结果奖励无法有效指导推理路径优化的问题，SCOPE-RL提出了两阶段框架：自适应脚手架RL在成功前对子问题链添加可验证奖励，质量感知过程RL在成功后区分冗余与高效推理路径，同时保持GRPO更新机制。在数学推理任务上验证了该方法能显著提升模型推理质量和效率。",
+      "llm_tldr": "针对RLVR中稀疏结果奖励无法有效指导推理路径优化的问题，SCOPE-RL提出了两阶段框架：自适应脚手架RL在成功前对子问题链添加可验证奖励，质量感知过程RL在成功后区分冗余与高效推理路径，同时保持GRPO更新机制。在数学推理任务上验证了该方法能显著提升模型推理质量和效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10481v1",
+      "source": "arxiv",
+      "title": "ARMOR: Stabilizing On-Policy LLM RL with Off-Policy Anchor Samples",
+      "abstract": "Reinforcement learning (RL) has significantly enhanced the reasoning capabilities of large language models (LLMs), yet the training process remains notoriously fragile. In this work, we investigate a critical source of this instability: over-optimization, where models exploit training heuristics at the expense of generalizable reasoning. While reverse KL regularization is the standard defense against such degradation, our analysis reveals that it is often insufficient in this regime, as it fails to ensure comprehensive coverage of the reference distribution. To address this, we propose ARMOR (Anchor Rollout and Mixed Optimization for RL), a framework that shifts the paradigm from passive penalty to active sample stabilization. ARMOR comprises two key components: (1) Anchor Rollout, which leverages off-policy data from the reference policy to preserve established solution patterns; and (2) Mixed Optimization, which reformulates the policy objective to enable controlled exploration without relying on auxiliary losses. Extensive experiments on reasoning benchmarks validate that ARMOR effectively mitigates validation collapse, enabling sustained performance improvements over extended training horizons.",
+      "authors": [
+        "Kexin Huang",
+        "Junkang Wu",
+        "Jinda Lu",
+        "Shuo Yang",
+        "Chiyu Ma",
+        "Jiancan Wu",
+        "Xiang Wang",
+        "Xiangnan He",
+        "Guoyin Wang",
+        "Jingren Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-11T21:22:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.10481v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "on-policy LLM RL stabilization with off-policy anchor samples",
+      "llm_evidence_cn": "使用离策略锚点样本稳定同策略LLM强化学习",
+      "llm_evidence": "使用离策略锚点样本稳定同策略LLM强化学习",
+      "canonical_evidence": "使用离策略锚点样本稳定同策略LLM强化学习",
+      "llm_tldr_en": "Proposes ARMOR to stabilize on-policy LLM RL by anchoring on off-policy samples, mitigating over-optimization.",
+      "llm_tldr_cn": "该论文揭示同策略LLM强化学习中的过优化不稳定问题，指出反向KL正则化不足。提出ARMOR框架，通过引入离策略锚点样本进行主动样本稳定，结合锚点采样和混合优化，有效缓解了策略崩塌，在数学推理任务上提升了性能和稳定性。",
+      "llm_tldr": "该论文揭示同策略LLM强化学习中的过优化不稳定问题，指出反向KL正则化不足。提出ARMOR框架，通过引入离策略锚点样本进行主动样本稳定，结合锚点采样和混合优化，有效缓解了策略崩塌，在数学推理任务上提升了性能和稳定性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.11070v1",
+      "source": "arxiv",
+      "title": "MJ: Multi-turn LLM Jailbreaking via Decomposed Credit Assignment",
+      "abstract": "Modern large language models (LLMs) operate in interactive multi-turn settings, making multi-turn jailbreaking a realistic threat model and an important setting for automated red teaming. A core challenge in learning multi-turn jailbreak attackers is credit assignment: different turns contribute differently to the final outcome, yet existing learning signals are often too coarse to identify their individual contributions. We propose decomposed credit GRPO (DC-GRPO), a unified turn-level credit assignment framework for Group Relative Policy Optimization in multi-turn jailbreak learning. DC-GRPO assigns a separate group-relative learning signal to each turn by combining immediate and future credit, avoiding the credit misassignment induced by broadcasting a single trajectory-level score across the dialogue. We instantiate this framework with static and dynamic weighting rules that differ in how the two credit sources are balanced while sharing the same turn-level structure. Across multiple victim LLMs and benchmarks, the dynamic- and static-weighted variants achieve average ASR5@3 scores of 98.26% and 97.88%, respectively, substantially outperforming the state-of-the-art methods, including SEMA (86.58%) and TROJail (86.23%). Their consistently strong performance indicates that the central empirical benefit comes from turn-level group-relative credit assignment rather than a particular weighting rule. Warning: This paper contains examples of harmful content.",
+      "authors": [
+        "Junyoung Park",
+        "Namgyu Park",
+        "Sechan Lee",
+        "Yoon-Chan Jhi",
+        "Jihoon Cho",
+        "Sangdon Park"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-13T04:19:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.11070v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes DC-GRPO for multi-turn jailbreaking",
+      "llm_evidence_cn": "提出分解信用GRPO用于多轮越狱",
+      "llm_evidence": "提出分解信用GRPO用于多轮越狱",
+      "canonical_evidence": "提出分解信用GRPO用于多轮越狱",
+      "llm_tldr_en": "Proposes Decomposed Credit GRPO (DC-GRPO) for multi-turn jailbreak learning, addressing credit assignment.",
+      "llm_tldr_cn": "针对多轮LLM越狱中的信用分配问题，提出分解信用GRPO（DC-GRPO），为每轮分配独立的组相对学习信号。该方法结合即时与未来信用，避免了广播单一信号导致的误分配，提升了多轮攻击者的学习效率。",
+      "llm_tldr": "针对多轮LLM越狱中的信用分配问题，提出分解信用GRPO（DC-GRPO），为每轮分配独立的组相对学习信号。该方法结合即时与未来信用，避免了广播单一信号导致的误分配，提升了多轮攻击者的学习效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10474v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning with Verifiable Physics: Post-training LLMs with Continuous Rewards",
+      "abstract": "Partial differential equations (PDEs) are foundational to modeling in science and engineering, but constructing reliable numerical solvers remains labor-intensive, demanding expert knowledge of discretization schemes, stability conditions, and boundary treatments. Recent work has begun to frame PDE solving as a code-generation task for large language models (LLMs), yet existing approaches operate primarily at inference time: relying on prompting, debugging, self-refinement, and test-time scaling rather than adapting the model itself. In parallel, reinforcement learning with verifiable rewards has emerged as a post-training paradigm for code and math reasoning, but its verifiers are typically binary: a compiler runs, or a test passes. Such signals discard the graded structure of scientific correctness, where two solvers may both execute and yet differ in solution accuracy by orders of magnitude. In this work, we introduce RLVP: Reinforcement Learning with Verifiable Physics, an RL post-training framework for multi-PDE solver code generation. RLVP addresses this verifiability gap with a hybrid verifier: hard program-validity checks ensure executability, while continuous physics rewards score function-space accuracy and PDE-residual consistency. A single policy is post-trained across diverse PDE families spanning hyperbolic, parabolic, elliptic, and incompressible-flow systems. RLVP improves over both pre-trained and supervised-only baselines on PDE benchmarks, and shows zero-shot improvement transfer to held-out PDEs. We show that a smaller LLM post-trained with RLVP can outperform prompting a frontier model on in-distribution PDE solver generation. The trained policy shows evidence of compositionality in numerical motifs: it recombines stencils, time-stepping schemes, and boundary-handling primitives learned from the PDEs used in training into generated solvers for unseen PDE problems.",
+      "authors": [
+        "Pengfei Cai",
+        "Utkarsh Utkarsh",
+        "Alan Edelman",
+        "Christopher Vincent Rackauckas",
+        "Rafael Gomez-Bombarelli"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CE"
+      ],
+      "published": "2026-07-11T20:53:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.10474v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RLVR post-training for LLM code generation in physics",
+      "llm_evidence_cn": "将RLVR用于物理领域的代码生成后训练",
+      "llm_evidence": "将RLVR用于物理领域的代码生成后训练",
+      "canonical_evidence": "将RLVR用于物理领域的代码生成后训练",
+      "llm_tldr_en": "Applies RL with verifiable rewards (RLVR) to post-train LLMs for solving PDEs via code generation, using continuous rewards instead of binary verifiers.",
+      "llm_tldr_cn": "针对现有LLM求解偏微分方程仅依赖推理时调试和自完善的问题，该工作将RLVR后训练范式引入物理领域，提出使用连续可验证奖励（而非二元编译器反馈）来优化LLM代码生成能力。实验表明，该方法显著提高了生成求解器的准确性和稳定性，证明了RLVR在科学计算任务中的可迁移性。",
+      "llm_tldr": "针对现有LLM求解偏微分方程仅依赖推理时调试和自完善的问题，该工作将RLVR后训练范式引入物理领域，提出使用连续可验证奖励（而非二元编译器反馈）来优化LLM代码生成能力。实验表明，该方法显著提高了生成求解器的准确性和稳定性，证明了RLVR在科学计算任务中的可迁移性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11505v1",
+      "source": "arxiv",
+      "title": "Proxy Exploration and Reusable Guidance: A Modular LLM Post-Training Paradigm via Proxy-Guided Update Signals",
+      "abstract": "Post-training is essential for refining the domain-specific capabilities of large language models (LLMs), yet existing reward optimization and distribution matching methods tightly couple policy exploration with distribution alignment. This coupling forces expensive exploration directly on the policy model and severely hinders the asynchronous generation, reuse, and cross-model transfer of optimization signals. In this paper, we propose Proxy-guided Update Signal Transfer (PUST), a novel post-training framework that fundamentally decouples update-signal exploration from distribution alignment. Instead of utilizing the primary model for costly exploration, PUST employs a lightweight proxy model as an efficient testbed to discover high-reward behaviors. We extract the relative improvement signal between the proxy's initial and optimized states, transferring this directional update to the primary model to guide its policy alignment. This decoupled pipeline, comprising proxy exploration, update-signal extraction, and signal transfer, significantly reduces computational overhead and enables optimization signals to be asynchronously generated, cached, and reused. Crucially, by transferring relative improvements rather than absolute policy distributions, PUST naturally supports weak-to-strong improvement and seamless cross-model transfer. Systematic evaluations on Qwen3-family models across math and code domains demonstrate that update signals extracted from substantially weaker proxies can robustly and adjustably enhance stronger primary models. Ultimately, PUST transforms post-training from a monolithic online optimization process into a highly modular, reusable, and cost-efficient paradigm.",
+      "authors": [
+        "Daocheng Fu",
+        "Rong Wu",
+        "Yu Yang",
+        "Xuemeng Yang",
+        "Jianbiao Mei",
+        "Licheng Wen",
+        "Pinlong Cai",
+        "Yong Liu",
+        "Botian Shi",
+        "Yu Qiao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-13T12:56:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.11505v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "PUST decouples exploration from alignment for efficient LLM post-training using a proxy model",
+      "llm_evidence_cn": "代理引导的更新信号传输（PUST）使用代理模型将探索与对齐解耦，实现高效LLM后训练",
+      "llm_evidence": "代理引导的更新信号传输（PUST）使用代理模型将探索与对齐解耦，实现高效LLM后训练",
+      "canonical_evidence": "代理引导的更新信号传输（PUST）使用代理模型将探索与对齐解耦，实现高效LLM后训练",
+      "llm_tldr_en": "Proposes PUST, a framework that uses a lightweight proxy model for exploration to generate update signals, decoupling exploration from distribution alignment in LLM post-training.",
+      "llm_tldr_cn": "该论文针对现有后训练方法中策略探索与分布对齐紧密耦合导致成本高的问题，提出PUST框架。通过轻量级代理模型进行探索生成优化信号，再传递给主模型进行对齐。该方法实现了信号异步生成和跨模型迁移，在多个领域任务上提升了后训练效率。为LLM后训练提供了一种模块化、可重用的范式。",
+      "llm_tldr": "该论文针对现有后训练方法中策略探索与分布对齐紧密耦合导致成本高的问题，提出PUST框架。通过轻量级代理模型进行探索生成优化信号，再传递给主模型进行对齐。该方法实现了信号异步生成和跨模型迁移，在多个领域任务上提升了后训练效率。为LLM后训练提供了一种模块化、可重用的范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
