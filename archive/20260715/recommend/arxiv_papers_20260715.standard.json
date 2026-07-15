@@ -1,0 +1,250 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T20:04:16.421393+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10386v1",
+      "source": "arxiv",
+      "title": "Structured Thoughts For Improved Reasoning And Context Pruning",
+      "abstract": "Large language models (LLMs) excel at generating long chains of thought, but long reasoning traces are often verbose and memory-inefficient. In this work, we introduce Structured Thoughts, a framework that organizes reasoning into alternating <try> and <outcome> blocks: <try> captures exploratory scratch work, while <outcome> contains the distilled conclusion of that step. We construct a dataset of structured thoughts by segmenting reasoning traces into <try> blocks and prompting an LLM to summarize each step into its corresponding <outcome>. Fine-tuning pretrained foundation models on this reformatted data produces models that adopt the structured reasoning style, leading to performance gains of up to 8.08\\% on reasoning benchmarks compared to standard SFT. The explicit structure also enables context pruning: after each <try>/<outcome> pair, the <try> can be pruned, allowing the model to retain conclusions without keeping the full scratch work in the context. A proof-of-concept pruning implementation achieves an average of 85\\% memory / context savings with an 8.67\\% performance drop across mathematical tasks.",
+      "authors": [
+        "Zain Sarwar",
+        "Supriyo Chakraborty",
+        "Berkcan Kapusuzoglu",
+        "Chia-Hsuan Lee",
+        "Anirban Das",
+        "Stephen Rawls",
+        "Kartik Balasubramaniam",
+        "Sambit Sahu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-11T16:29:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.10386v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-distillation through structured try-outcome blocks for reasoning improvement",
+      "llm_evidence_cn": "通过结构化尝试-结果块进行自我蒸馏以改进推理",
+      "llm_evidence": "通过结构化尝试-结果块进行自我蒸馏以改进推理",
+      "canonical_evidence": "通过结构化尝试-结果块进行自我蒸馏以改进推理",
+      "llm_tldr_en": "Structured Thoughts organizes reasoning into <try> and <outcome> blocks, using LLM to distill each step into distilled conclusions; fine-tuning on this data yields up to 8.08% improvement on reasoning benchmarks.",
+      "llm_tldr_cn": "大语言模型的长推理链通常冗长且低效。本文提出结构化思维框架，将推理过程组织为交替的<尝试>和<结果>块，其中<结果>包含该步的蒸馏结论。通过提示LLM将推理轨迹分割并总结为结构化形式，在预训练模型上微调后，模型采用结构化推理风格，在多个推理基准上相比标准SFT提升高达8.08%。该方法本质上是自我蒸馏的一种形式，通过将步骤推理压缩为结论来提升效率与准确性。",
+      "llm_tldr": "大语言模型的长推理链通常冗长且低效。本文提出结构化思维框架，将推理过程组织为交替的<尝试>和<结果>块，其中<结果>包含该步的蒸馏结论。通过提示LLM将推理轨迹分割并总结为结构化形式，在预训练模型上微调后，模型采用结构化推理风格，在多个推理基准上相比标准SFT提升高达8.08%。该方法本质上是自我蒸馏的一种形式，通过将步骤推理压缩为结论来提升效率与准确性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12640v1",
+      "source": "arxiv",
+      "title": "A Learning-Rate-Gated Failure of GRPO in a Small Language and Vision-Language Model Web Agent: A Controlled Null and Its Mechanism",
+      "abstract": "Reinforcement learning with verifiable rewards, and Group Relative Policy Optimization (GRPO) in particular, is now run routinely on a supervised checkpoint in the hope of producing a stronger agent. We ask whether it adds skill to a small language and vision-language model web agent at the 4B to 8B scale, or whether it mostly reshapes behavior the supervised model already has. Across a control grid of 18 runs that varies learning rate, KL weight, seed, initialization, and clipping, no configuration credibly improves the success rate of a strong supervised baseline on tasks the agent has largely mastered. On the text track, moderate to high learning rates make it credibly worse. The null holds under paired testing, 25 evaluation seeds, 6 training seeds, changes to the recipe, both text and Set-of-Marks screenshot observations, and scaling the backbone to 8B; the credible harm is a text-track finding and is only nominal under Set-of-Marks. To show that the null reflects the setting and not a broken pipeline, we run the identical harness, reward, and recipe on tasks whose reward is reachable by sampling, and there the success rate rises by 22 points with a paired interval that excludes zero. GRPO therefore helps only when there is headroom to climb, meaning the sampled policy already succeeds more often than the greedy one. We then explain the failure. A middle learning rate degrades the agent and a high one collapses it, and the two regimes form a double dissociation: grafting localizes the degrade regime to the attention and MLP blocks, while the collapse regime cannot be traced to any single group, and the embedding change that dominates the weight movement is causally inert. At 4B, effective rank in the late layers tracks capability in both directions; at 8B the two come apart. This coupling is specific to the smaller model, so we report it as scale-dependent.",
+      "authors": [
+        "Chengguang Gan",
+        "Zhixi Cai",
+        "Yunhao Liang",
+        "Hanjun Wei",
+        "Shiwen Ni",
+        "Qinghao Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-14T11:17:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.12640v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Directly investigates Group Relative Policy Optimization (GRPO) in small LMs, analyzing its failure under controlled hyperparameter grid.",
+      "llm_evidence_cn": "直接研究小语言模型中GRPO的表现，在受控超参数网格下分析其失败机制。",
+      "llm_evidence": "直接研究小语言模型中GRPO的表现，在受控超参数网格下分析其失败机制。",
+      "canonical_evidence": "直接研究小语言模型中GRPO的表现，在受控超参数网格下分析其失败机制。",
+      "llm_tldr_en": "Controlled experiments on GRPO for small LMs show that under various hyperparameters, GRPO fails to improve a strong supervised baseline and often degrades performance, questioning its effectiveness at small scale.",
+      "llm_tldr_cn": "GRPO被广泛应用于LLM微调，但其在小规模模型上的有效性未知。本文通过在4B-8B语言和视觉语言agent上进行18组受控实验，发现无论学习率、KL权重等参数如何变化，GRPO均未能在强监督基线上取得进一步提升，反而在高学习率下显著退化。该结果揭示了GRPO在小模型上的局限性，为后续方法改进提供了重要参考。",
+      "llm_tldr": "GRPO被广泛应用于LLM微调，但其在小规模模型上的有效性未知。本文通过在4B-8B语言和视觉语言agent上进行18组受控实验，发现无论学习率、KL权重等参数如何变化，GRPO均未能在强监督基线上取得进一步提升，反而在高学习率下显著退化。该结果揭示了GRPO在小模型上的局限性，为后续方法改进提供了重要参考。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12856v1",
+      "source": "arxiv",
+      "title": "Verifier-Based Reinforcement Fine-Tuning of Reasoning Models for Thermal Energy Storage Control",
+      "abstract": "Buildings are expected to shift cooling loads in response to grid conditions. Thermal energy storage (TES) enables this shift, but scheduling it well requires planning hours ahead under storage constraints. Model predictive control (MPC) and reinforcement learning are difficult to scale across buildings. This study instead adapts an open-weight reasoning model through reinforcement learning with verifiable rewards (RLVR). We convert exact offline dynamic-programming (DP) action values into dense rewards for every candidate action. Using only 30 training prompts, reinforcement fine-tuning (RFT) trains the model as an upper-level scheduler that outputs hourly heat-pump setpoints from text-based states and forecasts. Evaluation uses a deliberately simple office-building TES benchmark where exact DP is tractable and the optimum is known. RFT reduces the open-weight model's emissions from 70.5 to 61.2 kg-CO2, close to the DP optimum of 60.8 kg-CO2. GPT-5 nearly matches DP and MPC without task-specific training, while GPT-4o, a non-reasoning LLM, produces higher emissions than the no-storage baseline, so inference-time reasoning appears important. Trace analysis shows that RFT mainly stabilizes observable planning patterns (candidate comparison, look-ahead, and feasibility checking) rather than creating a new strategy. Robustness and generalization tests clarify what transfers: the reinforced planning patterns persist under forecast errors and an unseen TES condition and carry over to a battery task, but its different structure limits the gains. DP-based verifiable rewards offer a practical way to adapt open-weight reasoning models to building storage scheduling. These results motivate higher-fidelity tests of whole-building control and scalable verifiers for city-scale energy management.",
+      "authors": [
+        "Takumi Shioda",
+        "Kohei Terashima",
+        "Tatsuo Nagai"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-14T15:08:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.12856v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reinforcement learning with verifiable rewards for LLM reasoning",
+      "llm_evidence_cn": "使用可验证奖励的强化学习微调推理模型",
+      "llm_evidence": "使用可验证奖励的强化学习微调推理模型",
+      "canonical_evidence": "使用可验证奖励的强化学习微调推理模型",
+      "llm_tldr_en": "Applies RLVR to fine-tune a reasoning model for thermal energy storage control, using offline DP values as dense rewards, showing effective scheduling with only 30 prompts.",
+      "llm_tldr_cn": "本文将可验证奖励强化学习（RLVR）应用于热能存储控制任务。通过将离线动态规划的动作值转化为密集奖励信号，仅用30个训练提示即微调了开源推理模型作为上层调度器。实验表明该方法能有效制定储冷计划，为RLVR在特定领域推理任务中的应用提供了实例。",
+      "llm_tldr": "本文将可验证奖励强化学习（RLVR）应用于热能存储控制任务。通过将离线动态规划的动作值转化为密集奖励信号，仅用30个训练提示即微调了开源推理模型作为上层调度器。实验表明该方法能有效制定储冷计划，为RLVR在特定领域推理任务中的应用提供了实例。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.12747v1",
+      "source": "arxiv",
+      "title": "Tracing Agentic Failure from the Flow of Success",
+      "abstract": "Failure attribution for LLM-based agentic systems, i.e., identifying which steps in a failure trajectory caused the task to fail, is critical for debugging and improving these systems. Existing approaches either rely on prompting-based pipelines, which are computationally expensive, or require post-training on failure trajectories with step-level error annotations, which are costly to collect and difficult to scale. We argue that a practical failure attribution model should be lightweight and trainable without step-level supervision on failure data. To this end, we address unsupervised failure attribution, i.e., training exclusively on successful trajectories and identifying error steps at inference time given a failure trajectory. We propose OAT, which casts this problem as one-class learning with neural controlled differential equations, modeling the dynamical pattern of successful trajectories in latent space. At inference time, each step in a failure trajectory is assigned an anomaly score based on its deviation from the dynamics learned on successful trajectories, which is then used to form a set of error steps. With training on only 100 successful trajectories, experiments show that OAT is 200--5000 $\\times$ faster than prompting-based baselines, and, at the same time, consistently outperforms them in both in-domain and out-of-distribution datasets with +20% and +7% F1 scores, respectively, demonstrating that OAT is a promising and efficient direction for diagnosing agentic system failures.",
+      "authors": [
+        "Samuel Yeh",
+        "Yiwen Zhu",
+        "Shaleen Deep",
+        "Sharon Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-14T13:16:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.12747v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unsupervised failure attribution from successful trajectories",
+      "llm_evidence_cn": "无监督失败归因，利用成功轨迹识别错误步骤",
+      "llm_evidence": "无监督失败归因，利用成功轨迹识别错误步骤",
+      "canonical_evidence": "无监督失败归因，利用成功轨迹识别错误步骤",
+      "llm_tldr_en": "Proposes OAT for unsupervised failure attribution in LLM agents, trained only on successful trajectories to identify error steps at inference time, enabling lightweight debugging without costly failure annotations.",
+      "llm_tldr_cn": "为LLM智能体调试提出无监督失败归因方法OAT，仅使用成功轨迹训练，在推理时识别失败轨迹中的错误步骤。该方法避免了对失败数据的手工标注，降低了计算成本。实验表明OAT能有效定位关键错误步骤，助力过程监督。",
+      "llm_tldr": "为LLM智能体调试提出无监督失败归因方法OAT，仅使用成功轨迹训练，在推理时识别失败轨迹中的错误步骤。该方法避免了对失败数据的手工标注，降低了计算成本。实验表明OAT能有效定位关键错误步骤，助力过程监督。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.06987v1",
+      "source": "arxiv",
+      "title": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+      "abstract": "Reinforcement learning (RL) has become the standard paradigm for enhancing the complex reasoning capabilities of large language models (LLMs). To achieve sample efficiency, modern RL frameworks rely on importance sampling (IS). However, these algorithms suffer from an exploration-stability dilemma. Pure IS often leads to catastrophic training instability, while standard clipping mechanisms used to mitigate this instability strictly constrain the policy update budget. By formalizing the concept of Probability Capacity (Cap), we reveal that conservative clipping structurally stifles exploration by prematurely truncating the update budget for correct but low-confidence reasoning paths. To break free from these constraints, we propose Unbounded Positive Asymmetric Optimization (UP), a universal and plug-and-play objective. UP theoretically restructures the optimization process by anchoring the policy to its current state via the stop-gradient operator. This asymmetric design unleashes unclipped, stable gradients for positive advantages to maximize exploration, while maintaining standard clipping safeguards for negative advantages to prevent training instability. Furthermore, our formulation readily extends across different optimization granularities, including token-level (GRPO, DAPO) and sequence-level (GSPO) frameworks. Extensive experiments demonstrate that UP enhances exploration capacity and achieves superior reasoning accuracy across diverse RL algorithms (DAPO, GSPO, and GRPO), model architectures (Dense, MoE, and vision-language), and training modalities (language and multimodal), validating UP as a truly universal plug-and-play enhancement for RL-based training.",
+      "authors": [
+        "Chongyu Fan",
+        "Pengfei Liu",
+        "Jingjia Huang",
+        "Sijia Liu",
+        "Yi Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-08T04:21:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.06987v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "exploration-stability optimization for LLM RL",
+      "llm_evidence_cn": "LLM强化学习中的探索-稳定性优化",
+      "llm_evidence": "LLM强化学习中的探索-稳定性优化",
+      "canonical_evidence": "LLM强化学习中的探索-稳定性优化",
+      "llm_tldr_en": "Proposes UP (Unbounded Positive Asymmetric Optimization) to break the exploration-stability dilemma in RL for LLMs by removing conservative clipping.",
+      "llm_tldr_cn": "当前LLM强化学习中使用重要性采样和裁剪机制，面临探索-稳定性两难：纯IS不稳定，裁剪限制探索。本文形式化概率容量概念，揭示保守裁剪会过早截断低置信路径的更新概率，从而抑制探索。提出UP算法，采用无上界正非对称优化，在保持稳定性的同时允许不受限地探索正确但低置信的推理路径。在数学推理任务上，UP显著优于现有方法。",
+      "llm_tldr": "当前LLM强化学习中使用重要性采样和裁剪机制，面临探索-稳定性两难：纯IS不稳定，裁剪限制探索。本文形式化概率容量概念，揭示保守裁剪会过早截断低置信路径的更新概率，从而抑制探索。提出UP算法，采用无上界正非对称优化，在保持稳定性的同时允许不受限地探索正确但低置信的推理路径。在数学推理任务上，UP显著优于现有方法。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10601v1",
+      "source": "arxiv",
+      "title": "Agentic-DPO: From Imitation to Agentic Policy Optimization on Expert Trajectories",
+      "abstract": "Large Language Model (LLM) agents are commonly trained from expert trajectories using supervised fine-tuning (SFT), which treats multi-turn agent behavior as ordinary text imitation. This recipe is simple and low-cost, but it only learns to imitate the sequence of expert actions, rather than training the agent to choose the right action against plausible mistakes at each state. Existing methods to mitigate this problem include preference learning or reinforcement learning, but they usually need high-cost environment rollouts and reward models. We propose Agentic-DPO, a lightweight offline agent policy optimization method that turns expert trajectories into state-conditioned preference supervision. At each expert action state, Agentic-DPO samples a one-step action from the current state, treats plausible wrong actions as negatives, and contrasts them with the expert action using a DPO-style preference objective. To avoid mixing both policy and schema in preference learning, we introduce Policy-Preserving Augmentation (PPA), which renders the same latent trajectory under multiple schemas while keeping the expert policy fixed. Agentic-DPO requires no online environment rollout, reward model, or full-trajectory student exploration. We conduct experiments across StableToolBench, tau-bench retail, and Mind2Web, where Agentic-DPO consistently improves agents at different model scales beyond imitation. In particular, it raises tau-bench accuracy from 21.7% (SFT) to 41.4% for a 9B model, matching online GRPO under the same backbone with only step-level rollouts and without environment interaction during gradient steps. The results suggest that expert trajectories can support low-cost agentic policy optimization when converted from demonstrations into state-level action preferences. Code for Agentic-DPO is released at https://github.com/Schuture/Agentic-DPO.",
+      "authors": [
+        "Yixiong Chen",
+        "Alan Yuille"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-12T06:38:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.10601v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "offline policy optimization from expert trajectories using preference learning",
+      "llm_evidence_cn": "利用偏好学习从专家轨迹进行离线策略优化",
+      "llm_evidence": "利用偏好学习从专家轨迹进行离线策略优化",
+      "canonical_evidence": "利用偏好学习从专家轨迹进行离线策略优化",
+      "llm_tldr_en": "Proposes Agentic-DPO, a lightweight offline method that converts expert trajectories into state-conditioned preference data to train LLM agents to choose correct actions at each state without costly rollouts.",
+      "llm_tldr_cn": "现有基于专家轨迹的SFT只模仿动作序列，不学习区分正确与错误选择。Agentic-DPO将专家轨迹转化为状态级偏好监督，离线训练智能体在各种状态下选择正确动作，无需环境交互。实验表明该方法在多个智能体任务上优于SFT和在线RL，提供了一种低成本、高效的策略优化方案。",
+      "llm_tldr": "现有基于专家轨迹的SFT只模仿动作序列，不学习区分正确与错误选择。Agentic-DPO将专家轨迹转化为状态级偏好监督，离线训练智能体在各种状态下选择正确动作，无需环境交互。实验表明该方法在多个智能体任务上优于SFT和在线RL，提供了一种低成本、高效的策略优化方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,47 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-14
-- 运行时间：2026-07-14 21:22:32 UTC
+- 最新运行日期：2026-07-15
+- 运行时间：2026-07-15 20:08:38 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：6
+- 本次总论文数：6
+- 精读区：3
 - 速读区：3
 
 ### 今日简报（AI）
-今日精读6篇、速读3篇，重点聚焦大模型推理优化与多智能体协作。最值得关注的是《思考崩溃的诊断与缓解》和《门控路由与自适应深度的多智能体推理》，分别解决自蒸馏中的推理质量退化与多智能体通信效率问题。建议优先阅读这两篇论文的方法部分，对提升模型推理稳健性和分布式协作效率有直接借鉴意义。
-- 详情：[/202607/14/README](/202607/14/README)
+今日3篇精读+3篇速读，聚焦结构化推理提速与GRPO小模型失效机制。推荐精读《Structured Thoughts》提升推理效率，《A Learning-Rate-Gated Failure》揭示GRPO在视觉语言代理中的学习率陷阱。建议普通读者关注两篇高分论文，优化智能体稳定性和探索策略。
+- 详情：[/202607/15/README](/202607/15/README)
 
 ### 精读区论文标签
-1. [Diagnosing and Mitigating Thinking Collapse in On-Policy Self-Distillation](/202607/14/2607.10805v1-diagnosing-and-mitigating-thinking-collapse-in-on-policy-self-distillation)  
-   标签：评分：9.0/10、query:opd
-   evidence：同策略自蒸馏用于大语言模型推理
-2. [Route, Communicate, and Reason: Gated Routing and Adaptive Depth for Efficient Multi-Agent Reasoning](/202607/14/2607.10836v1-route-communicate-and-reason-gated-routing-and-adaptive-depth-for-efficient-multi-agent-reasoning)  
-   标签：评分：9.0/10、query:opd
-   evidence：CoGRPO：协作组相对策略优化
-3. [SVR-R1: Bootstrapping Multi-modal Reasoning with Self-verification in Reinforcement Learning](/202607/14/2607.10966v1-svr-r1-bootstrapping-multi-modal-reasoning-with-self-verification-in-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：使用GRPO和自我验证的多轮强化学习提升推理
-4. [EasyOPD: An Easy-to-use On-Policy Distillation Framework for Large Language Models](/202607/14/2607.11012v1-easyopd-an-easy-to-use-on-policy-distillation-framework-for-large-language-models)  
-   标签：评分：9.0/10、query:opd
-   evidence：EasyOPD：一个易用的同策略蒸馏框架
-5. [SCOPE-RL: Optimizing Reasoning Paths Before and After Success](/202607/14/2607.11506v1-scope-rl-optimizing-reasoning-paths-before-and-after-success)  
-   标签：评分：9.0/10、query:opd
-   evidence：基于GRPO和过程奖励的RLVR框架
-6. [ARMOR: Stabilizing On-Policy LLM RL with Off-Policy Anchor Samples](/202607/14/2607.10481v1-armor-stabilizing-on-policy-llm-rl-with-off-policy-anchor-samples)  
+1. [Structured Thoughts For Improved Reasoning And Context Pruning](/202607/15/2607.10386v1-structured-thoughts-for-improved-reasoning-and-context-pruning)  
    标签：评分：8.0/10、query:opd
-   evidence：使用离策略锚点样本稳定同策略LLM强化学习
+   evidence：通过结构化尝试-结果块进行自我蒸馏以改进推理
+2. [A Learning-Rate-Gated Failure of GRPO in a Small Language and Vision-Language Model Web Agent: A Controlled Null and Its Mechanism](/202607/15/2607.12640v1-a-learning-rate-gated-failure-of-grpo-in-a-small-language-and-vision-language-model-web-agent-a-controlled-null-and-its-mechanism)  
+   标签：评分：8.0/10、query:opd
+   evidence：直接研究小语言模型中GRPO的表现，在受控超参数网格下分析其失败机制。
+3. [Verifier-Based Reinforcement Fine-Tuning of Reasoning Models for Thermal Energy Storage Control](/202607/15/2607.12856v1-verifier-based-reinforcement-fine-tuning-of-reasoning-models-for-thermal-energy-storage-control)  
+   标签：评分：8.0/10、query:opd
+   evidence：使用可验证奖励的强化学习微调推理模型
 
 ### 速读区论文标签
-1. [MJ: Multi-turn LLM Jailbreaking via Decomposed Credit Assignment](/202607/14/2607.11070v1-mj-multi-turn-llm-jailbreaking-via-decomposed-credit-assignment)  
-   标签：评分：8.0/10、query:opd
-   evidence：提出分解信用GRPO用于多轮越狱
-2. [Reinforcement Learning with Verifiable Physics: Post-training LLMs with Continuous Rewards](/202607/14/2607.10474v1-reinforcement-learning-with-verifiable-physics-post-training-llms-with-continuous-rewards)  
+1. [Tracing Agentic Failure from the Flow of Success](/202607/15/2607.12747v1-tracing-agentic-failure-from-the-flow-of-success)  
    标签：评分：7.0/10、query:opd
-   evidence：将RLVR用于物理领域的代码生成后训练
-3. [Proxy Exploration and Reusable Guidance: A Modular LLM Post-Training Paradigm via Proxy-Guided Update Signals](/202607/14/2607.11505v1-proxy-exploration-and-reusable-guidance-a-modular-llm-post-training-paradigm-via-proxy-guided-update-signals)  
-   标签：评分：7.0/10、query:opd
-   evidence：代理引导的更新信号传输（PUST）使用代理模型将探索与对齐解耦，实现高效LLM后训练
+   evidence：无监督失败归因，利用成功轨迹识别错误步骤
+2. [UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma](/202607/15/2607.06987v1-up-unbounded-positive-asymmetric-optimization-for-breaking-the-exploration-stability-dilemma)  
+   标签：评分：6.0/10、query:opd
+   evidence：LLM强化学习中的探索-稳定性优化
+3. [Agentic-DPO: From Imitation to Agentic Policy Optimization on Expert Trajectories](/202607/15/2607.10601v1-agentic-dpo-from-imitation-to-agentic-policy-optimization-on-expert-trajectories)  
+   标签：评分：6.0/10、query:opd
+   evidence：利用偏好学习从专家轨迹进行离线策略优化
 
 
 <div class="dpr-home-promo-card">
