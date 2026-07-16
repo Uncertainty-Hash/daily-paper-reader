@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T21:26:03.511109+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 8,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.11506v2",
+      "source": "arxiv",
+      "title": "SCOPE-RL: Optimizing Reasoning Paths Before and After Success",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) optimizes LLMs using sparse verifiable final-answer rewards. This sparse anchor reliably verifies whether a trajectory succeeds but provides no direct feedback on the reasoning path that produced it. Before success, prerequisite progress on hard problems receives no reward signal; after success, outcome rewards cannot distinguish well-organized correct trajectories from redundant or locally flawed ones. We introduce SCOPE-RL (Scaffolded Chain Optimization with Process Efficiency), a two-stage framework that densifies this anchor while retaining the GRPO update: Adaptive Scaffolded RL adds prefix-decomposed verifiable rewards on answer-hidden sub-question chains before success, and Quality-Aware Process RL applies correctness-gated process-shape rewards to refine correct trajectories after success. An expert-validated Step-Quality Evaluation Protocol evaluates useful-step density, error localization, and token efficiency beyond final-answer accuracy. On Qwen3-8B-Instruct trained on DAPO-Math and Big-Math, SCOPE-RL improves average accuracy by up to 11.2 pp and reduces reasoning tokens by up to 27.1% over outcome-only GRPO; the gains hold under GSPO and on Qwen3-0.6B-Instruct, indicating that reward-signal densification is complementary to policy-update-level RLVR advances. Code and data are available at https://github.com/tokencraft-lab/SCOPE-RL.",
+      "authors": [
+        "Xiaojian Liu",
+        "Han Xu",
+        "Jianqiang Xia",
+        "Zhixuan Li",
+        "Ke Xu",
+        "Yiwei Dai",
+        "Xinran Chen",
+        "Changwo Wu",
+        "Yuchen Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-13T12:56:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.11506v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Directly addresses RLVR with GRPO update, densifies sparse rewards for reasoning paths",
+      "llm_evidence_cn": "直接针对RLVR和GRPO更新，为推理路径提供稠密奖励",
+      "llm_evidence": "直接针对RLVR和GRPO更新，为推理路径提供稠密奖励",
+      "canonical_evidence": "直接针对RLVR和GRPO更新，为推理路径提供稠密奖励",
+      "llm_tldr_en": "Proposes SCOPE-RL, a two-stage framework that adds prefix-decomposed verifiable rewards and quality-aware process RL to GRPO, optimizing reasoning paths before and after success.",
+      "llm_tldr_cn": "针对RLVR中稀疏最终奖励无法有效指导推理路径优化的问题，本文提出SCOPE-RL框架，包含自适应脚手架RL阶段（在成功前为子问题链添加分解可验证奖励）和质量感知过程RL阶段（在成功后区分高质量与低质量的正确轨迹）。实验表明，该方法在多个数学推理数据集上显著优于标准GRPO，提高了推理路径的效率和正确性。",
+      "llm_tldr": "针对RLVR中稀疏最终奖励无法有效指导推理路径优化的问题，本文提出SCOPE-RL框架，包含自适应脚手架RL阶段（在成功前为子问题链添加分解可验证奖励）和质量感知过程RL阶段（在成功后区分高质量与低质量的正确轨迹）。实验表明，该方法在多个数学推理数据集上显著优于标准GRPO，提高了推理路径的效率和正确性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13389v1",
+      "source": "arxiv",
+      "title": "Where Should RL Post-Training Compute Go? Model Size, Search, Learning, and Feedback",
+      "abstract": "Reinforcement Learning (RL) post-training is increasingly used to adapt foundation models for reasoning, planning, and feedback-driven robot-learning pipelines, but constrained post-training resources are often summarized by a single total FLOP budget. We study the fixed-budget decision problem behind this practice: under the same post-training budget, should one use a larger policy, train a smaller policy longer, generate more rollout search, or spend compute on stronger reward feedback? We introduce a FLOP-accounting framework for GRPO post-training that decomposes compute into rollout/search, policy-update/learning, and reward- or feedback-model evaluation. Across LoRA-adapted Qwen2.5 policies, we find conditional allocation frontiers: the best observed allocation changes with model size, compute budget, reward system, and evaluation target. Same-FLOP model-size comparisons show that model choice and training allocation are coupled because larger policies consume more per-token compute and therefore buy fewer updates or rollouts under the same budget. Reward systems also change the accounting: rule-based rewards spend nearly all non-update compute on policy rollouts, while PRM-style feedback allocates a visible part of the budget to reward-model inference. We present RACE as a diagnostic pilot-grid protocol, not a guarantee of held-out improvement, for identifying allocation regimes before expensive validation runs; our results suggest that RL post-training papers should report total FLOPs together with how compute is divided among model size, search, learning, and feedback.",
+      "authors": [
+        "Patrick Wilhelm",
+        "Odej Kao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-15T02:34:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.13389v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "GRPO post-training compute allocation",
+      "llm_evidence_cn": "GRPO后训练计算分配",
+      "llm_evidence": "GRPO后训练计算分配",
+      "canonical_evidence": "GRPO后训练计算分配",
+      "llm_tldr_en": "Studies compute allocation in GRPO post-training for foundation models, focusing on trade-offs between model size, rollout search, learning, and feedback.",
+      "llm_tldr_cn": "该论文聚焦于基础模型后训练中RL计算预算的分配问题，特别针对GRPO方法提出了一个FLOP核算框架，将计算开销分解为rollout搜索、策略更新和奖励评估三部分。在LoRA微调的Qwen2.5模型上实验发现，模型规模、搜索深度、学习步数和反馈质量之间存在条件最优分配边界。这一研究为推理模型的强化学习后训练提供了实用的计算优化策略。",
+      "llm_tldr": "该论文聚焦于基础模型后训练中RL计算预算的分配问题，特别针对GRPO方法提出了一个FLOP核算框架，将计算开销分解为rollout搜索、策略更新和奖励评估三部分。在LoRA微调的Qwen2.5模型上实验发现，模型规模、搜索深度、学习步数和反馈质量之间存在条件最优分配边界。这一研究为推理模型的强化学习后训练提供了实用的计算优化策略。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13399v1",
+      "source": "arxiv",
+      "title": "Demystifying On-Policy Distillation: Roles, Pathologies, and Regulations",
+      "abstract": "On-policy distillation (OPD) has become a key paradigm in LLM post-training, yet its training dynamics remain poorly understood. We present a systematic study examining the role, pathologies, and regulations of OPD. We first clarify the role of OPD as an exploration catalyst: it steers the student toward correct reasoning paths via dense token-level guidance, without expanding capability ceiling. We confirm this by showing that prompt diversity matters more than per-problem sampling numbers, and critically, that the effectiveness of OPD hinges entirely on the quality of its guiding signal. This dependency exposes two pathologies that derail exploration. The Student-Teacher Mismatch occurs when a large teacher-student distributional gap causes the guiding signal to misalign with task correctness, steering exploration in counterproductive directions. Length Exploitation arises when the aggregated token-level objective creates length-dependent shortcuts, allowing the student to game the reward landscape through response truncation or redundant padding, exploring degenerate length modes rather than reasoning strategies. To tame these pathologies, we investigate lightweight signal regulations: advantage clipping and log-scale compression, ensuring exploration is guided by faithful signals. Experiments across seven benchmarks demonstrate that these regulations alleviate length exploitation and enable effective distillation, stably surpassing OPD variants and RLVR baselines, thereby confirming that well-regulated signal quality, rather than mere teacher scale, governs successful exploration in OPD.",
+      "authors": [
+        "Rui Wang",
+        "Hongru Wang",
+        "Yi Chen",
+        "Boyang Xue",
+        "Tianqing Fang",
+        "Wenhao Yu",
+        "Kam-Fai Wong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-15T02:52:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.13399v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "systematic study of OPD for LLM reasoning",
+      "llm_evidence_cn": "对LLM推理中OPD的系统研究",
+      "llm_evidence": "对LLM推理中OPD的系统研究",
+      "canonical_evidence": "对LLM推理中OPD的系统研究",
+      "llm_tldr_en": "Systematic study reveals OPD acts as exploration catalyst via dense token guidance, but suffers from student-teacher mismatch and cycle pathologies.",
+      "llm_tldr_cn": "同策略蒸馏虽成为LLM后训练关键范式，但其动态机制尚未明确。该论文系统研究了OPD的角色、病理和调节。发现OPD通过密集标记级引导催化探索，但不过度扩展能力上限。指出提示多样性比每问题采样数更重要，且OPD依赖信号质量。揭示学生-教师不匹配和循环病理两种阻碍探索的机制。为OPD设计提供了理论指导。",
+      "llm_tldr": "同策略蒸馏虽成为LLM后训练关键范式，但其动态机制尚未明确。该论文系统研究了OPD的角色、病理和调节。发现OPD通过密集标记级引导催化探索，但不过度扩展能力上限。指出提示多样性比每问题采样数更重要，且OPD依赖信号质量。揭示学生-教师不匹配和循环病理两种阻碍探索的机制。为OPD设计提供了理论指导。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13501v1",
+      "source": "arxiv",
+      "title": "LAPO: Leave-One-Turn Attribution for Self-Generated Process Rewards in Multi-Turn Search Reasoning",
+      "abstract": "Reinforcement learning for multi-turn search reasoning typically relies on terminal outcome rewards, which cannot distinguish useful, redundant, and harmful intermediate interactions. We propose LAPO, a self-generated process-supervision method based on backward leave-one-turn attribution. For each search turn, LAPO replaces the turn and its retrieval observation with a fixed [DELETE] placeholder and measures the resulting change in the current policy's mean log-likelihood of the gold answer. This Answer-Likelihood Gain estimates the turn's contribution while preserving all downstream interactions, allowing early evidence to be evaluated in the complete reasoning context. LAPO further applies sign-consistency gating, retaining only normalized process advantages whose directions agree with their raw attribution scores. The method requires no additional reward model, teacher, verifier, or LLM-as-a-Judge. Across seven knowledge-intensive question-answering datasets with local retrieval, LAPO achieves an average exact-match score of 0.326, outperforming the strongest step-reward baseline, IGPO, by 0.053. Ablations show complementary benefits from backward attribution and sign-consistency gating, demonstrating that policy-derived retrospective attribution can provide effective process supervision for multi-turn search agents.",
+      "authors": [
+        "Qiang Zhu",
+        "Jiajun Wu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-15T06:55:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.13501v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Self-generated process supervision via leave-one-turn attribution",
+      "llm_evidence_cn": "通过留一回合归因的自生成过程监督",
+      "llm_evidence": "通过留一回合归因的自生成过程监督",
+      "canonical_evidence": "通过留一回合归因的自生成过程监督",
+      "llm_tldr_en": "Proposes LAPO, a self-generated process supervision method that uses leave-one-turn attribution to assign rewards to each search turn, improving multi-turn reasoning.",
+      "llm_tldr_cn": "该论文提出LAPO方法，通过向后留一回合归因，计算删除某回合后答案似然的变化来衡量其贡献。该方法无需外部奖励模型，自生成过程监督信号，并在多轮搜索推理中有效区分有用、冗余和有害的中间步骤。实验表明该方法提升了推理性能，并可用于过程监督，为利用失败轨迹进行过程奖励建模提供了新思路。",
+      "llm_tldr": "该论文提出LAPO方法，通过向后留一回合归因，计算删除某回合后答案似然的变化来衡量其贡献。该方法无需外部奖励模型，自生成过程监督信号，并在多轮搜索推理中有效区分有用、冗余和有害的中间步骤。实验表明该方法提升了推理性能，并可用于过程监督，为利用失败轨迹进行过程奖励建模提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13643v1",
+      "source": "arxiv",
+      "title": "Consensus as Privileged Context for Label-Free Self-Distillation",
+      "abstract": "Sampling multiple solutions and returning the majority answer is among the most reliable ways to improve the reasoning accuracy of large language models without labels, and a growing family of methods converts this consensus signal into training supervision. However, existing approaches use consensus only in restricted forms: as a filter that selects solutions for fine-tuning, as a preference between answers, or as a scalar reward for reinforcement learning, discarding most of the information that the agreeing solutions contain. We present CANON (Consensus-ANchored self-distillatiON), a label-free training method that turns consensus into dense, token-level supervision. For each unlabeled prompt, CANON samples multiple solutions, extracts the majority answer, and conditions a frozen snapshot of the model on a solution that reaches it; this consensus-anchored teacher then supervises the model on its own rollouts at every token. Experiments on mathematical and scientific reasoning benchmarks show that CANON improves pass@1 by up to 12 points, outperforming label-free reinforcement learning by 6 points at a seventh of its compute and approaching a teacher conditioned on gold solutions; trained on pooled unlabeled data, it transfers to held-out benchmarks, matching training methods that use gold labels. Analysis suggests that the improvements are not pure distribution sharpening: after training, the model solves problems it previously never solved in 32 attempts, and its majority vote itself becomes more accurate.",
+      "authors": [
+        "John Gkountouras",
+        "Josip Jukić",
+        "Ivan Titov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-15T09:39:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.13643v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-distillation via consensus token-level supervision for reasoning",
+      "llm_evidence_cn": "利用共识进行令牌级自蒸馏提升推理",
+      "llm_evidence": "利用共识进行令牌级自蒸馏提升推理",
+      "canonical_evidence": "利用共识进行令牌级自蒸馏提升推理",
+      "llm_tldr_en": "CANON converts consensus among multiple sampled reasoning paths into dense token-level supervision for label-free self-distillation, outperforming scalar-reward methods.",
+      "llm_tldr_cn": "针对大语言模型推理中标签缺乏的问题，现有方法仅将多数共识用作过滤或标量奖励，浪费了共识中的丰富信息。CANON方法对每个未标注提示采样多条推理路径，提取多数答案作为锚点，生成令牌级稠密监督信号进行自蒸馏。在数学推理等任务上，CANON显著优于仅使用标量奖励的基线，且无需额外标签。这项工作展示了将集体共识转化为结构化训练信号的巨大潜力。",
+      "llm_tldr": "针对大语言模型推理中标签缺乏的问题，现有方法仅将多数共识用作过滤或标量奖励，浪费了共识中的丰富信息。CANON方法对每个未标注提示采样多条推理路径，提取多数答案作为锚点，生成令牌级稠密监督信号进行自蒸馏。在数学推理等任务上，CANON显著优于仅使用标量奖励的基线，且无需额外标签。这项工作展示了将集体共识转化为结构化训练信号的巨大潜力。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13753v1",
+      "source": "arxiv",
+      "title": "Post-Training Shifts Confidence: A Three-Stage Analysis of How SFT, RL, and OPD Shape Pre-, Intra-, and Post-CoT Calibration",
+      "abstract": "Large language models have made strong reasoning gains through supervised fine-tuning, reinforcement learning, and on-policy distillation, yet these post-training methods are usually evaluated only by final-answer accuracy. We study how they reshape confidence during reasoning. We introduce a three-stage calibration framework that evaluates confidence before, during, and after chain-of-thought generation, corresponding to difficulty estimation, early termination, and answer aggregation. Through a controlled comparison on mathematical reasoning benchmarks, we find that OPD provides the most useful pre-reasoning confidence, SFT gives the strongest online signal for early stopping, and RL produces the most reliable trace-level signal for aggregation. We further show that confidence reliability is position-dependent: RL confidence becomes informative after a path-commitment phase, while OPD confidence is useful early but can become inversely calibrated later. Based on this observation, we propose PosConf, a position-aware confidence strategy that uses confidence only from reliable relative-position intervals. PosConf improves RL answer aggregation by 6.1 points over majority voting and consistently improves OPD early stopping under tight token budgets, with gains up to 4.3 points by avoiding its later inverse-calibration region, showing that \\emph{confidence in reasoning models should be used both stage-wise and position-awarely}. Our code is available at https://github.com/EIT-NLP/Post-Training-Calibration.",
+      "authors": [
+        "Shuhao Li",
+        "Guodong Du",
+        "Anhao Zhao",
+        "Wanyu Lin",
+        "Tianyu Yuan",
+        "Xiaoyu Shen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-15T12:12:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.13753v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "analyzes OPD for reasoning calibration",
+      "llm_evidence_cn": "分析OPD对推理校准的影响",
+      "llm_evidence": "分析OPD对推理校准的影响",
+      "canonical_evidence": "分析OPD对推理校准的影响",
+      "llm_tldr_en": "Three-stage calibration analysis reveals OPD provides best pre-reasoning confidence, SFT best online stopping signal, and RL produces undistinguished confidence.",
+      "llm_tldr_cn": "后训练方法通常只评估最终准确率。该论文提出三阶段校准框架，分析SFT、RL和OPD在推理前、中、后的置信度。在数学推理基准上，OPD给出最佳推理前置信度，SFT给出最强早停信号，RL未产生独特优势。为理解训练方法对推理过程的影响提供了新视角。",
+      "llm_tldr": "后训练方法通常只评估最终准确率。该论文提出三阶段校准框架，分析SFT、RL和OPD在推理前、中、后的置信度。在数学推理基准上，OPD给出最佳推理前置信度，SFT给出最强早停信号，RL未产生独特优势。为理解训练方法对推理过程的影响提供了新视角。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.07050v2",
+      "source": "arxiv",
+      "title": "Diagnosing and Calibrating Tool-Call Boundary Drift in Multi-Teacher On-Policy Distillation",
+      "abstract": "Agentic language models must learn when to call tools, when to consume tool responses, and when to answer directly. This makes multi-teacher on-policy distillation a natural training strategy: one teacher can specialize in tool calls, another in direct responses, and the student can learn from both on   its own generated distribution. We show that this strategy can induce a behavior shift that is invisible from aggregate losses alone. In a two-teacher tool-use setting, vanilla generalized knowledge distillation improves tool-call recall but also moves the model toward over-calling, where it calls tools   on examples that should be answered directly. Aggregate explanations are insufficient: tool-call samples do not receive more token exposure, and full-sequence per-token divergence is not larger for the tool-call teacher. We instead analyze behavior leverage imbalance: local token-level signals at mode-   entry and structural positions, such as <tool_call> and function names, can have disproportionate control over the global generation mode. We propose Soft Clamp, a per-token divergence calibration method that dynamically compresses extreme token-level Jensen-Shannon divergence while preserving nonzero   gradients. On APIGen-MT, Soft Clamp reduces over-calling from 13.7% to 9.0% relative to vanilla GKD while matching its decision accuracy. In a BFCL multi-turn diagnostic, it also lowers tool-call loops and repeated calls among GKD variants. These results suggest that multi-teacher OPD should monitor   where teacher signals act, not only how large they are in aggregate.",
+      "authors": [
+        "Jiabin Shen",
+        "Guang Chen",
+        "Chengjun Mao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T06:26:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.07050v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-teacher OPD for tool-calling",
+      "llm_evidence_cn": "多教师OPD用于工具调用",
+      "llm_evidence": "多教师OPD用于工具调用",
+      "canonical_evidence": "多教师OPD用于工具调用",
+      "llm_tldr_en": "Multi-teacher on-policy distillation can cause tool-call over-calling drift, which is invisible from aggregate losses; analysis reveals token-level causes.",
+      "llm_tldr_cn": "多教师同策略蒸馏虽能融合不同专家，但可能导致工具调用过度。该论文发现vanilla蒸馏虽提升工具调用召回率，却使模型在应直接回答的样本上也调用工具，且聚合损失无法反映该偏移。通过诊断发现工具调用样本并未获得更多标记，从而揭示了偏移的根源。对OPD的实际部署有重要指导意义。",
+      "llm_tldr": "多教师同策略蒸馏虽能融合不同专家，但可能导致工具调用过度。该论文发现vanilla蒸馏虽提升工具调用召回率，却使模型在应直接回答的样本上也调用工具，且聚合损失无法反映该偏移。通过诊断发现工具调用样本并未获得更多标记，从而揭示了偏移的根源。对OPD的实际部署有重要指导意义。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.09996v1",
+      "source": "arxiv",
+      "title": "Who&When Pro: Can LLMs Really Attribute Failures in AI Agents?",
+      "abstract": "Automated failure attribution uses LLMs to identify where and why agentic systems fail. As agents become more capable, their failures become subtler, making automated attribution increasingly important. We introduce Who&When Pro, a large-scale benchmark for automated failure attribution in agentic systems. Using a strictly controlled pipeline that injects a failure only after exactly replaying a successful prefix, we construct 12,326 failed trajectories with golden labels across 3 modalities and 26 benchmarks covering various scenarios. Beyond benchmarking, we conduct extensive experiments and analyses, revealing systematic patterns in how models attribute failures across modalities, protocols, and model families, and providing empirical guidance for future automated failure attribution systems.",
+      "authors": [
+        "Jiale Liu",
+        "Huajun Xi",
+        "Shaokun Zhang",
+        "Yifan Zeng",
+        "Tianwei Yue",
+        "Chi Wang",
+        "Jian Kang",
+        "Qingyun Wu",
+        "Huazheng Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-07-10T21:45:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.09996v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Large-scale benchmark of failed trajectories with golden labels",
+      "llm_evidence_cn": "大规模失败轨迹基准数据集，包含黄金标签",
+      "llm_evidence": "大规模失败轨迹基准数据集，包含黄金标签",
+      "canonical_evidence": "大规模失败轨迹基准数据集，包含黄金标签",
+      "llm_tldr_en": "Who&When Pro provides 12,326 failed trajectories with golden labels across 26 benchmarks, enabling automated failure attribution and supporting RL methods that learn from failures.",
+      "llm_tldr_cn": "自动化失败归因对日益复杂的AI代理系统至关重要，但缺乏全面基准。本文提出Who&When Pro，通过严格控制的数据管道构建了12,326条带黄金标签的失败轨迹，覆盖3种模态和26个基准。实验揭示了不同模型在失败归因上的模式差异。该基准可支持利用失败轨迹的强化学习方法，促进更可靠的代理系统开发。",
+      "llm_tldr": "自动化失败归因对日益复杂的AI代理系统至关重要，但缺乏全面基准。本文提出Who&When Pro，通过严格控制的数据管道构建了12,326条带黄金标签的失败轨迹，覆盖3种模态和26个基准。实验揭示了不同模型在失败归因上的模式差异。该基准可支持利用失败轨迹的强化学习方法，促进更可靠的代理系统开发。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.13931v1",
+      "source": "arxiv",
+      "title": "SIVA-RL: Sensitivity-Invariance Visual Alignment for Multimodal Reinforcement Learning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) drives multimodal reasoning, but answer-level correctness does not guarantee that a vision-language model grounds its predictions in visual evidence. Existing visual-intervention methods contrast policy behavior on original and modified images, yet assign supervision by the type of intervention rather than its observed effect. This assumption fails: identical operators produce heterogeneous outcomes across samples. We propose SIVA-RL, a Sensitivity-Invariance Visual Alignment framework that replaces operator-conditioned regularization with sample-wise, outcome-conditioned supervision. SIVA-RL constructs localized interventions through token-aligned, distance-constrained within-image PatchSwap. A frozen audit policy then scores each clean-intervention pair, and the observed reward drop becomes soft routing weights. Large-drop pairs drive sensitivity alignment, low-drop pairs drive clean-anchored invariance alignment, and ambiguous pairs are down-weighted. This design decouples intervention construction from supervision assignment and is compatible with both GRPO and DAPO backbones. Across nine multimodal reasoning benchmarks spanning mathematical, logical, and vision-dependent tasks, SIVA-RL improves 3B and 7B models over matched RL baselines in every setting. It yields an 8.79 percentage-point gain on vision-dependent reasoning and up to 14.9% relative overall improvement across all four GRPO- and DAPO-based configurations.",
+      "authors": [
+        "Cheng Tang",
+        "Junzhi Ning",
+        "Min Cen",
+        "Wei Li",
+        "Xinyi Zeng",
+        "Pinxian Zeng",
+        "Rongbin Li",
+        "Qiming Zhu",
+        "Yuqiang Li",
+        "Junjun He",
+        "Yirong Chen",
+        "Ming Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T15:13:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.13931v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Applies RLVR to multimodal setting, but core method addresses reward supervision issue",
+      "llm_evidence_cn": "将RLVR应用于多模态，核心方法解决奖励监督问题",
+      "llm_evidence": "将RLVR应用于多模态，核心方法解决奖励监督问题",
+      "canonical_evidence": "将RLVR应用于多模态，核心方法解决奖励监督问题",
+      "llm_tldr_en": "Proposes SIVA-RL for multimodal RLVR, using sample-wise outcome-conditioned supervision to replace operator-conditioned regularization.",
+      "llm_tldr_cn": "针对多模态RLVR中答案级正确性不能保证视觉基础的问题，本文提出SIVA-RL框架，将基于干预类型的监督替换为样本级别的结果条件监督，通过构建局部化干预实现更精确的视觉对齐。实验表明，SIVA-RL在视觉问答等任务上提升了模型对视觉证据的依赖，但该方法主要面向多模态场景，与纯语言推理的RLVR有距离。",
+      "llm_tldr": "针对多模态RLVR中答案级正确性不能保证视觉基础的问题，本文提出SIVA-RL框架，将基于干预类型的监督替换为样本级别的结果条件监督，通过构建局部化干预实现更精确的视觉对齐。实验表明，SIVA-RL在视觉问答等任务上提升了模型对视觉证据的依赖，但该方法主要面向多模态场景，与纯语言推理的RLVR有距离。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13988v1",
+      "source": "arxiv",
+      "title": "TRACE: Turn-level Reward Assignment via Credit Estimation for Long-Horizon Agents",
+      "abstract": "Multi-turn agents solve complex tasks through extended sequences of tool interactions before producing a final answer, making credit assignment a fundamental challenge during post-training. Outcome rewards provide reliable supervision for short-horizon reasoning, but become sparse and high-variance as trajectories grow to tens or hundreds of tool calls. They can also be misleading: a failed rollout may contain many useful actions that move the agent closer to the goal, yet outcome-only training assigns them the same negative advantage as the eventual mistake. We propose TRACE (Turn-level Reward Assignment via Credit Estimation), a dense credit-assignment method for agentic reinforcement learning. TRACE represents rollouts as state transitions at tool-call boundaries, obtains gold-answer log-probabilities from a frozen reference model, transforms them into log-ratio state values, and derives per-action rewards as Temporal-Difference changes in those values. This requires no additional critic or process-label training, and its one-step log-ratio TD component telescopes across redundant tool calls. On long-horizon complex search, TRACE substantially improves base-model tool-use ability using pure RL, without a cold-start supervised fine-tuning stage, an agentic mid-training stage, or training on live-web data. On the closed-web BrowseComp-Plus benchmark, it raises Qwen3-4B from $7.2$ to $35.6$ and Qwen3-30B-A3B from $8.4$ to $42.6$. The learned search behavior also transfers to open-web benchmarks, and the learning curves show earlier improvement and faster convergence during RL training.",
+      "authors": [
+        "Leitian Tao",
+        "Baolin Peng",
+        "Wenlin Yao",
+        "Tao Ge",
+        "Hao Cheng",
+        "Mike Hang Wang",
+        "Jianfeng Gao",
+        "Sharon Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-15T16:16:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.13988v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "dense credit assignment for agentic RL using success trajectories",
+      "llm_evidence_cn": "利用成功轨迹为代理RL提供密集信用分配",
+      "llm_evidence": "利用成功轨迹为代理RL提供密集信用分配",
+      "canonical_evidence": "利用成功轨迹为代理RL提供密集信用分配",
+      "llm_tldr_en": "TRACE assigns turn-level rewards via credit estimation using counterfactual generation from success trajectories, improving agentic RL credit assignment.",
+      "llm_tldr_cn": "多轮代理任务中仅用最终结果奖励会误导信用分配。该论文提出TRACE，利用成功轨迹进行反事实生成，为每步动作分配密集信用。通过表示轨迹为状态转移图，TRACE能从成功探索中提取有用动作的独立贡献，缓解稀疏奖励问题。在长程工具使用任务上，TRACE显著优于结果奖励方法，推动了过程监督的发展。",
+      "llm_tldr": "多轮代理任务中仅用最终结果奖励会误导信用分配。该论文提出TRACE，利用成功轨迹进行反事实生成，为每步动作分配密集信用。通过表示轨迹为状态转移图，TRACE能从成功探索中提取有用动作的独立贡献，缓解稀疏奖励问题。在长程工具使用任务上，TRACE显著优于结果奖励方法，推动了过程监督的发展。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
