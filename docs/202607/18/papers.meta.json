@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-18",
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T19:55:49",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/18/2607.14145v1-toolanchor-anchoring-counterfactual-context-to-boost-agentic-tool-use-capability",
+      "section": "quick",
+      "title_en": "ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use Capability",
+      "authors": "Weiting Liu, Jieyi Bi, Wanqi Zhou, Jianfeng Feng, Yining Ma, Ai Han, Wenlian Lu",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.14145v1",
+      "score": "7.0",
+      "evidence": "使用教师模型通过反事实上下文恢复失败轨迹",
+      "tldr": "工具增强的大语言模型在固定工具集上训练后，面对新工具时因行为惯性难以有效利用。为此提出ToolAnchor框架，通过在关键决策点注入反事实锚定上下文打破惯性，由教师模型假设上下文、学生模型验证并内化成功干预。在GAIA、BrowseComp和VDR-Bench等任务上表现竞争力。该方法桥接了静态后训练与动态适应，为可扩展的智能体强化学习开辟新路径。",
+      "tags": "query:opd",
+      "abstract_en": "Tool-augmented large language model agents excel at long-horizon tasks, yet they are typically post-trained on fixed toolsets. When tasks demand new tools, these agents struggle to incorporate them effectively, and retraining from scratch is often impractical. We identify the core obstacle in such toolset expansion problem as behavioral inertia: the tendency of agents to fall back on familiar tools and established reasoning patterns despite having access to new ones. We demonstrate that injecting counterfactual anchor contexts at critical decision points can break this inertia, recovering failed trajectories by eliciting suppressed agent capabilities. To scale this insight, we propose ToolAnchor, a framework that uses teacher models to hypothesize these counterfactual contexts, verifies them via student rollouts, and internalizes the successful interventions through agentic post-training. Extensive evaluations across general AI assistant (GAIA), textual search (BrowseComp), and visual search (VDR-Bench) tasks demonstrate that ToolAnchor consistently exhibits competitive performance under expanded toolsets. Our work bridges the gap between static post-training and dynamic adaptation, charting a new path for scalable agentic reinforcement learning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

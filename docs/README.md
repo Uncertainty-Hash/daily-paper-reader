@@ -6,44 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 20:11:39 UTC
+- 最新运行日期：2026-07-18
+- 运行时间：2026-07-18 19:55:44 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：6
-- 速读区：2
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日精选4篇高分论文，强化学习与扩散模型、多模态文档问答迎来创新突破。精读推荐《Branching Policy Optimization》与《Non-vacuous Generalization Bounds》，分别提升智能体稳定性和理论保障。建议读者关注RL与扩散模型的整合思路，以及无推理对齐在多模态QA中的效率优势。
-- 详情：[/202607/17/README](/202607/17/README)
+今日聚焦一篇关于提升智能体工具使用能力的论文。值得关注的方向是“反事实上下文锚定”在工具调用中的作用，评分7.0。建议速读此文，了解如何通过反事实增强来提升AI代理的工具使用决策。
+- 详情：[/202607/18/README](/202607/18/README)
 
 ### 精读区论文标签
-1. [Branching Policy Optimization: Sandbox-Native Language Agent Reinforcement Learning](/202607/17/2607.14171v1-branching-policy-optimization-sandbox-native-language-agent-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：分支策略优化改进了LLM代理强化学习的GRPO rollout拓扑
-2. [Non-vacuous Generalization Bounds for Reinforcement Learning with Verifiable Rewards](/202607/17/2607.14506v1-non-vacuous-generalization-bounds-for-reinforcement-learning-with-verifiable-rewards)  
-   标签：评分：9.0/10、query:opd
-   evidence：为RLVR建立泛化界，并将在线策略蒸馏集成到Progressive RLVR框架中
-3. [Beyond Entropy: Correctness-Aware Advantage Shaping via Contrastive Policy Optimization](/202607/17/2607.14614v1-beyond-entropy-correctness-aware-advantage-shaping-via-contrastive-policy-optimization)  
-   标签：评分：9.0/10、query:opd
-   evidence：RLVR结合对比策略优化，将同策略蒸馏视为特例
-4. [SEED: Self-Evolving On-Policy Distillation for Agentic Reinforcement Learning](/202607/17/2607.14777v1-seed-self-evolving-on-policy-distillation-for-agentic-reinforcement-learning)  
-   标签：评分：9.0/10、query:opd
-   evidence：自演化同策略蒸馏用于智能体强化学习
-5. [On-Policy Delta Distillation](/202607/17/2607.15161v1-on-policy-delta-distillation)  
-   标签：评分：9.0/10、query:opd
-   evidence：引入delta信号进行同策略蒸馏以迁移推理能力
-6. [LOTAPO: Leave-One-Turn Attribution for Self-Generated Process Rewards in Multi-Turn Search Reasoning](/202607/17/2607.13501v2-lotapo-leave-one-turn-attribution-for-self-generated-process-rewards-in-multi-turn-search-reasoning)  
-   标签：评分：8.0/10、query:opd
-   evidence：通过留一转出归因自生成过程奖励用于监督
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Continuous-Time Reinforcement Learning Framework for Fine-Tuning Discrete Diffusion Models](/202607/17/2607.14522v1-a-continuous-time-reinforcement-learning-framework-for-fine-tuning-discrete-diffusion-models)  
-   标签：评分：8.0/10、query:opd
-   evidence：提出了连续时间GRPO变体
-2. [Stop Thinking, Start Looking: Efficient Post-Training for Multimodal Document Question Answering via Reasoning-Free Alignment](/202607/17/2607.14682v1-stop-thinking-start-looking-efficient-post-training-for-multimodal-document-question-answering-via-reasoning-free-alignment)  
-   标签：评分：8.0/10、query:opd
-   evidence：应用GRPO到多模态文档问答，绕过推理令牌
+1. [ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use Capability](/202607/18/2607.14145v1-toolanchor-anchoring-counterfactual-context-to-boost-agentic-tool-use-capability)  
+   标签：评分：7.0/10、query:opd
+   evidence：使用教师模型通过反事实上下文恢复失败轨迹
 
 
 <div class="dpr-home-promo-card">
