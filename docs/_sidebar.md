@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-19 <!--dpr-date:20260719-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/19/2607.13394v1-gflowrl-scaling-distribution-matching-rl-to-large-language-models" data-sidebar-item="{&quot;title&quot;: &quot;GFlowRL: Scaling Distribution-Matching RL to Large Language Models&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.13394v1-gflowrl-scaling-distribution-matching-rl-to-large-language-models&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;opd&quot;}], &quot;evidence&quot;: &quot;提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关&quot;}">GFlowRL: Scaling Distribution-Matching RL to Large Language Models</a>
   * 2026-07-18 <!--dpr-date:20260718-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/18/2607.14145v1-toolanchor-anchoring-counterfactual-context-to-boost-agentic-tool-use-capability" data-sidebar-item="{&quot;title&quot;: &quot;ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use Capability&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.14145v1-toolanchor-anchoring-counterfactual-context-to-boost-agentic-tool-use-capability&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;opd&quot;}], &quot;evidence&quot;: &quot;使用教师模型通过反事实上下文恢复失败轨迹&quot;}">ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use Capability</a>

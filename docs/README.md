@@ -6,24 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-18
-- 运行时间：2026-07-18 19:55:44 UTC
+- 最新运行日期：2026-07-19
+- 运行时间：2026-07-19 21:11:47 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦一篇关于提升智能体工具使用能力的论文。值得关注的方向是“反事实上下文锚定”在工具调用中的作用，评分7.0。建议速读此文，了解如何通过反事实增强来提升AI代理的工具使用决策。
-- 详情：[/202607/18/README](/202607/18/README)
+今日速览1篇论文，聚焦GFlowRL方法如何将分布匹配强化学习扩展至大型语言模型。  
+值得关注的方向：分布匹配RL与LLM的融合，可能为模型训练提供新范式。  
+建议进一步了解GFlowRL在具体任务中的性能表现与落地潜力。
+- 详情：[/202607/19/README](/202607/19/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use Capability](/202607/18/2607.14145v1-toolanchor-anchoring-counterfactual-context-to-boost-agentic-tool-use-capability)  
+1. [GFlowRL: Scaling Distribution-Matching RL to Large Language Models](/202607/19/2607.13394v1-gflowrl-scaling-distribution-matching-rl-to-large-language-models)  
    标签：评分：7.0/10、query:opd
-   evidence：使用教师模型通过反事实上下文恢复失败轨迹
+   evidence：提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关
 
 
 <div class="dpr-home-promo-card">

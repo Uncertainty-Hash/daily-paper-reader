@@ -1,0 +1,58 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T21:10:43.711625+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.13394v1",
+      "source": "arxiv",
+      "title": "GFlowRL: Scaling Distribution-Matching RL to Large Language Models",
+      "abstract": "Generative Flow Networks (GFlowNets) offer a promising alternative to reward-maximizing reinforcement learning (RL) for large reasoning models, encouraging diverse reasoning paths by matching reward distributions rather than collapsing to dominant modes. Recent work shows promise on math and code, but scaling GFlowNet-style RL to modern post-training pipelines remains difficult: as model size, rollout horizon, reward noise, and distributed-systems complexity grow together, a learned prompt-conditional partition function becomes a source of gradient instability and engineering overhead rather than a useful normalizer. Through systematic analysis, we find that the learned partition function, previously treated as essential, can be replaced by an in-batch Monte Carlo estimate computed from the rollout group already required for training. We propose GFlowRL, a streamlined GFlowNet-style RL algorithm that removes the auxiliary partition network entirely while preserving the reward-distribution-matching objective, completed by two stabilizers: importance-sampling correction for rollout/trainer drift and asymmetric flow-gap clipping for outlier residuals. GFlowRL exceeds all counterparts on math, code, and adversarial red-teaming benchmarks, reaching a Codeforces rating of 2048 at the 14B scale (within 25 Elo of o3-mini) and attaining the highest average ASR@1 on AdvBench and HarmBench, outperforming the previous SOTA multi-turn attacker in a regime where FlowRL, a prior GFlowNet-style method, diverges. The same recipe transfers to all evaluated MoE configurations up to 235B parameters, where FlowRL again fails to converge. To our knowledge, GFlowRL is the first GFlowNet-style RL algorithm to scale stably across both dense and sparse architectures. Code will be at: https://github.com/microsoft/gflowrl",
+      "authors": [
+        "Xiaodong Liu",
+        "Michael Xu",
+        "Jack W. Stokes",
+        "Paul Smolensky",
+        "Doug Burger",
+        "Jianfeng Gao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-15T02:43:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.13394v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes distribution-matching RL for LLMs, related to GRPO/RLVR methods",
+      "llm_evidence_cn": "提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关",
+      "llm_evidence": "提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关",
+      "canonical_evidence": "提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关",
+      "llm_tldr_en": "GFlowRL scales distribution-matching RL to LLMs by replacing the learned partition function with in-batch Monte Carlo estimation, improving stability and efficiency for reasoning tasks.",
+      "llm_tldr_cn": "将GFlowNet风格的分布匹配强化学习扩展到大型语言模型面临分区函数不稳定的挑战。GFlowRL通过批量内蒙特卡洛估计替代可学习分区函数，解决了梯度不稳定问题。在数学和代码推理任务上，该方法在保持多样性的同时提升了性能，为LLM后训练中的强化学习提供了新的有效范式。",
+      "llm_tldr": "将GFlowNet风格的分布匹配强化学习扩展到大型语言模型面临分区函数不稳定的挑战。GFlowRL通过批量内蒙特卡洛估计替代可学习分区函数，解决了梯度不稳定问题。在数学和代码推理任务上，该方法在保持多样性的同时提升了性能，为LLM后训练中的强化学习提供了新的有效范式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

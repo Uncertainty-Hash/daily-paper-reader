@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T21:11:52",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.13394v1-gflowrl-scaling-distribution-matching-rl-to-large-language-models",
+      "section": "quick",
+      "title_en": "GFlowRL: Scaling Distribution-Matching RL to Large Language Models",
+      "authors": "Xiaodong Liu, Michael Xu, Jack W. Stokes, Paul Smolensky, Doug Burger, Jianfeng Gao",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13394v1",
+      "score": "7.0",
+      "evidence": "提出面向LLM的分布匹配强化学习，与GRPO/RLVR等方法相关",
+      "tldr": "生成流网络通过匹配奖励分布鼓励大模型多样化推理，但扩展到现代后训练管道时，学习配分函数导致梯度不稳定和工程开销。GFlowRL移除辅助配分网络，用in-batch蒙特卡洛估计替代，并引入重要性采样校正与不对称流间隙裁剪稳定器。在数学、代码和对抗红队基准上超越所有方法，14B模型Codeforces评级2048（接近o3-mini），AdvBench和HarmBench上取得最高攻击成功率，且稳定扩展到235B MoE。首次实现GFlowNet风格RL在密集和稀疏架构上的稳定扩展。",
+      "tags": "query:opd",
+      "abstract_en": "Generative Flow Networks (GFlowNets) offer a promising alternative to reward-maximizing reinforcement learning (RL) for large reasoning models, encouraging diverse reasoning paths by matching reward distributions rather than collapsing to dominant modes. Recent work shows promise on math and code, but scaling GFlowNet-style RL to modern post-training pipelines remains difficult: as model size, rollout horizon, reward noise, and distributed-systems complexity grow together, a learned prompt-conditional partition function becomes a source of gradient instability and engineering overhead rather than a useful normalizer. Through systematic analysis, we find that the learned partition function, previously treated as essential, can be replaced by an in-batch Monte Carlo estimate computed from the rollout group already required for training. We propose GFlowRL, a streamlined GFlowNet-style RL algorithm that removes the auxiliary partition network entirely while preserving the reward-distribution-matching objective, completed by two stabilizers: importance-sampling correction for rollout/trainer drift and asymmetric flow-gap clipping for outlier residuals. GFlowRL exceeds all counterparts on math, code, and adversarial red-teaming benchmarks, reaching a Codeforces rating of 2048 at the 14B scale (within 25 Elo of o3-mini) and attaining the highest average ASR@1 on AdvBench and HarmBench, outperforming the previous SOTA multi-turn attacker in a regime where FlowRL, a prior GFlowNet-style method, diverges. The same recipe transfers to all evaluated MoE configurations up to 235B parameters, where FlowRL again fails to converge. To our knowledge, GFlowRL is the first GFlowNet-style RL algorithm to scale stably across both dense and sparse architectures. Code will be at: https://github.com/microsoft/gflowrl",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
