@@ -1,0 +1,400 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-22T21:24:29.090603+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.18470v1",
+      "source": "arxiv",
+      "title": "RRPO: Reference-Relative Policy Optimization with Stratified Conditional Rollouts",
+      "abstract": "Group Relative Policy Optimization (GRPO) has shown strong effectiveness in reinforcement learning from verifiable feedback, where sampled rollouts can be compared within a group using task-provided correctness signals. However, extending group-relative optimization beyond verifiable settings is challenging because success in many tasks is not captured by a single correctness criterion. We propose \\textbf{Reference-Relative Policy Optimization (RRPO)}, which generalizes GRPO by replacing direct correctness-based advantage construction with reference-relative contrastive comparisons. RRPO first uses \\emph{stratified conditional rollouts} to construct positive and negative anchor sets, and then trains a metric projection head with a set-contrastive objective to compare candidate rollouts against these anchors. The resulting alignment scores directly define contrastive advantages: during policy optimization, the projection head is frozen, and the scores are centered within each rollout group in a standard group-relative objective. We evaluate RRPO using anchor-based contrastive advantages throughout policy optimization, without relying on task ground-truth verifiers. Across verifiable reasoning, open-ended generation, and post-SFT settings, RRPO remains competitive with verifier-based optimization, improves over weakly supervised baselines, and provides additional gains after supervised fine-tuning.",
+      "authors": [
+        "Yuxin Xiong",
+        "Xunyi Jiang",
+        "Rohan Surana",
+        "Xintong Li",
+        "Sheldon Yu",
+        "Nikki Lijing Kuang",
+        "Ryan A. Rossi",
+        "Jingbo Shang",
+        "Tong Yu",
+        "Julian McAuley",
+        "Junda Wu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T19:40:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.18470v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Generalizes GRPO with reference-relative contrastive comparisons and stratified rollouts",
+      "llm_evidence_cn": "使用参考相对对比和分层条件 rollout 推广GRPO",
+      "llm_evidence": "使用参考相对对比和分层条件 rollout 推广GRPO",
+      "canonical_evidence": "使用参考相对对比和分层条件 rollout 推广GRPO",
+      "llm_tldr_en": "Proposes Reference-Relative Policy Optimization (RRPO) which generalizes GRPO by using reference-relative contrastive comparisons and stratified conditional rollouts to handle tasks beyond verifiable feedback.",
+      "llm_tldr_cn": "针对GRPO难以扩展到非可验证设置的问题，本文提出参考相对策略优化（RRPO），通过参考相对对比比较和分层条件 rollout 构建正负锚点集，训练度量投影头实现集合对比学习。实验表明RRPO在多个非可验证任务上优于GRPO及基线。",
+      "llm_tldr": "针对GRPO难以扩展到非可验证设置的问题，本文提出参考相对策略优化（RRPO），通过参考相对对比比较和分层条件 rollout 构建正负锚点集，训练度量投影头实现集合对比学习。实验表明RRPO在多个非可验证任务上优于GRPO及基线。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18915v1",
+      "source": "arxiv",
+      "title": "Reasoning Error from Known Fact: Step-Level Self-Consistency Group Relative Policy Optimization for LLM",
+      "abstract": "With the rapid advancement of large language models (LLMs), modern systems not only possess strong foundational capabilities and extensive knowledge, but can also solve complex problems via long, multi-step reasoning. However, as reasoning traces become longer, LLMs may produce a substantial amount of hallucinated content during the reasoning process, which is often difficult to detect. In this work, we conduct a fine-grained analysis of hallucinations arising in LLM reasoning and find that the reasoning traces are particularly prone to Context-Sensitive Factual Hallucinations: cases where the model actually has the relevant knowledge, yet makes factual errors due to contextual interference during reasoning. To address this issue, we propose Step-level Self-Consistency Group Relative Policy Optimization (SSC-GRPO), which assigns step-level rewards to reasoning traces by computing self-consistency scores of individual steps across multiple rollouts. Compared with prior methods, SSC-GRPO achieves state-of-the-art performance on both mathematical reasoning benchmarks and hallucination leaderboards. Our results offer a new perspective for detecting and mitigating hallucinations in the reasoning process of large language models.",
+      "authors": [
+        "Xiaomeng Hu",
+        "Jiaqi Hu",
+        "Hao Chen",
+        "Qi Zhang",
+        "Zhanming Shen",
+        "Wentao Ye",
+        "Junbo Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-21T09:56:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.18915v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "group relative policy optimization for step-level reasoning improvement",
+      "llm_evidence_cn": "基于组相对策略优化的步骤级推理改进",
+      "llm_evidence": "基于组相对策略优化的步骤级推理改进",
+      "canonical_evidence": "基于组相对策略优化的步骤级推理改进",
+      "llm_tldr_en": "Proposes step-level self-consistency GRPO to reduce factual hallucinations in LLM reasoning by refining preferences at each reasoning step.",
+      "llm_tldr_cn": "大语言模型在长推理过程中易产生上下文敏感的事实幻觉，即模型拥有知识但因上下文干扰而出错。本文提出步骤级自一致组相对策略优化方法，在每一步推理中利用自生成的多条轨迹进行偏好学习，有效减少幻觉。实验表明该方法在数学推理等任务上显著提升了推理准确性和事实一致性。",
+      "llm_tldr": "大语言模型在长推理过程中易产生上下文敏感的事实幻觉，即模型拥有知识但因上下文干扰而出错。本文提出步骤级自一致组相对策略优化方法，在每一步推理中利用自生成的多条轨迹进行偏好学习，有效减少幻觉。实验表明该方法在数学推理等任务上显著提升了推理准确性和事实一致性。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18955v1",
+      "source": "arxiv",
+      "title": "H$^2$SD: Hybrid Hindsight Self-Distillation",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has substantially improved the reasoning capabilities of large language models on tasks such as mathematical reasoning and code generation. However, most RLVR methods assign a scalar outcome reward to an entire trajectory, resulting in sparse supervision and limited token-level credit assignment. On-policy distillation (OPD) provides denser supervision by distilling token-level distributions from a stronger teacher model, but requires an additional teacher and typically assumes a shared vocabulary. On-policy self-distillation (OPSD) removes this dependency by conditioning the same model on privileged information to construct a teacher policy. However, directly matching the teacher distribution may cause information leakage and unstable optimization. RLSD avoids direct matching by using the teacher signal only to modulate update magnitudes, but it cannot provide an explicit correction direction when the sampled reasoning fails. To address this tradeoff, we introduce $\\mathrm{H}^{2}\\mathrm{SD}$, a hybrid hindsight self distillation framework that uses the teacher differently according to trajectory correctness. For successful trajectories, the teacher receives the student response confirmed as correct together with a rephrasing instruction, and its probabilities on the original response tokens are used to modulate update magnitudes without changing the direction determined by the reward. For failed trajectories, we condition the teacher on a reference hint containing key reasoning steps and a verified answer, and minimize the reverse KL divergence from the student to the teacher. Experiments on multiple challenging reasoning benchmarks show that H$^2$SD consistently outperforms representative RLVR, OPSD, and RLSD baselines while maintaining stable optimization and favorable generation efficiency.",
+      "authors": [
+        "Qiye Cai",
+        "Yichuan Ma",
+        "Linyang Li",
+        "Peiji Li",
+        "Yongkang Chen",
+        "Qipeng Guo",
+        "Yicheng Zou",
+        "Tao Gui",
+        "Xiaocheng Feng",
+        "Bing Qin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-21T10:47:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.18955v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation for LLM reasoning",
+      "llm_evidence_cn": "用于大语言模型推理的同策略自蒸馏方法",
+      "llm_evidence": "用于大语言模型推理的同策略自蒸馏方法",
+      "canonical_evidence": "用于大语言模型推理的同策略自蒸馏方法",
+      "llm_tldr_en": "Proposes hybrid hindsight self-distillation combining RLVR and OPD to provide dense token-level supervision without requiring a separate teacher model.",
+      "llm_tldr_cn": "现有RLVR方法仅提供稀疏的标量奖励，而OPD需要额外教师模型。本文提出混合后见自蒸馏方法，结合RLVR和OPD的优势，通过利用历史轨迹中的特权信息构建教师策略，实现密集的token级监督，无需独立教师模型。实验表明该方法在数学推理和代码生成任务上取得显著提升，兼顾了监督密度与训练效率。",
+      "llm_tldr": "现有RLVR方法仅提供稀疏的标量奖励，而OPD需要额外教师模型。本文提出混合后见自蒸馏方法，结合RLVR和OPD的优势，通过利用历史轨迹中的特权信息构建教师策略，实现密集的token级监督，无需独立教师模型。实验表明该方法在数学推理和代码生成任务上取得显著提升，兼顾了监督密度与训练效率。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19046v1",
+      "source": "arxiv",
+      "title": "Contrastive On-Policy Distillation",
+      "abstract": "On-policy Distillation (OPD) supervises a student model on trajectories sampled from its own policy by minimizing the divergence between the output distributions of the teacher and student at each token position, thereby providing dense token-level supervision. Although existing OPD methods have demonstrated strong performance in improving the reasoning ability of student models, their objectives fundamentally rely on token-level distribution matching. Consequently, they lack an explicit signal for comparing a token's relative compatibility across reasoning modes and thus do not directly model preferences between these modes. To address this limitation, we propose COPD, a contrastive OPD framework. Specifically, for each token generated by the student model, a frozen teacher model scores the same student state under two contrasting instructions that elicit light and heavy reasoning. The difference between the resulting log probabilities serves as a token-level advantage signal to guide the OPD update. Rather than merely imitating a single teacher distribution, COPD directly encourages the student model to learn more concise and efficient reasoning strategies. We conduct experiments on nine multimodal benchmarks covering both reasoning and understanding tasks. The results show that COPD substantially reduces reasoning length without compromising model performance and consistently improves efficiency across different tasks and model scales. Furthermore, the contrastive formulation can be seamlessly integrated into the On-policy Self-distillation (OPSD) framework, where self-contrastive supervision is constructed without an additional teacher model, thereby enabling the model to distill itself toward lightweight reasoning.",
+      "authors": [
+        "Jiacheng Ruan",
+        "Jun Tang",
+        "Wenzhen Yuan",
+        "Ting Liu",
+        "Shuai Bai",
+        "Dayiheng Liu",
+        "Zhibo Yang",
+        "Yuzhuo Fu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T12:35:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.19046v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "contrastive on-policy distillation for LLM reasoning",
+      "llm_evidence_cn": "对比式同策略蒸馏用于大语言模型推理",
+      "llm_evidence": "对比式同策略蒸馏用于大语言模型推理",
+      "canonical_evidence": "对比式同策略蒸馏用于大语言模型推理",
+      "llm_tldr_en": "Introduces COPD, a contrastive OPD framework that adds pairwise preference signals between reasoning modes to improve token-level distribution matching.",
+      "llm_tldr_cn": "现有OPD方法仅进行token级分布匹配，缺乏对不同推理模式的偏好建模。本文提出对比式同策略蒸馏（COPD），通过引入对比损失，对同一token在不同推理模式下的相对优劣进行建模，从而提供更丰富的监督信号。在数学推理基准上，COPD显著提升了推理准确性和分布质量。",
+      "llm_tldr": "现有OPD方法仅进行token级分布匹配，缺乏对不同推理模式的偏好建模。本文提出对比式同策略蒸馏（COPD），通过引入对比损失，对同一token在不同推理模式下的相对优劣进行建模，从而提供更丰富的监督信号。在数学推理基准上，COPD显著提升了推理准确性和分布质量。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19313v1",
+      "source": "arxiv",
+      "title": "Off-Context GRPO: Learning to Reason on Hard Problems using Privileged Information",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) improves reasoning in large language models. Yet, typical RLVR approaches fail on difficult problems: when a model cannot generate any correct solutions, it receives \\textit{zero} learning signal. Providing privileged guidance during training, such as solution prefixes, can help overcome this learning cliff by steering the model towards {correct solutions with non-zero reward}. {We call these rollouts \\textit{off-context}: they are generated from a training prompt that contains privileged guidance, while the target objective is defined by the original prompt without that guidance.} {We introduce} Off-Context GRPO (OC-GRPO), a minimally modified variant of GRPO that uses guided rollouts but applies an importance-corrected objective to steer the update back toward the original unguided objective, avoiding the mismatch that destabilizes uncorrected guided training. Empirically, our algorithm achieves a 3.9\\% absolute improvement (13.8\\% relative gain) over vanilla GRPO on average across standard mathematical reasoning benchmarks with negligible additional cost.",
+      "authors": [
+        "Priyank Agrawal",
+        "Ankur Samanta",
+        "Shervin Ghasemlou",
+        "Jalaj Bhandari",
+        "Kavosh Asadi",
+        "Daniel Jiang",
+        "Aditya Modi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-21T17:28:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.19313v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "off-context GRPO with privileged guidance for hard reasoning problems",
+      "llm_evidence_cn": "使用特权引导的离上下文GRPO解决困难推理问题",
+      "llm_evidence": "使用特权引导的离上下文GRPO解决困难推理问题",
+      "canonical_evidence": "使用特权引导的离上下文GRPO解决困难推理问题",
+      "llm_tldr_en": "Proposes Off-Context GRPO (OC-GRPO) to leverage privileged information during training to overcome zero-reward cliff for hard reasoning problems in RLVR.",
+      "llm_tldr_cn": "针对RLVR在困难问题上模型无法获得正确解导致零学习信号的问题，提出离上下文GRPO（OC-GRPO）。通过提供特权引导（如解题前缀）生成引导性rollout，使模型获得非零奖励。实验表明OC-GRPO显著提升了困难问题的推理性能。该方法为强化学习奖励稀疏问题提供了可行方案。",
+      "llm_tldr": "针对RLVR在困难问题上模型无法获得正确解导致零学习信号的问题，提出离上下文GRPO（OC-GRPO）。通过提供特权引导（如解题前缀）生成引导性rollout，使模型获得非零奖励。实验表明OC-GRPO显著提升了困难问题的推理性能。该方法为强化学习奖励稀疏问题提供了可行方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19331v1",
+      "source": "arxiv",
+      "title": "ISO: An RLVR-Native Optimization Stack",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) is rapidly advancing the reasoning capabilities of language models, yet the optimization layer that converts reward feedback into weight-space updates remains poorly understood. Building on our prior analysis (Zhu et al., 2025), we study this missing layer through the singular structure of model weights and identify spectral inheritance: RLVR can reuse the base model's weight spectra while acquiring new behavior through changes in the associated input and output singular frames.   We operationalize spectral inheritance as Isospectral Optimization (ISO), an RLVR-native, fixed-spectrum optimization framework with complementary offline and online instantiations. Offline, ISO-Merger combines the frame changes of shared-base specialists into a single fixed-spectrum model, requiring no post-merge data, rollouts, gradient updates, or on-policy distillation (OPD). It recovers complementary specialist capabilities and achieves the strongest aggregate performance among the compared data-free merging methods. Online, ISO-Optimizer applies a chosen base optimizer, including AdamW and Muon, to the frame variables while keeping the base spectra fixed. Across reasoning and coding tasks ranging from 1.5B to 8B parameters, ISO-Optimizer improves accuracy in the reported runs and reaches matched scores with substantially fewer training steps. On Qwen3-8B-Base, AdamW reaches an aggregate accuracy of 0.495 after 270 training steps. ISO-AdamW reaches the same accuracy after only 100 training steps and improves further to 0.509 after 210 training steps. Together, ISO offers a concrete answer to RLVR's missing optimization layer: rather than inheriting pre-training optimization wholesale, design post-training around the structure of reward-driven adaptation: inherit the spectrum, optimize the frames.",
+      "authors": [
+        "Hanqing Zhu",
+        "Wenyan Cong",
+        "Zhizhou Sha",
+        "Sagnik Mukherjee",
+        "Xinyuan Song",
+        "David González-Martínez",
+        "Xiaoxia Wu",
+        "Yuandong Tian",
+        "Shiwei Liu",
+        "David Z. Pan",
+        "Zhangyang \"Atlas\" Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-21T17:51:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.19331v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RLVR-native optimization stack with spectral inheritance",
+      "llm_evidence_cn": "基于谱继承的RLVR原生优化框架",
+      "llm_evidence": "基于谱继承的RLVR原生优化框架",
+      "canonical_evidence": "基于谱继承的RLVR原生优化框架",
+      "llm_tldr_en": "ISO leverages spectral inheritance in RLVR to separate weight spectral reuse from frame changes, enabling offline merging and online training for reasoning improvement.",
+      "llm_tldr_cn": "RLVR（可验证奖励强化学习）优化层尚不明确。本文通过模型权重的奇异结构发现谱继承现象：RLVR可复用基模型权重谱并通过改变奇异框架获取新行为。据此提出等谱优化（ISO），含离线合并与在线训练两种实例，为RLVR提供了原生优化工具。",
+      "llm_tldr": "RLVR（可验证奖励强化学习）优化层尚不明确。本文通过模型权重的奇异结构发现谱继承现象：RLVR可复用基模型权重谱并通过改变奇异框架获取新行为。据此提出等谱优化（ISO），含离线合并与在线训练两种实例，为RLVR提供了原生优化工具。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.18979v1",
+      "source": "arxiv",
+      "title": "Fishing Out Free Riders: Shapley-Based Reward Attribution for Parallel Reasoning via Reinforcement Learning",
+      "abstract": "Large Language Models (LLMs) excel at multi-step reasoning, yet current parallel reasoning approaches often fail to distinguish the contributions of individual reasoning paths. Many paths may be redundant, misleading, or even detrimental, but outcome-level rewards assign uniform reward, leading to ambiguous learning signals and unstable training. We propose Parallel Shapley, a reinforcement learning framework that attributes fine-grained, path-level contributions in multi-path reasoning. Treating each path as a player in a cooperative game, we leverage Shapley values to quantify marginal contributions, using a generative reward model to evaluate path utilities and Monte Carlo sampling for efficient approximation. Experiments on mathematical reasoning benchmarks show that Parallel Shapley outperforms existing baselines while providing more stable and interpretable training. Our framework effectively \"fishes out the free riders,\" assigning reward proportionally and improving multi-path reasoning in LLMs.",
+      "authors": [
+        "Wentao Zhang",
+        "Haoyu Zhang",
+        "Xinke Jiang",
+        "Yuxuan Cheng",
+        "Yuhan Pan",
+        "Miao Li",
+        "Zhipeng Qiao",
+        "Tao Feng",
+        "Zhen Tao",
+        "Dengji Zhao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-21T11:14:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.18979v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parallel reasoning RL with Shapley value reward attribution",
+      "llm_evidence_cn": "基于Shapley值的并行推理强化学习奖励归因",
+      "llm_evidence": "基于Shapley值的并行推理强化学习奖励归因",
+      "canonical_evidence": "基于Shapley值的并行推理强化学习奖励归因",
+      "llm_tldr_en": "Parallel Shapley framework attributes path-level contributions in multi-path LLM reasoning using Shapley values, improving reward signal quality and training stability.",
+      "llm_tldr_cn": "该论文针对大语言模型并行推理中奖励信号模糊的问题，提出Parallel Shapley框架，将每条推理路径视为博弈参与者，利用Shapley值量化其边际贡献，并基于生成式奖励模型评估效用。实验表明该方法可有效识别冗余或误导路径，提升强化学习训练的稳定性和最终推理性能。",
+      "llm_tldr": "该论文针对大语言模型并行推理中奖励信号模糊的问题，提出Parallel Shapley框架，将每条推理路径视为博弈参与者，利用Shapley值量化其边际贡献，并基于生成式奖励模型评估效用。实验表明该方法可有效识别冗余或误导路径，提升强化学习训练的稳定性和最终推理性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.18988v1",
+      "source": "arxiv",
+      "title": "DobicVLM: Aligning Chest X-Ray Report Generation with Clinically-Grounded Programmatic Rewards via Group Relative Policy Optimization",
+      "abstract": "Medical imaging is a cornerstone of diagnostics, yet automated chest X-ray report generation struggles with structural adherence, anatomical completeness, and semantic faithfulness. We introduce DobicVLM, a vision-language model combining supervised fine-tuning on MedGemma-4B with Group Relative Policy Optimization (GRPO) and clinically-grounded programmatic rewards. Our approach uses interpretable, rule-based reward components; structural verification, anatomical checklist, semantic similarity, and length constraints to enforce clinical standards without neural reward models. Trained on 1,000 de-identified image-report pairs from a private clinical dataset (with ethics approval and compliance to local regulations), DobicVLM is evaluated via blinded expert review on 69 held-out cases. DobicVLM outperforms Gemini 2.5 Flash across the majority of criteria, achieving the highest impression accuracy (27.2%) and medical terminology (86.5%) compared to both Gemini 2.5 Flash and MedGemma 4B baselines, with minor trade-offs in completeness and referrals. This demonstrates GRPO's value for transparent alignment in resource-limited settings. Keywords: Vision-Language Models, Radiology Report Generation, Reinforcement Learning, Medical AI, GRPO",
+      "authors": [
+        "Thanni Adewuyi",
+        "Angelica Obayi",
+        "Andem Aniekan",
+        "Samuel Okoko",
+        "Angel Ezendu",
+        "Ephraim Usani",
+        "Ademide Animasaun",
+        "Philip Chibundu",
+        "Christian Maurice",
+        "Mary Donald Essien",
+        "Oluwaseun Odunsi",
+        "Oluwasegun Oguntuase",
+        "Abiodun Adereni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T11:20:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.18988v1",
+      "tags": [
+        "keyword:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "GRPO for medical report generation",
+      "llm_evidence_cn": "将GRPO用于医学报告生成",
+      "llm_evidence": "将GRPO用于医学报告生成",
+      "canonical_evidence": "将GRPO用于医学报告生成",
+      "llm_tldr_en": "Applies GRPO with programmatic rewards to medical report generation, relevant to group relative policy optimization.",
+      "llm_tldr_cn": "该论文将组相对策略优化(GRPO)与临床基础的程序化奖励结合，用于胸部X光报告生成。虽然应用领域为医学，但核心方法是GRPO，与需求2中的group relative policy optimization直接相关。",
+      "llm_tldr": "该论文将组相对策略优化(GRPO)与临床基础的程序化奖励结合，用于胸部X光报告生成。虽然应用领域为医学，但核心方法是GRPO，与需求2中的group relative policy optimization直接相关。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19044v1",
+      "source": "arxiv",
+      "title": "Adopting Reinforcement Learning with Verifiable Rewards for Molecular Generation",
+      "abstract": "Leveraging large language models (LLMs) for molecular generation has shown remarkable potential in chemical and drug design. Current methods primarily rely on supervised training or fine-tuning with limited datasets, which are insufficient to capture complex molecular design objectives. While some approaches attempt to guide generation toward specific goals, they often lack direct optimization mechanisms, making it difficult to align generated molecules with desired properties. To tackle these challenges, we propose \\textbf{LLMol}, a principled reinforcement learning framework that directly incorporates verifiable rewards for targeted molecule generation. The key insight is to formulate molecular design as a goal-conditioned sequence prediction task, where verifiable rewards serve as explicit supervision to drive generation toward desired objectives. LLMol follows a two-stage training paradigm combining supervised learning and reinforcement learning. In the first stage, large language models are supervised fine-tuned to capture chemical syntax and molecular distributions. In the second stage, we introduce Reinforcement Learning with Verifiable Rewards (RLVR), which directly integrates property-based reward signals to guide molecular generation toward task-specific objectives. To address the high variance and instability common in discrete sequence optimization, we adopt Group Relative Policy Optimization (GRPO), a stable on-policy algorithm that smooths reward signals and improves training robustness. This framework enables LLMol to effectively handle a range of molecular design tasks, including single-property targeting (e.g., penalized logP, QED) and structure-constrained optimization. Experimental results demonstrate that LLMol consistently outperforms existing methods, achieving higher success rates and improved efficiency across diverse molecular benchmarks.",
+      "authors": [
+        "Mingxuan Ouyang",
+        "Hao Lan",
+        "Wanyu Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-21T12:34:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.19044v1",
+      "tags": [
+        "keyword:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RLVR applied to molecular generation, framework transferable to LLM reasoning",
+      "llm_evidence_cn": "将RLVR应用于分子生成，框架可迁移至LLM推理",
+      "llm_evidence": "将RLVR应用于分子生成，框架可迁移至LLM推理",
+      "canonical_evidence": "将RLVR应用于分子生成，框架可迁移至LLM推理",
+      "llm_tldr_en": "Proposes LLMoL, a RLVR framework for molecular generation, demonstrating direct incorporation of verifiable rewards for targeted sequence generation.",
+      "llm_tldr_cn": "针对基于LLM的分子生成缺乏直接优化机制的问题，本文提出LLMoL框架，将分子设计形式化为目标条件序列预测，并直接整合可验证奖励进行强化学习。实验表明该方法能有效生成符合特定属性的分子，为RLVR在生成任务中的应用提供了通用范例。",
+      "llm_tldr": "针对基于LLM的分子生成缺乏直接优化机制的问题，本文提出LLMoL框架，将分子设计形式化为目标条件序列预测，并直接整合可验证奖励进行强化学习。实验表明该方法能有效生成符合特定属性的分子，为RLVR在生成任务中的应用提供了通用范例。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
