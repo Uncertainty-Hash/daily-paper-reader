@@ -1,0 +1,220 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T21:31:31.722022+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.18955v2",
+      "source": "arxiv",
+      "title": "H$^2$SD: Hybrid Hindsight Self-Distillation",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) provides reliable outcome supervision for language model reasoning, but a scalar trajectory reward offers limited token-level guidance. Existing self-distillation methods add a privileged teacher but typically assign it a fixed role: direct distribution matching may destabilize successful behavior, while magnitude-only modulation offers little corrective guidance after failure. We observe that successful and failed trajectories require different forms of hindsight supervision. A successful response already contains a valid student-generated reasoning path and can therefore serve as privileged context rather than being replaced by an external rationale. A failed response, however, requires corrective reference information. We introduce Hybrid Hindsight Self-Distillation ($\\mathrm{H}^{2}\\mathrm{SD}$), which jointly adapts teacher context and update strategy to trajectory correctness. For successful trajectories, we construct the teacher context from the verified response and a rephrasing instruction, and use the teacher only to re-evaluate the original response tokens. This emphasizes essential deductions over redundant content and refines magnitude-based credit assignment without changing the reward direction. For failed trajectories, a verifier-confirmed reference hint provides corrective guidance through reverse-KL distillation. Controlled ablations show that the gains depend on outcome-conditioned routing and the rephrasing instruction. Experiments on challenging reasoning benchmarks show that H$^2$SD achieves the strongest overall performance among representative RLVR and self-distillation baselines, with stable optimization and a favorable accuracy-efficiency trade-off.",
+      "authors": [
+        "Qiye Cai",
+        "Yichuan Ma",
+        "Linyang Li",
+        "Peiji Li",
+        "Yongkang Chen",
+        "Qipeng Guo",
+        "Yicheng Zou",
+        "Xiaocheng Feng",
+        "Bing Qin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-21T10:47:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.18955v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "failure-aware self-distillation for RLVR reasoning",
+      "llm_evidence_cn": "利用失败轨迹进行自蒸馏的RLVR推理方法",
+      "llm_evidence": "利用失败轨迹进行自蒸馏的RLVR推理方法",
+      "canonical_evidence": "利用失败轨迹进行自蒸馏的RLVR推理方法",
+      "llm_tldr_en": "H2SD proposes hybrid hindsight self-distillation for RLVR, treating successful trajectories as privileged context and failed ones as corrective feedback, improving token-level guidance for LLM reasoning.",
+      "llm_tldr_cn": "针对RLVR中标量轨迹奖励缺乏token级监督的问题，提出混合事后自蒸馏框架H2SD。成功轨迹保留学生模型自身推理路径作为特权上下文，失败轨迹则提供纠正性参考信息。实验表明该方法在数学推理任务上显著优于现有自蒸馏基线，为在线强化学习训练提供了更细致的监督信号。",
+      "llm_tldr": "针对RLVR中标量轨迹奖励缺乏token级监督的问题，提出混合事后自蒸馏框架H2SD。成功轨迹保留学生模型自身推理路径作为特权上下文，失败轨迹则提供纠正性参考信息。实验表明该方法在数学推理任务上显著优于现有自蒸馏基线，为在线强化学习训练提供了更细致的监督信号。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "learning from failure rollouts and self generated corrections in reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.19691v1",
+      "source": "arxiv",
+      "title": "SLPO: Scaling Latent Reasoning via a Surrogate Policy",
+      "abstract": "Reinforcement learning with verifiable rewards has become the predominant recipe for eliciting test-time scaling in explicit Chain-of-Thought reasoners. Yet this scaling path remains computationally costly, since every intermediate step must be decoded as a language token. Latent reasoning instead carries intermediate computation as continuous vectors and already matches or surpasses explicit CoT at far shorter horizons. Despite this promise, latent reasoners remain largely imitation-bound, while explicit CoT has already moved past imitation via outcome-reward RL. Latent trajectories lack a tractable per-step likelihood and an adaptive stopping interface under fixed thinking budgets, so outcome rewards cannot elicit latent test-time scaling. We introduce Surrogate Latent Policy Optimization (SLPO) to bring outcome-reward RL to autoregressive latent reasoners: an empirical surrogate policy density over latent transitions for trajectory-level credit assignment, and a correctness-supervised stopping head that outcome-reward optimization refines into a variable-horizon policy. Across continuous and soft thinking settings, SLPO improves Pass@$k$ under parallel sampling and allocates longer latent computation to harder instances with higher deterministic accuracy.",
+      "authors": [
+        "Runyang You",
+        "Zhiyuan Liu",
+        "Yongqi Li",
+        "Wenjie Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-22T02:45:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.19691v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reinforcement learning with verifiable rewards for latent reasoning",
+      "llm_evidence_cn": "使用可验证奖励的强化学习进行潜在推理",
+      "llm_evidence": "使用可验证奖励的强化学习进行潜在推理",
+      "canonical_evidence": "使用可验证奖励的强化学习进行潜在推理",
+      "llm_tldr_en": "SLPO introduces a surrogate policy to scale latent reasoning via outcome-reward RL, addressing the lack of per-step likelihood in latent trajectories while achieving test-time scaling.",
+      "llm_tldr_cn": "潜在推理模型虽然计算效率高，但缺乏显式链式思维中的逐步可处理性，难以从结果奖励RL中获益。SLPO通过引入替代策略（Surrogate Policy），将潜在推理过程中的连续向量空间映射到可奖励的决策空间，使得结果奖励能够有效驱动潜在推理的测试时扩展。实验表明该方法在多个推理任务上超越原有潜在推理模型，并为非自回归推理的强化学习训练提供了新范式。",
+      "llm_tldr": "潜在推理模型虽然计算效率高，但缺乏显式链式思维中的逐步可处理性，难以从结果奖励RL中获益。SLPO通过引入替代策略（Surrogate Policy），将潜在推理过程中的连续向量空间映射到可奖励的决策空间，使得结果奖励能够有效驱动潜在推理的测试时扩展。实验表明该方法在多个推理任务上超越原有潜在推理模型，并为非自回归推理的强化学习训练提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.18006v1",
+      "source": "arxiv",
+      "title": "MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models",
+      "abstract": "Large language models achieve strong reasoning performance, but often at prohibitive training cost - a challenge that is especially acute for compact models ($\\leq 4 \\, \\mathrm{B}$ parameters) trained under limited budgets. We introduce MADA-RL, a post-training framework that specializes compact models into generator and critic roles and trains them with a debate-aware learning signal, fine-tuning only a small subset of parameters via LoRA adapters. Our central contribution is a counterfactual critic advantage: a dynamic, role-conditioned baseline that redefines the critic's advantage as its reward minus the generator ensemble's per-instance accuracy. This explicitly optimizes critics to improve over generator consensus rather than to merely reproduce a correct answer, yielding more targeted credit assignment than static mean-reward normalization. At deployment, the specialized agents are composed in a lightweight multi-round protocol. Across five mathematical reasoning benchmarks, MADA-RL raises the accuracy of the DeepSeek-R1-Distill-Qwen-1.5B model from $39.9 \\, \\%$ to $41.9 \\, \\%$ ($+2.0$ points, $p < 0.001$) using $16$ times fewer trainable parameters than fully fine-tuned baselines, placing it on the accuracy-trainable-parameter Pareto front. It approaches, but does not surpass, the strongest baselines (DeepScaleR, STILL-3), which are trained on substantially larger datasets; we analyse this gap and the associated inference-time cost directly. A controlled study isolates the source of MADA-RL's gains: the counterfactual advantage produces the highest critic improvement rate of any model evaluated, indicating that trained critics learn to correct generator errors rather than to imitate them.",
+      "authors": [
+        "Martino M. L. Pulici",
+        "Cuong Xuan Chu",
+        "Evgeny Kharlamov",
+        "Zifeng Ding",
+        "Volker Tresp",
+        "Yunpu Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.MA"
+      ],
+      "published": "2026-07-20T14:38:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.18006v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multi-agent debate-aware RL with counterfactual critic advantage",
+      "llm_evidence_cn": "多智能体辩论感知强化学习及反事实评论者优势",
+      "llm_evidence": "多智能体辩论感知强化学习及反事实评论者优势",
+      "canonical_evidence": "多智能体辩论感知强化学习及反事实评论者优势",
+      "llm_tldr_en": "MADA-RL trains compact models with debate-aware signal and LoRA, using counterfactual critic advantage to improve reasoning.",
+      "llm_tldr_cn": "针对紧凑模型推理训练成本高的问题，提出MADA-RL框架，将模型分为生成者和评论者角色，通过辩论感知信号和LoRA参数高效微调。核心创新是反事实评论者优势，以生成器集成精度为基线优化评论者，在数学推理任务上以更少参数达到更优性能。",
+      "llm_tldr": "针对紧凑模型推理训练成本高的问题，提出MADA-RL框架，将模型分为生成者和评论者角色，通过辩论感知信号和LoRA参数高效微调。核心创新是反事实评论者优势，以生成器集成精度为基线优化评论者，在数学推理任务上以更少参数达到更优性能。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.15200v1",
+      "source": "arxiv",
+      "title": "Mask-Aware Policy Gradients for Diffusion Language Models",
+      "abstract": "Reinforcement learning has proven effective for improving reasoning in large language models, but extending it to Masked Diffusion Language Models (MDLMs) remains challenging due to the intractability of the log-likelihood estimation. Existing approaches approximate this log-likelihood by modeling only the token predictions, ignoring the order in which positions are unmasked during generation. We observe that MDLM generation involves two decisions at each step: what tokens to place at each masked position and which positions to remask. We formalize this as a two-stage action MDP, showing that the policy gradient naturally decomposes into a token term and a masking term. Combining optimization of both terms leads to state-of-the-art outcomes on mathematical reasoning and coding benchmarks, with scores of 87.1% on GSM8K and 53.4% on MBPP.",
+      "authors": [
+        "Haran Raajesh",
+        "Kulin Shah",
+        "Adam Klivans",
+        "Philipp Krähenbühl"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-16T16:57:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.15200v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for reasoning in masked diffusion language models",
+      "llm_evidence_cn": "掩码扩散语言模型中的强化学习推理优化",
+      "llm_evidence": "掩码扩散语言模型中的强化学习推理优化",
+      "canonical_evidence": "掩码扩散语言模型中的强化学习推理优化",
+      "llm_tldr_en": "Proposes mask-aware policy gradients that decompose into token and masking terms, achieving SOTA on math reasoning for MDLMs.",
+      "llm_tldr_cn": "将强化学习扩展到掩码扩散语言模型面临对数似然估计难题，现有方法忽略掩码顺序。该文观察到MDLM生成涉及token放置和位置掩码两个决策，将其形式化为两阶段动作MDP，推导出策略梯度自然分解为token项和掩码项。联合优化两个项在数学推理上达到SOTA，为扩散模型的RL推理训练提供了新范式。",
+      "llm_tldr": "将强化学习扩展到掩码扩散语言模型面临对数似然估计难题，现有方法忽略掩码顺序。该文观察到MDLM生成涉及token放置和位置掩码两个决策，将其形式化为两阶段动作MDP，推导出策略梯度自然分解为token项和掩码项。联合优化两个项在数学推理上达到SOTA，为扩散模型的RL推理训练提供了新范式。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.17823v1",
+      "source": "arxiv",
+      "title": "Theoretical Foundations of $\\max$@$k$ Reinforcement Learning",
+      "abstract": "Reinforcement Learning is a cornerstone technique for modern large reasoning models. Usually, for difficult tasks such as code generation and theorem proving, the agent is evaluated by generating $K$ responses rather than sampling a single response, and performance is then measured using a retry-aware metric such as $\\max$@$k$. Despite their practical importance, the theoretical foundations of learning under such criteria remain limited. In this work, we provide a theoretical study of the $\\max$@$k$ learning problem in finite-horizon reinforcement learning. We show that optimizing the $\\max$@$k$ objectives is fundamentally different from standard expected-return maximization. In particular, we prove that Markovian policies are in general insufficient, identify a compact state augmentation that restores optimality, and explicitly characterize the performance gap that can arise between history-dependent and non-history-dependent policies. Moreover, we show that learning $\\max$@$k$-optimal policies is statistically harder than standard reinforcement learning and provide an efficient algorithm that achieves the optimal sample complexity rate.",
+      "authors": [
+        "Riccardo Poiani",
+        "Martino Bernasconi",
+        "Andrea Celli"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-20T11:11:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.17823v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "theoretical foundations of max@k RL for LLM reasoning",
+      "llm_evidence_cn": "针对LLM推理的max@k强化学习理论基础",
+      "llm_evidence": "针对LLM推理的max@k强化学习理论基础",
+      "canonical_evidence": "针对LLM推理的max@k强化学习理论基础",
+      "llm_tldr_en": "Provides theoretical analysis of max@k RL objective, proving insufficiency of Markovian policies; foundational for understanding RL for reasoning under retry-aware metrics.",
+      "llm_tldr_cn": "大语言模型推理中常用max@k评估，但缺乏理论基础。本文首次对有限时域强化学习中的max@k目标进行理论研究，证明其与标准期望回报最大化本质不同，且马尔可夫策略不足。该工作为理解基于重试指标的RL推理提供了重要理论基石。",
+      "llm_tldr": "大语言模型推理中常用max@k评估，但缺乏理论基础。本文首次对有限时域强化学习中的max@k目标进行理论研究，证明其与标准期望回报最大化本质不同，且马尔可夫策略不足。该工作为理解基于重试指标的RL推理提供了重要理论基石。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
