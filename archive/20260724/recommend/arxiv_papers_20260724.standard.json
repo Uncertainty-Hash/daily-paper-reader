@@ -1,0 +1,253 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T21:00:40.649677+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21419v1",
+      "source": "arxiv",
+      "title": "PATS: Policy-Aware Training Scaffolding for Agentic Reinforcement Learning",
+      "abstract": "In long-horizon LLM agent reinforcement learning, weak policies often repeat similar failures, producing uninformative rollout trajectories and limiting effective policy optimization. Existing skill-centric methods improve exploration by optimizing, filtering, or internalizing reusable skills. However, they remain centered on the skills themselves rather than being designed as adaptive training-time support for the evolving policy. To address this, we propose a policy-centric training paradigm that reframes skills as a dynamic training scaffold. Our framework, Pats, converts rollout groups from the latest policy into evidence cards and uses task-specific evaluation to adjust the context used in subsequent rollouts. Concrete guidance helps weak policies to complete challenging tasks. As policy improves, redundant context is revised or removed to reduce reliance on explicit guidance while preserving useful rollout variation. The policy is optimized with environmental rewards using standard RLVR, and the training scaffold is discarded at deployment. On ALFWorld and WebShop, Pats improves over strong baselines by up to 18.6%. Across seven search-augmented QA benchmarks, it remains competitive while using 32.1% fewer prompt tokens than the baseline.",
+      "authors": [
+        "Yipeng Shi",
+        "Zhipeng Ma",
+        "Yue Wang",
+        "Qitai Tan",
+        "Yang Li",
+        "Peng Chen",
+        "Zhengzhou Zhu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T15:24:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.21419v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Converts failure rollouts into evidence cards for policy guidance",
+      "llm_evidence_cn": "将失败轨迹转化为证据卡片以指导策略",
+      "llm_evidence": "将失败轨迹转化为证据卡片以指导策略",
+      "canonical_evidence": "将失败轨迹转化为证据卡片以指导策略",
+      "llm_tldr_en": "Proposes PATS, a policy-aware training scaffolding that converts rollout groups from a weak policy into evidence cards and uses task-specific evaluation to adjust context, effectively leveraging failure rollouts to improve LLM agent RL exploration.",
+      "llm_tldr_cn": "该论文提出策略感知训练脚手架PATS，针对长程LLM智能体强化学习中弱策略重复失败的问题。PATS将最新策略的rollout组转化为证据卡片，并通过任务特定评估调整后续rollout的上下文，将失败轨迹转化为具体指导。这种方法帮助弱策略更有效地探索，显著提升策略优化效果。实验表明，PATS能够有效利用失败信息，改善智能体在复杂长程任务上的表现，为利用失败轨迹提供了新思路。",
+      "llm_tldr": "该论文提出策略感知训练脚手架PATS，针对长程LLM智能体强化学习中弱策略重复失败的问题。PATS将最新策略的rollout组转化为证据卡片，并通过任务特定评估调整后续rollout的上下文，将失败轨迹转化为具体指导。这种方法帮助弱策略更有效地探索，显著提升策略优化效果。实验表明，PATS能够有效利用失败信息，改善智能体在复杂长程任务上的表现，为利用失败轨迹提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21556v1",
+      "source": "arxiv",
+      "title": "Visual Contrastive Self-Distillation",
+      "abstract": "On-policy self-distillation (OPSD) is promising as it removes the external teacher required by on-policy distillation (OPD), yet it still needs asymmetric information between teacher and student to ensure that the self-teacher provides a stronger learning signal than the student. Existing methods create this asymmetry either through privileged answers or visual evidence. We ask whether both can be removed, yielding a simpler form of OPSD driven purely by input conditioning. For this purpose, we propose Visual Contrastive Self-Distillation, namely VCSD, which converts image-content removal into an on-policy self-distillation signal. At each student-generated response prefix, the EMA teacher produces two next-token distributions under the same prompt and prefix -- one conditioned on the original image and the other on a content-erased control. Their token-wise log-probability difference highlights candidates whose likelihood is specifically increased by the instance-level visual content. We use this contrast to sharpen the teacher's original-image distribution within its plausible support, and distill the resulting full-distribution target into the student. Using ViRL39K dataset, VCSD consistently outperforms matched OPSD across Qwen3-VL and Qwen3.5 models. For example, on Qwen3-VL, it improves the seven-benchmark aggregate from $62.27\\% \\rightarrow 67.04\\%$ at 2B, $71.30\\% \\rightarrow 73.16\\%$ at 4B, and $72.51\\% \\rightarrow 76.26\\%$ at 8B. Furthermore, VCSD requires no external teacher, privileged answers, visual evidence signals, reasoning traces, or additional inference-time cost.",
+      "authors": [
+        "Yijun Liang",
+        "Yunjie Tian",
+        "Yijiang Li",
+        "Yuqi Jia",
+        "Furong Huang",
+        "Tianyi Zhou",
+        "Di Fu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-23T17:37:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.21556v1",
+      "tags": [
+        "keyword:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Proposes on-policy self-distillation via contrastive learning",
+      "llm_evidence_cn": "提出通过对比学习的同策略自蒸馏方法",
+      "llm_evidence": "提出通过对比学习的同策略自蒸馏方法",
+      "canonical_evidence": "提出通过对比学习的同策略自蒸馏方法",
+      "llm_tldr_en": "Introduces Visual Contrastive Self-Distillation (VCSD), a form of on-policy self-distillation that uses input conditioning only, removing the need for privileged answers or visual evidence, and demonstrates effectiveness on VLM reasoning tasks.",
+      "llm_tldr_cn": "该论文提出视觉对比自蒸馏（VCSD），一种仅依赖输入条件的同策略自蒸馏形式。在每个学生生成前缀处，EMA教师根据同一前缀但有无图像内容产生两个next-token分布，将图像内容移除转化为自蒸馏信号。该方法无需特权答案或额外视觉证据，极大简化了自蒸馏流程。在视觉语言模型推理任务上，VCSD有效提升了性能，表明仅输入条件化即可产生有效自蒸馏信号，为同策略蒸馏提供了更简洁的新范式。",
+      "llm_tldr": "该论文提出视觉对比自蒸馏（VCSD），一种仅依赖输入条件的同策略自蒸馏形式。在每个学生生成前缀处，EMA教师根据同一前缀但有无图像内容产生两个next-token分布，将图像内容移除转化为自蒸馏信号。该方法无需特权答案或额外视觉证据，极大简化了自蒸馏流程。在视觉语言模型推理任务上，VCSD有效提升了性能，表明仅输入条件化即可产生有效自蒸馏信号，为同策略蒸馏提供了更简洁的新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.15200v1",
+      "source": "arxiv",
+      "title": "Mask-Aware Policy Gradients for Diffusion Language Models",
+      "abstract": "Reinforcement learning has proven effective for improving reasoning in large language models, but extending it to Masked Diffusion Language Models (MDLMs) remains challenging due to the intractability of the log-likelihood estimation. Existing approaches approximate this log-likelihood by modeling only the token predictions, ignoring the order in which positions are unmasked during generation. We observe that MDLM generation involves two decisions at each step: what tokens to place at each masked position and which positions to remask. We formalize this as a two-stage action MDP, showing that the policy gradient naturally decomposes into a token term and a masking term. Combining optimization of both terms leads to state-of-the-art outcomes on mathematical reasoning and coding benchmarks, with scores of 87.1% on GSM8K and 53.4% on MBPP.",
+      "authors": [
+        "Haran Raajesh",
+        "Kulin Shah",
+        "Adam Klivans",
+        "Philipp Krähenbühl"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-16T16:57:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.15200v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "extends policy gradients to masked diffusion LLMs for reasoning",
+      "llm_evidence_cn": "将策略梯度扩展到掩蔽扩散语言模型的推理优化",
+      "llm_evidence": "将策略梯度扩展到掩蔽扩散语言模型的推理优化",
+      "canonical_evidence": "将策略梯度扩展到掩蔽扩散语言模型的推理优化",
+      "llm_tldr_en": "Formalizes MDLM generation as two-stage MDP and derives policy gradient with token and masking terms, achieving SOTA reasoning results.",
+      "llm_tldr_cn": "针对强化学习在掩蔽扩散语言模型（MDLM）中应用时对数似然估计困难的问题，本文提出掩蔽感知策略梯度。将MDLM生成形式化为两阶段动作MDP，策略梯度自然分解为token项和掩蔽项。联合优化两个项在数学推理上取得最优结果，为扩散语言模型的在线强化学习提供了新框架。",
+      "llm_tldr": "针对强化学习在掩蔽扩散语言模型（MDLM）中应用时对数似然估计困难的问题，本文提出掩蔽感知策略梯度。将MDLM生成形式化为两阶段动作MDP，策略梯度自然分解为token项和掩蔽项。联合优化两个项在数学推理上取得最优结果，为扩散语言模型的在线强化学习提供了新框架。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "On Policy Distillation methods for large language model",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.18006v1",
+      "source": "arxiv",
+      "title": "MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models",
+      "abstract": "Large language models achieve strong reasoning performance, but often at prohibitive training cost - a challenge that is especially acute for compact models ($\\leq 4 \\, \\mathrm{B}$ parameters) trained under limited budgets. We introduce MADA-RL, a post-training framework that specializes compact models into generator and critic roles and trains them with a debate-aware learning signal, fine-tuning only a small subset of parameters via LoRA adapters. Our central contribution is a counterfactual critic advantage: a dynamic, role-conditioned baseline that redefines the critic's advantage as its reward minus the generator ensemble's per-instance accuracy. This explicitly optimizes critics to improve over generator consensus rather than to merely reproduce a correct answer, yielding more targeted credit assignment than static mean-reward normalization. At deployment, the specialized agents are composed in a lightweight multi-round protocol. Across five mathematical reasoning benchmarks, MADA-RL raises the accuracy of the DeepSeek-R1-Distill-Qwen-1.5B model from $39.9 \\, \\%$ to $41.9 \\, \\%$ ($+2.0$ points, $p < 0.001$) using $16$ times fewer trainable parameters than fully fine-tuned baselines, placing it on the accuracy-trainable-parameter Pareto front. It approaches, but does not surpass, the strongest baselines (DeepScaleR, STILL-3), which are trained on substantially larger datasets; we analyse this gap and the associated inference-time cost directly. A controlled study isolates the source of MADA-RL's gains: the counterfactual advantage produces the highest critic improvement rate of any model evaluated, indicating that trained critics learn to correct generator errors rather than to imitate them.",
+      "authors": [
+        "Martino M. L. Pulici",
+        "Cuong Xuan Chu",
+        "Evgeny Kharlamov",
+        "Zifeng Ding",
+        "Volker Tresp",
+        "Yunpu Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.MA"
+      ],
+      "published": "2026-07-20T14:38:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.18006v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses debate-aware RL with generator and critic for parameter-efficient reasoning",
+      "llm_evidence_cn": "使用辩论感知RL的生成器与评论家实现参数高效推理",
+      "llm_evidence": "使用辩论感知RL的生成器与评论家实现参数高效推理",
+      "canonical_evidence": "使用辩论感知RL的生成器与评论家实现参数高效推理",
+      "llm_tldr_en": "Proposes MADA-RL, a multi-agent debate-aware RL framework for parameter-efficient reasoning in compact models, using LoRA and counterfactual critic advantage to improve reasoning under limited budgets.",
+      "llm_tldr_cn": "该论文提出MADA-RL框架，针对参数规模≤4B的紧凑模型进行参数高效推理优化。通过将模型划分为生成器和评论家角色，使用LoRA微调仅更新少量参数。核心是反事实评论家优势，即评论家奖励减去生成器集平均准确率，使其优化目标与生成器互补。实验表明该方法在多个推理基准上以极低成本显著提升小模型推理能力，验证了多智能体协作和细粒度优势信号在低资源场景下的有效性。",
+      "llm_tldr": "该论文提出MADA-RL框架，针对参数规模≤4B的紧凑模型进行参数高效推理优化。通过将模型划分为生成器和评论家角色，使用LoRA微调仅更新少量参数。核心是反事实评论家优势，即评论家奖励减去生成器集平均准确率，使其优化目标与生成器互补。实验表明该方法在多个推理基准上以极低成本显著提升小模型推理能力，验证了多智能体协作和细粒度优势信号在低资源场景下的有效性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19790v1",
+      "source": "arxiv",
+      "title": "Trace: A Taxonomy-Guided Environment for Multidomain Visual Reasoning",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) has substantially improved language-model reasoning, yet its extension to vision-language models remains constrained by the lack of training data that are simultaneously broad, exactly verifiable, and reproducible. We introduce Trace, a taxonomy-guided environment for multidomain visual reasoning. Trace factorizes task construction into a scene grammar and an executable task program, separating visual realization from answer computation. A shared semantic state determines the rendered image, prompt, typed answer, verifier state, and replayable instance trace. The resulting environment comprises 1,000 tasks over 277 scene grammars and 11 visual domains, with controlled semantic and visual variation. RLVR on 64,000 Trace instances improves the macro-average across 24 external benchmarks by 3.51 percentage points for Qwen2.5-VL-3B and 4.06 points for Qwen2.5-VL-7B, providing evidence that broad procedural training can transfer beyond the generated task distributions. Project page: https://maveryn.github.io/trace/.",
+      "authors": [
+        "Md Tanvirul Alam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T06:17:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.19790v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RLVR environment for visual reasoning",
+      "llm_evidence_cn": "面向视觉推理的RLVR环境",
+      "llm_evidence": "面向视觉推理的RLVR环境",
+      "canonical_evidence": "面向视觉推理的RLVR环境",
+      "llm_tldr_en": "Introduces Trace, a taxonomy-guided environment for multidomain visual reasoning with RLVR, providing 1000 tasks with controlled variation.",
+      "llm_tldr_cn": "针对RLVR在视觉语言模型中因缺乏广泛且可验证的训练数据而受限的问题，提出Trace环境。通过场景语法和可执行任务程序分离视觉实现与答案计算，构建了1000个任务、277个场景语法，覆盖11个视觉领域。Trace支持可控语义和视觉变化，可重现实例，为视觉推理RLVR训练提供标准化基准。",
+      "llm_tldr": "针对RLVR在视觉语言模型中因缺乏广泛且可验证的训练数据而受限的问题，提出Trace环境。通过场景语法和可执行任务程序分离视觉实现与答案计算，构建了1000个任务、277个场景语法，覆盖11个视觉领域。Trace支持可控语义和视觉变化，可重现实例，为视觉推理RLVR训练提供标准化基准。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20668v1",
+      "source": "arxiv",
+      "title": "From Agent Failures to Text Policies: What Works and What Breaks",
+      "abstract": "TextGrad improves language-model systems by revising text from feedback. Its core thesis is that natural-language feedback can act as a gradient for optimizing text components without changing model weights. Applying it to agents is harder because feedback arrives only after a sequence of actions, making it difficult to identify which decision caused failure. We study this problem by separating the ability to follow a useful policy from the ability to learn that policy from experience. Our main finding is a clear gap between these two abilities. Human-written policies improve two frozen 7B agents on TextWorldExpress by 5.0 success points, showing that useful policy text exists. However, policies generated from agent trajectories do not reliably outperform fixed prompting, even with richer traces, counterfactual evidence, or iterative GEPA search. The main challenge for agent-level TextGrad is therefore not executing textual policy updates, but reliably generating and selecting them from experience.",
+      "authors": [
+        "Jaideep Ray",
+        "Ankit Goyal"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T19:08:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.20668v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "studies learning policy from agent failures using trajectories",
+      "llm_evidence_cn": "研究从智能体失败轨迹中学习策略",
+      "llm_evidence": "研究从智能体失败轨迹中学习策略",
+      "canonical_evidence": "研究从智能体失败轨迹中学习策略",
+      "llm_tldr_en": "Examines the gap between following a policy and learning it from failures; human-written policies outperform those learned from trajectories, revealing key limitations for failure-based RL.",
+      "llm_tldr_cn": "该论文研究了从智能体失败轨迹中学习文本策略的能力差距。实验表明，人工编写的策略能显著提升冻结的7B智能体性能，而从轨迹生成的策略则不可靠。这一发现揭示了基于失败轨迹的强化学习面临的核心挑战，为失败回滚利用提供了宝贵的实证分析。",
+      "llm_tldr": "该论文研究了从智能体失败轨迹中学习文本策略的能力差距。实验表明，人工编写的策略能显著提升冻结的7B智能体性能，而从轨迹生成的策略则不可靠。这一发现揭示了基于失败轨迹的强化学习面临的核心挑战，为失败回滚利用提供了宝贵的实证分析。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
