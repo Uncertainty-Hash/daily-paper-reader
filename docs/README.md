@@ -6,40 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-24
-- 运行时间：2026-07-24 21:03:42 UTC
+- 最新运行日期：2026-07-25
+- 运行时间：2026-07-25 20:47:55 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：2
-- 速读区：4
+- 本次总论文数：2
+- 精读区：1
+- 速读区：1
 
 ### 今日简报（AI）
-今天推荐6篇研究，精读两篇高分论文：9分的策略感知训练脚手架（PATS）和8分的视觉对比自蒸馏。
-最值得关注PATS提出的智能体强化学习训练方法，以及Mask-Aware Policy Gradients对扩散语言模型的改进，均体现强化学习与生成模型的深度融合。
-建议关注强化学习与智能体、扩散模型的交叉方向，可优先精读PATS了解其训练脚手架设计。
-- 详情：[/202607/24/README](/202607/24/README)
+今日聚焦大音频语言模型推理蒸馏与紧凑模型多智能体辩论强化学习，精读一篇高分工作。
+
+最值得关注的是《X³-OPD》提出的 on-policy 对齐方法，将复杂推理成功蒸馏至大音频模型，效果显著。
+
+普通读者可优先了解该方向如何提升音频模型的逻辑能力，并留意多智能体辩论在资源受限场景的潜力。
+- 详情：[/202607/25/README](/202607/25/README)
 
 ### 精读区论文标签
-1. [PATS: Policy-Aware Training Scaffolding for Agentic Reinforcement Learning](/202607/24/2607.21419v1-pats-policy-aware-training-scaffolding-for-agentic-reinforcement-learning)  
+1. [X$^3$-OPD: Distilling Reasoning into Large Audio-Language Models via On-Policy Alignment](/202607/25/2607.21550v1-x3-opd-distilling-reasoning-into-large-audio-language-models-via-on-policy-alignment)  
    标签：评分：9.0/10、query:opd
-   evidence：将失败轨迹转化为证据卡片以指导策略
-2. [Visual Contrastive Self-Distillation](/202607/24/2607.21556v1-visual-contrastive-self-distillation)  
-   标签：评分：8.0/10、query:opd
-   evidence：提出通过对比学习的同策略自蒸馏方法
+   evidence：基于同策略对齐的推理蒸馏
 
 ### 速读区论文标签
-1. [Mask-Aware Policy Gradients for Diffusion Language Models](/202607/24/2607.15200v1-mask-aware-policy-gradients-for-diffusion-language-models)  
+1. [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](/202607/25/2607.18006v1-mada-rl-multi-agent-debate-aware-reinforcement-learning-for-parameter-efficient-reasoning-in-compact-models)  
    标签：评分：7.0/10、query:opd
-   evidence：将策略梯度扩展到掩蔽扩散语言模型的推理优化
-2. [Trace: A Taxonomy-Guided Environment for Multidomain Visual Reasoning](/202607/24/2607.19790v1-trace-a-taxonomy-guided-environment-for-multidomain-visual-reasoning)  
-   标签：评分：7.0/10、query:opd
-   evidence：面向视觉推理的RLVR环境
-3. [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](/202607/24/2607.18006v1-mada-rl-multi-agent-debate-aware-reinforcement-learning-for-parameter-efficient-reasoning-in-compact-models)  
-   标签：评分：6.0/10、query:opd
-   evidence：使用辩论感知RL的生成器与评论家实现参数高效推理
-4. [From Agent Failures to Text Policies: What Works and What Breaks](/202607/24/2607.20668v1-from-agent-failures-to-text-policies-what-works-and-what-breaks)  
-   标签：评分：6.0/10、query:opd
-   evidence：研究从智能体失败轨迹中学习策略
+   evidence：使用辩论感知强化学习与反事实评论家优势改进推理
 
 
 <div class="dpr-home-promo-card">

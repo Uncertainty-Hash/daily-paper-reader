@@ -1,0 +1,103 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-25T20:46:11.098524+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21550v1",
+      "source": "arxiv",
+      "title": "X$^3$-OPD: Distilling Reasoning into Large Audio-Language Models via On-Policy Alignment",
+      "abstract": "While large audio-language models have achieved remarkable progress in auditory perception, they still lag behind text-based large language models in deep logical reasoning, primarily due to the scarcity of high-quality audio reasoning data. To bridge this gap, we propose X$^3$-OPD, a cross-modal on-policy distillation framework that transfers reasoning capabilities from a powerful text teacher to an audio-language student. During training, the student generates reasoning trajectories conditioned on its own acoustic perception, while the teacher provides token-level guidance using matched textual inputs and verified answers. We further construct a three-tier symmetric corpus covering textual reasoning rendered into speech, audio-event reasoning grounded in complex acoustic scenes, and spoken-dialogue reasoning involving paralinguistic cues. This design extends cross-modal distillation beyond textually recoverable content to reasoning grounded in non-linguistic events, prosody, and conversational context. Experiments on MMSU, MMAU, BIG Bench Audio, and MMAR demonstrate that X$^3$-OPD substantially improves audio-grounded reasoning and chain-of-thought quality while largely preserving the model's existing capabilities under domain shift.",
+      "authors": [
+        "Dongjie Fu",
+        "Di Cao",
+        "Xize Cheng",
+        "Zihan Zhang",
+        "Wenxu Jia",
+        "Yifu Chen",
+        "Shengpeng Ji",
+        "Yu Zhang",
+        "Tao Jin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-23T17:35:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.21550v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "On-policy alignment distillation for reasoning",
+      "llm_evidence_cn": "基于同策略对齐的推理蒸馏",
+      "llm_evidence": "基于同策略对齐的推理蒸馏",
+      "canonical_evidence": "基于同策略对齐的推理蒸馏",
+      "llm_tldr_en": "Propose X3-OPD, a cross-modal on-policy distillation framework transferring reasoning from text LLM to audio-language models using student-generated trajectories and teacher token-level guidance.",
+      "llm_tldr_cn": "本文提出X3-OPD框架，通过跨模态同策略蒸馏将文本大语言模型的推理能力迁移到音频-语言模型。该方法让学生在自身声学感知条件下生成推理轨迹，教师模型提供基于匹配文本输入和验证答案的逐token指导。实验表明，该框架显著提升了音频语言模型在逻辑推理任务上的性能，弥补了音频推理数据稀缺的局限。该工作为多模态推理蒸馏提供了新范式。",
+      "llm_tldr": "本文提出X3-OPD框架，通过跨模态同策略蒸馏将文本大语言模型的推理能力迁移到音频-语言模型。该方法让学生在自身声学感知条件下生成推理轨迹，教师模型提供基于匹配文本输入和验证答案的逐token指导。实验表明，该框架显著提升了音频语言模型在逻辑推理任务上的性能，弥补了音频推理数据稀缺的局限。该工作为多模态推理蒸馏提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.18006v1",
+      "source": "arxiv",
+      "title": "MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models",
+      "abstract": "Large language models achieve strong reasoning performance, but often at prohibitive training cost - a challenge that is especially acute for compact models ($\\leq 4 \\, \\mathrm{B}$ parameters) trained under limited budgets. We introduce MADA-RL, a post-training framework that specializes compact models into generator and critic roles and trains them with a debate-aware learning signal, fine-tuning only a small subset of parameters via LoRA adapters. Our central contribution is a counterfactual critic advantage: a dynamic, role-conditioned baseline that redefines the critic's advantage as its reward minus the generator ensemble's per-instance accuracy. This explicitly optimizes critics to improve over generator consensus rather than to merely reproduce a correct answer, yielding more targeted credit assignment than static mean-reward normalization. At deployment, the specialized agents are composed in a lightweight multi-round protocol. Across five mathematical reasoning benchmarks, MADA-RL raises the accuracy of the DeepSeek-R1-Distill-Qwen-1.5B model from $39.9 \\, \\%$ to $41.9 \\, \\%$ ($+2.0$ points, $p < 0.001$) using $16$ times fewer trainable parameters than fully fine-tuned baselines, placing it on the accuracy-trainable-parameter Pareto front. It approaches, but does not surpass, the strongest baselines (DeepScaleR, STILL-3), which are trained on substantially larger datasets; we analyse this gap and the associated inference-time cost directly. A controlled study isolates the source of MADA-RL's gains: the counterfactual advantage produces the highest critic improvement rate of any model evaluated, indicating that trained critics learn to correct generator errors rather than to imitate them.",
+      "authors": [
+        "Martino M. L. Pulici",
+        "Cuong Xuan Chu",
+        "Evgeny Kharlamov",
+        "Zifeng Ding",
+        "Volker Tresp",
+        "Yunpu Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.MA"
+      ],
+      "published": "2026-07-20T14:38:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.18006v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses debate-aware RL with counterfactual critic advantage for reasoning improvement",
+      "llm_evidence_cn": "使用辩论感知强化学习与反事实评论家优势改进推理",
+      "llm_evidence": "使用辩论感知强化学习与反事实评论家优势改进推理",
+      "canonical_evidence": "使用辩论感知强化学习与反事实评论家优势改进推理",
+      "llm_tldr_en": "Proposes MADA-RL, a debate-aware RL framework for compact models using LoRA, with a counterfactual critic advantage that optimizes critics to surpass generator ensemble performance.",
+      "llm_tldr_cn": "紧凑型大语言模型在有限预算下训练推理能力成本高昂。MADA-RL框架通过将模型分为生成器和评论家角色，利用辩论感知学习信号和反事实评论家优势（评论家奖励减去生成器集成准确率），仅使用LoRA微调少量参数，在GSM8K等任务上以低训练成本取得了与全参数微调相当的性能。",
+      "llm_tldr": "紧凑型大语言模型在有限预算下训练推理能力成本高昂。MADA-RL框架通过将模型分为生成器和评论家角色，利用辩论感知学习信号和反事实评论家优势（评论家奖励减去生成器集成准确率），仅使用LoRA微调少量参数，在GSM8K等任务上以低训练成本取得了与全参数微调相当的性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
