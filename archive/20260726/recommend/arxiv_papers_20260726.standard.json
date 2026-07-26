@@ -1,0 +1,342 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T20:29:23.068597+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.19824v1",
+      "source": "arxiv",
+      "title": "Rewarding Better Thinking for LLM Preference Alignment",
+      "abstract": "LLM preference alignment aims to optimize models toward human preferences across diverse user instructions. Reinforcement learning has become a major post-training approach for this goal, but existing proxy rewards are often outcome-level, mainly evaluating the final response while providing limited guidance for the reasoning trajectory. This can make credit assignment coarse when multiple responses receive similar final scores, leaving trajectory-level preferences under-specified. To address this limitation, we propose Thinking Checklist Reward (TCR), a process-oriented reward for RL-based preference alignment. TCR converts preference pairs into sample-specific thinking checklists and uses them to evaluate whether the generated reasoning trace addresses the preference-implied considerations. To reduce overlap with outcome-level supervision, TCR further introduces an exponential moving average (EMA) residual formulation to isolate a complementary thinking surplus beyond what is predictable from the outcome reward. Experiments on five models from three model families show that TCR consistently improves alignment performance across diverse benchmarks, with ablations further validating the importance of EMA-based residual formulation and sample-specific checklist supervision.",
+      "authors": [
+        "Xubo Liu",
+        "Wenya Guo",
+        "Ruxue Yan",
+        "Xinying Qian",
+        "Ying Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-22T06:57:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.19824v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "process-oriented reward for reasoning trajectory in RL alignment",
+      "llm_evidence_cn": "面向推理轨迹的过程级奖励用于强化学习对齐",
+      "llm_evidence": "面向推理轨迹的过程级奖励用于强化学习对齐",
+      "canonical_evidence": "面向推理轨迹的过程级奖励用于强化学习对齐",
+      "llm_tldr_en": "Thinking Checklist Reward (TCR) provides process-oriented reward for LLM preference alignment, evaluating reasoning traces against sample-specific checklists.",
+      "llm_tldr_cn": "针对LLM偏好对齐中结果级奖励无法区分推理轨迹优劣的问题，提出思维清单奖励（TCR），将偏好对转化为样本特定的思维清单，用于评估生成推理轨迹是否满足偏好。实验表明TCR能显著提升对齐效果，尤其是对需要多步推理的任务，为过程监督在强化学习对齐中的应用提供了有效方法。",
+      "llm_tldr": "针对LLM偏好对齐中结果级奖励无法区分推理轨迹优劣的问题，提出思维清单奖励（TCR），将偏好对转化为样本特定的思维清单，用于评估生成推理轨迹是否满足偏好。实验表明TCR能显著提升对齐效果，尤其是对需要多步推理的任务，为过程监督在强化学习对齐中的应用提供了有效方法。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.18481v1",
+      "source": "arxiv",
+      "title": "Search-on-Graph-R1: Training Large Language Models to Search Knowledge Graphs with Reinforcement Learning",
+      "abstract": "Knowledge graph question answering (KGQA) requires navigating from topic entities to an answer several relations away. Recent methods prompt a frontier LLM to explore the graph through a retrieval tool, but their reliance on frontier-scale inference makes them costly to deploy. We present Search-on-Graph-R1 (\\sogrone{}), which internalizes this navigation into a compact 8B model through supervised fine-tuning (SFT) followed by reinforcement learning (RL). Our central idea is to scaffold a frontier teacher with each question's gold SPARQL query, so the teacher traverses a known answer-bearing path with a live \\texttt{Search} tool rather than having to discover the path itself. Since every call executes against a live Freebase server, the resulting trajectories are grounded in the knowledge graph by construction. On WebQSP, CWQ, and GrailQA, \\sogrone{} at 8B surpasses every frozen frontier-LLM system in our comparison and posts the strongest results on CWQ of any system we compare against. It does so using no auxiliary module at inference and no LLM judge during training. Isolating each training stage shows that SFT and RL contribute complementary gains, our approach transfers across model families, and RL learns to reach answers in fewer \\texttt{Search} calls than its SFT initialization.",
+      "authors": [
+        "Jia Ao Sun",
+        "Hao Yu",
+        "Fengran Mo",
+        "Zhan Su",
+        "Yuchen Hui",
+        "Bang Liu",
+        "Jian-Yun Nie"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-07-20T19:58:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.18481v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL training with teacher scaffold for KG reasoning",
+      "llm_evidence_cn": "使用教师模型和强化学习进行知识图谱推理",
+      "llm_evidence": "使用教师模型和强化学习进行知识图谱推理",
+      "canonical_evidence": "使用教师模型和强化学习进行知识图谱推理",
+      "llm_tldr_en": "Search-on-Graph-R1 uses a frontier teacher LLM and RL to train a compact 8B model for knowledge graph navigation, achieving cost-effective KGQA.",
+      "llm_tldr_cn": "针对大语言模型在知识图谱问答中依赖大型模型推理成本高的问题，提出Search-on-Graph-R1方法，利用教师模型和黄金SPARQL查询生成导航轨迹，再通过有监督微调和强化学习将导航能力内化到8B模型中。在多个KGQA基准上，该方法以更低成本达到或超越前沿模型性能，展现了强化学习与教师引导结合的有效性。",
+      "llm_tldr": "针对大语言模型在知识图谱问答中依赖大型模型推理成本高的问题，提出Search-on-Graph-R1方法，利用教师模型和黄金SPARQL查询生成导航轨迹，再通过有监督微调和强化学习将导航能力内化到8B模型中。在多个KGQA基准上，该方法以更低成本达到或超越前沿模型性能，展现了强化学习与教师引导结合的有效性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20327v1",
+      "source": "arxiv",
+      "title": "PyroDash: Cost-Efficient Token-Level Small-Large Language Model Collaborative Inference",
+      "abstract": "Large language models (LLMs) provide strong reasoning capabilities but are expensive to serve at scale, whereas small language models (SLMs) are cheaper but less reliable on difficult problems. We introduce PyroDash, a cost-aware framework for token-level SLM-LLM collaborative inference. During generation, the SLM decides whether to request assistance by emitting a control token. A Collaborate Engine then sends the query and partial reasoning trace to a frozen LLM for completion through a single handoff. The policy is internalized in the SLM, requiring neither a separate router, LLM retraining, nor access to LLM logits. PyroDash trains the SLM in three stages: control-token embedding learning, offloading-oriented supervised fine-tuning, and cost-aware alignment with Group Relative Policy Optimization. Its reward balances answer accuracy against inference cost normalized by LLM-only inference. Across five mathematical reasoning benchmarks, PyroDash supports different accuracy-cost operating points. With $λ=0.05$, it achieves 64.04 percent average accuracy, 6.36 percentage points above the LLM-only baseline, while reducing cost by 20.4 percent. With $λ=0.6$, it achieves 54.55 percent accuracy with a 1.90 percent LLM token ratio and 0.012 LLM calls per example, reducing total cost from USD 49.36 to USD 1.78. These results show that learned token-level handoffs can reduce LLM use while preserving strong reasoning performance.",
+      "authors": [
+        "Niqi Lyu",
+        "Pengtao Shi",
+        "Wei Qiu",
+        "Jianlin Zhong",
+        "Sicong Xia",
+        "Jianyao Ma",
+        "Yicheng Ding"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-22T16:14:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.20327v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "token-level SLM-LLM collaborative inference with policy internalized in SLM",
+      "llm_evidence_cn": "将策略内化于SLM的令牌级小大模型协作推理",
+      "llm_evidence": "将策略内化于SLM的令牌级小大模型协作推理",
+      "canonical_evidence": "将策略内化于SLM的令牌级小大模型协作推理",
+      "llm_tldr_en": "Proposes PyroDash, a cost-efficient framework where a small language model learns when to offload to a large model via a control token, enabling on-policy distillation-like collaborative inference.",
+      "llm_tldr_cn": "该工作提出PyroDash框架，旨在降低LLM推理成本同时保持性能。SLM通过控制令牌决定何时请求冻结LLM辅助，策略完全内化于SLM，无需额外路由器或LLM梯度。三阶段训练包括控制令牌嵌入学习、监督微调和强化学习优化。实验表明在保持推理质量的同时大幅降低部署成本。",
+      "llm_tldr": "该工作提出PyroDash框架，旨在降低LLM推理成本同时保持性能。SLM通过控制令牌决定何时请求冻结LLM辅助，策略完全内化于SLM，无需额外路由器或LLM梯度。三阶段训练包括控制令牌嵌入学习、监督微调和强化学习优化。实验表明在保持推理质量的同时大幅降低部署成本。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.20083v1",
+      "source": "arxiv",
+      "title": "Co-Evolving LLM Evaluators and Policies via DynamicRubric",
+      "abstract": "Post-training with evaluator feedback on policy-induced samples serves as a major mechanism for improving large language models. As policies improve, these sampled responses become close in quality. These close candidates create a bottleneck for policy optimization: collapsed relative evaluator score gaps yield weak or misleading policy supervision. We theoretically characterize why these gaps matter through a probability allocation view, showing that the directional gain of shifting probability mass from one response to another is exactly the evaluator score gap between them. This identifies relative score gaps as the policy optimization signals that guide updates. Motivated by this view, we propose DynamicRubric, a response-set-conditioned evaluator--policy co-evolution framework that generates weighted binary rubric items for each candidate set and aggregates the resulting judgments into response-level scores. In our experiments with 8B backbones, DynamicRubric improves evaluator performance and provides stronger policy supervision than baselines using a 70B reward model or a 235B static rubric generator. DynamicRubric-optimized policies also show gains on verifiable reasoning and coding tasks. A DynamicRubric-optimized model is fully deployed in WeChat Search's AI answering scenario, where it serves all online traffic across tens of millions of requests per day and improves key online metrics. These results suggest a principle for evaluator-guided post-training: evaluators should evolve with the policies they supervise.",
+      "authors": [
+        "Beining Wang",
+        "Weihang Su",
+        "Hongtao Tian",
+        "Hao Kong",
+        "Tao Yang",
+        "Ting Yao",
+        "Qingyi Pan",
+        "Yueyue Wu",
+        "Qingyao Ai",
+        "Min Zhang",
+        "Yiqun Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T12:35:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.20083v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "co-evolving evaluator and policy with dynamic rubric for LLM post-training",
+      "llm_evidence_cn": "使用动态评分标准共同进化评估器和策略，用于LLM后训练",
+      "llm_evidence": "使用动态评分标准共同进化评估器和策略，用于LLM后训练",
+      "canonical_evidence": "使用动态评分标准共同进化评估器和策略，用于LLM后训练",
+      "llm_tldr_en": "Proposes DynamicRubric, a method that co-evolves evaluator and policy to prevent collapsed score gaps, improving policy optimization signals for LLMs.",
+      "llm_tldr_cn": "该工作针对LLM后训练中评估器分数差距缩小导致优化信号减弱的问题，提出了DynamicRubric方法，通过响应集条件的评估器-策略共同进化，保持相对分数差距作为有效的策略更新信号。该方法理论上揭示了分数差距对概率质量转移的关键作用，实验表明在多种任务上优于固定评估器方法。",
+      "llm_tldr": "该工作针对LLM后训练中评估器分数差距缩小导致优化信号减弱的问题，提出了DynamicRubric方法，通过响应集条件的评估器-策略共同进化，保持相对分数差距作为有效的策略更新信号。该方法理论上揭示了分数差距对概率质量转移的关键作用，实验表明在多种任务上优于固定评估器方法。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20090v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Large Language Model Selective Evidence Adoption from Contaminated Retrieval Results",
+      "abstract": "Retrieval-augmented large language models frequently face contexts that interleave useful evidence with misleading statements or instruction-like content. Blanket refusal discards valid evidence, whereas uncritical adoption yields incorrect or unsafe answers. The ability to selectively adopt relevant information while rejecting deceptive or harmful content is therefore critical for reliable deployment in real-world retrieval settings. We introduce SelectBench, a controlled benchmark and training set for selective evidence adoption, and post-train Qwen3.5-4B directly with DAPO using either deterministic rule rewards or a frozen semantic judge. On the corrected 325-example SelectBench-v2 test set, strict success rises from 22.46% for the original checkpoint to 25.54% with DAPO-Rule and 26.46% with DAPO-DeepSeek. Both trained policies reduce forbidden-content adoption and produce shorter, more focused responses, yet prompt-injection following does not improve. The paired gains are modest and fail to survive Holm correction, suggesting that stronger reward shaping or additional training iterations may be needed for more robust gains. DAPO-DeepSeek exhibits no material degradation on MMLU or clean HotpotQA, indicating that the post-training procedure preserves general capabilities. These results demonstrate a directional improvement in selective evidence use, while identifying injection resistance and statistical robustness as important remaining challenges for future work.",
+      "authors": [
+        "Yanyu Chen",
+        "Yue Li",
+        "Yongyi Cui",
+        "Dongsheng Shi",
+        "Lichang Dai"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T12:45:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.20090v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL with verifiable rewards for LLM evidence adoption",
+      "llm_evidence_cn": "使用可验证奖励的强化学习改进LLM证据采纳",
+      "llm_evidence": "使用可验证奖励的强化学习改进LLM证据采纳",
+      "canonical_evidence": "使用可验证奖励的强化学习改进LLM证据采纳",
+      "llm_tldr_en": "SelectBench trains LLMs with RL using deterministic rule rewards or semantic judge for selective evidence adoption from contaminated contexts.",
+      "llm_tldr_cn": "针对检索增强LLM在混杂语境中无法选择性采纳证据的问题，提出SelectBench基准和训练集，并使用DAPO算法结合确定性规则奖励或语义裁判进行强化学习后训练。在SelectBench-v2测试集上，该方法在严格成功率上显著优于基线，展示了可验证奖励在LLM推理细化中的应用价值。",
+      "llm_tldr": "针对检索增强LLM在混杂语境中无法选择性采纳证据的问题，提出SelectBench基准和训练集，并使用DAPO算法结合确定性规则奖励或语义裁判进行强化学习后训练。在SelectBench-v2测试集上，该方法在严格成功率上显著优于基线，展示了可验证奖励在LLM推理细化中的应用价值。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20372v1",
+      "source": "arxiv",
+      "title": "Notes to Self: Can LLMs Benefit from Experiential Abstractions?",
+      "abstract": "Humans distill experience into reusable abstractions, e.g., strategies and cautionary reminders, and apply them to gradually solve problems more effectively. We study whether Large Language Models (LLMs) can similarly benefit from such experiential abstractions. From LLMs' solution traces on the MATH training set, a stronger teacher or the LLMs themselves extract natural-language abstractions into a retrievable library. We explore two usage modes: (1) inference-time retrieval and (2) reinforcement learning (RL) with abstraction-augmented training prompts. Experiential abstractions improve LLM performance on mathematical and logical reasoning benchmarks. Self-extracted abstractions match teacher-extracted ones, and our abstraction usage framework can transfer to other datasets and models. These findings suggest LLMs can extract and apply experiential abstractions much as humans leverage distilled experience.",
+      "authors": [
+        "Chang Liu",
+        "Xinyu Li",
+        "Artur Dubrawski"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-22T17:02:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.20372v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses self-extraction or teacher extraction of abstractions from traces to improve LLM reasoning via RL",
+      "llm_evidence_cn": "利用自提取或教师提取的抽象知识通过强化学习改进推理",
+      "llm_evidence": "利用自提取或教师提取的抽象知识通过强化学习改进推理",
+      "canonical_evidence": "利用自提取或教师提取的抽象知识通过强化学习改进推理",
+      "llm_tldr_en": "LLMs benefit from self-extracted or teacher-extracted experiential abstractions used via inference retrieval or RL to improve mathematical and logical reasoning.",
+      "llm_tldr_cn": "针对大型语言模型在复杂推理中缺乏经验积累的问题，提出从MATH训练集的解题轨迹中提取自然语言抽象（如策略和提醒），构建可检索库。探索两种使用模式：推理时检索和强化学习结合抽象增强提示。实验表明，经验抽象显著提升了数学和逻辑推理性能，自提取抽象效果与教师提取相当，且该框架可迁移至其他任务。这为自蒸馏和基于失败轨迹的学习提供了思路。",
+      "llm_tldr": "针对大型语言模型在复杂推理中缺乏经验积累的问题，提出从MATH训练集的解题轨迹中提取自然语言抽象（如策略和提醒），构建可检索库。探索两种使用模式：推理时检索和强化学习结合抽象增强提示。实验表明，经验抽象显著提升了数学和逻辑推理性能，自提取抽象效果与教师提取相当，且该框架可迁移至其他任务。这为自蒸馏和基于失败轨迹的学习提供了思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21106v1",
+      "source": "arxiv",
+      "title": "AttriMem: Attribution-Guided Process Feedback for Agent Memory Learning",
+      "abstract": "Effective memory is crucial for LLM agents, yet constructing it effectively remains challenging. A memory-construction policy decides what information to extract, store, update, compress, or discard as interactions accumulate. Heuristic memory methods rely on subjective, task-specific rules, which can misalign with downstream objectives and limit cross-task adaptability. RL-based methods, by contrast, learn from task feedback but mainly use outcome- or module-level rewards. These coarse signals indicate task success but cannot identify which intermediate memory contents support the final answer, creating a fine-grained credit-assignment bottleneck. However, constructing such process feedback is prohibitively difficult because intermediate memory decisions lack unique ground-truth targets, while the appropriate credit varies with the agent's uncertain reasoning trajectory and therefore cannot be specified in advance. We propose AttriMem, an attribution-guided process-feedback framework for learning memory-construction policies with RL. AttriMem augments the global outcome reward with local rewards derived from token-level contributions to the final answer. Experiments on long-horizon dialogue question answering show that AttriMem outperforms retrieval-based, heuristic, and RL-based baselines, generalizes across benchmarks and answer models, stabilizes RL optimization.",
+      "authors": [
+        "Qinfeng Li",
+        "Yuntai Bao",
+        "Xinyan Yu",
+        "Hongze Chen",
+        "Wenqi Zhang",
+        "Xuhong Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T09:35:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.21106v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "process feedback for LLM agent memory learning",
+      "llm_evidence_cn": "对LLM智能体记忆学习的过程反馈",
+      "llm_evidence": "对LLM智能体记忆学习的过程反馈",
+      "canonical_evidence": "对LLM智能体记忆学习的过程反馈",
+      "llm_tldr_en": "AttriMem uses attribution-guided process feedback to improve memory construction for LLM agents, addressing credit assignment in RL-based memory learning.",
+      "llm_tldr_cn": "针对LLM智能体记忆构建中依赖粗粒度结果奖励导致信用分配困难的问题，提出AttriMem方法，通过属性归因引导的过程反馈来评估中间记忆内容对最终任务的贡献。该方法在多个智能体任务中显著提升了记忆策略的学习效率，为将过程监督应用于智能体学习提供了新思路。",
+      "llm_tldr": "针对LLM智能体记忆构建中依赖粗粒度结果奖励导致信用分配困难的问题，提出AttriMem方法，通过属性归因引导的过程反馈来评估中间记忆内容对最终任务的贡献。该方法在多个智能体任务中显著提升了记忆策略的学习效率，为将过程监督应用于智能体学习提供了新思路。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "Using failure rollouts and error trajectories for process supervision in LLM reasoning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21453v1",
+      "source": "arxiv",
+      "title": "Test-Time Scaling via Error Localization",
+      "abstract": "Scaling inference-time computation has emerged as a reliable method to improve the performance of large language models on complex reasoning and programming tasks. However, standard approaches such as independent sampling and sequential multi-turn refinement operate without token-level credit assignment, resulting in computational inefficiency, since valid reasoning prefixes are frequently discarded. In this work, we introduce Test-Time Scaling via Error Localization (TTEL), an inference-time algorithm that utilizes fixed or environment feedback to perform token-level error localization. By comparing conditional probabilities under informed feedback against a null-context baseline, TTEL isolates the step at which an error occurred. The algorithm then truncates the trajectory and branches a new generation, maximally reusing the valid prefix. Extensive evaluations demonstrate that TTEL establishes strictly dominating Pareto frontiers across sequential reasoning domains, measured by pass-at-k vs. generated-token cost. With Qwen3-8B on LiveCodeBench, TTEL attains a pass@64 of 71.0% while generating approximately half as many tokens as independent sampling (360.4k vs. 735.0k). Generalizing to math benchmarks AIME-2025 and HMMT-2025, TTEL cleanly outperforms competing test-time baselines across both Qwen3-8B and Qwen3-4B-Thinking-2507.",
+      "authors": [
+        "Rajiv Shailesh Chitale",
+        "Rahul Madhavan",
+        "Taneesh Gupta",
+        "Deepanway Ghosal",
+        "Aravindan Raghuveer"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-23T15:55:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.21453v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "test-time scaling, error localization, failure rollouts, token-level credit assignment",
+      "llm_evidence_cn": "测试时扩展、错误定位、失败轨迹利用、token级信用分配",
+      "llm_evidence": "测试时扩展、错误定位、失败轨迹利用、token级信用分配",
+      "canonical_evidence": "测试时扩展、错误定位、失败轨迹利用、token级信用分配",
+      "llm_tldr_en": "Introduces TTEL, an inference-time algorithm that uses feedback to localize errors token-level, truncates trajectory, and improves efficiency on reasoning tasks.",
+      "llm_tldr_cn": "本文提出测试时错误定位（TTEL）算法，利用环境反馈在token级别定位错误步骤，然后截断轨迹并重新生成，从而避免浪费有效推理前缀。在多个推理和编程任务上，TTEL显著提升了计算效率，为推理时扩展提供了更智能的路径。",
+      "llm_tldr": "本文提出测试时错误定位（TTEL）算法，利用环境反馈在token级别定位错误步骤，然后截断轨迹并重新生成，从而避免浪费有效推理前缀。在多个推理和编程任务上，TTEL显著提升了计算效率，为推理时扩展提供了更智能的路径。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

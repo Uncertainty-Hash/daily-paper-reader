@@ -6,30 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-25
-- 运行时间：2026-07-25 20:47:55 UTC
+- 最新运行日期：2026-07-26
+- 运行时间：2026-07-26 20:34:38 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：8
 - 精读区：1
-- 速读区：1
+- 速读区：7
 
 ### 今日简报（AI）
-今日聚焦大音频语言模型推理蒸馏与紧凑模型多智能体辩论强化学习，精读一篇高分工作。
-
-最值得关注的是《X³-OPD》提出的 on-policy 对齐方法，将复杂推理成功蒸馏至大音频模型，效果显著。
-
-普通读者可优先了解该方向如何提升音频模型的逻辑能力，并留意多智能体辩论在资源受限场景的潜力。
-- 详情：[/202607/25/README](/202607/25/README)
+今日阅读8篇论文，精读1篇、速读7篇，重点关注LLM偏好对齐与强化学习应用。最值得看的是《Rewarding Better Thinking for LLM Preference Alignment》（8.0/10），揭示通过奖励思维过程提升对齐效果；速读中《Search-on-Graph-R1》《Co-Evolving LLM Evaluators》等也具启发性。建议优先精读该文，并关注强化学习在LLM推理、评估与知识检索中的交叉创新。
+- 详情：[/202607/26/README](/202607/26/README)
 
 ### 精读区论文标签
-1. [X$^3$-OPD: Distilling Reasoning into Large Audio-Language Models via On-Policy Alignment](/202607/25/2607.21550v1-x3-opd-distilling-reasoning-into-large-audio-language-models-via-on-policy-alignment)  
-   标签：评分：9.0/10、query:opd
-   evidence：基于同策略对齐的推理蒸馏
+1. [Rewarding Better Thinking for LLM Preference Alignment](/202607/26/2607.19824v1-rewarding-better-thinking-for-llm-preference-alignment)  
+   标签：评分：8.0/10、query:opd
+   evidence：面向推理轨迹的过程级奖励用于强化学习对齐
 
 ### 速读区论文标签
-1. [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](/202607/25/2607.18006v1-mada-rl-multi-agent-debate-aware-reinforcement-learning-for-parameter-efficient-reasoning-in-compact-models)  
+1. [Search-on-Graph-R1: Training Large Language Models to Search Knowledge Graphs with Reinforcement Learning](/202607/26/2607.18481v1-search-on-graph-r1-training-large-language-models-to-search-knowledge-graphs-with-reinforcement-learning)  
    标签：评分：7.0/10、query:opd
-   evidence：使用辩论感知强化学习与反事实评论家优势改进推理
+   evidence：使用教师模型和强化学习进行知识图谱推理
+2. [Co-Evolving LLM Evaluators and Policies via DynamicRubric](/202607/26/2607.20083v1-co-evolving-llm-evaluators-and-policies-via-dynamicrubric)  
+   标签：评分：7.0/10、query:opd
+   evidence：使用动态评分标准共同进化评估器和策略，用于LLM后训练
+3. [Reinforcement Learning for Large Language Model Selective Evidence Adoption from Contaminated Retrieval Results](/202607/26/2607.20090v1-reinforcement-learning-for-large-language-model-selective-evidence-adoption-from-contaminated-retrieval-results)  
+   标签：评分：7.0/10、query:opd
+   evidence：使用可验证奖励的强化学习改进LLM证据采纳
+4. [Notes to Self: Can LLMs Benefit from Experiential Abstractions?](/202607/26/2607.20372v1-notes-to-self-can-llms-benefit-from-experiential-abstractions)  
+   标签：评分：7.0/10、query:opd
+   evidence：利用自提取或教师提取的抽象知识通过强化学习改进推理
+5. [AttriMem: Attribution-Guided Process Feedback for Agent Memory Learning](/202607/26/2607.21106v1-attrimem-attribution-guided-process-feedback-for-agent-memory-learning)  
+   标签：评分：7.0/10、query:opd
+   evidence：对LLM智能体记忆学习的过程反馈
+6. [Test-Time Scaling via Error Localization](/202607/26/2607.21453v1-test-time-scaling-via-error-localization)  
+   标签：评分：7.0/10、query:opd
+   evidence：测试时扩展、错误定位、失败轨迹利用、token级信用分配
+7. [PyroDash: Cost-Efficient Token-Level Small-Large Language Model Collaborative Inference](/202607/26/2607.20327v1-pyrodash-cost-efficient-token-level-small-large-language-model-collaborative-inference)  
+   标签：评分：6.0/10、query:opd
+   evidence：将策略内化于SLM的令牌级小大模型协作推理
 
 
 <div class="dpr-home-promo-card">
