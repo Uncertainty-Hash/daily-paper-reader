@@ -6,44 +6,50 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-27
-- 运行时间：2026-07-27 21:20:31 UTC
+- 最新运行日期：2026-07-28
+- 运行时间：2026-07-28 21:46:26 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：3
+- 本次总论文数：10
+- 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇高分论文，聚焦混合事后自我蒸馏与跨分词器策略蒸馏，探索知识蒸馏新范式。最值得关注《H$^2$SD: Hybrid Hindsight Self-Distillation》和《Cross-Tokenizer On-Policy Distillation via Byte-Prefix Marginalization》两篇9.0分工作，它们分别提出利用事后信息与字节前缀边缘化的蒸馏改进技巧。若时间有限，建议优先精读这两篇，再配合速读七分论文理解模型评估与长度感知优化方向。
-- 详情：[/202607/27/README](/202607/27/README)
+今日精读5篇、速读5篇，聚焦在线策略蒸馏与自蒸馏技术。最值得关注的是两篇高分论文：《Outcome-Confounded Local Supervision in On-Policy Distillation》与《H$^2$SD: Hybrid Hindsight Self-Distillation》，分别探讨局部监督和混合事后自蒸馏的优化方法。建议重点跟进在线策略蒸馏与自监督学习的融合方向，以提升模型推理效率。
+- 详情：[/202607/28/README](/202607/28/README)
 
 ### 精读区论文标签
-1. [H$^2$SD: Hybrid Hindsight Self-Distillation](/202607/27/2607.18955v3-h2sd-hybrid-hindsight-self-distillation)  
+1. [Outcome-Confounded Local Supervision in On-Policy Distillation](/202607/28/2607.23731v1-outcome-confounded-local-supervision-in-on-policy-distillation)  
+   标签：评分：10.0/10、query:opd
+   evidence：同策略蒸馏分析与诊断方法
+2. [H$^2$SD: Hybrid Hindsight Self-Distillation](/202607/28/2607.18955v4-h2sd-hybrid-hindsight-self-distillation)  
    标签：评分：9.0/10、query:opd
-   evidence：提出混合事后自蒸馏方法，分别处理成功和失败轨迹
-2. [Cross-Tokenizer On-Policy Distillation via Byte-Prefix Marginalization](/202607/27/2607.22334v1-cross-tokenizer-on-policy-distillation-via-byte-prefix-marginalization)  
+   evidence：H2SD是一种针对大语言模型推理的自蒸馏方法，区别处理成功和失败轨迹。
+3. [On the Impossibility of Unbiased and Length-Invariant Policy Optimization with Outcome Rewards](/202607/28/2607.23364v1-on-the-impossibility-of-unbiased-and-length-invariant-policy-optimization-with-outcome-rewards)  
    标签：评分：9.0/10、query:opd
-   evidence：跨分词器的同策略蒸馏方法
-3. [Learning as Reasoning Unfolds: Progressive Rollout Allocation for Efficient Reinforcement Learning](/202607/27/2607.22002v1-learning-as-reasoning-unfolds-progressive-rollout-allocation-for-efficient-reinforcement-learning)  
-   标签：评分：8.0/10、query:opd
-   evidence：提出渐进式rollout分配以提升GRPO效率
+   evidence：直接理论分析GRPO的偏差
+4. [From RLVR to RLSVR: Task Transformation Induces Self-Verifiable Rewards for Open-Ended LLM Self-Improvement](/202607/28/2607.23802v1-from-rlvr-to-rlsvr-task-transformation-induces-self-verifiable-rewards-for-open-ended-llm-self-improvement)  
+   标签：评分：9.0/10、query:opd
+   evidence：通过自验证奖励将RLVR扩展到开放任务
+5. [RP-OPSD: Resolution-Privileged On-Policy Self-Distillation for Multimodal Large Language Models](/202607/28/2607.24447v1-rp-opsd-resolution-privileged-on-policy-self-distillation-for-multimodal-large-language-models)  
+   标签：评分：9.0/10、query:opd
+   evidence：提出分辨率特权同策略自蒸馏（RP-OPSD）用于多模态大模型
 
 ### 速读区论文标签
-1. [Co-Evolving LLM Evaluators and Policies via DynamicRubric](/202607/27/2607.20083v2-co-evolving-llm-evaluators-and-policies-via-dynamicrubric)  
+1. [SLPO: Scaling Latent Reasoning via a Surrogate Policy](/202607/28/2607.19691v2-slpo-scaling-latent-reasoning-via-a-surrogate-policy)  
    标签：评分：7.0/10、query:opd
-   evidence：共同进化评估器和策略以改善可验证奖励强化学习中的分数差距
-2. [Test-Time Scaling via Error Localization](/202607/27/2607.21453v2-test-time-scaling-via-error-localization)  
+   evidence：使用可验证奖励的RL扩展潜在推理，提出代理策略
+2. [Self-Boosting Vision-Language Models with Noisy Student On-Policy Self-Distillation](/202607/28/2607.23125v1-self-boosting-vision-language-models-with-noisy-student-on-policy-self-distillation)  
    标签：评分：7.0/10、query:opd
-   evidence：利用环境反馈进行token级错误定位，截断轨迹
-3. [QLPO: Quadrant-weighted Sampling for Length-aware Policy Optimization](/202607/27/2607.21793v1-qlpo-quadrant-weighted-sampling-for-length-aware-policy-optimization)  
+   evidence：噪声学生同策略自蒸馏方法，可迁移至LLM推理
+3. [EviBack: Search-Agent Reinforcement Learning via Evidence-Constrained Teacher Backoff](/202607/28/2607.23955v1-eviback-search-agent-reinforcement-learning-via-evidence-constrained-teacher-backoff)  
    标签：评分：7.0/10、query:opd
-   evidence：GRPO变体，面向长度感知优化
-4. [Teaching LLMs to Self-Evolve: Cultivating Core Meta-Skills with Reinforcement Learning](/202607/27/2607.21971v1-teaching-llms-to-self-evolve-cultivating-core-meta-skills-with-reinforcement-learning)  
-   标签：评分：7.0/10、query:opd
-   evidence：强化学习与环境反馈实现LLM自我进化以培养元技能
-5. [DAIS: Dependency-Aware Intermediate QA Supervision for Complex Reasoning](/202607/27/2607.19088v1-dais-dependency-aware-intermediate-qa-supervision-for-complex-reasoning)  
+   evidence：处理全零rollout组，使用教师回退提供辅助监督，利用失败轨迹
+4. [Teaching LLMs to Self-Evolve: Cultivating Core Meta-Skills with Reinforcement Learning](/202607/28/2607.21971v1-teaching-llms-to-self-evolve-cultivating-core-meta-skills-with-reinforcement-learning)  
    标签：评分：6.0/10、query:opd
-   evidence：教师推理链转换为中间问答监督增强推理
+   evidence：MetaEvolve利用强化学习和环境反馈培养自我反思元技能，与从失败轨迹中学习相关
+5. [ACRL: Adaptive Control of Training-Inference Discrepancy for Stable Reinforcement Learning](/202607/28/2607.24062v1-acrl-adaptive-control-of-training-inference-discrepancy-for-stable-reinforcement-learning)  
+   标签：评分：6.0/10、query:opd
+   evidence：自适应控制训练-推理差异以稳定LLM的RL训练
 
 
 <div class="dpr-home-promo-card">

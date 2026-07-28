@@ -1,0 +1,423 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-28T21:41:20.948099+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.23731v1",
+      "source": "arxiv",
+      "title": "Outcome-Confounded Local Supervision in On-Policy Distillation",
+      "abstract": "On-policy distillation (OPD) trains a student on its own trajectories while a teacher supplies dense token-level likelihoods at student-visited prefixes. These likelihoods are often read locally: agreement appears safe to imitate, whereas disagreement appears to identify an error. We show that both readings are confounded by the outcome of the completed trajectory. We introduce an outcome-resolved diagnostic that crosses pointwise teacher-student divergence with final-answer correctness, separating safe imitation, productive divergence, harmful divergence, and agreement-on-failure. In an eight-seed mathematical-reasoning study with a Qwen3-8B student and Qwen3-32B teacher, agreement-on-failure constitutes 67.84% of pooled response-token mass; with a Qwen2.5-7B/32B pair it remains 67.68%. The result persists across threshold, sequence-level, format, and truncation audits. Even on prompts that the Qwen3 teacher solves in all four independent attempts, student accuracy rises to 86.91% but agreement-on-failure remains 14.76%. We then run three matched training probes that use the available signals to imitate, mask, or contrast whole trajectories; none consistently reduces agreement-on-failure. The result points to a localization limitation: local divergence paired with a trajectory-level outcome does not identify where a failed trajectory became unrecoverable. Addressing this limitation requires additional positional information, such as process labels, teacher continuations from student prefixes, or token-level alignment across rollouts. Our contribution is therefore diagnostic rather than a new training method.",
+      "authors": [
+        "Guoqing Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-26T16:03:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.23731v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "on-policy distillation analysis and diagnostic",
+      "llm_evidence_cn": "同策略蒸馏分析与诊断方法",
+      "llm_evidence": "同策略蒸馏分析与诊断方法",
+      "canonical_evidence": "同策略蒸馏分析与诊断方法",
+      "llm_tldr_en": "Identifies outcome confounding in on-policy distillation and introduces a diagnostic to separate safe/productive/harmful divergence and agreement-on-failure.",
+      "llm_tldr_cn": "针对同策略蒸馏中教师-学生局部信号被轨迹最终结果混淆的问题，提出结果解耦诊断方法。该方法通过交叉教师-学生逐点散度与最终答案正确性，区分安全模仿、有益分歧、有害分歧和错误一致四种情况。在数学推理实验中，错误一致占比高达67.84%，揭示了传统OPD的隐患。",
+      "llm_tldr": "针对同策略蒸馏中教师-学生局部信号被轨迹最终结果混淆的问题，提出结果解耦诊断方法。该方法通过交叉教师-学生逐点散度与最终答案正确性，区分安全模仿、有益分歧、有害分歧和错误一致四种情况。在数学推理实验中，错误一致占比高达67.84%，揭示了传统OPD的隐患。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18955v4",
+      "source": "arxiv",
+      "title": "H$^2$SD: Hybrid Hindsight Self-Distillation",
+      "abstract": "Reinforcement learning with verifiable rewards (RLVR) provides reliable outcome supervision for language model reasoning, but a scalar trajectory reward offers limited token-level guidance. Existing self-distillation methods add a privileged teacher but typically assign it a fixed role: direct distribution matching may destabilize successful behavior, while magnitude-only modulation offers little corrective guidance after failure. We observe that successful and failed trajectories require different forms of hindsight supervision. A successful response already contains a valid student-generated reasoning path and can therefore serve as privileged context rather than being replaced by an external rationale. A failed response, however, requires corrective reference information. We introduce Hybrid Hindsight Self-Distillation ($\\mathrm{H}^{2}\\mathrm{SD}$), which jointly adapts teacher context and update strategy to trajectory correctness. For successful trajectories, we construct the teacher context from the verified response and a rephrasing instruction, and use the teacher only to re-evaluate the original response tokens. The resulting probabilities refine token credit assignment without changing the direction determined by the reward. For failed trajectories, a verified reference hint provides corrective guidance through reverse-KL distillation. Experiments on challenging reasoning benchmarks show that H$^2$SD achieves the strongest overall performance among representative RLVR and self-distillation baselines, with stable optimization and a favorable accuracy-efficiency trade-off.",
+      "authors": [
+        "Qiye Cai",
+        "Yichuan Ma",
+        "Peiji Li",
+        "Yongkang Chen",
+        "Qipeng Guo",
+        "Yicheng Zou",
+        "Linyang Li",
+        "Xiaocheng Feng",
+        "Bing Qin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-21T10:47:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.18955v4",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "H2SD is a self-distillation method for LLM reasoning that treats successful and failed trajectories differently.",
+      "llm_evidence_cn": "H2SD是一种针对大语言模型推理的自蒸馏方法，区别处理成功和失败轨迹。",
+      "llm_evidence": "H2SD是一种针对大语言模型推理的自蒸馏方法，区别处理成功和失败轨迹。",
+      "canonical_evidence": "H2SD是一种针对大语言模型推理的自蒸馏方法，区别处理成功和失败轨迹。",
+      "llm_tldr_en": "H2SD (Hybrid Hindsight Self-Distillation) improves LLM reasoning by applying different hindsight supervision to successful vs failed trajectories, outperforming standard self-distillation.",
+      "llm_tldr_cn": "针对RLVR中轨迹级奖励缺乏细粒度指导的问题，提出混合后见自蒸馏（H2SD），对成功轨迹将其作为上下文保留，对失败轨迹提供纠正信息。在多个数学推理基准上，H2SD显著优于现有自蒸馏和RLVR方法，并且更稳定。",
+      "llm_tldr": "针对RLVR中轨迹级奖励缺乏细粒度指导的问题，提出混合后见自蒸馏（H2SD），对成功轨迹将其作为上下文保留，对失败轨迹提供纠正信息。在多个数学推理基准上，H2SD显著优于现有自蒸馏和RLVR方法，并且更稳定。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23364v1",
+      "source": "arxiv",
+      "title": "On the Impossibility of Unbiased and Length-Invariant Policy Optimization with Outcome Rewards",
+      "abstract": "Group Relative Policy Optimization (GRPO) is the dominant reinforcement learning algorithm for training reasoning capabilities in large language models, notably adopted by DeepSeek-R1. The recent improvement Dr. GRPO (COLM 2025) identifies the response-level length bias caused by per-trajectory length normalization in GRPO and proposes removing this normalization, claiming the resulting optimizer is \"unbiased.\" We show that this claim is incomplete. Specifically, we establish an impossibility theorem: under the standard outcome reward + GRPO setting, no length-based weighting scheme can simultaneously achieve the following two properties. (P1) Gradient unbiasedness: the gradient estimator is an unbiased estimate of the true policy gradient. (P2) Length invariance: each trajectory's effective contribution to the gradient is independent of its token length. GRPO approximately satisfies P2 but violates P1; Dr. GRPO satisfies P1 but violates P2. We characterize the complete tradeoff spectrum via the parametric family f_alpha(L) = L^{alpha - 1}, where alpha = 0 recovers GRPO, alpha = 1 recovers Dr. GRPO, and provide quantitative analysis showing that Dr. GRPO's length bias can cause longer trajectories to dominate gradient updates by a factor proportional to the length ratio. Our results reveal that neither algorithm is universally \"done right\"; they occupy opposite ends of a fundamental and unavoidable tradeoff.",
+      "authors": [
+        "Fei Ding",
+        "Yongkang Zhang",
+        "Yuhao Liao",
+        "Zijian Zeng",
+        "Huiming Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-25T21:12:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.23364v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "direct theoretical analysis of GRPO bias",
+      "llm_evidence_cn": "直接理论分析GRPO的偏差",
+      "llm_evidence": "直接理论分析GRPO的偏差",
+      "canonical_evidence": "直接理论分析GRPO的偏差",
+      "llm_tldr_en": "Proves impossibility of unbiased and length-invariant policy optimization under outcome reward + GRPO, highlighting a fundamental limitation.",
+      "llm_tldr_cn": "该论文证明在标准结果奖励与GRPO设置下，不存在同时满足梯度无偏和长度不变的加权方案，对DeepSeek-R1采用的GRPO算法提出根本性质疑。通过建立不可能定理，揭示了当前主流推理强化学习方法的理论缺陷，为后续改进提供了重要界限。",
+      "llm_tldr": "该论文证明在标准结果奖励与GRPO设置下，不存在同时满足梯度无偏和长度不变的加权方案，对DeepSeek-R1采用的GRPO算法提出根本性质疑。通过建立不可能定理，揭示了当前主流推理强化学习方法的理论缺陷，为后续改进提供了重要界限。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "group relative policy optimization reinforcement learning reasoning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23802v1",
+      "source": "arxiv",
+      "title": "From RLVR to RLSVR: Task Transformation Induces Self-Verifiable Rewards for Open-Ended LLM Self-Improvement",
+      "abstract": "Reinforcement Learning with Verifiable Rewards (RLVR) has driven recent progress in reasoning-oriented large language models (LLMs) by enabling large-scale optimization. However, its applicability remains largely limited to domains such as mathematics and coding, where correctness can be deterministically verified. Open-ended tasks instead often rely on human preferences, reward models, or LLM-based judges, introducing evaluation bias, judge capability bottlenecks, and additional inference costs.Drawing on the principle of self-supervised learning, which constructs pretext tasks to derive supervision from the data itself, we propose Reinforcement Learning with Self-Verifiable Rewards (RLSVR), a task-transformation-based training paradigm for extending RLVR to open-ended tasks. RLSVR transforms open-ended tasks into verifiable proxy environments whose internal rules and interaction outcomes automatically generate reward signals. We instantiate RLSVR with SpyRL, a multi-agent self-play environment inspired by Who Is the Spy?. Agents receive asymmetric information, complete the same target task, and vote to identify a designated spy. Because the spy identity is predetermined, voting outcomes provide fully verifiable rewards, while successful identification remains closely related to output quality. Experiments on text summarization, creative writing, and mathematical reasoning show that SpyRL outperforms existing self-improvement methods on non-verifiable tasks and yields consistent gains on verifiable reasoning tasks. These results demonstrate that task transformation can extend scalable RLVR-based self-improvement beyond inherently verifiable domains. Models and code have been released at https://github.com/wangqinsi1/SpyRL.",
+      "authors": [
+        "Qinsi Wang",
+        "Jing Shi",
+        "Huazheng Wang",
+        "Kun Wan",
+        "Yiran Wu",
+        "Bo Liu",
+        "Qingyun Wu",
+        "Hai Helen Li",
+        "Yiran Chen",
+        "Handong Zhao",
+        "Wentian Zhao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-26T19:04:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.23802v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "extends RLVR to open-ended tasks via self-verifiable rewards",
+      "llm_evidence_cn": "通过自验证奖励将RLVR扩展到开放任务",
+      "llm_evidence": "通过自验证奖励将RLVR扩展到开放任务",
+      "canonical_evidence": "通过自验证奖励将RLVR扩展到开放任务",
+      "llm_tldr_en": "Proposes RLSVR to transform open-ended tasks into self-verifiable forms, enabling RLVR-like self-improvement without external judges.",
+      "llm_tldr_cn": "该论文指出RLVR仅适用于数学、代码等可验证领域，因此提出RLSVR方法，通过任务变换将开放任务转化为带有自验证奖励的形式，从而无需人类偏好或奖励模型即可进行自我改进。该方法扩展了RLVR的适用范围，为开放域推理强化学习提供了新范式。",
+      "llm_tldr": "该论文指出RLVR仅适用于数学、代码等可验证领域，因此提出RLSVR方法，通过任务变换将开放任务转化为带有自验证奖励的形式，从而无需人类偏好或奖励模型即可进行自我改进。该方法扩展了RLVR的适用范围，为开放域推理强化学习提供了新范式。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24447v1",
+      "source": "arxiv",
+      "title": "RP-OPSD: Resolution-Privileged On-Policy Self-Distillation for Multimodal Large Language Models",
+      "abstract": "On-Policy Self-Distillation (OPSD) uses privileged information available only to the teacher to provide dense token-level supervision on trajectories generated by the student. However, existing methods often rely on verified solution traces, explanations generated by external models, or manually localized visual evidence, which limits their scalable application to multimodal large language models. To address this issue, we exploit the information gap between high- and low-resolution views of the same image and propose RP-OPSD (Resolution-Privileged On-Policy Self-Distillation for Multimodal Large Language Models). During training, the student policy generates on-policy trajectories from images at one-quarter of the original resolution, while the teacher policy provides supervision using the original-resolution images. By minimizing the divergence between their output distributions along the student trajectories, the student learns the predictive behavior of the teacher under high-resolution inputs, thereby strengthening its low-resolution capability and transferring the learned improvement to original-resolution inference. RP-OPSD requires neither additional human annotations nor external models to generate solution traces but only image--question pairs. Experiments on Qwen3.5-9B show that RP-OPSD achieves a 5.45\\% relative improvement in average performance at the original resolution and a $1.78\\times$ training speedup over OPSD. These results demonstrate that resolution differences can serve as a simple and scalable source of privileged information, providing an effective and efficient approach to on-policy self-distillation for multimodal large language models.",
+      "authors": [
+        "Qihui Zhu",
+        "Yuchen Wang",
+        "Zijian Wen",
+        "Tao Zhang",
+        "Mengjie Zhang",
+        "Yang Liu",
+        "Shuangwu Chen",
+        "Siying Wu",
+        "Jian Yang",
+        "Xiaofeng Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T13:52:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.24447v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "on-policy self-distillation, privileged information, multimodal LLMs",
+      "llm_evidence_cn": "提出分辨率特权同策略自蒸馏（RP-OPSD）用于多模态大模型",
+      "llm_evidence": "提出分辨率特权同策略自蒸馏（RP-OPSD）用于多模态大模型",
+      "canonical_evidence": "提出分辨率特权同策略自蒸馏（RP-OPSD）用于多模态大模型",
+      "llm_tldr_en": "RP-OPSD performs on-policy self-distillation by using high-resolution views as teacher for low-resolution student trajectories, directly addressing on-policy distillation.",
+      "llm_tldr_cn": "该论文针对现有同策略自蒸馏（OPSD）依赖外部验证信号的问题，提出分辨率特权同策略自蒸馏（RP-OPSD）。利用高/低分辨率图像间的信息差，在训练时让教师模型从高分辨率视角为学生模型在低分辨率下生成的轨迹提供密集令牌级别的监督。实验表明该方法在多模态理解任务上显著提升了性能，且无需外部注释。",
+      "llm_tldr": "该论文针对现有同策略自蒸馏（OPSD）依赖外部验证信号的问题，提出分辨率特权同策略自蒸馏（RP-OPSD）。利用高/低分辨率图像间的信息差，在训练时让教师模型从高分辨率视角为学生模型在低分辨率下生成的轨迹提供密集令牌级别的监督。实验表明该方法在多模态理解任务上显著提升了性能，且无需外部注释。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "on-policy distillation for large language model reasoning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.19691v2",
+      "source": "arxiv",
+      "title": "SLPO: Scaling Latent Reasoning via a Surrogate Policy",
+      "abstract": "Reinforcement learning with verifiable rewards has become the predominant recipe for eliciting test-time scaling in explicit Chain-of-Thought reasoners. Yet this scaling path remains computationally costly, since every intermediate step must be decoded as a language token. Latent reasoning instead carries intermediate computation as continuous vectors and already matches or surpasses explicit CoT at far shorter horizons. Despite this promise, latent reasoners remain largely imitation-bound, while explicit CoT has already moved past imitation via outcome-reward RL. Latent trajectories lack a tractable per-step likelihood and an adaptive stopping interface under fixed thinking budgets, so outcome rewards cannot elicit latent test-time scaling. We introduce Surrogate Latent Policy Optimization (SLPO) to bring outcome-reward RL to autoregressive latent reasoners: an empirical surrogate policy density over latent transitions for trajectory-level credit assignment, and a correctness-supervised stopping head that outcome-reward optimization refines into a variable-horizon policy. Across continuous and soft thinking settings, SLPO improves Pass@$k$ under parallel sampling and allocates longer latent computation to harder instances with higher deterministic accuracy.",
+      "authors": [
+        "Runyang You",
+        "Zhiyuan Liu",
+        "Yongqi Li",
+        "Wenjie Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-22T02:45:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.19691v2",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "latent reasoning, RL with verifiable rewards, surrogate policy for scaling",
+      "llm_evidence_cn": "使用可验证奖励的RL扩展潜在推理，提出代理策略",
+      "llm_evidence": "使用可验证奖励的RL扩展潜在推理，提出代理策略",
+      "canonical_evidence": "使用可验证奖励的RL扩展潜在推理，提出代理策略",
+      "llm_tldr_en": "SLPO uses a surrogate policy to enable outcome-reward RL for latent reasoning, directly relevant to RLVR for LLM reasoning.",
+      "llm_tldr_cn": "该论文针对潜在推理模型缺乏可靠每步似然和自适应停止接口的问题，提出代理潜在策略优化（SLPO）。通过引入一个代理策略将潜在轨迹映射到可操作的辅助策略，从而允许使用可验证结果奖励进行强化学习。实验表明SLPO在多个推理任务上实现了与显式思维链相当的扩展性能，同时计算成本更低。",
+      "llm_tldr": "该论文针对潜在推理模型缺乏可靠每步似然和自适应停止接口的问题，提出代理潜在策略优化（SLPO）。通过引入一个代理策略将潜在轨迹映射到可操作的辅助策略，从而允许使用可验证结果奖励进行强化学习。实验表明SLPO在多个推理任务上实现了与显式思维链相当的扩展性能，同时计算成本更低。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21971v1",
+      "source": "arxiv",
+      "title": "Teaching LLMs to Self-Evolve: Cultivating Core Meta-Skills with Reinforcement Learning",
+      "abstract": "Test-time scaling through iterative self-evolution with environment feedback, as demonstrated by AlphaEvolve, shows remarkable performance gains. We hypothesize that the success of such evolution frameworks hinges on meta-skills, such as self-reflection with environment feedback, that enable effective multi-round refinement, yet are largely neglected by traditional post-training. To bridge this gap, we present MetaEvolve, a framework designed to develop these meta-skills via a data synthesis pipeline, evolution-aware reinforcement learning (RL), and inference-time evolutionary search. Concretely, we ground MetaEvolve in coding, where program execution provides natural, continuous reward signals beyond binary correctness. Building on these signals, we synthesize evolution trajectories as training data, each containing a current program, its fitness score (combining correctness and efficiency), and a history of prior attempts, and train the model via RL with verifiable rewards derived from test case execution. By training on large-scale code data, we aim to inspire generalizable domain-agnostic meta-skills that can transfer broadly to open-ended problems where such rich training signals are scarce. Across seven coding benchmarks, MetaEvolve outperforms the strongest baseline by 10.01% absolute on in-distribution tasks and 24.12% on out-of-distribution tasks. On open-ended algorithm optimization problems entirely outside the training domain, it further achieves a 46.9% relative improvement. These results demonstrate that explicitly cultivating self-evolution meta-skills offers a principled path toward more capable and autonomously self-evolving AI.",
+      "authors": [
+        "Shujin Wu",
+        "Cheng Qian",
+        "Xiusi Chen",
+        "Heng Ji"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-24T04:35:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.21971v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "MetaEvolve uses RL and environment feedback to develop self-reflection meta-skills, relevant to failure rollout learning",
+      "llm_evidence_cn": "MetaEvolve利用强化学习和环境反馈培养自我反思元技能，与从失败轨迹中学习相关",
+      "llm_evidence": "MetaEvolve利用强化学习和环境反馈培养自我反思元技能，与从失败轨迹中学习相关",
+      "canonical_evidence": "MetaEvolve利用强化学习和环境反馈培养自我反思元技能，与从失败轨迹中学习相关",
+      "llm_tldr_en": "MetaEvolve uses RL to train LLMs in core meta-skills like self-reflection from environment feedback, enabling iterative self-evolution and scaling at test time.",
+      "llm_tldr_cn": "现有训练忽视自我反思等元技能，限制了测试时迭代进化。提出MetaEvolve框架，通过数据合成、进化感知强化学习和推理时进化搜索，在编程领域培养元技能。实验表明模型在多次改进后持续提升性能，证明了元技能对进化的重要性。",
+      "llm_tldr": "现有训练忽视自我反思等元技能，限制了测试时迭代进化。提出MetaEvolve框架，通过数据合成、进化感知强化学习和推理时进化搜索，在编程领域培养元技能。实验表明模型在多次改进后持续提升性能，证明了元技能对进化的重要性。",
+      "llm_tags": [
+        "query:opd:composite"
+      ],
+      "matched_query_tag": "query:opd:composite",
+      "matched_query_text": "Papers central to 请帮我检索与大语言模型强化学习和推理优化相关的最新论文，重点关注On-Policy Distillation (OPD)，兼顾：1. On-Policy Distillation (OPD)、同策略自蒸馏、GRPO、RLVR 等在线强化学习训练方法；2. 使用教师模型、环境反馈或自生成修复信号提升推理能力的方法；3. failure rollout、错误轨迹利用、过程监督（process supervision）、PRM、step-level reward modeling；, especially work that connects or combines: on-policy distillation for large language model reasoning; group relative policy optimization reinforcement learning reasoning; reinforcement learning from verifiable rewards for LLM reasoning; self-distillation methods for improving reasoning in language models; utilizing failure rollouts in reinforcement learning for reasoning; On Policy Distillation methods for large language model; Using failure rollouts and error trajectories for process supervision in LLM reasoning; learning from failure rollouts and self generated corrections in reinforcement learning.",
+      "matched_requirement_id": "req-composite-opd",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23125v1",
+      "source": "arxiv",
+      "title": "Self-Boosting Vision-Language Models with Noisy Student On-Policy Self-Distillation",
+      "abstract": "Post-training enables vision-language models (VLMs) to understand human instructions and perform various downstream tasks. Current post-training methods usually rely on human-annotated data, distillation from external models, reinforcement learning with human feedback, or verifiable answers. This limits their ability to improve without external supervision. To tackle this, we propose NOPD (Noisy Student On-Policy Self-Distillation), a simple yet effective self-distillation approach that improves VLMs without any external models or ground-truth answers. Our key insight is that prediction discrepancies between clean and corrupted inputs naturally induce a self-supervision signal. In NOPD, the model learns from corrupted inputs while using its own predictions under clean inputs as token-level supervision. We show the effectiveness of NOPD on five visual reasoning tasks; it can match and even outperform reinforcement learning approaches or distillation from external models. Notably, when trained with 2.1K samples from Geometry3K, NOPD improves Qwen2.5-VL-7B by 20 points on its validation set. It also shows generalization on out-of-distribution test sets and achieves 7.4 point gains on MathVista. Furthermore, we demonstrate that NOPD is a general approach to enhance VLMs, achieving improvements across three models on 12 benchmarks.",
+      "authors": [
+        "Shuai Wang",
+        "Daoan Zhang",
+        "Zhe Tang",
+        "Hao Cheng",
+        "Jiaheng Wei"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-25T10:00:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.23125v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Noisy student on-policy self-distillation for VLMs, transferable to LLM reasoning",
+      "llm_evidence_cn": "噪声学生同策略自蒸馏方法，可迁移至LLM推理",
+      "llm_evidence": "噪声学生同策略自蒸馏方法，可迁移至LLM推理",
+      "canonical_evidence": "噪声学生同策略自蒸馏方法，可迁移至LLM推理",
+      "llm_tldr_en": "NOPD enables self-distillation for VLMs without external supervision by using prediction discrepancies between clean and corrupted inputs, improving reasoning abilities.",
+      "llm_tldr_cn": "视觉语言模型(VLM)的后训练常依赖外部标注或教师模型。本文提出噪声学生同策略自蒸馏(NOPD)，利用干净与扰动输入间的预测差异作为自监督信号，无需外部模型或真实答案。在多个VLM基准上，NOPD有效提升了模型的指令遵循和推理性能，展示了自蒸馏在无外部监督下增强推理的潜力，其思想可延伸至纯语言模型。",
+      "llm_tldr": "视觉语言模型(VLM)的后训练常依赖外部标注或教师模型。本文提出噪声学生同策略自蒸馏(NOPD)，利用干净与扰动输入间的预测差异作为自监督信号，无需外部模型或真实答案。在多个VLM基准上，NOPD有效提升了模型的指令遵循和推理性能，展示了自蒸馏在无外部监督下增强推理的潜力，其思想可延伸至纯语言模型。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "self-distillation methods for improving reasoning in language models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24062v1",
+      "source": "arxiv",
+      "title": "ACRL: Adaptive Control of Training-Inference Discrepancy for Stable Reinforcement Learning",
+      "abstract": "Reinforcement Learning (RL) training for Large Language Models (LLMs) often suffers from instability due to the discrepancy between training and inference. This training-inference discrepancy stems from two primary factors: an architectural separation between training and inference engines, and the use of low-precision quantization in inference versus higher-precision computation in training. To address training instability issues caused by high training-inference discrepancy, we present the principles and methods for its adaptive control. We propose Adaptive Control Reinforcement Learning (ACRL), which adaptively maintains the training-inference discrepancy within a reasonable range to ensure stable RL training. Beyond stabilization, ACRL inherently increases policy entropy, thereby enhancing exploration and improving accuracy. The experimental results show that when the inference engine utilizes FP8 quantization, ACRL consistently maintains the training-inference discrepancy within a reasonable range and stabilizes RL training. Furthermore, ACRL not only matches the accuracy of the BF16 baseline but also outperforms importance sampling (IS) fixes.",
+      "authors": [
+        "Wenwu Fan",
+        "Qihong Lin",
+        "Zhijie Xia",
+        "Zhuo Zheng",
+        "Sihao Wang",
+        "Qiang Chen",
+        "Liangsheng Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-27T07:05:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.24062v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive control of training-inference discrepancy for stable RL training in LLMs",
+      "llm_evidence_cn": "自适应控制训练-推理差异以稳定LLM的RL训练",
+      "llm_evidence": "自适应控制训练-推理差异以稳定LLM的RL训练",
+      "canonical_evidence": "自适应控制训练-推理差异以稳定LLM的RL训练",
+      "llm_tldr_en": "ACRL adaptively controls training-inference discrepancy in RL training for LLMs, improving stability and performance.",
+      "llm_tldr_cn": "大语言模型的强化学习训练常因训练与推理差异（如低精度量化）而不稳定。本文提出自适应控制强化学习(ACRL)，动态调整训练-推理差异至合理范围。实验证明ACRL在多种RL训练场景中显著提升稳定性，并改善最终模型性能，为在线RL训练提供了工程化解决方案。",
+      "llm_tldr": "大语言模型的强化学习训练常因训练与推理差异（如低精度量化）而不稳定。本文提出自适应控制强化学习(ACRL)，动态调整训练-推理差异至合理范围。实验证明ACRL在多种RL训练场景中显著提升稳定性，并改善最终模型性能，为在线RL训练提供了工程化解决方案。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "reinforcement learning from verifiable rewards for LLM reasoning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23955v1",
+      "source": "arxiv",
+      "title": "EviBack: Search-Agent Reinforcement Learning via Evidence-Constrained Teacher Backoff",
+      "abstract": "Reinforcement learning enables Agentic RAG systems to learn multi-turn search from verifiable outcome rewards, but all- zero rollout groups provide no comparative signal and may hide useful search behavior. We present EviBack, an evidence- constrained Teacher backoff that supplies auxiliary super- vision to such groups while preserving verifiable Actor re- wards. It separates evidence assessment from answer refine- ment, preventing reference answers from overriding evidence- insufficiency judgments. A fully automated, end-to-end GPT- 5.5-assisted APE pipeline starts from a manually authored single-prompt dual-task Teacher, automatically partitions and labels rollout data, and performs ablation, task decomposition, evaluation, and selection to produce a gated two-stage Teacher. Compared with the manual design, the resulting Teacher im- proves downstream F1 and valid-answer rate while reduc- ing search, duplicate queries, and forced termination. Across seven open-domain QA benchmarks and three Qwen3 scales, EviBack improves F1 over Search-R1 and raises both single- and multi-hop macro F1. We guarantee that the code will be made publicly available at a later stage.",
+      "authors": [
+        "Xiao Ma",
+        "Zhiquan Hu",
+        "Yi Wei",
+        "Chenchen Zhao",
+        "Yijun Chen",
+        "Jicheng Zhao",
+        "Yuming Li Chuang Dai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-27T02:59:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.23955v1",
+      "tags": [
+        "keyword:opd",
+        "query:opd"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "failure rollouts, zero-reward groups, teacher backoff for auxiliary supervision",
+      "llm_evidence_cn": "处理全零rollout组，使用教师回退提供辅助监督，利用失败轨迹",
+      "llm_evidence": "处理全零rollout组，使用教师回退提供辅助监督，利用失败轨迹",
+      "canonical_evidence": "处理全零rollout组，使用教师回退提供辅助监督，利用失败轨迹",
+      "llm_tldr_en": "EviBack supplies auxiliary teacher supervision to all-zero rollout groups, addressing failure rollouts in RL for reasoning.",
+      "llm_tldr_cn": "该论文针对强化学习搜索代理中全零rollout组缺乏对比信号的问题，提出EviBack。该方法通过证据约束的教师回退，为这些组提供辅助监督，同时保留可验证的演员奖励。它将证据评估与答案精炼分离，防止参考答案覆盖证据不足的判断。实验表明EviBack显著提升了搜索代理的推理性能。",
+      "llm_tldr": "该论文针对强化学习搜索代理中全零rollout组缺乏对比信号的问题，提出EviBack。该方法通过证据约束的教师回退，为这些组提供辅助监督，同时保留可验证的演员奖励。它将证据评估与答案精炼分离，防止参考答案覆盖证据不足的判断。实验表明EviBack显著提升了搜索代理的推理性能。",
+      "llm_tags": [
+        "query:opd"
+      ],
+      "matched_query_tag": "query:opd",
+      "matched_query_text": "utilizing failure rollouts in reinforcement learning for reasoning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
